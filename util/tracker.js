@@ -16,9 +16,10 @@ class Tracker {
      * add a new phrase
      * @param phrase
      */
-    add(phrase) {
+    add(phrase='') {
+        phrase = phrase.trim();
         //prevent duplicates if the phrase was looked up again
-        if (!this._data.some(item => item.phrase === phrase)) {
+        if (phrase && !this._data.some(item => item.phrase === phrase)) {
             this._data.push({
                 phrase, id: '' + Date.now()
             });
