@@ -61,7 +61,6 @@ class PhraseList {
         this.tbody.innerHTML = '';
         
         list.forEach(this.makeRow.bind(this));
-        console.log(list);
     }
     /**
      * Appends a row to the table
