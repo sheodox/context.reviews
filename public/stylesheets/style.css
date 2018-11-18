@@ -1,16 +1,39 @@
 body {
     padding: 20px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #24252b;
+    color: white;
 }
 
 a {
     color: #00B7FF;
 }
 
+a.install {
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+table#list {
+    border-spacing: 0;
+}
+
 tr {
     font-size: 20px;
 }
-tr:hover {
-    background-color: #586c79;
+tbody tr:hover {
+    background-color: #343e48;
     color: white;
+}
+
+button {
+    border: 1px solid #586c79;
+    background: #303138;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+}
+button:hover {
+    background: #3e4d58;
 }
