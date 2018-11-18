@@ -13,3 +13,5 @@ This is for use with [my other userscripts](https://github.com/sheodox/japanese-
 1. Click "Install userscript" (assuming you have [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 1. Go to [Jisho.org](http://jisho.org)
 1. Click the Tampermonkey menu in Chrome's toolbar and click "Set review server URL" and enter the same url as in step four when prompted
+
+![screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/images/screenshot.png)
