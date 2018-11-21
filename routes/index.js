@@ -1,6 +1,11 @@
 const express = require('express'),
     router = express.Router(),
     tracker = require('../util/tracker');
+let io;
+
+function refresh() {
+    io.emit('refresh', tracker.list());
+}
 
 /**
  * send node modules files 
@@ -26,15 +31,22 @@ router.get('/', function(req, res, next) {
 router.get('/add/:phrase', (req, res) => {
     tracker.add(req.params.phrase);
     res.json(tracker.list());
+    refresh();
 });
 
-router.get('/remove/:id', (req, res) => {
-    tracker.remove(req.params.id);
-    res.json(tracker.list());
-});
 
-router.get('/list', (req, res) => {
-    res.json(tracker.list());
-});
+module.exports = (sio) => {
+    io = sio;
+    io.on('connection', socket => {
+        socket.on('remove', id => {
+            tracker.remove(id);
+            refresh();
+        });
 
-module.exports = router;
+        socket.on('list', () => {
+            socket.emit('refresh', tracker.list());
+        });
+    });
+    
+    return router;
+};

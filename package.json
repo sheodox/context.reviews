@@ -15,6 +15,7 @@
     "handlebars": "^4.0.12",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "socket.io": "^2.1.1"
   }
 }

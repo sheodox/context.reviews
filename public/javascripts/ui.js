@@ -1,17 +1,10 @@
-/**
- * fetch as json
- * @param url
- * @returns {Promise<JSON>}
- */
-async function f(url) {
-    return fetch(url)
-        .then(res => res.json());
-}
+
 //querySelector shorthand
 const q = sel => document.querySelector(sel);
 
 class PhraseList {
     constructor() {
+        this.socket = io();
         this.tbody = q('#listbody');
         this.rowTemplate = Handlebars.compile(q('#rowTemplate').textContent);
         this.phraseList = [];
@@ -23,7 +16,10 @@ class PhraseList {
                     e.target.getAttribute('data-id')
                 );
             }
-        })
+        });
+        
+        this.socket.on('refresh', this.updateList.bind(this));
+        this.socket.emit('list');
     }
     handleActionClick(action, id) {
         const phrase = this.getPhrase(id);
@@ -44,22 +40,17 @@ class PhraseList {
         return this.phraseList.find(item => item.id === id).phrase;
     }
 
-    async remove(id) {
-        this.updateList(await f(`/remove/${id}`));
+    remove(id) {
+        this.socket.emit('remove', id);
     }
     /**
      * Update the rendered list.
      * @param list - list of phrases from server if known, it's the response to add/remove calls so it's known in those cases without doing another request
      * @returns {Promise<void>}
      */
-    async updateList(list) {
-        if (!list) {
-            list = await f('/list');
-        }
+    updateList(list) {
         this.phraseList = list;
-        
         this.tbody.innerHTML = '';
-        
         list.forEach(this.makeRow.bind(this));
     }
     /**
@@ -83,4 +74,3 @@ q('body').addEventListener('mouseup', e => {
 
 
 const pl = new PhraseList();
-pl.updateList();

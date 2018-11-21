@@ -1,10 +1,13 @@
-const createError = require('http-errors'),
+const http = require('http'),
+    createError = require('http-errors'),
     express = require('express'),
     path = require('path'),
     cookieParser = require('cookie-parser'),
     logger = require('morgan'),
     indexRouter = require('./routes/index'),
-    app = express();
+    app = express(),
+    server = http.createServer(app),
+    io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -16,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', indexRouter(io));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -34,4 +37,4 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-module.exports = app;
+module.exports = {server, app};
