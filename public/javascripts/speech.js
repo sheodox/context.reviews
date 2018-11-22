@@ -10,6 +10,9 @@
     });
 
     window.say = function(text) {
+        if (!text) {
+            return;
+        }
         voiceReady.then(() => {
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.voice = jpVoice;
