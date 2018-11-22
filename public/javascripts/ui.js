@@ -5,12 +5,15 @@ const q = sel => document.querySelector(sel);
 class PhraseList {
     constructor() {
         this.socket = io();
-        this.tbody = q('#listbody');
-        this.count = q('#phrase-count');
+        this.DOM = {
+            tbody: q('#listbody'),
+            count: q('#phrase-count'),
+            stop: q('#stop')
+        };
         this.rowTemplate = Handlebars.compile(q('#rowTemplate').textContent);
         this.phraseList = [];
         
-        this.tbody.addEventListener('click', e => {
+        this.DOM.tbody.addEventListener('click', e => {
             if (e.target.matches('button[data-action]')) {
                 this.handleActionClick(
                     e.target.getAttribute('data-action'),
@@ -22,9 +25,10 @@ class PhraseList {
         this.socket.on('refresh', this.updateList.bind(this));
         this.socket.emit('list');
         
-        q('#stop').addEventListener('click', e => {
+        this.DOM.stop.addEventListener('click', e => {
             speechSynthesis.cancel();
         });
+        const originalStopText = this.DOM.stop.textContent;
         
         q('#undo').addEventListener('click', e => {
             this.socket.emit('undo');
@@ -34,7 +38,15 @@ class PhraseList {
             if (e.ctrlKey && !e.shiftKey && !e.altKey && e.which === 90) {
                 this.socket.emit('undo');
             }
-        })
+        });
+        
+        const frame = () => {
+            this.DOM.stop.textContent = originalStopText + 
+                (speechSynthesis.speaking ? '🔊' : '');
+            
+            requestAnimationFrame(frame);
+        };
+        frame();
     }
     handleActionClick(action, id) {
         const phrase = this.getPhrase(id);
@@ -65,9 +77,9 @@ class PhraseList {
      */
     updateList(list) {
         this.phraseList = list;
-        this.tbody.innerHTML = '';
+        this.DOM.tbody.innerHTML = '';
         list.forEach(this.makeRow.bind(this));
-        this.count.textContent = ` (${list.length})`
+        this.DOM.count.textContent = ` (${list.length})`
     }
     /**
      * Appends a row to the table
@@ -78,7 +90,7 @@ class PhraseList {
     makeRow(item) {
         const tr = document.createElement('tr');
         tr.innerHTML = this.rowTemplate(item);
-        this.tbody.append(tr);
+        this.DOM.tbody.append(tr);
     }
 }
 
