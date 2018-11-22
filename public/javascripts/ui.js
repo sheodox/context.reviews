@@ -20,6 +20,20 @@ class PhraseList {
         
         this.socket.on('refresh', this.updateList.bind(this));
         this.socket.emit('list');
+        
+        q('#stop').addEventListener('click', e => {
+            speechSynthesis.cancel();
+        });
+        
+        q('#undo').addEventListener('click', e => {
+            this.socket.emit('undo');
+        });
+        
+        q('body').addEventListener('keydown', e => {
+            if (e.ctrlKey && !e.shiftKey && !e.altKey && e.which === 90) {
+                this.socket.emit('undo');
+            }
+        })
     }
     handleActionClick(action, id) {
         const phrase = this.getPhrase(id);
@@ -71,6 +85,7 @@ q('body').addEventListener('mouseup', e => {
         say(getSelection().toString());
     }
 });
+
 
 
 const pl = new PhraseList();

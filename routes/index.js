@@ -46,6 +46,11 @@ module.exports = (sio) => {
         socket.on('list', () => {
             socket.emit('refresh', tracker.list());
         });
+        
+        socket.on('undo', () => {
+            tracker.undo();
+            refresh();
+        })
     });
     
     return router;

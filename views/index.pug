@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
   a.install(href='/javascripts/jisho-phrase-stasher.user.js') Install Userscript
+  button#undo(title="restore previously deleted phrases") ← Undo
+  button#stop(title="stop audio synthesis") ■ Stop
   table#list
       thead
           tr

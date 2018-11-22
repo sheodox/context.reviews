@@ -4,6 +4,8 @@ class Tracker {
     constructor() {
         this._path = './data/phrases.json';
         this._saveP = Promise.resolve();
+        this._deleteHistory = [];
+        this._maxInHistory = 100;
         
         try {
             this._data = JSON.parse(fs.readFileSync(this._path));
@@ -35,8 +37,25 @@ class Tracker {
         const idx = this._data.findIndex(p => {
             return p.id === id;
         });
+        
+        //keep a bit of a history around so we can undo
+        this._deleteHistory.push(this._data[idx]);
+        if (this._deleteHistory > this._maxInHistory) {
+            this._deleteHistory.shift();
+        }
+        
         this._data.splice(idx, 1);
         this._save();
+    }
+
+    /**
+     * Undelete the last thing from the history
+     */
+    undo() {
+        if (this._deleteHistory.length) {
+            this._data.push(this._deleteHistory.pop());
+            this._save();
+        }
     }
 
     /**
