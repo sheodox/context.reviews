@@ -6,6 +6,7 @@ class PhraseList {
     constructor() {
         this.socket = io();
         this.tbody = q('#listbody');
+        this.count = q('#phrase-count');
         this.rowTemplate = Handlebars.compile(q('#rowTemplate').textContent);
         this.phraseList = [];
         
@@ -66,6 +67,7 @@ class PhraseList {
         this.phraseList = list;
         this.tbody.innerHTML = '';
         list.forEach(this.makeRow.bind(this));
+        this.count.textContent = ` (${list.length})`
     }
     /**
      * Appends a row to the table
