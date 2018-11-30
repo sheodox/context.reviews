@@ -38,3 +38,13 @@ button {
 button:hover {
     background: #3e4d58;
 }
+
+button[data-action=delete] {
+    color: red;
+}
+button[data-action=read] {
+    color: #2a83c5;
+}
+button[data-action=jisho] {
+    color: #00fca9;
+}
