@@ -5,19 +5,21 @@ block content
   a.install(href='/javascripts/jisho-phrase-stasher.user.js') Install Userscript
   button#undo(title="restore previously deleted phrases") ← Undo
   button#stop(title="stop audio synthesis") ■ Stop
+  br
+  br
   table#list
       thead
           tr
-              th Phrases
-                span#phrase-count
               th Actions
+              th Phrases
+                  span#phrase-count
       tbody#listbody
   script#rowTemplate(type='text/template').
-      <td>{{phrase}}</td>
       <td>
-          <button data-action=read data-id={{id}} title="Read this full sentence out loud">Read</button>
-          <button data-action=jisho data-id={{id}} title="Look this sentence up on Jisho.org">Jisho</button>
-          <button data-action=delete data-id={{id}} title="Delete this sentence">Delete</button>
+          <button data-action=delete data-id={{id}} title="Delete this sentence">削除</button>
+          <button data-action=jisho data-id={{id}} title="Look this sentence up on Jisho.org">辞書</button>
+          <button data-action=read data-id={{id}} title="Read this full sentence out loud">音声</button>
       </td>
+      <td>{{phrase}}</td>
   script(src='/javascripts/speech.js')
   script(src='/javascripts/ui.js')
