@@ -1,4 +1,5 @@
-const fs = require('fs');
+const fs = require('fs'),
+    trim = require('./trim');
 
 class Tracker {
     constructor() {
@@ -19,7 +20,7 @@ class Tracker {
      * @param phrase
      */
     add(phrase='') {
-        phrase = phrase.trim();
+        phrase = trim(phrase);
         //prevent duplicates if the phrase was looked up again
         if (phrase && !this._data.some(item => item.phrase === phrase)) {
             this._data.push({
