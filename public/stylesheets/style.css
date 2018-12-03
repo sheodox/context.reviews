@@ -48,3 +48,7 @@ button[data-action=read] {
 button[data-action=jisho] {
     color: #00fca9;
 }
+.actions {
+    vertical-align: top;
+    white-space: nowrap;
+}
