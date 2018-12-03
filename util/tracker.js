@@ -16,18 +16,34 @@ class Tracker {
     }
 
     /**
+     * Split a long search phrase into sentences.
+     * @param phrase
+     * @returns {*|string[]}
+     */
+    static split(phrase) {
+        const delimiter = '__splitter__';
+        ['。', '！', '？'].forEach(punctuation => {
+            phrase = phrase.replace(new RegExp(punctuation, 'g'), `${punctuation}${delimiter}`);
+        });
+        return phrase.split(delimiter);
+    }
+
+    /**
      * add a new phrase
      * @param phrase
      */
     add(phrase='') {
-        phrase = trim(phrase);
-        //prevent duplicates if the phrase was looked up again
-        if (phrase && !this._data.some(item => item.phrase === phrase)) {
-            this._data.push({
-                phrase, id: '' + Date.now()
-            });
-            this._save();
-        }
+        //add each sentence individually
+        Tracker.split(phrase).forEach(phrase => {
+            phrase = trim(phrase);
+            //prevent duplicates if the phrase was looked up again
+            if (phrase && !this._data.some(item => item.phrase === phrase)) {
+                this._data.push({
+                    phrase, id: '' + Date.now()
+                });
+                this._save();
+            }
+        });
     }
 
     /**
