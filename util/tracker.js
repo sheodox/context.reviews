@@ -29,6 +29,16 @@ class Tracker {
     }
 
     /**
+     * Gets a unique ID, can't just use timestamps because several phrases can be added at the same time
+     * @returns {number}
+     */
+    getGUID() {
+        return 1 + this._data.reduce((highest, next) => {
+            return Math.max(highest, parseInt(next.id, 0));
+        }, 0);
+    }
+    
+    /**
      * add a new phrase
      * @param phrase
      */
@@ -39,7 +49,7 @@ class Tracker {
             //prevent duplicates if the phrase was looked up again
             if (phrase && !this._data.some(item => item.phrase === phrase)) {
                 this._data.push({
-                    phrase, id: '' + Date.now()
+                    phrase, id: '' + this.getGUID()
                 });
                 this._save();
             }
@@ -90,7 +100,7 @@ class Tracker {
     _save() {
         this._saveP = this._saveP.then(() => {
             return new Promise(resolve => {
-                fs.writeFile(this._path, JSON.stringify(this._data), resolve)
+                fs.writeFile(this._path, JSON.stringify(this._data, null, 4), resolve)
             });
         })
     }
