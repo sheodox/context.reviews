@@ -66,7 +66,7 @@ class Tracker {
         });
         
         //keep a bit of a history around so we can undo
-        this._deleteHistory.push(this._data[idx]);
+        this._deleteHistory.push({data: this._data[idx], index: idx});
         if (this._deleteHistory > this._maxInHistory) {
             this._deleteHistory.shift();
         }
@@ -80,7 +80,8 @@ class Tracker {
      */
     undo() {
         if (this._deleteHistory.length) {
-            this._data.push(this._deleteHistory.pop());
+            const lastDeleted = this._deleteHistory.pop();
+            this._data.splice(lastDeleted.index, 0, lastDeleted.data);
             this._save();
         }
     }
