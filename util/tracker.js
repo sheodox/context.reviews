@@ -81,6 +81,8 @@ class Tracker {
     undo() {
         if (this._deleteHistory.length) {
             const lastDeleted = this._deleteHistory.pop();
+            //other things may have been added since this was deleted, make sure it's unique again
+            lastDeleted.data.id = this.getGUID();
             this._data.splice(lastDeleted.index, 0, lastDeleted.data);
             this._save();
         }
