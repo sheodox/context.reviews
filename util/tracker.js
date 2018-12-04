@@ -33,9 +33,9 @@ class Tracker {
      * @returns {number}
      */
     getGUID() {
-        return 1 + this._data.reduce((highest, next) => {
+        return String(1 + this._data.reduce((highest, next) => {
             return Math.max(highest, parseInt(next.id, 0));
-        }, 0);
+        }, 0));
     }
     
     /**
@@ -49,7 +49,7 @@ class Tracker {
             //prevent duplicates if the phrase was looked up again
             if (phrase && !this._data.some(item => item.phrase === phrase)) {
                 this._data.push({
-                    phrase, id: '' + this.getGUID()
+                    phrase, id: this.getGUID()
                 });
                 this._save();
             }
