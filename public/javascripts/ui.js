@@ -1,10 +1,38 @@
 
 //querySelector shorthand
 const q = sel => document.querySelector(sel);
+async function f(url) {
+    const response = await fetch(url);
+    return await response.json();
+}
 
 class PhraseList {
     constructor() {
-        this.socket = io();
+        this.socket = io({
+            path: location.pathname + 'socket.io/socket.io',
+            reconnectionAttempts: 1
+        });
+        
+        this.socket.on('connect_error', () => {
+            //don't run twice
+            if (this.useXHR) {
+                return;
+            }
+            console.log('falling back to xhr');
+            this.useXHR = true;
+            let prevList = '';
+            const refresh = async () => {
+                const list = await f('list'),
+                    listStr = JSON.stringify(list);
+                //don't rebuild the dom if nothing has changed
+                if (listStr !== prevList) {
+                    this.updateList(list);
+                    prevList = listStr;
+                }
+            };
+            setInterval(refresh, 5 * 1000);
+            refresh();
+        });
         this.DOM = {
             tbody: q('#listbody'),
             count: q('#phrase-count'),
@@ -31,12 +59,12 @@ class PhraseList {
         const originalStopText = this.DOM.stop.textContent;
         
         q('#undo').addEventListener('click', e => {
-            this.socket.emit('undo');
+            this.undo();
         });
         
         q('body').addEventListener('keydown', e => {
             if (e.ctrlKey && !e.shiftKey && !e.altKey && e.which === 90) {
-                this.socket.emit('undo');
+                this.undo();
             }
         });
         
@@ -66,9 +94,23 @@ class PhraseList {
     getPhrase(id) {
         return this.phraseList.find(item => item.id === id).phrase;
     }
+    
+    async undo() {
+        if (this.useXHR) {
+            this.updateList(await f(`undo`));
+        }
+        else {
+            this.socket.emit('undo');
+        }
+    }
 
-    remove(id) {
-        this.socket.emit('remove', id);
+    async remove(id) {
+        if (this.useXHR) {
+            this.updateList(await f(`remove/${id}`))
+        }
+        else {
+            this.socket.emit('remove', id);
+        }
     }
     /**
      * Update the rendered list.

@@ -34,6 +34,21 @@ router.get('/add/:phrase', (req, res) => {
     refresh();
 });
 
+router.get('/list', (req, res) => {
+    res.json(tracker.list());
+});
+
+router.get('/remove/:id', (req, res) => {
+    tracker.remove(req.params.id);
+    res.json(tracker.list());
+    refresh();
+});
+
+router.get('/undo', (req, res) => {
+    tracker.undo();
+    res.json(tracker.list());
+    refresh();
+});
 
 module.exports = (sio) => {
     io = sio;
