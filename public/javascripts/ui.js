@@ -6,6 +6,10 @@ async function f(url) {
     return await response.json();
 }
 
+function openJishoSearch(phrase) {
+    window.open(`http://jisho.org/search/${encodeURIComponent(phrase)}`);
+}
+
 class PhraseList {
     constructor() {
         this.socket = io({
@@ -84,7 +88,7 @@ class PhraseList {
                 say(phrase);
                 break;
             case 'jisho':
-                window.open(`http://jisho.org/search/${encodeURIComponent(phrase)}`);
+                openJishoSearch(phrase);
                 break;
             case 'delete':
                 this.remove(id);
@@ -136,12 +140,30 @@ class PhraseList {
     }
 }
 
-q('body').addEventListener('mouseup', e => {
-    if (!e.target.matches('a, button')) {
-        say(getSelection().toString());
+const search = q('#jisho-search'),
+    body = q('body');
+body.addEventListener('mouseup', e => {
+    if (!e.target.closest('a, button, input')) {
+        const selected = getSelection().toString();
+        say(selected);
+        search.value = selected;
+    }
+    
+});
+
+body.addEventListener('keydown', e => {
+    if (e.target.tagName !== 'input' && e.which === 83) { //s
+        search.focus();
+        search.select();
+        e.preventDefault();
     }
 });
 
+
+q('#search-form').addEventListener('submit', e => {
+    e.preventDefault();
+    openJishoSearch(search.value);
+});
 
 
 const pl = new PhraseList();

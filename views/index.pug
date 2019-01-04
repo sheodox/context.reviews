@@ -3,8 +3,13 @@ extends layout
 block content
   h1= title
   a.install(href='javascripts/jisho-phrase-stasher.user.js') Install Userscript
-  button#undo(title="restore previously deleted phrases") ← Undo
-  button#stop(title="stop audio synthesis") ■ Stop
+  div.toolbar
+      button#undo(title="restore previously deleted phrases") ← Undo
+      button#stop(title="stop audio synthesis") ■ Stop
+      form#search-form
+          label 辞書検索:
+            input#jisho-search(type="text", placeholder="なにかを入力する...", autocomplete="off")
+          button(type='submit') →
   br
   br
   table#list
