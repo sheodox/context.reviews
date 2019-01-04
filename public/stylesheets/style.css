@@ -65,5 +65,6 @@ input[type=text], textarea{
     border: 1px solid black;
     color: white;
     padding: 2px;
+    height: 21px;
     border-radius: 1px;
 }
