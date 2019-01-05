@@ -1,18 +1,23 @@
 const fs = require('fs'),
     trim = require('./trim');
 
+function readJSON(path, fallback) {
+    try {
+        return JSON.parse(fs.readFileSync(path));
+    } catch(e) {
+        return fallback;
+    }
+}
+
 class Tracker {
     constructor() {
         this._path = './data/phrases.json';
+        this._deleteHistoryPath = './data/deletehistory.json';
         this._saveP = Promise.resolve();
-        this._deleteHistory = [];
         this._maxInHistory = 100;
         
-        try {
-            this._data = JSON.parse(fs.readFileSync(this._path));
-        } catch(e) {
-            this._data = [];
-        }
+        this._data = readJSON(this._path, []);
+        this._deleteHistory = readJSON(this._deleteHistoryPath, []);
     }
 
     /**
@@ -101,11 +106,15 @@ class Tracker {
      * @private
      */
     _save() {
-        this._saveP = this._saveP.then(() => {
+        const thenSave = (path, data) => () => {
             return new Promise(resolve => {
-                fs.writeFile(this._path, JSON.stringify(this._data, null, 4), resolve)
+                fs.writeFile(path, JSON.stringify(data, null, 4), resolve)
             });
-        })
+        };
+        
+        this._saveP = this._saveP
+            .then(thenSave(this._path, this._data))
+            .then(thenSave(this._deleteHistoryPath, this._deleteHistory));
     }
 }
 
