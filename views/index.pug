@@ -1,44 +1,60 @@
 extends layout
 
 block content
-  h1= title
-  div.toolbar
-      button#undo(title="restore previously deleted phrases") ← Undo
-      button#stop(title="stop audio synthesis") ■ Stop
-      form#search-form
-          label 辞書検索:
-            input#jisho-search(type="text", placeholder="なにかを入力する...", autocomplete="off")
-          button(type='submit') →
-  br
-  br
-  div#hints
-      h2 No phrases found
-      p Setup instructions:
-      ol
-          li
-              a(href='javascripts/jisho-phrase-stasher.user.js') Install Userscript
-          li Go to 
-              a(href="https://jisho.org") Jisho
-          li In the Tampermonkey menu click "Change review server URL"
-          li Paste in this url 
-            form#hostname-form
-                input#hostname(type='text', readonly)
-                button#copy-hostname Copy
-          li Look up sentences containing unknown words as you read
-          li Return here to review!
-  table#list
-      thead
-          tr
-              th Actions
-              th Phrases
-                  span#phrase-count
-      tbody#listbody
-  script#rowTemplate(type='text/template').
-      <td class=actions>
-          <button data-action=delete data-id={{id}} title="Delete this sentence">削除</button>
-          <button data-action=jisho data-id={{id}} title="Look this sentence up on Jisho.org">辞書</button>
-          <button data-action=read data-id={{id}} title="Read this full sentence out loud">音声</button>
-      </td>
-      <td>{{phrase}}</td>
-  script(src='javascripts/speech.js')
-  script(src='javascripts/ui.js')
+    div#left
+      h1= title
+      div.toolbar
+          button#undo(title="restore previously deleted phrases") ← Undo
+          button#stop(title="stop audio synthesis") ■ Stop
+          form#search-form
+              label 辞書検索:
+                input#jisho-search(type="text", placeholder="なにかを入力する...", autocomplete="off")
+              button(type='submit') →
+      br
+      br
+      div#hints
+          h2 No phrases found
+          p Setup instructions:
+          ol
+              li
+                  a(href='javascripts/jisho-phrase-stasher.user.js') Install Userscript
+              li Go to 
+                  a(href="https://jisho.org") Jisho
+              li In the Tampermonkey menu click "Change review server URL"
+              li Paste in this url 
+                form#hostname-form
+                    input#hostname(type='text', readonly)
+                    button#copy-hostname Copy
+              li Look up sentences containing unknown words as you read
+              li Return here to review!
+      table#list
+          thead
+              tr
+                  th Actions
+                  th Phrases
+                      span#phrase-count
+          tbody#listbody
+      script#row-template(type='text/template').
+          <td class=actions>
+              <button data-action=delete data-id={{id}} title="Delete this sentence">削除</button>
+              <button data-action=jisho data-id={{id}} title="Look this sentence up on Jisho.org">辞書</button>
+              <button data-action=read data-id={{id}} title="Read this full sentence out loud">音声</button>
+          </td>
+          <td>{{phrase}}</td>
+      script#definition-template(type='text/template').
+          <div class=definition-list>
+              <h1>{{source}}</h1>
+              {{#each data}}
+              <div class=definition>
+                <h2>{{word}}</h2>
+                <ol>
+                    {{#each definitions}}
+                        <li>{{this}}</li>
+                    {{/each}}
+                </ol>
+              </div>
+              {{/each}}
+          </div>
+      aside#definition-panel
+      script(src='javascripts/speech.js')
+      script(src='javascripts/ui.js')

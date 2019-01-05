@@ -42,9 +42,12 @@ class PhraseList {
             tbody: q('#listbody'),
             count: q('#phrase-count'),
             stop: q('#stop'),
-            hints: q('#hints')
+            hints: q('#hints'),
+            search: q('#jisho-search'),
+            definitions: q('#definition-panel')
         };
-        this.rowTemplate = Handlebars.compile(q('#rowTemplate').textContent);
+        this.rowTemplate = Handlebars.compile(q('#row-template').textContent);
+        this.definitionTemplate = Handlebars.compile(q('#definition-template').textContent);
         this.phraseList = [];
         
         this.DOM.tbody.addEventListener('click', e => {
@@ -81,6 +84,37 @@ class PhraseList {
             requestAnimationFrame(frame);
         };
         frame();
+
+        q('#search-form').addEventListener('submit', e => {
+            e.preventDefault();
+            openJishoSearch(this.DOM.search.value);
+        });
+
+        const body = q('body');
+        body.addEventListener('mouseup', e => {
+            if (!e.target.closest('a, button, input')) {
+                const selected = getSelection().toString();
+                if (selected) {
+                    this.textSelected(selected);
+                }
+            }
+        });
+        
+        body.addEventListener('keydown', e => {
+            if (e.target.tagName !== 'input' && e.which === 83) { //s
+                this.DOM.search.focus();
+                this.DOM.search.select();
+                e.preventDefault();
+            }
+        });
+    }
+    async textSelected(text) {
+        say(text);
+        this.DOM.search.value = text;
+        this.DOM.definitions.innerHTML = '<h1 class="loading">Loading...</h1>';
+        const definitions = await f(`lookup/${encodeURIComponent(text)}`);
+        console.log(definitions);
+        this.DOM.definitions.innerHTML = definitions.map(this.definitionTemplate).join('');
     }
     handleActionClick(action, id) {
         const phrase = this.getPhrase(id);
@@ -154,31 +188,6 @@ class PhraseList {
     }
 }
 
-const search = q('#jisho-search'),
-    body = q('body');
-body.addEventListener('mouseup', e => {
-    if (!e.target.closest('a, button, input')) {
-        const selected = getSelection().toString();
-        say(selected);
-        search.value = selected;
-    }
-    
-});
-
-body.addEventListener('keydown', e => {
-    if (e.target.tagName !== 'input' && e.which === 83) { //s
-        search.focus();
-        search.select();
-        e.preventDefault();
-    }
-});
-
-
-q('#search-form').addEventListener('submit', e => {
-    e.preventDefault();
-    openJishoSearch(search.value);
-});
-
 const hostname = q('#hostname');
 hostname.value = location.href;
 q('#copy-hostname').addEventListener('click', e => {
@@ -186,6 +195,5 @@ q('#copy-hostname').addEventListener('click', e => {
     hostname.select();
     document.execCommand('copy');
 });
-
 
 const pl = new PhraseList();
