@@ -2,7 +2,6 @@ extends layout
 
 block content
   h1= title
-  a.install(href='javascripts/jisho-phrase-stasher.user.js') Install Userscript
   div.toolbar
       button#undo(title="restore previously deleted phrases") ← Undo
       button#stop(title="stop audio synthesis") ■ Stop
@@ -12,6 +11,21 @@ block content
           button(type='submit') →
   br
   br
+  div#hints
+      h2 No phrases found
+      p Setup instructions:
+      ol
+          li
+              a(href='javascripts/jisho-phrase-stasher.user.js') Install Userscript
+          li Go to 
+              a(href="https://jisho.org") Jisho
+          li In the Tampermonkey menu click "Change review server URL"
+          li Paste in this url 
+            form#hostname-form
+                input#hostname(type='text', readonly)
+                button#copy-hostname Copy
+          li Look up sentences containing unknown words as you read
+          li Return here to review!
   table#list
       thead
           tr

@@ -38,9 +38,11 @@ class PhraseList {
             refresh();
         });
         this.DOM = {
+            table: q('#list'),
             tbody: q('#listbody'),
             count: q('#phrase-count'),
-            stop: q('#stop')
+            stop: q('#stop'),
+            hints: q('#hints')
         };
         this.rowTemplate = Handlebars.compile(q('#rowTemplate').textContent);
         this.phraseList = [];
@@ -125,7 +127,19 @@ class PhraseList {
         this.phraseList = list;
         this.DOM.tbody.innerHTML = '';
         list.forEach(this.makeRow.bind(this));
-        this.DOM.count.textContent = ` (${list.length})`
+        this.DOM.count.textContent = ` (${list.length})`;
+        
+        const show = el => el.classList.remove('hidden'),
+            hide = el => el.classList.add('hidden');
+        
+        if (list.length) {
+            show(this.DOM.table);
+            hide(this.DOM.hints);
+        }
+        else {
+            hide(this.DOM.table);
+            show(this.DOM.hints);
+        }
     }
     /**
      * Appends a row to the table
@@ -163,6 +177,14 @@ body.addEventListener('keydown', e => {
 q('#search-form').addEventListener('submit', e => {
     e.preventDefault();
     openJishoSearch(search.value);
+});
+
+const hostname = q('#hostname');
+hostname.value = location.href;
+q('#copy-hostname').addEventListener('click', e => {
+    e.preventDefault();
+    hostname.select();
+    document.execCommand('copy');
 });
 
 
