@@ -52,17 +52,19 @@ router.get('/undo', (req, res) => {
 });
 
 router.get('/lookup/:word', async (req, res) => {
-    try {
-        const word = req.params.word,
-            jishoResults = await lookup.jisho.search(word),
-            gooResults = await lookup.goo.search(jishoResults[0].word);
+    const word = req.params.word,
+        jishoResults = await lookup.jisho.search(word);
+    if (jishoResults.length) {
+        const gooResults = await lookup.goo.search(jishoResults[0].word);
         res.json([
             {source: 'Jisho', data: jishoResults},
             {source: 'Goo辞書', data: gooResults}
         ]);
-    }catch(e) {
-        console.error(e);
-        res.json({});
+    }
+    else {
+        res.json([{
+            source: 'Jisho', data: [{word: 'No results', definitions: [`No definitions found for ${word}`]}]
+        }])
     }
 });
 
