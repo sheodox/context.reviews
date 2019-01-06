@@ -85,6 +85,10 @@ ol li {
     width: 25%;
     background-color: #31323b;
 }
+#definition-panel .loading {
+    line-height: 100vh;
+    text-align: center;
+}
 .definition-list {
     padding: 1rem;
     height: 50vh;
