@@ -62,6 +62,7 @@ router.get('/lookup/:word', async (req, res) => {
         ]);
     }catch(e) {
         console.error(e);
+        res.json({});
     }
 });
 
