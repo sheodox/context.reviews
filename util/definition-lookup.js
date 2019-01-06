@@ -72,24 +72,28 @@ class GooSearch {
         const $search = await GooSearch.fetch$(`https://dictionary.goo.ne.jp/srch/all/${encodeURIComponent(word)}/m1u/`),
             //get a list of links to individual definition pages. often the first result isn't what we want
             definitionLinks = [].map.call($search('#NR-main').find('a[href^="/jn/"]'), a => a.attribs.href);
-        const definitions = [];
-        
+        const lookups = [];
+
         for(let i = 0; i < definitionLinks.length; i++) {
-            const $ = await GooSearch.fetch$(`https://dictionary.goo.ne.jp${definitionLinks[i]}`),
-                $main = $('#NR-main');
-            //some words have a single definitions, others have multiple definitions each their own 'ol' with a in a <strong> at the beginning of the definition
-            const $definition = $main.find('.meaning_area .contents'),
-                $ols = $definition.find('ol');
-            definitions.push({
-                word: $('title').text().replace('の意味 - goo国語辞書', '').trim(),
-                definitions: [].map.call($ols.length ? $ols : $definition,
-                    //strip out the hard coded numbering when there are multiple definitions
-                    el => $(el).text().trim().replace(/^[０-９\s]*/, '')
-                )
-            });
+            lookups.push(new Promise(async (resolve, reject) => {
+                const $ = await GooSearch.fetch$(`https://dictionary.goo.ne.jp${definitionLinks[i]}`),
+                    $main = $('#NR-main');
+                //some words have a single definitions, others have multiple definitions each their own 'ol' with a in a <strong> at the beginning of the definition
+                const $definition = $main.find('.meaning_area .contents'),
+                    $ols = $definition.find('ol');
+                resolve({
+                    word: $('title').text().replace('の意味 - goo国語辞書', '').trim(),
+                    definitions: [].map.call($ols.length ? $ols : $definition,
+                        //strip out the hard coded numbering when there are multiple definitions
+                        el => $(el).text().trim().replace(/^[０-９\s]*/, '')
+                    )
+                });
+            }));
         }
-        cache.set('goo', word, definitions);
-        return definitions;
+        return Promise.all(lookups).then((definitions) => {
+            cache.set('goo', word, definitions);
+            return definitions;
+        });
     }
 }
 
