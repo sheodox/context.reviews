@@ -73,6 +73,9 @@ input[type=text], textarea{
 ol li {
     line-height: 1.8;
 }
+#definition-panel li:only-child {
+    list-style: none;
+}
 #left {
     width: 75%;
 }
