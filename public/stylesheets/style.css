@@ -89,6 +89,9 @@ ol li {
     line-height: 100vh;
     text-align: center;
 }
+#definition-panel h2, #definition-panel h3 {
+    display: inline;
+}
 .definition-list {
     padding: 1rem;
     height: 50vh;

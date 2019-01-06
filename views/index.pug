@@ -47,6 +47,9 @@ block content
               {{#each data}}
               <div class=definition>
                 <h2>{{word}}</h2>
+                {{#if reading}}
+                  <h3> - ({{reading}})</h3>
+                {{/if}}
                 <ol>
                     {{#each definitions}}
                         <li>{{this}}</li>
