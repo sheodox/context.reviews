@@ -51,20 +51,35 @@ router.get('/undo', (req, res) => {
     refresh();
 });
 
-router.get('/lookup/:word', async (req, res) => {
+router.get('/lookup/jisho/:word', async (req, res) => {
     const word = req.params.word,
         jishoResults = await lookup.jisho.search(word);
     if (jishoResults.length) {
-        const gooResults = await lookup.goo.search(jishoResults[0].word);
-        res.json([
-            {source: 'Jisho', data: jishoResults},
-            {source: 'Goo辞書', data: gooResults}
-        ]);
+        res.json(
+            {source: 'Jisho', data: jishoResults}
+        );
     }
     else {
-        res.json([{
+        res.json({
             source: 'Jisho', data: [{word: 'No results', definitions: [`No definitions found for ${word}`]}]
-        }])
+        });
+    }
+});
+
+router.get('/lookup/goo/:word', async (req, res) => {
+    const word = req.params.word,
+        //the jisho search should be cached
+        jishoResults = await lookup.jisho.search(word);
+    if (jishoResults.length) {
+        const gooResults = await lookup.goo.search(jishoResults[0].word);
+        res.json(
+            {source: 'Goo辞書', data: gooResults}
+        );
+    }
+    else {
+        res.json({
+            source: 'Goo辞書', data: [{word: 'No results', definitions: [`No definitions found for ${word}`]}]
+        })
     }
 });
 

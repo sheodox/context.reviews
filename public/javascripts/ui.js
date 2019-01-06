@@ -112,9 +112,10 @@ class PhraseList {
         say(text);
         this.DOM.search.value = text;
         this.DOM.definitions.innerHTML = '<h1 class="loading">Loading...</h1>';
-        const definitions = await f(`lookup/${encodeURIComponent(text)}`);
-        console.log(definitions);
-        this.DOM.definitions.innerHTML = definitions.map(this.definitionTemplate).join('');
+        const jishoDefinitions = await f(`lookup/jisho/${encodeURIComponent(text)}`);
+        this.DOM.definitions.innerHTML = this.definitionTemplate(jishoDefinitions);
+        const gooDefinitions = await f(`lookup/goo/${encodeURIComponent(text)}`);
+        this.DOM.definitions.innerHTML += this.definitionTemplate(gooDefinitions);
     }
     handleActionClick(action, id) {
         const phrase = this.getPhrase(id);
