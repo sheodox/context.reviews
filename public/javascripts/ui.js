@@ -91,7 +91,7 @@ class PhraseList {
         });
 
         const body = q('body');
-        body.addEventListener('mouseup', e => {
+        this.DOM.tbody.addEventListener('mouseup', e => {
             if (!e.target.closest('a, button, input')) {
                 const selected = getSelection().toString();
                 if (selected) {
