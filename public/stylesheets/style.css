@@ -100,8 +100,8 @@ ol li {
     height: 50vh;
     overflow: auto;
 }
-.definition-list:last-child {
-    border-top: 0.5rem solid #2a83c5;
+.definition-list:first-child {
+    border-bottom: 0.5rem solid #2a83c5;
 }
 
 @media (max-width: 1000px) {
