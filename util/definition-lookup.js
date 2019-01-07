@@ -51,7 +51,12 @@ class JishoSearch {
                 return {
                     word: res.japanese[0].word || reading,
                     reading,
-                    definitions: res.senses.map(({english_definitions}) => english_definitions.join(', '))
+                    definitions: res.senses.map(({english_definitions, tags=[], info=[]}) => {
+                        return {
+                            definition: english_definitions.join(', '),
+                            info: [...tags, ...info].join(', ')
+                        }
+                    })
                 }
             });
             cache.set('jisho', searchText, data);
@@ -85,7 +90,7 @@ class GooSearch {
                     word: $('title').text().replace('の意味 - goo国語辞書', '').trim(),
                     definitions: [].map.call($ols.length ? $ols : $definition,
                         //strip out the hard coded numbering when there are multiple definitions
-                        el => $(el).text().trim().replace(/^[０-９\s]*/, '')
+                        el => {return {definition: $(el).text().trim().replace(/^[０-９\s]*/, '')}}
                     )
                 });
             }));

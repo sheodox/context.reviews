@@ -103,6 +103,9 @@ ol li {
 .definition-list:first-child {
     border-bottom: 0.5rem solid #2a83c5;
 }
+.definition-info {
+    color: gray;
+}
 
 @media (max-width: 1000px) {
     #definition-panel {
