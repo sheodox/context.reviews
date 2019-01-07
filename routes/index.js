@@ -51,6 +51,12 @@ router.get('/undo', (req, res) => {
     refresh();
 });
 
+function sendNoResults(res, source, word) {
+    res.json({
+        source, data: [{word: 'No results', definitions: [{definition:`No definitions found for ${word}`}]}]
+    })
+}
+
 router.get('/lookup/jisho/:word', async (req, res) => {
     const word = req.params.word,
         jishoResults = await lookup.jisho.search(word);
@@ -60,26 +66,28 @@ router.get('/lookup/jisho/:word', async (req, res) => {
         );
     }
     else {
-        res.json({
-            source: 'Jisho', data: [{word: 'No results', definitions: [`No definitions found for ${word}`]}]
-        });
+        sendNoResults(res, 'Jisho', word);
     }
 });
 
+
 router.get('/lookup/goo/:word', async (req, res) => {
     const word = req.params.word,
+        noResults = () => sendNoResults(res, 'Goo辞書', word),
         //the jisho search should be cached
         jishoResults = await lookup.jisho.search(word);
-    if (jishoResults.length) {
-        const gooResults = await lookup.goo.search(jishoResults[0].word);
+    if (!jishoResults.length) {
+        return noResults();
+    }
+
+    const gooResults = await lookup.goo.search(jishoResults[0].word);
+    if (gooResults.length) {
         res.json(
             {source: 'Goo辞書', data: gooResults}
         );
     }
     else {
-        res.json({
-            source: 'Goo辞書', data: [{word: 'No results', definitions: [`No definitions found for ${word}`]}]
-        })
+        noResults();
     }
 });
 
