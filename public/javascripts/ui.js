@@ -111,11 +111,17 @@ class PhraseList {
     async textSelected(text) {
         say(text);
         this.DOM.search.value = text;
+        
+        this.definingWord = text;
         this.DOM.definitions.innerHTML = '<h1 class="loading">Loading...</h1>';
         const jishoDefinitions = await f(`lookup/jisho/${encodeURIComponent(text)}`);
         this.DOM.definitions.innerHTML = this.definitionTemplate(jishoDefinitions);
         const gooDefinitions = await f(`lookup/goo/${encodeURIComponent(text)}`);
-        this.DOM.definitions.innerHTML += this.definitionTemplate(gooDefinitions);
+        
+        //goo searches take a while usually, if they've gone on to try to look up another word by the time this completed don't put an irrelevant word in there
+        if (this.definingWord === text) {
+            this.DOM.definitions.innerHTML += this.definitionTemplate(gooDefinitions);
+        }
     }
     handleActionClick(action, id) {
         const phrase = this.getPhrase(id);
