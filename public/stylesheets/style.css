@@ -22,7 +22,7 @@ table#list {
 }
 
 tr {
-    font-size: 20px;
+    font-size: 23px;
 }
 tbody tr:hover {
     background-color: #343e48;
