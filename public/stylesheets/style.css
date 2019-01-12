@@ -73,7 +73,7 @@ input[type=text], textarea{
 ol li {
     line-height: 1.8;
 }
-#definition-panel li:only-child {
+#definition-results li:only-child {
     list-style: none;
 }
 #left {
@@ -88,16 +88,16 @@ ol li {
     width: 25%;
     background-color: #31323b;
 }
-#definition-panel .loading {
+#definition-results .loading {
     line-height: 100vh;
     text-align: center;
 }
-#definition-panel h2, #definition-panel h3 {
+#definition-results h2, #definition-results h3 {
     display: inline;
 }
 .definition-list {
     padding: 1rem;
-    height: 50vh;
+    height: calc(50vh - 1rem);
     overflow: auto;
 }
 .definition-list:first-child {
@@ -107,8 +107,26 @@ ol li {
     color: gray;
 }
 
+#search-form {
+    height: 2rem;
+    width: 100%;
+}
+#search-form input {
+    width: 90%;
+}
+#search-form input, #search-form button {
+    line-height: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+#search-form button {
+    line-height: 1rem;
+    width: 10%;
+}
+
 @media (max-width: 1000px) {
-    #definition-panel {
+    #definition-results {
         display: none;
     }
     #left {

@@ -44,7 +44,7 @@ class PhraseList {
             stop: q('#stop'),
             hints: q('#hints'),
             search: q('#jisho-search'),
-            definitions: q('#definition-panel')
+            definitions: q('#definition-results')
         };
         this.rowTemplate = Handlebars.compile(q('#row-template').textContent);
         this.definitionTemplate = Handlebars.compile(q('#definition-template').textContent);
@@ -87,7 +87,7 @@ class PhraseList {
 
         q('#search-form').addEventListener('submit', e => {
             e.preventDefault();
-            openJishoSearch(this.DOM.search.value);
+            this.textSelected(this.DOM.search.value);
         });
 
         const body = q('body');
@@ -109,18 +109,30 @@ class PhraseList {
         });
     }
     async textSelected(text) {
+        if (!text) {
+            return;
+        }
         say(text);
         this.DOM.search.value = text;
+        
+        const prepare = definitionData => {
+            definitionData.data.forEach(d => {
+                if (d.reading === d.word) {
+                    delete d.reading;
+                }
+            });
+            return definitionData;
+        };
         
         this.definingWord = text;
         this.DOM.definitions.innerHTML = '<h1 class="loading">Loading...</h1>';
         const jishoDefinitions = await f(`lookup/jisho/${encodeURIComponent(text)}`);
-        this.DOM.definitions.innerHTML = this.definitionTemplate(jishoDefinitions);
+        this.DOM.definitions.innerHTML = this.definitionTemplate(prepare(jishoDefinitions));
         const gooDefinitions = await f(`lookup/goo/${encodeURIComponent(text)}`);
         
         //goo searches take a while usually, if they've gone on to try to look up another word by the time this completed don't put an irrelevant word in there
         if (this.definingWord === text) {
-            this.DOM.definitions.innerHTML += this.definitionTemplate(gooDefinitions);
+            this.DOM.definitions.innerHTML += this.definitionTemplate(prepare(gooDefinitions));
         }
     }
     handleActionClick(action, id) {

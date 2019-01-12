@@ -6,10 +6,6 @@ block content
       div.toolbar
           button#undo(title="restore previously deleted phrases") ← Undo
           button#stop(title="stop audio synthesis") ■ Stop
-          form#search-form
-              label 辞書検索:
-                input#jisho-search(type="text", placeholder="なにかを入力する...", autocomplete="off")
-              button(type='submit') →
       br
       br
       div#hints
@@ -59,5 +55,9 @@ block content
               {{/each}}
           </div>
     aside#definition-panel
+        form#search-form
+            input#jisho-search(type="text", placeholder="なにかを入力する...", autocomplete="off")
+            button(type='submit') →
+        div#definition-results
     script(src='javascripts/speech.js')
     script(src='javascripts/ui.js')
