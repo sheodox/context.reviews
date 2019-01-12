@@ -75,6 +75,11 @@ class PhraseList {
             if (e.ctrlKey && !e.shiftKey && !e.altKey && e.which === 90) {
                 this.undo();
             }
+            if (e.target.tagName.toLowerCase() !== 'input' && e.which === 83) { //s
+                this.DOM.search.focus();
+                this.DOM.search.select();
+                e.preventDefault();
+            }
         });
         
         const frame = () => {
@@ -97,14 +102,6 @@ class PhraseList {
                 if (selected) {
                     this.textSelected(selected);
                 }
-            }
-        });
-        
-        body.addEventListener('keydown', e => {
-            if (e.target.tagName !== 'input' && e.which === 83) { //s
-                this.DOM.search.focus();
-                this.DOM.search.select();
-                e.preventDefault();
             }
         });
     }

@@ -1,6 +1,6 @@
 module.exports = phrase => {
     const remove = regex => {
-        phrase = phrase.replace(regex, '');
+        phrase = phrase.replace(regex, '').trim();
     };
     phrase = phrase.trim();
     
