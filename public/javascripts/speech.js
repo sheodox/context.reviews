@@ -1,12 +1,17 @@
 (function() {
     let jpVoice;
     const voiceReady = new Promise(resolve => {
-        speechSynthesis.onvoiceschanged = () => {
+        function checkVoices() {
             jpVoice = speechSynthesis.getVoices().find(voice => {
                 return voice.lang === 'ja-JP';
             });
-            resolve();
-        };
+            
+            if (jpVoice) {
+                resolve();
+            }
+        }
+        speechSynthesis.onvoiceschanged = checkVoices; //chrome
+        checkVoices(); //firefox
     });
 
     window.say = function(text) {
