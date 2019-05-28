@@ -3,7 +3,7 @@
     const voiceReady = new Promise(resolve => {
         function checkVoices() {
             jpVoice = speechSynthesis.getVoices().find(voice => {
-                return voice.lang === 'ja-JP';
+                return voice.lang === 'ja-JP' || voice.lang === 'ja';
             });
             
             if (jpVoice) {
