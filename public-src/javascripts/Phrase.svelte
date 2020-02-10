@@ -38,6 +38,8 @@
 	}
 	button {
 		white-space: nowrap;
+		padding: 0.2rem;
+		font-weight: normal;
 	}
 </style>
 
