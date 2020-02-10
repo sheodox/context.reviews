@@ -1,0 +1,58 @@
+body, #app-root {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #0b0f15;
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    color: #00B7FF;
+}
+
+#left {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+}
+aside {
+    flex: 0;
+}
+
+$buttonBG: #1f2b3d;
+button, input[type=submit] {
+    background: $buttonBG;
+    border-radius: 0.1rem;
+    border: none;
+    color: #3db4f2;
+    cursor: pointer;
+    padding: 0.7rem;
+    margin: 0.2rem;
+    line-height: 1;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+button:hover {
+    background: lighten($buttonBG, 5%);
+}
+
+input[type=text] {
+    color: white;
+    font-size: 1.1rem;
+    height: 2.5rem;
+    border: none;
+    border-bottom: 0.2rem solid #364962;
+    transition: border 0.2s;
+    border-radius: 0.1rem;
+    background: rgba(11,15,21,0.8);
+
+    &:focus {
+        border-bottom-color: #3db4f2;
+    }
+}

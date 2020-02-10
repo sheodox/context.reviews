@@ -6,17 +6,29 @@
     "start": "forever start ./bin/www",
     "stop": "forever stop ./bin/www",
     "dev": "nodemon ./bin/www --ignore data/",
-    "deploy": "npm stop && git pull && npm start"
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development",
+    "deploy": "npm stop && git pull && npm i && npm run build && npm start"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.4.2",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "file-loader": "^5.0.2",
     "handlebars": "^4.0.12",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
+    "node-sass": "^4.13.1",
     "pug": "2.0.0-beta11",
-    "socket.io": "^2.1.1"
+    "sass-loader": "^8.0.2",
+    "socket.io": "^2.1.1",
+    "style-loader": "^1.1.3",
+    "svelte": "^3.18.2",
+    "svelte-loader": "^2.13.6",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   }
 }
