@@ -6,6 +6,11 @@
 		document.execCommand('copy');
 	}
 </script>
+<style>
+	ol li {
+		line-height: 2rem;
+	}
+</style>
 <ol>
 	<li>
 		<a href="javascripts/jisho-phrase-stasher.user.js">Install this userscript</a>
