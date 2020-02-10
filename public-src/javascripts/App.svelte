@@ -29,6 +29,9 @@
 	#left {
 		width: 75%;
 	}
+	th {
+		font-size: 1.1rem;
+	}
 </style>
 
 <script>
