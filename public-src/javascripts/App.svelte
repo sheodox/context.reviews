@@ -18,7 +18,7 @@
 
             <tbody on:mouseup={selected}>
 				{#each phrases as phrase}
-					<Phrase select={phraseSelected} phrase={phrase} on:updateList={e => phrases = e.detail.list} />
+					<Phrase phrase={phrase} on:updateList={e => phrases = e.detail.list} />
 				{/each}
 			</tbody>
 		</table>
@@ -76,12 +76,9 @@
 	function selected() {
 		const text = window.getSelection().toString();
 		if (text) {
+			say(text);
 			selection = text;
 		}
-	}
-
-	function phraseSelected(phrase) {
-		say(phrase);
 	}
 
 	async function undo() {
