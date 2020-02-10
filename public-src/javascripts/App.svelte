@@ -1,9 +1,11 @@
 <div id="left">
-	<h1>Japanese Context Sentence Review</h1>
 	<div id="toolbar">
-		<button on:click={undo}>← Undo</button>
-		<button on:click={stop}>Stop</button>
-		<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
+		<h1>Japanese Context Sentence Review</h1>
+		<div class="buttons">
+			<button on:click={undo}>← Undo</button>
+			<button on:click={stop}>Stop</button>
+			<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
+		</div>
 	</div>
 	{#if showHints || phrases.length === 0}
 		<Help />
@@ -31,6 +33,16 @@
 	}
 	th {
 		font-size: 1.1rem;
+	}
+
+	h1 {
+		flex: 1;
+	}
+
+	#toolbar {
+		margin-bottom: 2rem;
+        display: flex;
+		flex-direction: row;
 	}
 </style>
 
