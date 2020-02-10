@@ -3,7 +3,6 @@
 	import {createEventDispatcher} from 'svelte';
 	export let phrase = '';
 	const dispatch = createEventDispatcher();
-	export let id = '';
 
 	function updateList(list) {
 		dispatch('updateList', {list});
