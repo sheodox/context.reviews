@@ -11,7 +11,7 @@
     	<table>
             <tr>
 				<th>Actions</th>
-				<th>Phrases</th>
+				<th>Phrases ({phrases.length})</th>
 			</tr>
 
             <tbody on:mouseup={selected}>
