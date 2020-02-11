@@ -40,6 +40,9 @@
 		padding: 0.2rem;
 		font-weight: normal;
 	}
+	.phrase {
+		font-size: 1.3rem;
+	}
 </style>
 
 <tr>
@@ -48,7 +51,7 @@
 		<button on:click={define} class="search">辞書</button>
 		<button on:click={read} class="read">音声</button>
 	</td>
-    <td>
+    <td class="phrase">
 		{phrase.phrase}
 	</td>
 </tr>
