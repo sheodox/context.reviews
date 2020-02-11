@@ -76,7 +76,7 @@ class GooSearch {
         }
         const $search = await GooSearch.fetch$(`https://dictionary.goo.ne.jp/srch/all/${encodeURIComponent(word)}/m1u/`),
             //get a list of links to individual definition pages. often the first result isn't what we want
-            definitionLinks = [].map.call($search('#NR-main').find('a[href^="/jn/"]'), a => a.attribs.href);
+            definitionLinks = [].map.call($search('#NR-main').find('a[href^="/word/"]:not([href^="/word/en/"])'), a => a.attribs.href);
         const lookups = [];
 
         for(let i = 0; i < definitionLinks.length; i++) {
