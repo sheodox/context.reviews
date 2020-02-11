@@ -68,7 +68,14 @@
 		phrases = list;
 	});
 	socket.on('connect_error', () => {
+		if (useXHR) {
+			return;
+		}
+
 		useXHR = true;
+		setInterval(() => {
+			action('list');
+		}, 10 * 1000);
 	});
 
 	action('list');
