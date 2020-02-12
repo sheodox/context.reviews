@@ -37,7 +37,7 @@
 	}
 	button {
 		white-space: nowrap;
-		padding: 0.2rem;
+		padding: 0.4rem;
 		font-weight: normal;
 	}
 	.phrase {
