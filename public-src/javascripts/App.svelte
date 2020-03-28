@@ -27,6 +27,8 @@
 
 <Definitions term={selection} />
 
+<svelte:window on:keydown={keydown} />
+
 <style>
 	#left {
 		width: 75%;
@@ -107,5 +109,10 @@
 
 	function phraseEventHandler(event) {
 		console.log('event', event);
+	}
+	function keydown(e) {
+		if (e.key === 'z' && e.ctrlKey && e.target.tagName !== 'INPUT') {
+			undo();
+		}
 	}
 </script>

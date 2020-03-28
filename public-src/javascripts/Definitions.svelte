@@ -29,8 +29,8 @@
 </style>
 
 <aside id="definitions">
-	<form on:submit|preventDefault={search}>
-		<input type="text" placeholder="なにかを入力する..." autocomplete="off" bind:value={term} />
+	<form on:submit|preventDefault>
+		<input type="text" placeholder="なにかを入力する..." autocomplete="off" bind:value={term} bind:this={searchField}/>
 		<input type="submit" value="検索">
 	</form>
 	{#if term}
@@ -40,11 +40,18 @@
 	{/if}
 </aside>
 
+<svelte:window on:keydown={keydown} />
+
 <script>
 	import Definition from './Definition.svelte';
+	let searchField;
 
 	export let term = '';
-	function search() {
-
+	function keydown(e) {
+		if (e.key === 's' && e.target.tagName !== 'INPUT') {
+			e.preventDefault();
+			searchField.focus();
+			searchField.select();
+		}
 	}
 </script>
