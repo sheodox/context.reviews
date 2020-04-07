@@ -65,6 +65,9 @@
 	let phrases = [];
 	let useXHR = false;
 
+	$: {
+		document.title = `${phrases.length} - Japanese Context Sentence Review`;
+	}
 
 	socket.on('refresh', list => {
 		phrases = list;
