@@ -8,31 +8,17 @@ function refresh() {
     io.emit('refresh', tracker.list());
 }
 
-/**
- * send node modules files 
- */
-router.get('/module/:name', (req, res, next) => {
-    const modules = {
-        'handlebars.js' : 'node_modules/handlebars/dist/handlebars.runtime.js'
-    },
-        requested = modules[req.params.name];
-    if (requested) {
-        res.sendfile(requested)
-    }
-    else {
-        next();
-    }
-});
-
-/* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Japanese Context Sentence Review'});
 });
 
-router.get('/add/:phrase', (req, res) => {
-    tracker.add(req.params.phrase);
+const defaultResponse = res => {
     res.json(tracker.list());
     refresh();
+}
+router.get('/add/:phrase', (req, res) => {
+    tracker.add(req.params.phrase);
+    defaultResponse(res);
 });
 
 router.get('/list', (req, res) => {
@@ -41,15 +27,23 @@ router.get('/list', (req, res) => {
 
 router.get('/remove/:id', (req, res) => {
     tracker.remove(req.params.id);
-    res.json(tracker.list());
-    refresh();
+    defaultResponse(res);
 });
 
 router.get('/undo', (req, res) => {
     tracker.undo();
-    res.json(tracker.list());
-    refresh();
+    defaultResponse(res);
 });
+
+router.get('/hide/:id', (req, res) => {
+    tracker.hide(req.params.id);
+    defaultResponse(res);
+})
+
+router.get('/show-all', (req, res) => {
+    tracker.showAll();
+    defaultResponse(res);
+})
 
 function sendNoResults(res, source, word) {
     res.json({

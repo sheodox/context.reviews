@@ -17,6 +17,12 @@ class Tracker {
         this._maxInHistory = 100;
         
         this._data = readJSON(this._path, []);
+        this._data.forEach(phrase => {
+            //migrate old phrases
+            if (phrase.visible === undefined) {
+                phrase.visible = true;
+            }
+        })
         this._deleteHistory = readJSON(this._deleteHistoryPath, []);
     }
 
@@ -54,7 +60,9 @@ class Tracker {
             //prevent duplicates if the phrase was looked up again
             if (phrase && !this._data.some(item => item.phrase === phrase)) {
                 this._data.push({
-                    phrase, id: this.getGUID()
+                    phrase,
+                    visible: true,
+                    id: this.getGUID()
                 });
                 this._save();
             }
@@ -99,6 +107,23 @@ class Tracker {
      */
     list() {
         return JSON.parse(JSON.stringify(this._data));
+    }
+
+    hide(id) {
+        this._data.some(phrase => {
+            if (phrase.id === id) {
+                phrase.visible = false;
+                this._save();
+                return true;
+            }
+        });
+    }
+
+    showAll() {
+        this._data.forEach(phrase => {
+            phrase.visible = true;
+        });
+        this._save();
     }
 
     /**

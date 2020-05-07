@@ -1,24 +1,37 @@
 <div id="left">
 	<div id="toolbar">
 		<h1>Japanese Context Sentence Review</h1>
-		<div class="buttons">
-			<button on:click={undo}>← Undo</button>
-			<button on:click={stop}>Stop</button>
-			<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
+        <div class="flex-column">
+			<div class="buttons">
+				<button on:click={undo}>Undo Delete</button>
+				<button on:click={stop}>Stop Voice</button>
+				<button on:click={showAll}>Show All</button>
+				<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
+			</div>
+			<div id="mode-radios">
+				<label>
+					<input type="radio" bind:group={mode} value="review">
+					Review Mode
+				</label>
+				<label>
+					<input type="radio" bind:group={mode} value="delete">
+					Delete Mode
+				</label>
+			</div>
 		</div>
 	</div>
 	{#if showHints || phrases.length === 0}
 		<Help />
 	{:else}
-    	<table>
-            <tr>
+		<table>
+			<tr>
 				<th>Actions</th>
-				<th>Phrases ({phrases.length})</th>
+				<th>Phrases ({mode === 'review' ? phraseCountDetails : phrases.length})</th>
 			</tr>
 
             <tbody on:mouseup={selected}>
 				{#each phrases as phrase}
-					<Phrase phrase={phrase} on:updateList={e => phrases = e.detail.list} />
+					<Phrase phrase={phrase} on:updateList={e => phrases = e.detail.list} mode={mode} />
 				{/each}
 			</tbody>
 		</table>
@@ -30,6 +43,14 @@
 <svelte:window on:keydown={keydown} />
 
 <style>
+    .flex-column {
+		display: flex;
+		flex-direction: column;
+	}
+	#mode-radios {
+		display: flex;
+		justify-content: end;
+	}
 	#left {
 		width: 75%;
 	}
@@ -64,9 +85,15 @@
 	let showHints = false;
 	let phrases = [];
 	let useXHR = false;
+	let phraseCountDetails = '';
+	let mode = 'review';
 
 	$: {
+		const hiddenPhrases = phrases.reduce((count, phrase) => {
+			return count + (phrase.visible ? 0 : 1)
+		}, 0);
 		document.title = `${phrases.length} - Japanese Context Sentence Review`;
+		phraseCountDetails = hiddenPhrases === 0 ? phrases.length : `${phrases.length}, ${hiddenPhrases} hidden`
 	}
 
 	socket.on('refresh', list => {
@@ -100,6 +127,10 @@
 		else {
 			socket.emit('undo');
 		}
+	}
+
+	async function showAll() {
+		action('show-all')
 	}
 
 	function updateList(list) {
