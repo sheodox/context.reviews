@@ -1,4 +1,5 @@
 <script>
+	import {say} from './speech';
 	let timer;
 	const getDef = async (phrase) => {
 		clearTimeout(timer);
@@ -40,6 +41,10 @@
 		overflow: auto;
 		padding: 20px;
 	}
+    button.read {
+		font-size: 0.7rem;
+		padding: 0.2rem;
+	}
 </style>
 
 {#await lookup then result}
@@ -49,13 +54,15 @@
 			{#each result.data as meaning}
 				<h3>
 					{#if meaning.word === 'No results'}
-						<h3>{meaning.word}</h3>
+						<p>{meaning.word}</p>
 					{:else}
 						<a target=_blank rel="noopener noreferrer" href={`https://jisho.org/search/${encodeURIComponent(meaning.word)}`}>{meaning.word}</a>
 					{/if}
+					<button on:click={() => say(meaning.word)} class="read">音声</button>
 				</h3>
 				{#if meaning.reading}
 					<h4>- ({meaning.reading})</h4>
+                    <button on:click={() => say(meaning.reading)} class="read">音声</button>
 				{/if}
 
 				<ol>
