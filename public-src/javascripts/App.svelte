@@ -31,7 +31,7 @@
 
             <tbody on:mouseup={selected}>
 				{#each phrases as phrase}
-					<Phrase phrase={phrase} on:updateList={e => phrases = e.detail.list} mode={mode} />
+					<Phrase phrase={phrase} on:updateList={e => phrases = e.detail.list} mode={mode} forceShowDelete={forceShowDelete} />
 				{/each}
 			</tbody>
 		</table>
@@ -40,7 +40,7 @@
 
 <Definitions term={selection} />
 
-<svelte:window on:keydown={keydown} />
+<svelte:window on:keydown={keydown} on:keyup={checkModifiers} />
 
 <style>
     .flex-column {
@@ -91,6 +91,7 @@
 	let useXHR = false;
 	let phraseCountDetails = '';
 	let mode = 'review';
+	let forceShowDelete = false;
 
 	$: {
 		const hiddenPhrases = phrases.reduce((count, phrase) => {
@@ -152,5 +153,9 @@
 		if (e.key === 'z' && e.ctrlKey && e.target.tagName !== 'INPUT') {
 			undo();
 		}
+		checkModifiers(e);
+	}
+	function checkModifiers(e) {
+		forceShowDelete = e.shiftKey;
 	}
 </script>

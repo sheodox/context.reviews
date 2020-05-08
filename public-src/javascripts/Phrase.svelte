@@ -3,6 +3,7 @@
 	import {createEventDispatcher} from 'svelte';
 	export let phrase = '';
 	export let mode;
+	export let forceShowDelete = false;
 
 	const dispatch = createEventDispatcher();
 	let visible = true;
@@ -57,7 +58,7 @@
 {#if mode !== 'review' || phrase.visible}
 	<tr>
 		<td class="buttons">
-			{#if mode === 'delete'}
+			{#if mode === 'delete' || forceShowDelete}
 				<button on:click={deletePhrase} class="delete">削除</button>
 			{:else if mode === 'review'}
 				<button on:click={hidePhrase} class="hide">非表示</button>
