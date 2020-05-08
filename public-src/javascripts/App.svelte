@@ -56,6 +56,7 @@
 	}
 	th {
 		font-size: 1.1rem;
+		white-space: nowrap;
 	}
 
 	h1 {
@@ -66,6 +67,9 @@
 		margin-bottom: 2rem;
         display: flex;
 		flex-direction: row;
+	}
+	table {
+		width: fit-content;
 	}
 </style>
 
