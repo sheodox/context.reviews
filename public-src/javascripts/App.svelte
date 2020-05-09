@@ -22,7 +22,7 @@
 	</div>
 	{#if showHints || phrases.length === 0}
 		<Help />
-	{:else}
+	{:else if visiblePhrases.length > 0}
 		<table>
 			<tr>
 				<th>Actions</th>
@@ -30,11 +30,13 @@
 			</tr>
 
             <tbody on:mouseup={selected}>
-				{#each phrases as phrase}
+				{#each visiblePhrases as phrase}
 					<Phrase phrase={phrase} on:updateList={e => phrases = e.detail.list} mode={mode} forceShowDelete={forceShowDelete} />
 				{/each}
 			</tbody>
 		</table>
+	{:else}
+        <AllReviewed />
 	{/if}
 </div>
 
@@ -78,6 +80,7 @@
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import {say} from './speech'
+	import AllReviewed from "./AllReviewed.svelte";
 
 	const socket = io({
 		pathname: location.pathname + 'socket.io/socket.io',
@@ -85,20 +88,25 @@
 	});
 
 	const action = url => fetch(url).then(res => res.json()).then(updateList);
-	let selection = '';
-	let showHints = false;
-	let phrases = [];
-	let useXHR = false;
-	let phraseCountDetails = '';
-	let mode = 'review';
-	let forceShowDelete = false;
+	let selection = '',
+		showHints = false,
+		phrases = [],
+		useXHR = false,
+		phraseCountDetails = '',
+		mode = 'review',
+		forceShowDelete = false,
+		visiblePhrases = [],
+		numVisiblePhrases = 0;
 
 	$: {
-		const hiddenPhrases = phrases.reduce((count, phrase) => {
-			return count + (phrase.visible ? 0 : 1)
-		}, 0);
-		document.title = `${phrases.length} - Japanese Context Sentence Review`;
-		phraseCountDetails = hiddenPhrases === 0 ? phrases.length : `${phrases.length}, ${hiddenPhrases} hidden`
+		visiblePhrases = mode !== 'review' ? phrases : phrases.filter(phrase => {
+			return phrase.visible;
+		});
+
+		const numPhrases = phrases.length,
+			hiddenPhrases = numPhrases - visiblePhrases.length;
+		document.title = `${numPhrases} - Japanese Context Sentence Review`;
+		phraseCountDetails = visiblePhrases.length !==  numPhrases ? numPhrases : `${numPhrases}, ${hiddenPhrases} hidden`
 	}
 
 	socket.on('refresh', list => {
@@ -128,8 +136,7 @@
 	async function undo() {
 		if (useXHR) {
 			action('undo');
-		}
-		else {
+		} else {
 			socket.emit('undo');
 		}
 	}
@@ -149,12 +156,14 @@
 	function phraseEventHandler(event) {
 		console.log('event', event);
 	}
+
 	function keydown(e) {
 		if (e.key === 'z' && e.ctrlKey && e.target.tagName !== 'INPUT') {
 			undo();
 		}
 		checkModifiers(e);
 	}
+
 	function checkModifiers(e) {
 		forceShowDelete = e.shiftKey;
 	}
