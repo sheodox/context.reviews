@@ -125,7 +125,11 @@
 
 	action('list');
 
-	function selected() {
+	function selected(e) {
+		//don't read things if they're clicking one of the phrase buttons and happen to have text selected
+		if (e.target.tagName === 'BUTTON') {
+			return;
+		}
 		const text = window.getSelection().toString();
 		if (text) {
 			say(text);
