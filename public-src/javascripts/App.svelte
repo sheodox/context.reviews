@@ -26,7 +26,7 @@
 		<table>
 			<tr>
 				<th>Actions</th>
-				<th>Phrases ({mode === 'review' ? phraseCountDetails : phrases.length})</th>
+				<th>Phrases ({phraseCountDetails})</th>
 			</tr>
 
             <tbody on:mouseup={selected}>
@@ -104,9 +104,9 @@
 		});
 
 		const numPhrases = phrases.length,
-			hiddenPhrases = numPhrases - visiblePhrases.length;
+			reviewedPhrases = numPhrases - visiblePhrases.length;
 		document.title = `${numPhrases} - Japanese Context Sentence Review`;
-		phraseCountDetails = visiblePhrases.length !==  numPhrases ? numPhrases : `${numPhrases}, ${hiddenPhrases} hidden`
+		phraseCountDetails = reviewedPhrases === 0 ? numPhrases : `${numPhrases}, ${reviewedPhrases} reviewed`
 	}
 
 	socket.on('refresh', list => {
