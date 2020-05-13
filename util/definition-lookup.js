@@ -47,7 +47,7 @@ class Cache {
 const cache = new Cache();
 
 class JishoSearch {
-	static schemaVersion = 2;
+	static schemaVersion = 3;
     static async search(searchText) {
         const cached = cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
@@ -64,8 +64,9 @@ class JishoSearch {
                     word: res.japanese[0].word || reading,
                     href: searchResultsUrl(word),
                     reading,
-                    meanings: res.senses.map(({english_definitions, tags=[], info=[]}) => {
+                    meanings: res.senses.map(({english_definitions, parts_of_speech=[], tags=[], info=[]}) => {
                         return {
+                        	preInfo: parts_of_speech.join(', '),
                             definition: english_definitions.join(', '),
                             info: [...tags, ...info].join(', ')
                         }

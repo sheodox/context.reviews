@@ -72,7 +72,13 @@
 
 					<ol>
 						{#each definition.meanings as meaning}
-							<li>{meaning.definition} <span class="info">{meaning.info || ''}</span></li>
+							<li>
+								{#if meaning.preInfo}
+									<small class="info">{meaning.preInfo}</small>
+									<br>
+								{/if}
+								{meaning.definition}
+								<small class="info">{meaning.info || ''}</small></li>
 						{/each}
 					</ol>
 				{/each}
