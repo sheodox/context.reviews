@@ -31,7 +31,7 @@
 
             <tbody on:mouseup={selected}>
 				{#each visiblePhrases as phrase}
-					<Phrase phrase={phrase} on:updateList={e => phrases = e.detail.list} mode={mode} forceShowDelete={forceShowDelete} />
+					<Phrase phrase={phrase} on:updateList={childUpdatedList} mode={mode} forceShowDelete={forceShowDelete} />
 				{/each}
 			</tbody>
 		</table>
@@ -40,7 +40,7 @@
 	{/if}
 </div>
 
-<Definitions term={selection} />
+<Definitions term={selection} on:updateList={childUpdatedList} />
 
 <svelte:window on:keydown={keydown} on:keyup={checkModifiers} />
 
@@ -143,6 +143,9 @@
 		} else {
 			socket.emit('undo');
 		}
+	}
+	function childUpdatedList(e) {
+		phrases = e.detail.list;
 	}
 
 	async function showAll() {
