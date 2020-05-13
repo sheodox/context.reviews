@@ -47,23 +47,24 @@ class Cache {
 const cache = new Cache();
 
 class JishoSearch {
-	static schemaVersion = 1;
+	static schemaVersion = 2;
     static async search(searchText) {
         const cached = cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
             return cached;
         }
-        const result = JSON.parse(await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(searchText)}`)); 
-        
+        const searchResultsUrl = word => `https://jisho.org/search/${encodeURIComponent(word)}`,
+            result = JSON.parse(await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(searchText)}`));
+
         if (result.meta.status === 200) { //success
-            const data = result.data.map(res => {
+            const definitions = result.data.map(res => {
                 const reading = res.japanese[0].reading,
                     word = res.japanese[0].word;
                 return {
                     word: res.japanese[0].word || reading,
-                    href: `https://jisho.org/search/${encodeURIComponent(word)}`,
+                    href: searchResultsUrl(word),
                     reading,
-                    definitions: res.senses.map(({english_definitions, tags=[], info=[]}) => {
+                    meanings: res.senses.map(({english_definitions, tags=[], info=[]}) => {
                         return {
                             definition: english_definitions.join(', '),
                             info: [...tags, ...info].join(', ')
@@ -71,14 +72,18 @@ class JishoSearch {
                     })
                 }
             });
-            cache.set('jisho', searchText, data, JishoSearch.schemaVersion);
-            return data;
+            const searchResults = {
+                href: searchResultsUrl(searchText),
+                definitions,
+            };
+            cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
+            return searchResults;
         }
     }
 }
 
 class GooSearch {
-    static schemaVersion = 1;
+    static schemaVersion = 2;
     static async fetch$(url) {
         return cheerio.load(await fetch(url));
     }
@@ -87,7 +92,8 @@ class GooSearch {
         if (cached) {
             return cached;
         }
-        const $search = await GooSearch.fetch$(`https://dictionary.goo.ne.jp/srch/all/${encodeURIComponent(word)}/m1u/`),
+        const searchUrl = `https://dictionary.goo.ne.jp/srch/all/${encodeURIComponent(word)}/m1u/`,
+            $search = await GooSearch.fetch$(searchUrl),
             //get a list of links to individual definition pages. often the first result isn't what we want
             definitionLinks = [].map.call($search('#NR-main').find('a[href^="/word/"]:not([href^="/word/en/"])'), a => a.attribs.href);
         const lookups = [];
@@ -103,7 +109,7 @@ class GooSearch {
                 resolve({
                     word: $('title').text().replace('の意味 - goo国語辞書', '').trim(),
                     href: definitionUrl,
-                    definitions: [].map.call($ols.length ? $ols : $definition,
+                    meanings: [].map.call($ols.length ? $ols : $definition,
                         //strip out the hard coded numbering when there are multiple definitions
                         el => {return {definition: $(el).text().trim().replace(/^[０-９\s]*/, '')}}
                     )
@@ -111,8 +117,12 @@ class GooSearch {
             }));
         }
         return Promise.all(lookups).then((definitions) => {
-            cache.set('goo', word, definitions, GooSearch.schemaVersion);
-            return definitions;
+        	const searchResults = {
+                href: searchUrl,
+                definitions
+            };
+            cache.set('goo', word, searchResults, GooSearch.schemaVersion);
+            return searchResults;
         });
     }
 }

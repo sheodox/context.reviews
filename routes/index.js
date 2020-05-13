@@ -47,16 +47,16 @@ router.get('/show-all', (req, res) => {
 
 function sendNoResults(res, source, word) {
     res.json({
-        source, data: []
+        source, definitions: []
     })
 }
 
 router.get('/lookup/jisho/:word', async (req, res) => {
     const word = req.params.word,
         jishoResults = await lookup.jisho.search(word);
-    if (jishoResults.length) {
+    if (jishoResults.definitions.length) {
         res.json(
-            {source: 'Jisho', data: jishoResults}
+            {source: 'Jisho', ...jishoResults}
         );
     }
     else {
@@ -70,14 +70,14 @@ router.get('/lookup/goo/:word', async (req, res) => {
         noResults = () => sendNoResults(res, 'Goo辞書', word),
         //the jisho search should be cached
         jishoResults = await lookup.jisho.search(word);
-    if (!jishoResults.length) {
+    if (!jishoResults.definitions.length) {
         return noResults();
     }
 
-    const gooResults = await lookup.goo.search(jishoResults[0].word);
-    if (gooResults.length) {
+    const gooResults = await lookup.goo.search(jishoResults.definitions[0].word);
+    if (gooResults.definitions.length) {
         res.json(
-            {source: 'Goo辞書', data: gooResults}
+            {source: 'Goo辞書', ...gooResults}
         );
     }
     else {

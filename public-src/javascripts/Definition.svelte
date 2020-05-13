@@ -1,5 +1,7 @@
 <script>
 	import {say} from './speech';
+	import Loading from "./Loading.svelte";
+
 	let timer;
 	const getDef = async (phrase) => {
 		clearTimeout(timer);
@@ -47,32 +49,35 @@
 	}
 </style>
 
-{#await lookup then result}
-	<div class="definition">
+<div class="definition">
+	{#await lookup }
 		<h1>{source}</h1>
-		{#if result.length > 0}
-				{#each result.data as meaning}
+		<Loading />
+	{:then result}
+		<h1><a href="{result.href}">{source}</a></h1>
+		{#if result.definitions.length > 0}
+				{#each result.definitions as definition}
 					<h3>
-						{#if meaning.word === 'No results'}
-							<p>{meaning.word}</p>
+						{#if definition.word === 'No results'}
+							<p>{definition.word}</p>
 						{:else}
-							<a target=_blank rel="noopener noreferrer" href={meaning.href}>{meaning.word}</a>
+							<a target=_blank rel="noopener noreferrer" href={definition.href}>{definition.word}</a>
 						{/if}
-						<button on:click={() => say(meaning.word)} class="read">音声</button>
+						<button on:click={() => say(definition.word)} class="read">音声</button>
 					</h3>
-					{#if meaning.reading}
-						<h4>- ({meaning.reading})</h4>
-						<button on:click={() => say(meaning.reading)} class="read">音声</button>
+					{#if definition.reading}
+						<h4>- ({definition.reading})</h4>
+						<button on:click={() => say(definition.reading)} class="read">音声</button>
 					{/if}
 
 					<ol>
-						{#each meaning.definitions as definition}
-							<li>{definition.definition} <span class="info">{definition.info || ''}</span></li>
+						{#each definition.meanings as meaning}
+							<li>{meaning.definition} <span class="info">{meaning.info || ''}</span></li>
 						{/each}
 					</ol>
 				{/each}
 		{:else}
 			<p>No results found for "{term}"</p>
 		{/if}
-	</div>
-{/await}
+	{/await}
+</div>
