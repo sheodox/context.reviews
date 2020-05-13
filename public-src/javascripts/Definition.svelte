@@ -1,6 +1,7 @@
 <script>
 	import {say} from './speech';
 	import Loading from "./Loading.svelte";
+	import ExternalLink from "./ExternalLink.svelte";
 
 	let timer;
 	const getDef = async (phrase) => {
@@ -54,14 +55,14 @@
 		<h1>{source}</h1>
 		<Loading />
 	{:then result}
-		<h1><a href="{result.href}">{source}</a></h1>
+		<h1><ExternalLink href="{result.href}">{source}</ExternalLink></h1>
 		{#if result.definitions.length > 0}
 				{#each result.definitions as definition}
 					<h3>
 						{#if definition.word === 'No results'}
 							<p>{definition.word}</p>
 						{:else}
-							<a target=_blank rel="noopener noreferrer" href={definition.href}>{definition.word}</a>
+							<ExternalLink href={definition.href}>{definition.word}</ExternalLink>
 						{/if}
 						<button on:click={() => say(definition.word)} class="read">音声</button>
 					</h3>
