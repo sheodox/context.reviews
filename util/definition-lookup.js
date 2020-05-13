@@ -17,11 +17,16 @@ class Cache {
         
         this._write = Promise.resolve();
     } 
-    get(source, word) {
-        return this._data[source][word];
+    get(source, word, newestSchemaVersion) {
+        const {schemaVersion, data} = this._data[source][word];
+
+        //cache miss if the schema version doesn't match
+        if (newestSchemaVersion === schemaVersion) {
+            return data;
+        }
     }
-    set(source, word, data) {
-        this._data[source][word] = data;
+    set(source, word, data, schemaVersion) {
+        this._data[source][word] = {schemaVersion, data};
         this.save();
     }
     save() {
@@ -38,8 +43,9 @@ class Cache {
 const cache = new Cache();
 
 class JishoSearch {
+	static schemaVersion = 1;
     static async search(searchText) {
-        const cached = cache.get('jisho', searchText);
+        const cached = cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
             return cached;
         }
@@ -59,18 +65,19 @@ class JishoSearch {
                     })
                 }
             });
-            cache.set('jisho', searchText, data);
+            cache.set('jisho', searchText, data, JishoSearch.schemaVersion);
             return data;
         }
     }
 }
 
 class GooSearch {
+    static schemaVersion = 1;
     static async fetch$(url) {
         return cheerio.load(await fetch(url));
     }
     static async search(word) {
-        const cached = cache.get('goo', word);
+        const cached = cache.get('goo', word, GooSearch.schemaVersion);
         if (cached) {
             return cached;
         }
@@ -96,7 +103,7 @@ class GooSearch {
             }));
         }
         return Promise.all(lookups).then((definitions) => {
-            cache.set('goo', word, definitions);
+            cache.set('goo', word, definitions, GooSearch.schemaVersion);
             return definitions;
         });
     }
