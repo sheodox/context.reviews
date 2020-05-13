@@ -56,7 +56,7 @@
 					{#if meaning.word === 'No results'}
 						<p>{meaning.word}</p>
 					{:else}
-						<a target=_blank rel="noopener noreferrer" href={`https://jisho.org/search/${encodeURIComponent(meaning.word)}`}>{meaning.word}</a>
+						<a target=_blank rel="noopener noreferrer" href={meaning.href}>{meaning.word}</a>
 					{/if}
 					<button on:click={() => say(meaning.word)} class="read">音声</button>
 				</h3>

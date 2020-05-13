@@ -18,6 +18,10 @@ class Cache {
         this._write = Promise.resolve();
     } 
     get(source, word, newestSchemaVersion) {
+        const cached = this._data[source][word];
+        if (!cached) {
+            return;
+        }
         const {schemaVersion, data} = this._data[source][word];
 
         //cache miss if the schema version doesn't match
@@ -53,9 +57,11 @@ class JishoSearch {
         
         if (result.meta.status === 200) { //success
             const data = result.data.map(res => {
-                const reading = res.japanese[0].reading;
+                const reading = res.japanese[0].reading,
+                    word = res.japanese[0].word;
                 return {
                     word: res.japanese[0].word || reading,
+                    href: `https://jisho.org/search/${encodeURIComponent(word)}`,
                     reading,
                     definitions: res.senses.map(({english_definitions, tags=[], info=[]}) => {
                         return {
@@ -88,13 +94,15 @@ class GooSearch {
 
         for(let i = 0; i < definitionLinks.length; i++) {
             lookups.push(new Promise(async (resolve, reject) => {
-                const $ = await GooSearch.fetch$(`https://dictionary.goo.ne.jp${definitionLinks[i]}`),
+                const definitionUrl = `https://dictionary.goo.ne.jp${definitionLinks[i]}`,
+                    $ = await GooSearch.fetch$(definitionUrl),
                     $main = $('#NR-main');
                 //some words have a single definitions, others have multiple definitions each their own 'ol' with a in a <strong> at the beginning of the definition
                 const $definition = $main.find('.meaning_area .contents'),
                     $ols = $definition.find('ol');
                 resolve({
                     word: $('title').text().replace('の意味 - goo国語辞書', '').trim(),
+                    href: definitionUrl,
                     definitions: [].map.call($ols.length ? $ols : $definition,
                         //strip out the hard coded numbering when there are multiple definitions
                         el => {return {definition: $(el).text().trim().replace(/^[０-９\s]*/, '')}}
