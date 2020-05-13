@@ -15,12 +15,7 @@
 		flex-direction: row;
 	}
 	form input[type=text] {
-		margin: 0;
-		flex: 1;
-	}
-	form input[type=submit] {
-		flex: 0;
-        margin: 0;
+		width: 100%;
 	}
     hr {
 		width: 100%;
@@ -30,8 +25,7 @@
 
 <aside id="definitions">
 	<form on:submit|preventDefault>
-		<input type="text" placeholder="なにかを入力する..." autocomplete="off" bind:value={term} bind:this={searchField}/>
-		<input type="submit" value="検索">
+		<input type="text" placeholder="なにかを入力する..." autocomplete="off" bind:value={term} bind:this={searchField} aria-label="definition search"/>
 	</form>
 	{#if term}
 		<Definition {term} source="jisho"/>
