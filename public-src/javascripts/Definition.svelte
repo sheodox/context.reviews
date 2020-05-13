@@ -10,15 +10,7 @@
 			return;
 		}
 
-		const wait = () => {
-			return new Promise(resolve => {
-				timer = setTimeout(resolve, 500)
-			})
-		};
-
-		//debounce searches
 		return Promise.resolve()
-				.then(wait)
 				.then(() => fetch(`lookup/${source}/${encodeURIComponent(phrase)}/`)
 						.then(res => res.json()));
 	};

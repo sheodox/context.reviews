@@ -25,7 +25,7 @@
 
 <aside id="definitions">
 	<form on:submit|preventDefault>
-		<input type="text" placeholder="なにかを入力する..." autocomplete="off" bind:value={term} bind:this={searchField} aria-label="definition search"/>
+		<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
 	</form>
 	{#if term}
 		<Definition {term} source="jisho"/>
@@ -38,9 +38,24 @@
 
 <script>
 	import Definition from './Definition.svelte';
-	let searchField;
-
 	export let term = '';
+
+	const DEBOUNCE_TIMEOUT = 500;
+	let searchField,
+		searchFieldValue = '',
+		typingDebounce;
+
+	function onSearchType() {
+		clearTimeout(typingDebounce);
+		typingDebounce = setTimeout(() => {
+			term = searchFieldValue;
+		}, DEBOUNCE_TIMEOUT)
+	}
+
+	$: {
+		searchFieldValue = term;
+	}
+
 	function keydown(e) {
 		if (e.key === 's' && e.target.tagName !== 'INPUT') {
 			e.preventDefault();
