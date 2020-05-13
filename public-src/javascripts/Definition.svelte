@@ -48,29 +48,31 @@
 </style>
 
 {#await lookup then result}
-	{#if result}
-		<div class="definition">
-			<h1>{source}</h1>
-			{#each result.data as meaning}
-				<h3>
-					{#if meaning.word === 'No results'}
-						<p>{meaning.word}</p>
-					{:else}
-						<a target=_blank rel="noopener noreferrer" href={meaning.href}>{meaning.word}</a>
+	<div class="definition">
+		<h1>{source}</h1>
+		{#if result.length > 0}
+				{#each result.data as meaning}
+					<h3>
+						{#if meaning.word === 'No results'}
+							<p>{meaning.word}</p>
+						{:else}
+							<a target=_blank rel="noopener noreferrer" href={meaning.href}>{meaning.word}</a>
+						{/if}
+						<button on:click={() => say(meaning.word)} class="read">音声</button>
+					</h3>
+					{#if meaning.reading}
+						<h4>- ({meaning.reading})</h4>
+						<button on:click={() => say(meaning.reading)} class="read">音声</button>
 					{/if}
-					<button on:click={() => say(meaning.word)} class="read">音声</button>
-				</h3>
-				{#if meaning.reading}
-					<h4>- ({meaning.reading})</h4>
-                    <button on:click={() => say(meaning.reading)} class="read">音声</button>
-				{/if}
 
-				<ol>
-					{#each meaning.definitions as definition}
-						<li>{definition.definition} <span class="info">{definition.info || ''}</span></li>
-					{/each}
-				</ol>
-			{/each}
-		</div>
-	{/if}
+					<ol>
+						{#each meaning.definitions as definition}
+							<li>{definition.definition} <span class="info">{definition.info || ''}</span></li>
+						{/each}
+					</ol>
+				{/each}
+		{:else}
+			<p>No results found for "{term}"</p>
+		{/if}
+	</div>
 {/await}

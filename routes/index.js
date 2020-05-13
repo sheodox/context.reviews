@@ -47,7 +47,7 @@ router.get('/show-all', (req, res) => {
 
 function sendNoResults(res, source, word) {
     res.json({
-        source, data: [{word: 'No results', definitions: [{definition:`No definitions found for ${word}`}]}]
+        source, data: []
     })
 }
 
