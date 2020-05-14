@@ -47,22 +47,40 @@ class Cache {
 const cache = new Cache();
 
 class JishoSearch {
-	static schemaVersion = 3;
+	static schemaVersion = 4;
     static async search(searchText) {
         const cached = cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
             return cached;
         }
         const searchResultsUrl = word => `https://jisho.org/search/${encodeURIComponent(word)}`,
+            wordUrl = slug => `https://jisho.org/word/${encodeURIComponent(slug)}`,
             result = JSON.parse(await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(searchText)}`));
 
         if (result.meta.status === 200) { //success
             const definitions = result.data.map(res => {
                 const reading = res.japanese[0].reading,
                     word = res.japanese[0].word;
+                let tags = [];
+                if (res.is_common) {
+                    tags.push('common');
+                }
+                tags = tags.concat([
+                    ...res.jlpt,
+                    ...res.tags
+                ])
+
                 return {
                     word: res.japanese[0].word || reading,
-                    href: searchResultsUrl(word),
+                    href: wordUrl(res.slug),
+                    tags,
+                    alternateForms: res.japanese.slice(1).reduce((forms, {word, reading}) => {
+                    	//since goo searches never have readings, it's easier to show words
+                        //that are only kana as if that's the word, and it has no extra reading
+                        //that way the UI only needs to conditionally render readings, and not both
+                        forms.push(word ? `${word} (${reading})` : reading);
+                        return forms;
+                    }, []).join(', '),
                     reading,
                     meanings: res.senses.map(({english_definitions, parts_of_speech=[], tags=[], info=[]}) => {
                         return {

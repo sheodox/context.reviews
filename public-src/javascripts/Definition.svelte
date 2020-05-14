@@ -22,6 +22,21 @@
 	ol {
 		margin-top: 0.2rem;
 	}
+	.tag {
+		color: #8293a1;
+		background-color: #1f2b3d;
+		font-size: 0.6rem;
+		padding: 0 0.2rem;
+	}
+	.tag.common {
+		color: #00ffac;
+	}
+	.tag:not(:last-of-type) {
+		margin-right: 0.3rem;
+	}
+	.alternate-forms {
+		color: #8293a1;
+	}
 </style>
 
 <div class="definition">
@@ -33,7 +48,7 @@
 		{#if result.definitions.length > 0}
 			{#each result.definitions as definition}
 				<div class="title">
-					<h3>
+					<h3 class:common={definition.isCommon}>
 						<ExternalLink href={definition.href}>{definition.word}</ExternalLink>
 						<button on:click={() => say(definition.word)} class="small">音声</button>
 					</h3>
@@ -41,6 +56,11 @@
 						<h4>- ({definition.reading})</h4>
 						<button on:click={() => say(definition.reading)} class="small">音声</button>
 					{/if}
+				</div>
+				<div>
+					{#each (definition.tags || []) as tag}
+						<span class="tag" class:common={tag === 'common'}>{tag}</span>
+					{/each}
 				</div>
 				<button class="small" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
 				<ol>
@@ -54,6 +74,12 @@
 							<small class="info">{meaning.info || ''}</small></li>
 					{/each}
 				</ol>
+				{#if definition.alternateForms}
+					<p class="alternate-forms">
+						Alternates:
+						{definition.alternateForms}
+					</p>
+				{/if}
 			{/each}
 		{:else}
 			<p>No results found for "{term}"</p>
