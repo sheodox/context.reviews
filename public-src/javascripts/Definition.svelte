@@ -48,21 +48,18 @@
 		{#if result.definitions.length > 0}
 			{#each result.definitions as definition}
 				<div class="title">
-					<h3 class:common={definition.isCommon}>
-						<ExternalLink href={definition.href}>{definition.word}</ExternalLink>
-						<button on:click={() => say(definition.word)} class="small">音声</button>
+					<h3>
+						<ExternalLink href={definition.href}><JapaneseWord word={definition.word} reading={definition.reading} /></ExternalLink>
 					</h3>
-					{#if definition.reading}
-						<h4>- ({definition.reading})</h4>
-						<button on:click={() => say(definition.reading)} class="small">音声</button>
-					{/if}
-				</div>
-				<div>
 					{#each (definition.tags || []) as tag}
 						<span class="tag" class:common={tag === 'common'}>{tag}</span>
 					{/each}
 				</div>
 				<button class="small" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
+				<button on:click={() => say(definition.word)} class="small">say word</button>
+				{#if definition.reading}
+					<button on:click={() => say(definition.reading)} class="small">say reading</button>
+				{/if}
 				<ol>
 					{#each definition.meanings as meaning}
 						<li>
@@ -74,10 +71,12 @@
 							<small class="info">{meaning.info || ''}</small></li>
 					{/each}
 				</ol>
-				{#if definition.alternateForms}
+				{#if definition.alternateForms && definition.alternateForms.length > 0}
 					<p class="alternate-forms">
 						Alternates:
-						{definition.alternateForms}
+						{#each definition.alternateForms as alt}
+							<JapaneseWord word={alt.word} reading={alt.reading} />
+						{/each}
 					</p>
 				{/if}
 			{/each}
@@ -92,6 +91,7 @@
 	import {createEventDispatcher} from 'svelte';
 	import Loading from "./Loading.svelte";
 	import ExternalLink from "./ExternalLink.svelte";
+	import JapaneseWord from "./JapaneseWord.svelte";
 
 	let timer;
 	const dispatch = createEventDispatcher(),

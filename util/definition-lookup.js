@@ -47,7 +47,7 @@ class Cache {
 const cache = new Cache();
 
 class JishoSearch {
-	static schemaVersion = 4;
+	static schemaVersion = 5;
     static async search(searchText) {
         const cached = cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
@@ -74,13 +74,15 @@ class JishoSearch {
                     word: res.japanese[0].word || reading,
                     href: wordUrl(res.slug),
                     tags,
-                    alternateForms: res.japanese.slice(1).reduce((forms, {word, reading}) => {
+                    alternateForms: res.japanese.slice(1).map(({word, reading}) => {
                     	//since goo searches never have readings, it's easier to show words
                         //that are only kana as if that's the word, and it has no extra reading
                         //that way the UI only needs to conditionally render readings, and not both
-                        forms.push(word ? `${word} (${reading})` : reading);
-                        return forms;
-                    }, []).join(', '),
+                        return {
+                            reading,
+                            word: word || reading,
+                        }
+                    }),
                     reading,
                     meanings: res.senses.map(({english_definitions, parts_of_speech=[], tags=[], info=[]}) => {
                         return {
