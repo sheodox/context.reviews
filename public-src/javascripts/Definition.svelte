@@ -5,7 +5,7 @@
 	h1 {
 		text-transform: capitalize;
 	}
-	h3, h4 {
+	h3 {
 		display: inline;
 	}
 
