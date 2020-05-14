@@ -37,6 +37,9 @@
 	.alternate-forms {
 		color: #8293a1;
 	}
+    .alternate-forms :global(ruby:not(:first-of-type)) {
+		margin-left: 0.5rem;
+	}
 </style>
 
 <div class="definition">
@@ -56,9 +59,9 @@
 					{/each}
 				</div>
 				<button class="small" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
-				<button on:click={() => say(definition.word)} class="small">say word</button>
+				<button on:click={() => say(definition.word)} class="small">Say word</button>
 				{#if definition.reading}
-					<button on:click={() => say(definition.reading)} class="small">say reading</button>
+					<button on:click={() => say(definition.reading)} class="small">Say reading</button>
 				{/if}
 				<ol>
 					{#each definition.meanings as meaning}
@@ -74,8 +77,11 @@
 				{#if definition.alternateForms && definition.alternateForms.length > 0}
 					<p class="alternate-forms">
 						Alternates:
-						{#each definition.alternateForms as alt}
+						{#each definition.alternateForms as alt, index}
 							<JapaneseWord word={alt.word} reading={alt.reading} />
+							{#if index + 1 < definition.alternateForms.length}
+								<span>, </span>
+							{/if}
 						{/each}
 					</p>
 				{/if}
