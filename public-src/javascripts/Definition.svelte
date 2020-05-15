@@ -51,9 +51,11 @@
 		{#if result.definitions.length > 0}
 			{#each result.definitions as definition}
 				<div class="title">
-					<h3>
-						<ExternalLink href={definition.href}><JapaneseWord word={definition.word} reading={definition.reading} /></ExternalLink>
-					</h3>
+					<h2>
+						<ExternalLink href={definition.href}>
+							<JapaneseWord word={definition.word} reading={definition.reading} />
+						</ExternalLink>
+					</h2>
 					{#each (definition.tags || []) as tag}
 						<span class="tag" class:common={tag === 'common'}>{tag}</span>
 					{/each}
