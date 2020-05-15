@@ -4,6 +4,10 @@
 	}
 	h1 {
 		text-transform: capitalize;
+		margin-top: 0;
+		margin-bottom: 0;
+		font-size: 1.75rem;
+		text-align: center;
 	}
 	h3 {
 		display: inline;
@@ -36,6 +40,7 @@
 	}
 	.alternate-forms {
 		color: #8293a1;
+		margin-left: 1rem;
 	}
     .alternate-forms :global(ruby:not(:first-of-type)) {
 		margin-left: 0.5rem;
