@@ -9,6 +9,9 @@
 		font-size: 1.75rem;
 		text-align: center;
 	}
+	h2 {
+		display: inline;
+	}
 
 	.definition {
 		flex: 1;
