@@ -10,7 +10,12 @@
 	ol li {
 		line-height: 2rem;
 	}
+	dt {
+		font-weight: bold;
+	}
 </style>
+
+<h2>Usage</h2>
 <ol>
 	<li>
 		<a href="javascripts/jisho-phrase-stasher.user.js">Install this userscript</a>
@@ -32,3 +37,18 @@
 		Return here to review!
 	</li>
 </ol>
+
+<h2>
+	Some shortcuts of note!
+</h2>
+
+<dl>
+	<dt>S (when not typing)</dt>
+	<dd>Focus the search input.</dd>
+
+	<dt>Ctrl+Enter</dt>
+	<dd>Add the first Jisho search result to the review list.</dd>
+
+	<dt>Hold Shift</dt>
+	<dd>When in Review Mode, holding shift will momentarily change the hide button to a delete button.</dd>
+</dl>

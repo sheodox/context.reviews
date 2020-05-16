@@ -99,14 +99,21 @@
 	{/await}
 </div>
 
+<svelte:window on:keydown={shortcuts} />
+
 <script>
 	import {say} from './speech';
 	import {createEventDispatcher} from 'svelte';
 	import Loading from "./Loading.svelte";
 	import ExternalLink from "./ExternalLink.svelte";
 	import JapaneseWord from "./JapaneseWord.svelte";
+	export let source = '';
+	export let term = '';
+	export let isPrimary = false;
 
-	let timer;
+	let timer,
+		definitions = [];
+
 	const dispatch = createEventDispatcher(),
 		getDef = async (phrase) => {
 		clearTimeout(timer);
@@ -125,7 +132,20 @@
 		});
 	}
 
-	export let source = '';
-	export let term = '';
-	$: lookup = getDef(term);
+	function shortcuts(e) {
+		//for the primary (jisho) search, Ctrl+Enter should add the first item to the review list
+		if (isPrimary && e.key === 'Enter' && e.ctrlKey && definitions.length) {
+			addToReviews(definitions[0].word);
+		}
+	}
+
+	let lookup;
+	$: {
+		lookup = getDef(term);
+
+		//cache definitions for easy usage in script
+		lookup.then(results => {
+			definitions = results.definitions;
+		})
+	}
 </script>

@@ -28,7 +28,7 @@
 		<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
 	</form>
 	{#if term}
-		<Definition {term} source="jisho" on:updateList/>
+		<Definition {term} source="jisho" isPrimary={true} on:updateList/>
 		<hr>
 		<Definition {term} source="goo" on:updateList />
 	{/if}
