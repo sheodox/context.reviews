@@ -16,7 +16,7 @@
 	.definition {
 		flex: 1;
 		overflow: auto;
-		padding: 20px;
+		padding: 0 1rem 1rem 1rem;
 	}
 	button.small {
 		font-size: 0.7rem;
