@@ -27,11 +27,10 @@
 	<form on:submit|preventDefault>
 		<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
 	</form>
-	{#if term}
-		<Definition {term} source="jisho" isPrimary={true} on:updateList/>
-		<hr>
-		<Definition {term} source="goo" on:updateList />
-	{/if}
+
+	<Definition {term} source="jisho" isPrimary={true} on:updateList/>
+	<hr>
+	<Definition {term} source="goo" on:updateList />
 </aside>
 
 <svelte:window on:keydown={keydown} />
