@@ -1,23 +1,17 @@
 <script>
 	import {say} from './speech';
-	import {createEventDispatcher} from 'svelte';
+	import phraseStore from './phraseStore';
 	export let phrase = '';
 	export let mode;
 	export let forceShowDelete = false;
 
-	const dispatch = createEventDispatcher();
 	let visible = true;
 
-	function updateList(list) {
-		dispatch('updateList', {list});
-	}
-
-	const action = url => fetch(url).then(res => res.json()).then(updateList);
 	async function deletePhrase() {
-		await action(`remove/${phrase.id}`);
+		await phraseStore.action(`remove/${phrase.id}`);
 	}
 	async function hidePhrase() {
-		await action(`hide/${phrase.id}`);
+		await phraseStore.action(`hide/${phrase.id}`);
 	}
 	function define() {
 		window.open(`https:/jisho.org/search/${encodeURIComponent(phrase.phrase)}`);

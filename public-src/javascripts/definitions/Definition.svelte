@@ -96,11 +96,11 @@
 
 <script>
 	import {say} from '../speech';
-	import {createEventDispatcher} from 'svelte';
 	import Loading from "../Loading.svelte";
 	import Tag from './Tag.svelte';
 	import ExternalLink from "../ExternalLink.svelte";
 	import JapaneseWord from "./JapaneseWord.svelte";
+	import phraseStore from '../phraseStore';
 	export let source = '';
 	export let term = '';
 	export let isPrimary = false;
@@ -108,22 +108,19 @@
 	let timer,
 		definitions = [];
 
-	const dispatch = createEventDispatcher(),
-		getDef = async (phrase) => {
+	const getDef = async (phrase) => {
 		clearTimeout(timer);
 		if (!phrase) {
 			return;
 		}
 
 		return Promise.resolve()
-				.then(() => fetch(`lookup/${source}/${encodeURIComponent(phrase)}/`)
-						.then(res => res.json()));
+			.then(() => fetch(`lookup/${source}/${encodeURIComponent(phrase)}/`)
+			.then(res => res.json()));
 	};
 
 	function addToReviews(word) {
-		fetch(`add/${encodeURIComponent(word)}`).then(res => res.json()).then(list => {
-			dispatch('updateList', {list})
-		});
+		phraseStore.action(`add/${encodeURIComponent(word)}`)
 	}
 
 	function shortcuts(e) {

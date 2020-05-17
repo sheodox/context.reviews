@@ -28,9 +28,9 @@
 		<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
 	</form>
 
-	<Definition {term} source="jisho" isPrimary={true} on:updateList/>
+	<Definition {term} source="jisho" isPrimary={true} />
 	<hr>
-	<Definition {term} source="goo" on:updateList />
+	<Definition {term} source="goo" />
 </aside>
 
 <svelte:window on:keydown={keydown} />

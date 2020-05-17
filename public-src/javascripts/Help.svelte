@@ -43,8 +43,11 @@
 </h2>
 
 <dl>
-	<dt>S (when not typing)</dt>
+	<dt>S (when not in the search field)</dt>
 	<dd>Focus the search input.</dd>
+
+	<dt>Ctrl+Z (when not in the search field)</dt>
+	<dd>Undo the last phrase deletion.</dd>
 
 	<dt>Ctrl+Enter</dt>
 	<dd>Add the first Jisho search result to the review list.</dd>

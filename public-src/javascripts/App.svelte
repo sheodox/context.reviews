@@ -31,7 +31,7 @@
 
             <tbody on:mouseup={selected}>
 				{#each visiblePhrases as phrase}
-					<Phrase phrase={phrase} on:updateList={childUpdatedList} mode={mode} forceShowDelete={forceShowDelete} />
+					<Phrase phrase={phrase} mode={mode} forceShowDelete={forceShowDelete} />
 				{/each}
 			</tbody>
 		</table>
@@ -40,7 +40,9 @@
 	{/if}
 </div>
 
-<Definitions term={selection} on:updateList={childUpdatedList} />
+<Definitions term={selection} />
+
+<Toasts />
 
 <svelte:window on:keydown={keydown} on:keyup={checkModifiers} />
 
@@ -79,15 +81,11 @@
 	import Definitions from './definitions/Definitions.svelte';
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
+	import Toasts from './Toasts.svelte';
 	import {say} from './speech'
 	import AllReviewed from "./AllReviewed.svelte";
+	import phraseStore from './phraseStore';
 
-	const socket = io({
-		pathname: location.pathname + 'socket.io/socket.io',
-		reconnectionAttempts: 1
-	});
-
-	const action = url => fetch(url).then(res => res.json()).then(updateList);
 	let selection = '',
 		showHints = false,
 		phrases = [],
@@ -97,6 +95,11 @@
 		forceShowDelete = false,
 		visiblePhrases = [],
 		numVisiblePhrases = 0;
+
+	phraseStore.subscribe(list => {
+		//phrases inits null for toasts (it's null until the list is known) so need a fallback
+		phrases = list || [];
+	});
 
 	$: {
 		visiblePhrases = mode !== 'review' ? phrases : phrases.filter(phrase => {
@@ -108,22 +111,6 @@
 		document.title = `${numPhrases} - Japanese Context Sentence Review`;
 		phraseCountDetails = reviewedPhrases === 0 ? numPhrases : `${numPhrases}, ${reviewedPhrases} reviewed`
 	}
-
-	socket.on('refresh', list => {
-		phrases = list;
-	});
-	socket.on('connect_error', () => {
-		if (useXHR) {
-			return;
-		}
-
-		useXHR = true;
-		setInterval(() => {
-			action('list');
-		}, 10 * 1000);
-	});
-
-	action('list');
 
 	function selected(e) {
 		//don't read things if they're clicking one of the phrase buttons and happen to have text selected
@@ -137,23 +124,12 @@
 		}
 	}
 
-	async function undo() {
-		if (useXHR) {
-			action('undo');
-		} else {
-			socket.emit('undo');
-		}
-	}
-	function childUpdatedList(e) {
-		phrases = e.detail.list;
+	function undo() {
+		phraseStore.action('undo');
 	}
 
-	async function showAll() {
-		action('show-all')
-	}
-
-	function updateList(list) {
-		phrases = list;
+	function showAll() {
+		phraseStore.action('show-all')
 	}
 
 	function stop() {
