@@ -76,7 +76,7 @@
 </style>
 
 <script>
-	import Definitions from './Definitions.svelte';
+	import Definitions from './definitions/Definitions.svelte';
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import {say} from './speech'

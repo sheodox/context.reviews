@@ -26,18 +26,6 @@
 	ol {
 		margin-top: 0.2rem;
 	}
-	.tag {
-		color: #8293a1;
-		background-color: #1f2b3d;
-		font-size: 0.6rem;
-		padding: 0 0.2rem;
-	}
-	.tag.common {
-		color: #00ffac;
-	}
-	.tag:not(:last-of-type) {
-		margin-right: 0.3rem;
-	}
 	.alternate-forms {
 		color: #8293a1;
 		margin-left: 1rem;
@@ -66,7 +54,7 @@
 							</ExternalLink>
 						</h2>
 						{#each (definition.tags || []) as tag}
-							<span class="tag" class:common={tag === 'common'}>{tag}</span>
+							<Tag tag={tag} />
 						{/each}
 					</div>
 					<button class="small" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
@@ -107,10 +95,11 @@
 <svelte:window on:keydown={shortcuts} />
 
 <script>
-	import {say} from './speech';
+	import {say} from '../speech';
 	import {createEventDispatcher} from 'svelte';
-	import Loading from "./Loading.svelte";
-	import ExternalLink from "./ExternalLink.svelte";
+	import Loading from "../Loading.svelte";
+	import Tag from './Tag.svelte';
+	import ExternalLink from "../ExternalLink.svelte";
 	import JapaneseWord from "./JapaneseWord.svelte";
 	export let source = '';
 	export let term = '';
