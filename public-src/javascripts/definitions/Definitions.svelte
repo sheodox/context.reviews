@@ -42,9 +42,18 @@
 	const DEBOUNCE_TIMEOUT = 500;
 	let searchField,
 		searchFieldValue = '',
+		lastKeyPressed = '',
+		lastKeyTime = 0,
 		typingDebounce;
 
-	function onSearchType() {
+	function onSearchType(e) {
+		//if escape was pressed twice in a row quickly, it's the clear field shortcut
+		if (e.key === 'Escape' && lastKeyPressed === 'Escape' && Date.now () - lastKeyTime < 500) {
+			term = '';
+		}
+		lastKeyTime = Date.now();
+		lastKeyPressed = e.key;
+
 		clearTimeout(typingDebounce);
 		typingDebounce = setTimeout(() => {
 			term = searchFieldValue;
