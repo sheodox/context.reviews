@@ -97,6 +97,7 @@
 				</div>
 
 				<div class="row">
+					<button class="primary" on:click={addCard}>Add Card</button>
 					<button
 							on:click={() => word = reading}
 							title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
@@ -104,7 +105,6 @@
 					>
 						Usually kana word?
 					</button>
-					<button class="primary" on:click={addCard}>Add Card</button>
 				</div>
 			</div>
 		{/if}
