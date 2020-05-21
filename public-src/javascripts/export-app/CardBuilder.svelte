@@ -81,7 +81,7 @@
 		{phrase.phrase}
 	</p>
 	{#if selection}
-		{#if word}
+		{#if detail}
 			<div class="column tweaks" in:fly={{y: 100}}>
 				<p>Make any final tweaks you want to this word</p>
 				<div class="row">
@@ -97,7 +97,13 @@
 				</div>
 
 				<div class="row">
-					<button class="primary" on:click={addCard}>Add Card</button>
+					<button
+							class="primary"
+							on:click={addCard}
+							disabled={!word}
+					>
+						Add Card
+					</button>
 					<button
 							on:click={() => word = reading}
 							title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
