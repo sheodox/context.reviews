@@ -72,7 +72,6 @@
 								<button
 										class="small primary"
 										on:click={() => addToExport(definition)}
-										disabled={selectedDefinition === definition.href}
 								>
 									Select
 								</button>
@@ -96,7 +95,14 @@
 								<p class="alternate-forms">
 									Alternates:
 									{#each definition.alternateForms as alt, index}
-										<JapaneseWord word={alt.word} reading={alt.reading} />
+										{#if mode === 'export'}
+                                        	<button class="small" on:click={exportAlternate(alt, definition)}>
+												<JapaneseWord word={alt.word} reading={alt.reading} />
+											</button>
+										{:else}
+											<JapaneseWord word={alt.word} reading={alt.reading} />
+										{/if}
+
 										{#if index + 1 < definition.alternateForms.length}
 											<span>, </span>
 										{/if}
@@ -134,6 +140,7 @@
 		definitions = [];
 
 	const dispatch = createEventDispatcher(),
+		cloneObject = obj => JSON.parse(JSON.stringify(obj)),
 		getDef = async (phrase) => {
 		clearTimeout(timer);
 		if (!phrase) {
@@ -150,7 +157,6 @@
 	}
 
 	function addToExport(definition, autoExported=false) {
-		console.log('auto-selecting');
 		//export is always user triggered, autoExport is just automatically notifying of the first definition result,
 		//so we can auto-select the most likely definition when exporting
 		dispatch(autoExported ? 'autoSelect' : 'select', {
@@ -158,8 +164,13 @@
 			//a direct link to the definition is going to be unique
 			id: definition.href,
 			//keep the consumer changing local definition objects, exporting might to do some mutation on this
-			...JSON.parse(JSON.stringify(definition))
+			...cloneObject(definition)
 		});
+	}
+
+	function exportAlternate(alternate, definition) {
+		const definitionCopy = cloneObject(definition);
+		addToExport(Object.assign(definitionCopy, {...alternate}));
 	}
 
 	function shortcuts(e) {

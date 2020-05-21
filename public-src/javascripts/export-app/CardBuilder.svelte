@@ -160,15 +160,9 @@
 	export let phrase = '';
 
 	const DEBOUNCE_TIMEOUT = 500,
-		dispatch = createEventDispatcher(),
-		stages = {
-			select: 'select',
-			define: 'define',
-			tweak: 'tweak'
-		};
+		dispatch = createEventDispatcher();
 
-	let stage = stages.select,
-		cards = [],
+	let cards = [],
 		selection = '', //what was selected from the phrase
 		word = '', // details about the word selected from a definition search
 		reading = '',
@@ -182,7 +176,6 @@
 		if (selected) {
 			selection = selected;
 			searchTerm = selected;
-			stage = stages.define;
 		}
 	}
 
@@ -204,8 +197,6 @@
 		detail = result;
 		source = result.source;
 		selectedDefinitionId = result.id;
-
-		stage = stages.tweak;
 	}
 
 	function addCard() {
@@ -222,7 +213,6 @@
 		detail = '';
 
 		cards = cards;
-		stage = stages.select;
 	}
 
 	function done() {
