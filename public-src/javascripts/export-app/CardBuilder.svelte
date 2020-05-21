@@ -182,7 +182,7 @@
 		word = '';
 		reading = '';
 		source = '';
-		detail = {};
+		detail = '';
 
 		cards = cards;
 		stage = stages.select;
