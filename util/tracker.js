@@ -77,6 +77,10 @@ class Tracker {
         const idx = this._data.findIndex(p => {
             return p.id === id;
         });
+
+        if (idx === -1) {
+            return;
+        }
         
         //keep a bit of a history around so we can undo
         this._deleteHistory.push({data: this._data[idx], index: idx});
