@@ -59,6 +59,9 @@
 		background: #151d29;
 		border-radius: 4px;
 	}
+	#definition-search {
+		margin: 0 auto;
+	}
 </style>
 
 <div class="builder" in:fly={{y:50}}>
@@ -83,7 +86,7 @@
 	</p>
 	{#if selection}
 		{#if detail}
-			<div class="column tweaks" in:fly={{y: 100}}>
+			<div class="column tweaks" in:fly={{y: 50}}>
 				<p>Make any final tweaks you want to this word</p>
 				<div class="row">
 					<div class="column">
@@ -116,30 +119,34 @@
 			</div>
 		{/if}
 
-		<p>
-			Select the best match for "{selection}"
-		</p>
-
+		<div class="row centered" in:fly={{y: 100}}>
+			<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
+		</div>
 		<!-- using a keyed each for one element so it always rebuilds -->
 		{#each [selection] as sel (sel) }
-			<div class="definitions" animate:flip>
-				<Definition
-					source="jisho"
-					isPrimary={false}
-					term={sel}
-					mode="export"
-					on:select={setSelectedDefinition}
-					on:autoSelect={setSelectedDefinition}
-					selectedDefinition={selectedDefinitionId}
-				/>
-				<Definition
-					source="goo"
-					isPrimary={false}
-					term={sel}
-					mode="export"
-					on:select={setSelectedDefinition}
-					selectedDefinition={selectedDefinitionId}
-				/>
+        	<div class="column" in:fly={{y: 50}} >
+				<p>
+					Select the best match for "{sel}"
+				</p>
+				<div class="definitions">
+					<Definition
+						source="jisho"
+						isPrimary={false}
+						term={sel}
+						mode="export"
+						on:select={setSelectedDefinition}
+						on:autoSelect={setSelectedDefinition}
+						selectedDefinition={selectedDefinitionId}
+					/>
+					<Definition
+						source="goo"
+						isPrimary={false}
+						term={sel}
+						mode="export"
+						on:select={setSelectedDefinition}
+						selectedDefinition={selectedDefinitionId}
+					/>
+				</div>
 			</div>
 		{/each}
 	{/if}
@@ -152,7 +159,8 @@
 
 	export let phrase = '';
 
-	const dispatch = createEventDispatcher(),
+	const DEBOUNCE_TIMEOUT = 500,
+		dispatch = createEventDispatcher(),
 		stages = {
 			select: 'select',
 			define: 'define',
@@ -161,19 +169,32 @@
 
 	let stage = stages.select,
 		cards = [],
-		selection = '',
-		word = '',
+		selection = '', //what was selected from the phrase
+		word = '', // details about the word selected from a definition search
 		reading = '',
 		detail = '',
 		source = '',
-		selectedDefinitionId = null;
+        searchTerm = '', //what we're searching dictionaries for
+		selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
 
 	function setSelection() {
 		const selected = window.getSelection().toString().trim();
 		if (selected) {
 			selection = selected;
+			searchTerm = selected;
 			stage = stages.define;
 		}
+	}
+
+	let searchTypingDebounce;
+	function onSearchType() {
+		//if escape was pressed twice in a row quickly, it's the clear field shortcut
+		clearTimeout(searchTypingDebounce);
+		searchTypingDebounce = setTimeout(() => {
+			if (searchTerm) {
+				selection = searchTerm;
+			}
+		}, DEBOUNCE_TIMEOUT)
 	}
 
 	function setSelectedDefinition(e) {
