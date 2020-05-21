@@ -5,7 +5,10 @@ const path = require('path'),
 module.exports = {
 	watch: !isProd,
 	mode: isProd ? 'production' : 'development',
-	entry: './public-src/javascripts/ui.js',
+	entry: {
+		list: './public-src/javascripts/list-app/list-app.js',
+		export: './public-src/javascripts/export-app/export-app.js'
+	},
 	output: {
 		filename: '[name].js',
 		path: path.resolve(__dirname, './public')

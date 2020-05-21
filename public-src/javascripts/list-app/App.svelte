@@ -3,6 +3,7 @@
 		<h1>Japanese Context Sentence Review</h1>
         <div class="flex-column">
 			<div class="buttons">
+				<a href="export">Anki Export</a>
 				<button on:click={undo}>Undo Delete</button>
 				<button on:click={stop}>Stop Voice</button>
 				<button on:click={showAll}>Show All</button>
@@ -78,13 +79,13 @@
 </style>
 
 <script>
-	import Definitions from './definitions/Definitions.svelte';
+	import Definitions from '../definitions/Definitions.svelte';
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import Toasts from './Toasts.svelte';
-	import {say} from './speech'
+	import {say} from '../speech'
 	import AllReviewed from "./AllReviewed.svelte";
-	import phraseStore from './phraseStore';
+	import phraseStore from '../phraseStore';
 
 	let selection = '',
 		showHints = false,

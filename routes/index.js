@@ -12,6 +12,10 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Japanese Context Sentence Review'});
 });
 
+router.get('/export', function(req, res, next) {
+    res.render('export', { title: 'Japanese Context Sentence Review'});
+});
+
 const defaultResponse = res => {
     res.json(tracker.list());
     refresh();

@@ -43,10 +43,23 @@ button:hover {
     background: lighten($buttonBG, 5%);
 }
 
-input[type=text] {
+button.primary {
+    $buttonBG: #3db4f2;
+    color: black;
+    background: $buttonBG;
+
+    &:hover {
+        background: lighten($buttonBG, 5%);
+    }
+}
+button:disabled, button.primary:disabled {
+    color: black;
+    background: #161d26;
+    cursor: auto;
+}
+
+input[type=text], input:not([type]), textarea {
     color: white;
-    font-size: 1.1rem;
-    height: 2.5rem;
     border: none;
     border-bottom: 0.2rem solid #364962;
     transition: border 0.2s;
@@ -56,4 +69,11 @@ input[type=text] {
     &:focus {
         border-bottom-color: #3db4f2;
     }
+}
+input[type=text], input:not([type]), textarea {
+    font-size: 1.1rem;
+    height: 2.5rem;
+}
+textarea {
+    font-size: 0.7rem;
 }

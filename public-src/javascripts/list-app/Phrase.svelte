@@ -1,6 +1,6 @@
 <script>
-	import {say} from './speech';
-	import phraseStore from './phraseStore';
+	import {say} from '../speech';
+	import phraseStore from '../phraseStore';
 	export let phrase = '';
 	export let mode;
 	export let forceShowDelete = false;

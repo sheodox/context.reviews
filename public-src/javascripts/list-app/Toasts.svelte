@@ -36,7 +36,7 @@
 <script>
     import {fly} from 'svelte/transition';
     import {flip} from 'svelte/animate';
-    import phraseStore from './phraseStore';
+    import phraseStore from '../phraseStore';
     const TOAST_VISIBLE_TIME = 4 * 1000;
     let toasts = [];
 

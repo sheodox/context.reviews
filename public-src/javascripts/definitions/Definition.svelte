@@ -45,49 +45,55 @@
 			<Loading />
 		{:then result}
 			<h1><ExternalLink href="{result.href}">{source}</ExternalLink></h1>
-			{#if result.definitions.length > 0}
-				{#each result.definitions as definition}
-					<div class="title">
-						<h2>
-							<ExternalLink href={definition.href}>
-								<JapaneseWord word={definition.word} reading={definition.reading} />
-							</ExternalLink>
-						</h2>
-						{#each (definition.tags || []) as tag}
-							<Tag tag={tag} />
-						{/each}
-					</div>
-					<button class="small" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
-					<button on:click={() => say(definition.word)} class="small">Say word</button>
-					{#if definition.reading}
-						<button on:click={() => say(definition.reading)} class="small">Say reading</button>
-					{/if}
-					<ol>
-						{#each definition.meanings as meaning}
-							<li>
-								{#if meaning.preInfo}
-									<small class="info">{meaning.preInfo}</small>
-									<br>
-								{/if}
-								{meaning.definition}
-								<small class="info">{meaning.info || ''}</small></li>
-						{/each}
-					</ol>
-					{#if definition.alternateForms && definition.alternateForms.length > 0}
-						<p class="alternate-forms">
-							Alternates:
-							{#each definition.alternateForms as alt, index}
-								<JapaneseWord word={alt.word} reading={alt.reading} />
-								{#if index + 1 < definition.alternateForms.length}
-									<span>, </span>
-								{/if}
+			<div in:fly={{y: 200}}>
+				{#if result.definitions.length > 0}
+					{#each result.definitions as definition}
+						<div class="title">
+							<h2>
+								<ExternalLink href={definition.href}>
+									<JapaneseWord word={definition.word} reading={definition.reading} />
+								</ExternalLink>
+							</h2>
+							{#each (definition.tags || []) as tag}
+								<Tag tag={tag} />
 							{/each}
-						</p>
-					{/if}
-				{/each}
-			{:else}
-				<p>No results found for "{term}"</p>
-			{/if}
+						</div>
+						{#if mode === 'list'}
+							<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
+						{:else}
+							<button class="small primary" on:click={() => addToExport(definition)}>Select</button>
+						{/if}
+						<button on:click={() => say(definition.word)} class="small">Say word</button>
+						{#if definition.reading}
+							<button on:click={() => say(definition.reading)} class="small">Say reading</button>
+						{/if}
+						<ol>
+							{#each definition.meanings as meaning}
+								<li>
+									{#if meaning.preInfo}
+										<small class="info">{meaning.preInfo}</small>
+										<br>
+									{/if}
+									{meaning.definition}
+									<small class="info">{meaning.info || ''}</small></li>
+							{/each}
+						</ol>
+						{#if definition.alternateForms && definition.alternateForms.length > 0}
+							<p class="alternate-forms">
+								Alternates:
+								{#each definition.alternateForms as alt, index}
+									<JapaneseWord word={alt.word} reading={alt.reading} />
+									{#if index + 1 < definition.alternateForms.length}
+										<span>, </span>
+									{/if}
+								{/each}
+							</p>
+						{/if}
+					{/each}
+				{:else}
+					<p>No results found for "{term}"</p>
+				{/if}
+			</div>
 		{/await}
 	{/if}
 </div>
@@ -95,6 +101,8 @@
 <svelte:window on:keydown={shortcuts} />
 
 <script>
+    import {fly} from 'svelte/transition';
+	import {createEventDispatcher} from 'svelte';
 	import {say} from '../speech';
 	import Loading from "../Loading.svelte";
 	import Tag from './Tag.svelte';
@@ -104,11 +112,13 @@
 	export let source = '';
 	export let term = '';
 	export let isPrimary = false;
+	export let mode = 'list'; // list or export
 
 	let timer,
 		definitions = [];
 
-	const getDef = async (phrase) => {
+	const dispatch = createEventDispatcher(),
+		getDef = async (phrase) => {
 		clearTimeout(timer);
 		if (!phrase) {
 			return;
@@ -121,6 +131,14 @@
 
 	function addToReviews(word) {
 		phraseStore.action(`add/${encodeURIComponent(word)}`)
+	}
+
+	function addToExport(definition) {
+		dispatch('selection', {
+			source,
+			//keep the consumer changing local definition objects, exporting might to do some mutation on this
+			...JSON.parse(JSON.stringify(definition))
+		});
 	}
 
 	function shortcuts(e) {

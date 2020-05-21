@@ -8,7 +8,7 @@
 	.tag.common {
 		color: #00ffac;
 	}
-	.tag.wk {
+	.tag.wanikani {
 		border-color: #82216f;
 		color: white;
 		text-shadow: 0 0 1px black;
@@ -18,42 +18,21 @@
 	}
 </style>
 
-<span class="tag {classes}" style={styles}>{text}</span>
+<span class="tag {type}" style={styles}>{text}</span>
 
 <script>
+	import {analyzeTag} from './processTag';
 	export let tag = '';
 	const MAX_WK_LEVEL = 60;
 
-	let classes = '',
+	let type = '',
 		text = '',
 		styles = '';
 
 	$: {
-		if (tag === 'common') {
-			classes = 'common';
-			text = 'Common'
-		}
-		else if (tag.includes('jlpt')) {
-			text = tag.toUpperCase().replace('-' , ' ');
-		}
-		else if (tag.includes('wanikani')) {
-			const wkLevel = parseInt(tag.replace(/\D*/, ''), 10),
-				fillColor = '#82216f',
-				barEndColor = '#d243ba',
-				wkCompletionPercent = (wkLevel / MAX_WK_LEVEL) * 100;
-
-			text = `Wanikani ${wkLevel}`;
-			classes = 'wk';
-			styles = `background: linear-gradient(
-				to right,
-				${fillColor},
-				${fillColor} ${wkCompletionPercent - 10}%,
-				${barEndColor} ${wkCompletionPercent}%,
-				transparent ${wkCompletionPercent}%,
-				transparent)`;
-		}
-		else {
-			text = tag;
-		}
+		const processed = analyzeTag(tag);
+		text = processed.text;
+		type = processed.type;
+		styles = processed.styles;
 	}
 </script>
