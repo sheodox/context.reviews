@@ -7,6 +7,14 @@ body, #app-root {
     padding: 0;
     height: 100vh;
 }
+:root {
+    --accent-blue: #06acfd;
+    --accent-red: #e83450;
+    --accent-primary: var(--accent-blue);
+    --accent-secondary: var(--accent-red);
+    --accent-gradient: linear-gradient(to right, var(--accent-red), var(--accent-blue)) fixed;
+    --accent-gradient-faint: linear-gradient(to right, rgba(232, 52, 80, 0.15), rgba(6, 172, 253, 0.15));
+}
 
 * {
     box-sizing: border-box;

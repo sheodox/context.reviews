@@ -27,7 +27,7 @@
     div.header-line {
         width: 100%;
         height: 2px;
-        background: linear-gradient(to right, #e83450, #06acfd);
+        background: var(--accent-gradient);
     }
 </style>
 

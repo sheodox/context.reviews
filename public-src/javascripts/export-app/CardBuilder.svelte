@@ -123,8 +123,23 @@
 		<!-- using a keyed each for one element so it always rebuilds -->
 		{#each [selection] as sel (sel) }
 			<div class="definitions" animate:flip>
-				<Definition source="jisho" isPrimary={false} term={sel} mode="export" on:selection={setSelectedDefinition} />
-				<Definition source="goo" isPrimary={false} term={sel} mode="export" on:selection={setSelectedDefinition} />
+				<Definition
+					source="jisho"
+					isPrimary={false}
+					term={sel}
+					mode="export"
+					on:select={setSelectedDefinition}
+					on:autoSelect={setSelectedDefinition}
+					selectedDefinition={selectedDefinitionId}
+				/>
+				<Definition
+					source="goo"
+					isPrimary={false}
+					term={sel}
+					mode="export"
+					on:select={setSelectedDefinition}
+					selectedDefinition={selectedDefinitionId}
+				/>
 			</div>
 		{/each}
 	{/if}
@@ -134,7 +149,6 @@
     import {flip} from 'svelte/animate';
 	import {createEventDispatcher} from 'svelte';
 	import Definition from '../definitions/Definition.svelte';
-	import CardBuilder from "./CardBuilder.svelte";
 
 	export let phrase = '';
 
@@ -151,7 +165,8 @@
 		word = '',
 		reading = '',
 		detail = '',
-		source = '';
+		source = '',
+		selectedDefinitionId = null;
 
 	function setSelection() {
 		const selected = window.getSelection().toString().trim();
@@ -167,6 +182,7 @@
 		reading = result.reading || result.word;
 		detail = result;
 		source = result.source;
+		selectedDefinitionId = result.id;
 
 		stage = stages.tweak;
 	}

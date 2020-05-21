@@ -33,6 +33,13 @@
     .alternate-forms :global(ruby:not(:first-of-type)) {
 		margin-left: 0.5rem;
 	}
+	.selected {
+		background: var(--accent-gradient-faint);
+	}
+	.search-result {
+		padding: 0.3rem;
+		border-radius: 3px;
+	}
 </style>
 
 <div class="definition">
@@ -48,47 +55,55 @@
 			<div in:fly={{y: 200}}>
 				{#if result.definitions.length > 0}
 					{#each result.definitions as definition}
-						<div class="title">
-							<h2>
-								<ExternalLink href={definition.href}>
-									<JapaneseWord word={definition.word} reading={definition.reading} />
-								</ExternalLink>
-							</h2>
-							{#each (definition.tags || []) as tag}
-								<Tag tag={tag} />
-							{/each}
-						</div>
-						{#if mode === 'list'}
-							<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
-						{:else}
-							<button class="small primary" on:click={() => addToExport(definition)}>Select</button>
-						{/if}
-						<button on:click={() => say(definition.word)} class="small">Say word</button>
-						{#if definition.reading}
-							<button on:click={() => say(definition.reading)} class="small">Say reading</button>
-						{/if}
-						<ol>
-							{#each definition.meanings as meaning}
-								<li>
-									{#if meaning.preInfo}
-										<small class="info">{meaning.preInfo}</small>
-										<br>
-									{/if}
-									{meaning.definition}
-									<small class="info">{meaning.info || ''}</small></li>
-							{/each}
-						</ol>
-						{#if definition.alternateForms && definition.alternateForms.length > 0}
-							<p class="alternate-forms">
-								Alternates:
-								{#each definition.alternateForms as alt, index}
-									<JapaneseWord word={alt.word} reading={alt.reading} />
-									{#if index + 1 < definition.alternateForms.length}
-										<span>, </span>
-									{/if}
+                    	<div class="search-result" class:selected={selectedDefinition === definition.href}>
+							<div class="title">
+								<h2>
+									<ExternalLink href={definition.href}>
+										<JapaneseWord word={definition.word} reading={definition.reading} />
+									</ExternalLink>
+								</h2>
+								{#each (definition.tags || []) as tag}
+									<Tag tag={tag} />
 								{/each}
-							</p>
-						{/if}
+							</div>
+							{#if mode === 'list'}
+								<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
+							{:else}
+								<button
+										class="small primary"
+										on:click={() => addToExport(definition)}
+										disabled={selectedDefinition === definition.href}
+								>
+									Select
+								</button>
+							{/if}
+							<button on:click={() => say(definition.word)} class="small">Say word</button>
+							{#if definition.reading}
+								<button on:click={() => say(definition.reading)} class="small">Say reading</button>
+							{/if}
+							<ol>
+								{#each definition.meanings as meaning}
+									<li>
+										{#if meaning.preInfo}
+											<small class="info">{meaning.preInfo}</small>
+											<br>
+										{/if}
+										{meaning.definition}
+										<small class="info">{meaning.info || ''}</small></li>
+								{/each}
+							</ol>
+							{#if definition.alternateForms && definition.alternateForms.length > 0}
+								<p class="alternate-forms">
+									Alternates:
+									{#each definition.alternateForms as alt, index}
+										<JapaneseWord word={alt.word} reading={alt.reading} />
+										{#if index + 1 < definition.alternateForms.length}
+											<span>, </span>
+										{/if}
+									{/each}
+								</p>
+							{/if}
+						</div>
 					{/each}
 				{:else}
 					<p>No results found for "{term}"</p>
@@ -113,6 +128,7 @@
 	export let term = '';
 	export let isPrimary = false;
 	export let mode = 'list'; // list or export
+	export let selectedDefinition = null; //the 'id', (a.k.a. unique link) to the definition that's selected for export
 
 	let timer,
 		definitions = [];
@@ -133,9 +149,14 @@
 		phraseStore.action(`add/${encodeURIComponent(word)}`)
 	}
 
-	function addToExport(definition) {
-		dispatch('selection', {
+	function addToExport(definition, autoExported=false) {
+		console.log('auto-selecting');
+		//export is always user triggered, autoExport is just automatically notifying of the first definition result,
+		//so we can auto-select the most likely definition when exporting
+		dispatch(autoExported ? 'autoSelect' : 'select', {
 			source,
+			//a direct link to the definition is going to be unique
+			id: definition.href,
 			//keep the consumer changing local definition objects, exporting might to do some mutation on this
 			...JSON.parse(JSON.stringify(definition))
 		});
@@ -156,6 +177,11 @@
 			//cache definitions for easy usage in script
 			lookup.then(results => {
 				definitions = results.definitions;
+
+				// auto-select the first definition, depends on the consumer of this component to listen or not
+				if (results.definitions.length) {
+					addToExport(results.definitions[0], true);
+				}
 			})
 		}
 	}
