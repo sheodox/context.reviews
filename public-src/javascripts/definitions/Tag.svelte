@@ -1,12 +1,14 @@
 <style>
 	.tag {
 		color: #8293a1;
-		border: 1px solid #1f2b3d;
+		border: 1px solid #8293a1;
 		font-size: 0.7rem;
 		padding: 0 0.2rem;
+		border-radius: 2px;
 	}
 	.tag.common {
 		color: #00ffac;
+		border-color: #00ffac;
 	}
 	.tag.wanikani {
 		border-color: #82216f;
