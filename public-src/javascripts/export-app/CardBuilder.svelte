@@ -12,6 +12,7 @@
 	}
 	.context-sentence {
 		font-size: 2rem;
+		text-align: center;
 	}
 	.definitions {
 		display: flex;
