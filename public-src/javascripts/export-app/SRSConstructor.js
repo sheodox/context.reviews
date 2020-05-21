@@ -118,7 +118,9 @@ const ankiCommonStyles = `
 				{{/each}}
 			</small>
 		{{/if}}
-		<p class="context">Context: 「{{context}}」</p>
+		{{#if context}}
+			<p class="context">Context: 「{{context}}」</p>
+		{{/if}}
 		<a href="{{detail.href}}" class="source">Source: {{detail.source}}</a>
 	`)
 
@@ -137,6 +139,9 @@ function ankiExport(cards) {
 			.map(tag => {
 				return analyzeTag(tag);
 			})
+		//if this word is the same as the context sentence, then they just directly added just this word,
+		//there's no point in showing a context sentence
+		card.context = card.context === card.word ? null : card.context;
 		return [
 			side(ankiFrontTemplate, card),
 			side(ankiBackTemplate, card)
