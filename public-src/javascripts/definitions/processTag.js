@@ -1,7 +1,7 @@
 export let tag = '';
 const MAX_WK_LEVEL = 60;
 
-export function analyzeTag(tag) {
+export function analyzeTag(tag='') {
 	let type = '',
 		text = '',
 		styles = '';
