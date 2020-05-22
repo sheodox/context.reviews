@@ -28,15 +28,15 @@
 		<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
 	</form>
 
-	<Definition {term} source="jisho" isPrimary={true} />
+	<DictionarySearchResults {term} source="jisho" isPrimary={true} />
 	<hr>
-	<Definition {term} source="goo" />
+	<DictionarySearchResults {term} source="goo" />
 </aside>
 
 <svelte:window on:keydown={keydown} />
 
 <script>
-	import Definition from './Definition.svelte';
+	import DictionarySearchResults from '../definitions/DictionarySearchResults.svelte';
 	export let term = '';
 
 	const DEBOUNCE_TIMEOUT = 500;

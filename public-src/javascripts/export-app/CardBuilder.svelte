@@ -94,19 +94,19 @@
 		{phrase.phrase}
 	</p>
 	{#if selection}
-		{#if detail}
+		{#if $definition}
 			<div class="row centered">
 			<div class="row tweaks" in:fly={{y: 50}}>
 				<div class="column">
 					<label for="tweak-word">Word</label>
-					<input id="tweak-word" bind:value={word} />
+					<input id="tweak-word" bind:value={$word} />
 				</div>
 
 				<div class="column">
 					<button
-						on:click={() => word = reading}
+						on:click={() => word.set(get(reading))}
 						title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
-						disabled={word === reading}
+						disabled={$word === $reading}
 					>
 						← Copy
 					</button>
@@ -114,14 +114,14 @@
 
 				<div class="column">
 					<label for="tweak-reading">Reading</label>
-					<input id="tweak-reading" bind:value={reading} />
+					<input id="tweak-reading" bind:value={$reading} />
 				</div>
 
 				<div class="column">
 					<button
 						class="primary"
 						on:click={addCard}
-						disabled={!word}
+						disabled={!$word}
 					>
 						Add Card
 					</button>
@@ -136,22 +136,17 @@
 			{#each [selection] as sel (sel) }
 				<div class="column" in:fly={{y: 50}} >
 					<div class="definitions">
-						<Definition
+						<DictionarySearchResults
 							source="jisho"
-							isPrimary={false}
+							isPrimary={true}
 							term={sel}
 							mode="export"
-							on:select={setSelectedDefinition}
-							on:autoSelect={setSelectedDefinition}
-							selectedDefinition={selectedDefinitionId}
 						/>
-						<Definition
+						<DictionarySearchResults
 							source="goo"
 							isPrimary={false}
 							term={sel}
 							mode="export"
-							on:select={setSelectedDefinition}
-							selectedDefinition={selectedDefinitionId}
 						/>
 					</div>
 				</div>
@@ -162,8 +157,16 @@
 <script>
     import {fly} from 'svelte/transition';
     import {flip} from 'svelte/animate';
+    import {get} from 'svelte/store';
 	import {createEventDispatcher} from 'svelte';
-	import Definition from '../definitions/Definition.svelte';
+	import DictionarySearchResults from '../definitions/DictionarySearchResults.svelte';
+	import {
+		card,
+		resetCard,
+		word,
+		reading,
+		definition
+	} from './currentCardStore';
 
 	export let phrase = '';
 
@@ -172,10 +175,6 @@
 
 	let cards = [],
 		selection = '', //what was selected from the phrase
-		word = '', // details about the word selected from a definition search
-		reading = '',
-		detail = '',
-		source = '',
         searchTerm = '', //what we're searching dictionaries for
 		selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
 
@@ -198,28 +197,10 @@
 		}, DEBOUNCE_TIMEOUT)
 	}
 
-	function setSelectedDefinition(e) {
-		const result = e.detail;
-		word = result.word;
-		reading = result.reading || result.word;
-		detail = result.definition;
-		source = result.source;
-		selectedDefinitionId = result.id;
-	}
-
 	function addCard() {
-		cards.push({
-			context: phrase.phrase,
-			word,
-			reading,
-			detail
-		})
+		cards.push(get(card))
+        resetCard();
 		selection = '';
-		word = '';
-		reading = '';
-		source = '';
-		detail = '';
-
 		cards = cards;
 	}
 

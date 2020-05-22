@@ -1,0 +1,137 @@
+<style>
+	h2 {
+		display: inline;
+	}
+	.info {
+		color: gray;
+	}
+	button.small {
+		font-size: 0.7rem;
+		padding: 0.2rem;
+	}
+
+	ol {
+		margin-top: 0.2rem;
+	}
+	.alternate-forms {
+		color: #8293a1;
+		margin-left: 1rem;
+	}
+	.alternate-forms :global(ruby:not(:first-of-type)) {
+		margin-left: 0.5rem;
+	}
+	.selected {
+		background: var(--accent-gradient-faint);
+	}
+	.search-result {
+		padding: 0.3rem;
+		border-radius: 3px;
+		position: relative;
+	}
+	.selected-definition-message {
+        display: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+		margin: 0;
+		padding: 0.2rem;
+		background: black;
+		opacity: 0.4;
+		border-radius: 3px;
+	}
+	.selected .selected-definition-message {
+		display: block;
+	}
+</style>
+<div class="search-result" class:selected={mode === 'export' && $card.id === definition.href}>
+	<div class="title">
+		<h2>
+			<ExternalLink href={definition.href}>
+				<JapaneseWord word={definition.word} reading={definition.reading} />
+			</ExternalLink>
+		</h2>
+        {#each (definition.tags || []) as tag}
+			<Tag tag={tag} />
+        {/each}
+	</div>
+	<p class="selected-definition-message">Selected Definition</p>
+
+    {#if mode === 'list'}
+		<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
+    {:else}
+		<button
+			class="small primary"
+			on:click={() => selectForExport()}
+            disabled={$card.word === definition.word && $card.reading === definition.reading}
+		>
+			Select
+		</button>
+    {/if}
+	<button on:click={() => say(definition.word)} class="small">Say word</button>
+    {#if definition.reading}
+		<button on:click={() => say(definition.reading)} class="small">Say reading</button>
+    {/if}
+	<ol>
+        {#each definition.meanings as meaning}
+			<li>
+                {#if meaning.preInfo}
+					<small class="info">{meaning.preInfo}</small>
+					<br>
+                {/if}
+                {meaning.definition}
+				<small class="info">{meaning.info || ''}</small></li>
+        {/each}
+	</ol>
+    {#if definition.alternateForms && definition.alternateForms.length > 0}
+		<p class="alternate-forms">
+			Alternates:
+            {#each definition.alternateForms as alt, index}
+                {#if mode === 'export'}
+					<button
+						class="small"
+						on:click={() => selectForExport(alt)}
+                        disabled={$card.word === alt.word && $card.reading === alt.reading}
+					>
+						<JapaneseWord word={alt.word} reading={alt.reading} />
+					</button>
+                {:else}
+					<JapaneseWord word={alt.word} reading={alt.reading} />
+                {/if}
+
+                {#if index + 1 < definition.alternateForms.length}
+					<span>, </span>
+                {/if}
+            {/each}
+		</p>
+    {/if}
+</div>
+<script>
+	import {createEventDispatcher} from 'svelte';
+	import {say} from '../speech';
+	import Tag from './Tag.svelte';
+	import ExternalLink from "../ExternalLink.svelte";
+	import JapaneseWord from './JapaneseWord.svelte';
+	import phraseStore from '../phraseStore';
+	import {
+		selectDefinition,
+        card,
+	} from '../export-app/currentCardStore';
+
+	//the dictionary site this came from
+	export let source = '';
+	//'list' (main homepage), or 'export' (exporting to anki)
+	export let mode = 'list';
+	//the definition being rendered here
+	export let definition = {};
+
+	const dispatch = createEventDispatcher(),
+		cloneObject = obj => JSON.parse(JSON.stringify(obj));
+
+	function selectForExport(alternate) {
+		selectDefinition(source, definition, alternate);
+	}
+
+	function addToReviews(word) {
+		phraseStore.action(`add/${encodeURIComponent(word)}`)
+	}
+</script>

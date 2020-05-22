@@ -79,7 +79,7 @@
 </style>
 
 <script>
-	import Definitions from '../definitions/Definitions.svelte';
+	import Definitions from './DictionarySearchPanel.svelte';
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import Toasts from './Toasts.svelte';

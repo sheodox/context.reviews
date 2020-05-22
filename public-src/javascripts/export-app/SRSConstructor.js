@@ -98,21 +98,21 @@ const ankiCommonStyles = `
 			{{#if showOriginal}}
 				<p class="dictionary-form">
 					<ruby>
-						{{detail.word}}
+						{{definition.word}}
 						<rp>(</rp>
-						<rt>{{detail.reading}}</rt>
+						<rt>{{definition.reading}}</rt>
 						<rp>)</rp>
 					</ruby>
 				</p>
 			{{/if}}
 			
-			{{#if detail.tags}}
-				{{#each detail.tags}}
+			{{#if definition.tags}}
+				{{#each definition.tags}}
 					<span class="tag {{this.type}}" style="{{this.styles}}">{{this.text}}</span>
 				{{/each}}
 			{{/if}}
 			<ol>
-				{{#each detail.meanings}}
+				{{#each definition.meanings}}
 					<li>
 						{{#if this.preInfo}}
 							<small>{{this.preInfo}}</small>
@@ -125,10 +125,10 @@ const ankiCommonStyles = `
 					</li>
 				{{/each}}
 			</ol>
-			{{#if detail.alternateForms}}
+			{{#if definition.alternateForms}}
 				<small class="alternate-forms">
 					Alternate forms: 
-					{{#each detail.alternateForms}}
+					{{#each definition.alternateForms}}
 						<ruby>
 							{{this.word}}
 							{{#if this.reading}}
@@ -144,7 +144,7 @@ const ankiCommonStyles = `
 		{{#if context}}
 			<p class="context">Context: 「{{context}}」</p>
 		{{/if}}
-		<a href="{{detail.href}}" class="source">Definition source: {{detail.source}}</a>
+		<a href="{{definition.href}}" class="source">Definition source: {{definition.source}}</a>
 	`)
 
 function ankiExport(cards) {
@@ -161,7 +161,7 @@ function ankiExport(cards) {
 	return cards.map(card => {
 		//some processing beforehand to make the template easier to write
 
-		card.detail.tags = (card.detail.tags || [])
+		card.definition.tags = (card.definition.tags || [])
 			.map(tag => {
 				return analyzeTag(tag);
 			})
@@ -170,7 +170,7 @@ function ankiExport(cards) {
 		card.context = card.context === card.word ? null : card.context;
 		//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
 		//in smaller font below the reading they chose.
-		card.showOriginal = card.word !== card.detail.word || card.reading !== card.detail.reading;
+		card.showOriginal = card.word !== card.definition.word || card.reading !== card.definition.reading;
 		//don't want to repeat ourselves for only-kana words
 		card.showReading = card.word !== card.reading;
 
