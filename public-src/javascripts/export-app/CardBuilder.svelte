@@ -194,7 +194,7 @@
 		const result = e.detail;
 		word = result.word;
 		reading = result.reading || result.word;
-		detail = result;
+		detail = result.definition;
 		source = result.source;
 		selectedDefinitionId = result.id;
 	}

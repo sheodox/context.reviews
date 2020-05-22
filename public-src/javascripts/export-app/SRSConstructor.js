@@ -77,6 +77,11 @@ const ankiCommonStyles = `
 			.alternate-forms ruby:not(:last-of-type)::after {
 				content: ', ';
 			}
+			.dictionary-details {
+				padding: 0.5rem;
+				border-radius: 3px;
+				background: #232a3b;
+			}
 		</style>
 	`,
 	ankiFrontTemplate = Handlebars.compile(`
@@ -85,41 +90,57 @@ const ankiCommonStyles = `
 	`),
 	ankiBackTemplate = Handlebars.compile(`
 		${ankiCommonStyles}
-		<p class="reading">{{reading}}</p>
-		{{#if detail.tags}}
-			{{#each detail.tags}}
-				<span class="tag {{this.type}}" style="{{this.styles}}">{{this.text}}</span>
-			{{/each}}
+		{{#if showReading}}
+			<p class="reading">{{reading}}</p>
 		{{/if}}
-		<ol>
-			{{#each detail.meanings}}
-				<li>
-					{{#if this.preInfo}}
-						<small>{{this.preInfo}}</small>
-						<br>
-					{{/if}}
-					{{this.definition}}
-					{{#if this.info}}
-						<small> {{this.info}}</small>
-					{{/if}}
-				</li>
-			{{/each}}
-		</ol>
-		{{#if detail.alternateForms}}
-			<small class="alternate-forms">
-				Alternate forms: 
-				{{#each detail.alternateForms}}
+		
+		<div class="dictionary-details">
+			{{#if showOriginal}}
+				<p class="dictionary-form">
 					<ruby>
-						{{this.word}}
-						{{#if this.reading}}
-							<rp>(</rp>
-							<rt>{{this.reading}}</rt>
-							<rp>)</rp>
-						{{/if}}
+						{{detail.word}}
+						<rp>(</rp>
+						<rt>{{detail.reading}}</rt>
+						<rp>)</rp>
 					</ruby>
+				</p>
+			{{/if}}
+			
+			{{#if detail.tags}}
+				{{#each detail.tags}}
+					<span class="tag {{this.type}}" style="{{this.styles}}">{{this.text}}</span>
 				{{/each}}
-			</small>
-		{{/if}}
+			{{/if}}
+			<ol>
+				{{#each detail.meanings}}
+					<li>
+						{{#if this.preInfo}}
+							<small>{{this.preInfo}}</small>
+							<br>
+						{{/if}}
+						{{this.definition}}
+						{{#if this.info}}
+							<small> {{this.info}}</small>
+						{{/if}}
+					</li>
+				{{/each}}
+			</ol>
+			{{#if detail.alternateForms}}
+				<small class="alternate-forms">
+					Alternate forms: 
+					{{#each detail.alternateForms}}
+						<ruby>
+							{{this.word}}
+							{{#if this.reading}}
+								<rp>(</rp>
+								<rt>{{this.reading}}</rt>
+								<rp>)</rp>
+							{{/if}}
+						</ruby>
+					{{/each}}
+				</small>
+			{{/if}}
+		</div>
 		{{#if context}}
 			<p class="context">Context: 「{{context}}」</p>
 		{{/if}}
@@ -136,14 +157,23 @@ function ankiExport(cards) {
 		//quote return (not escaped quotes) so it allows newlines within the template
 		return `"${html}"`
 	}
+
 	return cards.map(card => {
+		//some processing beforehand to make the template easier to write
+
 		card.detail.tags = (card.detail.tags || [])
 			.map(tag => {
 				return analyzeTag(tag);
 			})
 		//if this word is the same as the context sentence, then they just directly added just this word,
-		//there's no point in showing a context sentence
+		//there's no point in showing a context sentence that just mirrors the front of the card
 		card.context = card.context === card.word ? null : card.context;
+		//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
+		//in smaller font below the reading they chose.
+		card.showOriginal = card.word !== card.detail.word || card.reading !== card.detail.reading;
+		//don't want to repeat ourselves for only-kana words
+		card.showReading = card.word !== card.reading;
+
 		return [
 			side(ankiFrontTemplate, card),
 			side(ankiBackTemplate, card)

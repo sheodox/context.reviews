@@ -71,7 +71,7 @@
 							{:else}
 								<button
 										class="small primary"
-										on:click={() => addToExport(definition)}
+										on:click={() => selectForExport(definition)}
 								>
 									Select
 								</button>
@@ -156,21 +156,27 @@
 		phraseStore.action(`add/${encodeURIComponent(word)}`)
 	}
 
-	function addToExport(definition, autoExported=false) {
+	function selectForExport(definition, {word, reading} = {}, autoExported=false) {
 		//export is always user triggered, autoExport is just automatically notifying of the first definition result,
 		//so we can auto-select the most likely definition when exporting
 		dispatch(autoExported ? 'autoSelect' : 'select', {
 			source,
 			//a direct link to the definition is going to be unique
 			id: definition.href,
-			//keep the consumer changing local definition objects, exporting might to do some mutation on this
-			...cloneObject(definition)
+            //word is what is on the front of the flash cards, it can be altered,
+			//either because it's usually kana, or they chose an alternate spelling to study
+			//but in either case, we want to show the original dictionary result's original spelling
+			//on the back of the card
+			word: word || definition.word,
+			reading: reading || definition.reading,
+			//keep the consumer of this export from changing local definition objects, exporting might to do some mutation on this
+			definition: cloneObject(definition)
 		});
 	}
 
 	function exportAlternate(alternate, definition) {
 		const definitionCopy = cloneObject(definition);
-		addToExport(Object.assign(definitionCopy, {...alternate}));
+		selectForExport(definitionCopy, alternate);
 	}
 
 	function shortcuts(e) {
@@ -191,7 +197,7 @@
 
 				// auto-select the first definition, depends on the consumer of this component to listen or not
 				if (results.definitions.length) {
-					addToExport(results.definitions[0], true);
+					selectForExport(results.definitions[0], {}, true);
 				}
 			})
 		}
