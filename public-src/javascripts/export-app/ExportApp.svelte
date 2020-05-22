@@ -21,6 +21,9 @@
         justify-content: space-between;
         margin: 0 auto;
     }
+    h1 {
+        margin: 0;
+    }
     header a {
         margin: 1rem;
     }
