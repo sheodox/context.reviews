@@ -56,7 +56,7 @@
 	<dd>When in Review Mode, holding shift will momentarily change the hide button to a delete button.</dd>
 
 	<dt>Hover words in the definition search</dt>
-	<dd>Hover over a word with furigana for a couple seconds and the furigana will get bigger so it's easier to read.</dd>
+	<dd>Hover over a word with furigana for a bit and the word and furigana will get bigger so it's easier to read.</dd>
 
 	<dt>Esc + Esc</dt>
 	<dd>Clear the search field</dd>

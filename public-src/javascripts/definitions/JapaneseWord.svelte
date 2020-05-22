@@ -1,15 +1,12 @@
 <style>
     @keyframes furigana-grow-delayed {
         100% {
-            font-size: 1.2rem;
+            font-size: 2rem;
         }
 	}
-    rt {
-        font-size: 11px;
-    }
-    ruby:hover rt {
+    ruby:hover {
         animation: furigana-grow-delayed 0.25s forwards;
-        animation-delay: 2s;
+        animation-delay: 1s;
     }
 </style>
 
