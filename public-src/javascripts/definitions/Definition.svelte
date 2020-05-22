@@ -39,6 +39,16 @@
 	.search-result {
 		padding: 0.3rem;
 		border-radius: 3px;
+		position: relative;
+	}
+	.selected-definition-message {
+		position: absolute;
+		right: 0;
+		top: 0;
+		margin: 0;
+		padding: 0.2rem;
+		background: black;
+		opacity: 0.4;
 	}
 </style>
 
@@ -66,6 +76,9 @@
 									<Tag tag={tag} />
 								{/each}
 							</div>
+							{#if mode === 'export' && selectedDefinition === definition.href}
+								<p class="selected-definition-message">Selected Definition</p>
+							{/if}
 							{#if mode === 'list'}
 								<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
 							{:else}
