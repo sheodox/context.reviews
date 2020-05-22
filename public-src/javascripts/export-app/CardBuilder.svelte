@@ -13,6 +13,7 @@
 	.context-sentence {
 		font-size: 2rem;
 		text-align: center;
+        margin: 0;
 	}
 	.definitions {
 		display: flex;
@@ -21,9 +22,7 @@
 	.row {
 		display: flex;
 		flex-direction: row;
-	}
-	.row:not(:last-of-type) {
-		margin-bottom: 1rem;
+        align-items: center;
 	}
 	.column {
 		display: flex;
@@ -33,7 +32,9 @@
 	.spaced-out {
 		justify-content: space-between;
 	}
-
+    .centered {
+		justify-content: center;
+	}
 	p {
 		font-size: 1.1rem;
 	}
@@ -50,17 +51,25 @@
         transition: color 0.3s, background 0.3s;
 	}
 	.tweaks {
-		padding: 1rem;
+		margin: 1rem;
 		background: #14171e;
 		border-radius: 5px;
+		align-items: end;
 	}
+
 	.created-cards {
 		padding: 0 0.2rem;
 		background: #151d29;
 		border-radius: 4px;
 	}
+    .definition-area {
+		position: relative;
+	}
 	#definition-search {
-		margin: 0 auto;
+		position: absolute;
+		top: -1rem;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 </style>
 
@@ -86,69 +95,68 @@
 	</p>
 	{#if selection}
 		{#if detail}
-			<div class="column tweaks" in:fly={{y: 50}}>
-				<p>Make any final tweaks you want to this word</p>
-				<div class="row">
-					<div class="column">
-						<label for="tweak-word">Word</label>
-						<input id="tweak-word" bind:value={word} />
-					</div>
-
-					<div class="column">
-						<label for="tweak-reading">Reading</label>
-						<input id="tweak-reading" bind:value={reading} />
-					</div>
+			<div class="row centered">
+			<div class="row tweaks" in:fly={{y: 50}}>
+				<div class="column">
+					<label for="tweak-word">Word</label>
+					<input id="tweak-word" bind:value={word} />
 				</div>
 
-				<div class="row">
+				<div class="column">
 					<button
-							class="primary"
-							on:click={addCard}
-							disabled={!word}
+						on:click={() => word = reading}
+						title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
+						disabled={word === reading}
+					>
+						← Copy
+					</button>
+				</div>
+
+				<div class="column">
+					<label for="tweak-reading">Reading</label>
+					<input id="tweak-reading" bind:value={reading} />
+				</div>
+
+				<div class="column">
+					<button
+						class="primary"
+						on:click={addCard}
+						disabled={!word}
 					>
 						Add Card
 					</button>
-					<button
-							on:click={() => word = reading}
-							title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
-							disabled={word === reading}
-					>
-						Usually kana word?
-					</button>
+				</div>
 				</div>
 			</div>
 		{/if}
 
-		<div class="row centered" in:fly={{y: 100}}>
+		<div class="definition-area">
 			<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
-		</div>
-		<!-- using a keyed each for one element so it always rebuilds -->
-		{#each [selection] as sel (sel) }
-        	<div class="column" in:fly={{y: 50}} >
-				<p>
-					Select the best match for "{sel}"
-				</p>
-				<div class="definitions">
-					<Definition
-						source="jisho"
-						isPrimary={false}
-						term={sel}
-						mode="export"
-						on:select={setSelectedDefinition}
-						on:autoSelect={setSelectedDefinition}
-						selectedDefinition={selectedDefinitionId}
-					/>
-					<Definition
-						source="goo"
-						isPrimary={false}
-						term={sel}
-						mode="export"
-						on:select={setSelectedDefinition}
-						selectedDefinition={selectedDefinitionId}
-					/>
+			<!-- using a keyed each for one element so it always rebuilds -->
+			{#each [selection] as sel (sel) }
+				<div class="column" in:fly={{y: 50}} >
+					<div class="definitions">
+						<Definition
+							source="jisho"
+							isPrimary={false}
+							term={sel}
+							mode="export"
+							on:select={setSelectedDefinition}
+							on:autoSelect={setSelectedDefinition}
+							selectedDefinition={selectedDefinitionId}
+						/>
+						<Definition
+							source="goo"
+							isPrimary={false}
+							term={sel}
+							mode="export"
+							on:select={setSelectedDefinition}
+							selectedDefinition={selectedDefinitionId}
+						/>
+					</div>
 				</div>
-			</div>
-		{/each}
+			{/each}
+		</div>
 	{/if}
 </div>
 <script>
