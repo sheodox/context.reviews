@@ -43,7 +43,7 @@
 		display: block;
 	}
 </style>
-<div class="search-result" class:selected={mode === 'export' && $card.id === definition.href}>
+<div class="search-result" class:selected={isWordSelected($card.id)}>
 	<div class="title">
 		<h2>
 			<ExternalLink href={definition.href}>
@@ -62,7 +62,7 @@
 		<button
 			class="small primary"
 			on:click={() => selectForExport()}
-            disabled={$card.word === definition.word && $card.reading === definition.reading}
+            disabled={isFormSelected($card, definition.word, definition.reading)}
 		>
 			Select
 		</button>
@@ -90,7 +90,7 @@
 					<button
 						class="small"
 						on:click={() => selectForExport(alt)}
-                        disabled={$card.word === alt.word && $card.reading === alt.reading}
+                        disabled={isFormSelected($card, alt.word, alt.reading)}
 					>
 						<JapaneseWord word={alt.word} reading={alt.reading} />
 					</button>
@@ -129,6 +129,18 @@
 
 	function selectForExport(alternate) {
 		selectDefinition(source, definition, alternate);
+	}
+
+	function isWordSelected(cardId) {
+		return mode === 'export' && definition.href === cardId;
+	}
+
+	function isFormSelected(card, word, reading) {
+		return card.id === definition.href &&
+			card.word === word &&
+            //some jisho, and all goo definitions don't have a reading, but the card will always have a reading
+			//without ignoring that we'll never identify the form as being selected for those instances
+			(!reading || card.reading === reading);
 	}
 
 	function addToReviews(word) {
