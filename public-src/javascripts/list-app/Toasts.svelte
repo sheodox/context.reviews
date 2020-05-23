@@ -7,6 +7,8 @@
         font-size: 1rem;
         display: flex;
         flex-direction: column;
+        font-weight: bold;
+        border-radius: 3px;
     }
 
     .toast {
