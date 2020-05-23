@@ -144,7 +144,7 @@ const ankiCommonStyles = `
 		{{#if context}}
 			<p class="context">Context: 「{{context}}」</p>
 		{{/if}}
-		<a href="{{definition.href}}" class="source">Definition source: {{definition.source}}</a>
+		<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
 	`)
 
 function ankiExport(cards) {

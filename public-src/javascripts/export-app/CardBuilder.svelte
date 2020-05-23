@@ -166,12 +166,15 @@
 		resetCard,
 		word,
 		reading,
-		definition
+		definition,
+		context
 	} from './currentCardStore';
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
 	resetCard();
 
 	export let phrase = '';
+
+	$: context.set(phrase.phrase);
 
 	const DEBOUNCE_TIMEOUT = 500,
 		dispatch = createEventDispatcher();
