@@ -79,7 +79,8 @@
 		{#if cards.length}
 			<small class="created-cards">Cards created: {cards.map(c => c.word).join(', ')}</small>
 		{/if}
-		<button on:click={done} class="done" class:primary={cards.length}>
+		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
+		<button on:click={done} class="done" class:primary={!selection && cards.length}>
 			{#if cards.length}
                 Next phrase
 				<br>
@@ -167,6 +168,8 @@
 		reading,
 		definition
 	} from './currentCardStore';
+	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
+	resetCard();
 
 	export let phrase = '';
 
