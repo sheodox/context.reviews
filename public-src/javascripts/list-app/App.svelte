@@ -92,7 +92,7 @@
 		phrases = [],
 		useXHR = false,
 		phraseCountDetails = '',
-		mode = 'review',
+		mode = 'delete',
 		forceShowDelete = false,
 		visiblePhrases = [],
 		numVisiblePhrases = 0;
