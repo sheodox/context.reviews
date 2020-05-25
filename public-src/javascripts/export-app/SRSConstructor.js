@@ -24,7 +24,7 @@ export default class SRSConstructor {
 const ankiCommonStyles = `
 		<style>
 			.card {
-				background: #151d29;
+				background: var(--panel-bg);
 				color: white;
 				max-width: 500px;
 				margin: 0 auto;

@@ -13,7 +13,7 @@
         align-items: center;
     }
     header {
-		background: #2a3450;
+		background: var(--panel-header-bg);
         width: 100vw;
     }
     header > .row {
@@ -40,19 +40,19 @@
             <div class="row centered">
                 <h1> SRS Exporter </h1>
 
-                {#if phrases}
+                {#if $phraseStore}
                     <div class="row">
 						<a href="/">Back to review list</a>
-						<CardWizard processedPhrases={processed} totalPhrases={phrases.length} />
+						<CardWizard processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
                         <button
                             id="export-button"
-                            class:primary={processed === phrases.length}
+                            class:primary={$currentPhraseIndex === $phraseStore.length}
                             on:click={exportCards}
-                            disabled={numCards === 0}
+                            disabled={cards.length === 0}
                         >
                             Export
                             <br>
-                            ({numCards} {numCards === 1 ? 'card' : 'cards'})
+                            ({$cardCount} {$cardCount === 1 ? 'card' : 'cards'})
                         </button>
                     </div>
                 {/if}
@@ -60,19 +60,22 @@
 			<div class="header-line"></div>
 		</header>
 
-        {#if phrases && processed < phrases.length}
-            <!-- using a keyed each for one element so it always rebuilds -->
-            {#each [phrases[processed]] as phrase (phrases[processed]) }
-                <CardBuilder phrase={phrase} on:cards={addCards}/>
-            {/each}
-        {:else if phrases}
-            <AllProcessed
-                numPhrases={phrases.length}
-                numCards={numCards}
-                consumedPhrases={consumedPhrases}
-                exportClicked={exportClicked}
-            />
-        {/if}
+        <div class="row">
+            {#if $phraseStore && $currentPhraseIndex < $phraseStore.length}
+                <CardList cards={cards} on:goToPhrase={goToPhrase}/>
+                <!-- using a keyed each for one element so it always rebuilds -->
+                {#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex]) }
+                    <CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
+                {/each}
+            {:else if $phraseStore}
+                <AllProcessed
+                    numPhrases={$usedPhrases.length}
+                    numCards={$cardCount}
+                    consumedPhrases={$usedPhrases}
+                    exportClicked={exportClicked}
+                />
+            {/if}
+		</div>
     </div>
 </div>
 
@@ -83,38 +86,43 @@
 	import CardWizard from './CardWizard.svelte';
 	import CardBuilder from './CardBuilder.svelte';
 	import AllProcessed from "./AllProcessed.svelte";
+	import CardList from './CardList.svelte';
+	import {get} from 'svelte/store';
+	import {
+		setPhrases,
+        cardsByPhrase,
+        cards,
+        currentPhraseIndex,
+        cardCount,
+        usedPhrases,
+    } from './cardsStore';
 
-	const srs = new SRSConstructor();
-	let phrases,
-		processed = 0,
-		numCards = 0,
-        exportClicked = false,
-        consumedPhrases = new Set();
+	let exportClicked = false;
 
-	phraseStore.subscribe((list) => {
-		phrases = list;
-	});
+	phraseStore.subscribe(setPhrases);
 
-	function addCards(e) {
-		const cards = e.detail;
-		if (cards.length) {
-			srs.addCards(e.detail);
-			numCards += e.detail.length;
-			cards.forEach(card => {
-				consumedPhrases.add(card.context);
-			})
-		}
-		processed++;
+	function nextPhrase() {
+		currentPhraseIndex.update(phrase => phrase + 1);
 	}
 
+	function prevPhrase() {
+		currentPhraseIndex.update(phrase => Math.max(0, phrase - 1));
+	}
+
+	function goToPhrase(e) {
+        currentPhraseIndex.set(e.detail);
+    }
+
 	function exportCards() {
+		const srs = new SRSConstructor();
+        srs.addCards(get(cards));
 		srs.export();
 		//give them a button to delete used phrases, but not until they've tried to download the exported phrases
 		exportClicked = true;
 	}
 
 	function beforeUnload(e) {
-		if (numCards > 0) {
+		if (get(cardCount) > 0) {
 			e.preventDefault();
             e.returnValue = '';
         }

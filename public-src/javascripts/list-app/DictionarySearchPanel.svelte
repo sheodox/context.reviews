@@ -1,6 +1,10 @@
 <style>
+	aside {
+		flex: 0;
+	}
+
 	#definitions {
-		background-color: #151d29;
+		background-color: var(--panel-bg);
 		position: fixed;
 		width: 25%;
         right: 0;

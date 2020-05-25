@@ -14,6 +14,9 @@ body, #app-root {
     --accent-secondary: var(--accent-red);
     --accent-gradient: linear-gradient(to right, var(--accent-red), var(--accent-blue)) fixed;
     --accent-gradient-faint: linear-gradient(to right, rgba(232, 52, 80, 0.15), rgba(6, 172, 253, 0.15));
+
+    --panel-bg: #151d29;
+    --panel-header-bg: #2a3450;
 }
 
 * {
@@ -30,10 +33,6 @@ a {
     flex: 1;
     padding: 20px;
 }
-aside {
-    flex: 0;
-}
-
 $buttonBG: #1f2b3d;
 button, input[type=submit] {
     background: $buttonBG;
@@ -84,4 +83,7 @@ input[type=text], input:not([type]), textarea {
 }
 textarea {
     font-size: 0.7rem;
+}
+hr {
+    color: white;
 }

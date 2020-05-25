@@ -1,12 +1,14 @@
 <style>
     .builder {
-		background: #151d29;
+		background: var(--panel-bg);
 		margin: 1rem;
 		padding: 1rem;
 		max-width: 950px;
+		align-self: flex-start;
+		flex: 3;
 	}
 	.title-bar {
-		background: #2a3450;
+		background: var(--panel-header-bg);
 		padding: 0 1rem;
 		align-items: center;
 	}
@@ -59,7 +61,7 @@
 
 	.created-cards {
 		padding: 0 0.2rem;
-		background: #151d29;
+		background: var(--panel-bg);
 		border-radius: 4px;
 	}
     .definition-area {
@@ -73,22 +75,20 @@
 	}
 </style>
 
-<div class="builder" in:fly={{y:50}}>
+<div class="builder" in:fly={{y:50, duration: 100}}>
 	<div class="row spaced-out title-bar">
 		<h2 title={phrase.phrase}>Card Builder</h2>
-		{#if cards.length}
-			<small class="created-cards">Cards created: {cards.map(c => c.word).join(', ')}</small>
-		{/if}
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
-		<button on:click={done} class="done" class:primary={!selection && cards.length}>
-			{#if cards.length}
-                Next phrase
-				<br>
-				(Add {cards.length} {cards.length === 1 ? 'card' : 'cards'})
-			{:else}
-				Skip this phrase
-			{/if}
-		</button>
+		<div class="header-buttons">
+			<button on:click={back} disabled={$currentPhraseIndex === 0}>Back</button>
+			<button on:click={done} class="done" class:primary={!selection && $currentPhraseCardCount}>
+				{#if $currentPhraseCardCount}
+					Next phrase
+				{:else}
+					Skip this phrase
+				{/if}
+			</button>
+		</div>
 	</div>
 	<p>Please select a word from this context sentence you didn't know, or hit the button above when you're done.</p>
 	<p class="context-sentence" on:mouseup={setSelection}>
@@ -100,17 +100,16 @@
 			<div class="row tweaks" in:fly={{y: 50}}>
 				<div class="column">
 					<label for="tweak-word">Word</label>
-					<input id="tweak-word" bind:value={$word} />
-				</div>
-
-				<div class="column">
-					<button
-						on:click={() => word.set(get(reading))}
-						title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
-						disabled={$word === $reading}
-					>
-						← Copy
-					</button>
+                    <div>
+						<input id="tweak-word" bind:value={$word} />
+						<button
+								on:click={() => word.set(get(reading))}
+								title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
+								disabled={$word === $reading}
+						>
+							Use Kana
+						</button>
+					</div>
 				</div>
 
 				<div class="column">
@@ -169,6 +168,11 @@
 		definition,
 		context
 	} from './currentCardStore';
+	import {
+		currentPhraseCardCount,
+		currentPhraseIndex,
+		addCard as addCardToStore
+	} from './cardsStore';
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
 	resetCard();
 
@@ -179,8 +183,7 @@
 	const DEBOUNCE_TIMEOUT = 500,
 		dispatch = createEventDispatcher();
 
-	let cards = [],
-		selection = '', //what was selected from the phrase
+	let selection = '', //what was selected from the phrase
         searchTerm = '', //what we're searching dictionaries for
 		selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
 
@@ -204,13 +207,15 @@
 	}
 
 	function addCard() {
-		cards.push(get(card))
+		addCardToStore(get(card));
         resetCard();
 		selection = '';
-		cards = cards;
 	}
 
 	function done() {
-		dispatch('cards', cards);
+		dispatch('done');
+	}
+	function back() {
+		dispatch('back');
 	}
 </script>
