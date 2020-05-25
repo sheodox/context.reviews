@@ -40,9 +40,6 @@
 	p {
 		font-size: 1.1rem;
 	}
-    small {
-		font-size: 0.9rem;
-	}
 	h2 {
 		text-overflow: ellipsis;
         overflow: hidden;
@@ -57,12 +54,6 @@
 		background: #14171e;
 		border-radius: 5px;
 		align-items: end;
-	}
-
-	.created-cards {
-		padding: 0 0.2rem;
-		background: var(--panel-bg);
-		border-radius: 4px;
 	}
     .definition-area {
 		position: relative;

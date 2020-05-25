@@ -12,18 +12,6 @@
         padding: 1rem;
     }
 
-    legend {
-        font-size: 1.2rem;
-    }
-
-    fieldset {
-        padding: 0;
-        border: none;
-    }
-    div.current {
-        background: var(--accent-gradient-faint);
-    }
-
     ul {
         list-style: none;
         padding: 0;
@@ -39,9 +27,6 @@
     select {
         width: 100%;
         text-overflow: ellipsis;
-    }
-    .phrase-cards {
-        margin-bottom: 2rem;
     }
     li {
         display: flex;
