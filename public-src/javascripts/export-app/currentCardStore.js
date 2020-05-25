@@ -27,6 +27,5 @@ export const resetCard = () => {
 	word.set('');
 	reading.set('');
 	source.set('');
-	context.set('');
 	definition.set('');
 }
