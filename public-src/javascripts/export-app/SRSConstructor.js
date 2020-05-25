@@ -25,7 +25,7 @@ export default class SRSConstructor {
 const ankiCommonStyles = `
 		<style>
 			.card {
-				background: #151d29;
+				background: #151d29 !important;
 				color: white;
 				max-width: 500px;
 				margin: 0 auto;
@@ -86,11 +86,10 @@ const ankiCommonStyles = `
 		</style>
 	`,
 	ankiFrontTemplate = Handlebars.compile(`
-		${ankiCommonStyles}
 		<p class="word">{{word}}</p>
+		${ankiCommonStyles}
 	`),
 	ankiBackTemplate = Handlebars.compile(`
-		${ankiCommonStyles}
 		{{#if showReading}}
 			<p class="reading">{{reading}}</p>
 		{{/if}}
@@ -145,7 +144,7 @@ const ankiCommonStyles = `
 		{{#if context}}
 			<p class="context">Context: 「{{context}}」</p>
 		{{/if}}
-		<a href="{{definition.href}}" class="source" target="_blank">Definition source: {{source}}</a>
+		<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
 	`)
 
 export function compileAnkiCard(c) {
