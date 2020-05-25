@@ -33,8 +33,8 @@
         font-size: 1.5rem;
         padding: 0.5rem;
     }
-    li:not(:last-of-type) {
-        /*border-bottom: 1px solid var(--accent-red);*/
+	li.no-cards {
+		font-size: 1rem;
 	}
     select {
         width: 100%;
@@ -75,7 +75,7 @@
                 <button on:click={() => removeCard($currentPhrase, card)}>Remove</button>
             </li>
         {:else}
-            <li>No cards yet.</li>
+            <li class="no-cards">No cards for this phrase yet.</li>
         {/each}
 	</ul>
 </aside>
