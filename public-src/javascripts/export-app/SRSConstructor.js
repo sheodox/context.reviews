@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars';
 import {analyzeTag} from "../definitions/processTag";
+const cloneObject = obj => JSON.parse(JSON.stringify(obj));
 
 export default class SRSConstructor {
 	constructor() {
@@ -24,7 +25,7 @@ export default class SRSConstructor {
 const ankiCommonStyles = `
 		<style>
 			.card {
-				background: var(--panel-bg);
+				background: #151d29;
 				color: white;
 				max-width: 500px;
 				margin: 0 auto;
@@ -144,12 +145,35 @@ const ankiCommonStyles = `
 		{{#if context}}
 			<p class="context">Context: 「{{context}}」</p>
 		{{/if}}
-		<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
+		<a href="{{definition.href}}" class="source" target="_blank">Definition source: {{source}}</a>
 	`)
 
+export function compileAnkiCard(c) {
+	//don't leak changes if things weren't cloned elsewhere
+	const card = cloneObject(c);
+	//some processing beforehand to make the template easier to write
+	card.definition.tags = (card.definition.tags || [])
+		.map(tag => {
+			return analyzeTag(tag);
+		})
+	//if this word is the same as the context sentence, then they just directly added just this word,
+	//there's no point in showing a context sentence that just mirrors the front of the card
+	card.context = card.context === card.word ? null : card.context;
+	//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
+	//in smaller font below the reading they chose.
+	card.showOriginal = card.word !== card.definition.word || card.reading !== card.definition.reading;
+	//don't want to repeat ourselves for only-kana words
+	card.showReading = card.word !== card.reading;
+
+	return [
+		ankiFrontTemplate(card),
+		ankiBackTemplate(card)
+	];
+}
+
 function ankiExport(cards) {
-	function side(template, card) {
-		const html = template(card)
+	function ankiEscape(compiledCardSide) {
+		const html = compiledCardSide
 			//double double quotes are 'escaped' single double quotes to anki
 			.replace(/"/g, '""')
 			.replace(/\t/g, '')
@@ -159,24 +183,6 @@ function ankiExport(cards) {
 	}
 
 	return cards.map(card => {
-		//some processing beforehand to make the template easier to write
-
-		card.definition.tags = (card.definition.tags || [])
-			.map(tag => {
-				return analyzeTag(tag);
-			})
-		//if this word is the same as the context sentence, then they just directly added just this word,
-		//there's no point in showing a context sentence that just mirrors the front of the card
-		card.context = card.context === card.word ? null : card.context;
-		//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
-		//in smaller font below the reading they chose.
-		card.showOriginal = card.word !== card.definition.word || card.reading !== card.definition.reading;
-		//don't want to repeat ourselves for only-kana words
-		card.showReading = card.word !== card.reading;
-
-		return [
-			side(ankiFrontTemplate, card),
-			side(ankiBackTemplate, card)
-		].join(';');
+		return compileAnkiCard(card).map(ankiEscape).join(';');
 	}).join('\n');
 }
