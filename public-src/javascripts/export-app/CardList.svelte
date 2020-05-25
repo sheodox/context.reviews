@@ -56,7 +56,7 @@
 </style>
 
 <aside in:fly={{y: 50, duration: 100}}>
-    <h2>Cards ({$cardCount})</h2>
+    <h2>Cards</h2>
     <label>
         Skip To Phrase
         <select bind:value={$currentPhraseIndex}>
