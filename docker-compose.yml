@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - 4000:4000
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - type: volume
+        source: postgres
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+  redis:
+    image: redis:6-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - type: volume
+        source: redis
+        target: /data
+        volume:
+          nocopy: true
+volumes:
+  postgres:
+  redis:

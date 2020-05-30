@@ -1,47 +1,37 @@
 const fs = require('fs'),
     fetch = require('./fetch'),
-    cheerio = require('cheerio');
+    cheerio = require('cheerio'),
+    {promisify} = require('util'),
+    redisModule = require('redis'),
+    redisClient = redisModule.createClient({
+        host: 'redis'
+    }),
+    redis = {};
+//node-redis doesn't natively support a promise API
+['get', 'set'].forEach(method => redis[method] = promisify(redisClient[method]).bind(redisClient));
 
 class Cache {
-    constructor() {
-        const getData = (path, fallback) => {
-            try {
-                return JSON.parse(fs.readFileSync(path));
-            } catch(e) {
-                return fallback;
-            }
-        };
-
-        this._path = './data/lookup-cache.json';
-        this._data = getData(this._path, {jisho: {}, goo: {}});
-        
-        this._write = Promise.resolve();
-    } 
-    get(source, word, newestSchemaVersion) {
-        const cached = this._data[source][word];
+    constructor() {}
+    cacheKey(source, word) {
+        return `dictionary-${source}-${word}`;
+    }
+    async get(source, word, newestSchemaVersion) {
+        const key = this.cacheKey(source, word),
+            cached = await redis.get(key);
         if (!cached) {
             return;
         }
-        const {schemaVersion, data} = this._data[source][word];
+        const {schemaVersion, data} = JSON.parse(cached);
 
         //cache miss if the schema version doesn't match
         if (newestSchemaVersion === schemaVersion) {
             return data;
         }
     }
-    set(source, word, data, schemaVersion) {
-        this._data[source][word] = {schemaVersion, data};
-        this.save();
-    }
-    save() {
-        const saveFile = (path, data) => () => {
-            return new Promise(resolve => {
-                fs.writeFile(path, JSON.stringify(data, null, 4), resolve);
-            });
-        };
-        
-        this._write = this._write
-            .then(saveFile(this._path, this._data))
+    async set(source, word, data, schemaVersion) {
+        await redis.set(this.cacheKey(source, word), JSON.stringify({
+            schemaVersion, data
+        }));
     }
 }
 const cache = new Cache();
@@ -49,7 +39,7 @@ const cache = new Cache();
 class JishoSearch {
 	static schemaVersion = 5;
     static async search(searchText) {
-        const cached = cache.get('jisho', searchText, JishoSearch.schemaVersion);
+        const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
             return cached;
         }
@@ -97,7 +87,7 @@ class JishoSearch {
                 href: searchResultsUrl(searchText),
                 definitions,
             };
-            cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
+            await cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
             return searchResults;
         }
     }
@@ -109,7 +99,7 @@ class GooSearch {
         return cheerio.load(await fetch(url));
     }
     static async search(word) {
-        const cached = cache.get('goo', word, GooSearch.schemaVersion);
+        const cached = await cache.get('goo', word, GooSearch.schemaVersion);
         if (cached) {
             return cached;
         }
