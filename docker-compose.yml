@@ -26,7 +26,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./db
+        source: ./config/postgres
         target: /docker-entrypoint-initdb.d/
   redis:
     image: redis:6-alpine
@@ -37,6 +37,17 @@ services:
         target: /data
         volume:
           nocopy: true
+  nginx:
+    image: nginx:1.18
+    ports:
+      - 5000:5000
+    volumes:
+      - type: bind
+        source: ./config/nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+    depends_on:
+      - app
 volumes:
   postgres:
   redis:
