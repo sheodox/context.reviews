@@ -1,52 +1,63 @@
 const express = require('express'),
     router = express.Router(),
     tracker = require('../util/tracker'),
-    lookup = require('../util/definition-lookup');
-let io;
+    lookup = require('../util/definition-lookup'),
+    userId = req => req.user.user_id,
+    baseLocals = {
+        title: 'Context.reviews'
+    };
 
+let io;
 function refresh() {
+	return;
+	//TODO re-enable? this needs to send the list only to clients for this user
     io.emit('refresh', tracker.list());
 }
 
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Japanese Context Sentence Review'});
+    if (!req.user) {
+         res.render('landing', baseLocals)
+    }
+    else {
+        res.render('index', baseLocals);
+    }
 });
 
 router.get('/export', function(req, res, next) {
-    res.render('export', { title: 'Japanese Context Sentence Review'});
+    res.render('export', { title: 'Anki Export'});
 });
 
-const defaultResponse = res => {
-    res.json(tracker.list());
+const defaultResponse = async (req, res) => {
+    res.json(await tracker.list(userId(req)));
     refresh();
 }
-router.get('/add/:phrase', (req, res) => {
-    tracker.add(req.params.phrase);
-    defaultResponse(res);
+router.get('/add/:phrase', async (req, res) => {
+    await tracker.add(userId(req), req.params.phrase);
+    defaultResponse(req, res);
 });
 
-router.get('/list', (req, res) => {
-    res.json(tracker.list());
+router.get('/list', async (req, res) => {
+    res.json(await tracker.list(userId(req)));
 });
 
-router.get('/remove/:id', (req, res) => {
-    tracker.remove(req.params.id);
-    defaultResponse(res);
+router.get('/remove/:id', async (req, res) => {
+    await tracker.remove(userId(req), req.params.id);
+    defaultResponse(req, res);
 });
 
-router.get('/undo', (req, res) => {
-    tracker.undo();
-    defaultResponse(res);
+router.get('/undo', async (req, res) => {
+    await tracker.undo(userId(req));
+    defaultResponse(req, res);
 });
 
-router.get('/hide/:id', (req, res) => {
-    tracker.hide(req.params.id);
-    defaultResponse(res);
+router.get('/hide/:id', async (req, res) => {
+    await tracker.hide(userId(req), req.params.id);
+    defaultResponse(req, res);
 })
 
-router.get('/show-all', (req, res) => {
-    tracker.showAll();
-    defaultResponse(res);
+router.get('/show-all', async (req, res) => {
+    await tracker.showAll(userId(req));
+    defaultResponse(req, res);
 })
 
 function sendNoResults(res, source, word) {
@@ -91,21 +102,6 @@ router.get('/lookup/goo/:word', async (req, res) => {
 
 module.exports = (sio) => {
     io = sio;
-    io.on('connection', socket => {
-        socket.on('remove', id => {
-            tracker.remove(id);
-            refresh();
-        });
 
-        socket.on('list', () => {
-            socket.emit('refresh', tracker.list());
-        });
-        
-        socket.on('undo', () => {
-            tracker.undo();
-            refresh();
-        })
-    });
-    
     return router;
 };

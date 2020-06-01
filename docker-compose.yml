@@ -3,6 +3,11 @@ services:
   app:
     build:
       context: .
+      target: dev
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
     depends_on:
       - postgres
       - redis
@@ -11,13 +16,18 @@ services:
   postgres:
     image: postgres:13-alpine
     environment:
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_USER: $PGUSER
+      POSTGRES_PASSWORD: $PGPASSWORD
+      POSTGRES_DB: $PGDATABASE
     volumes:
       - type: volume
         source: postgres
         target: /var/lib/postgresql/data
         volume:
           nocopy: true
+      - type: bind
+        source: ./db
+        target: /docker-entrypoint-initdb.d/
   redis:
     image: redis:6-alpine
     command: redis-server --appendonly yes

@@ -1,30 +1,8 @@
-const fs = require('fs'),
+const db = require('./db'),
     trim = require('./trim');
 
-function readJSON(path, fallback) {
-    try {
-        return JSON.parse(fs.readFileSync(path));
-    } catch(e) {
-        return fallback;
-    }
-}
-
 class Tracker {
-    constructor() {
-        this._path = './data/phrases.json';
-        this._deleteHistoryPath = './data/deletehistory.json';
-        this._saveP = Promise.resolve();
-        this._maxInHistory = 100;
-        
-        this._data = readJSON(this._path, []);
-        this._data.forEach(phrase => {
-            //migrate old phrases
-            if (phrase.visible === undefined) {
-                phrase.visible = true;
-            }
-        })
-        this._deleteHistory = readJSON(this._deleteHistoryPath, []);
-    }
+    constructor() {}
 
     /**
      * Split a long search phrase into sentences.
@@ -40,110 +18,97 @@ class Tracker {
     }
 
     /**
-     * Gets a unique ID, can't just use timestamps because several phrases can be added at the same time
-     * @returns {number}
-     */
-    getGUID() {
-        return String(1 + this._data.reduce((highest, next) => {
-            return Math.max(highest, parseInt(next.id, 0));
-        }, 0));
-    }
-    
-    /**
      * add a new phrase
-     * @param phrase
+     * @param user_id - user's UUID
+     * @param phrases - a string of phrases, will be broken apart and stored individually
      */
-    add(phrase='') {
+    async add(user_id, phrases) {
+        if (!phrases) {
+            return;
+        }
         //add each sentence individually
-        Tracker.split(phrase).forEach(phrase => {
+        for (let phrase of Tracker.split(phrases)) {
             phrase = trim(phrase);
-            //prevent duplicates if the phrase was looked up again
-            if (phrase && !this._data.some(item => item.phrase === phrase)) {
-                this._data.push({
-                    phrase,
-                    visible: true,
-                    id: this.getGUID()
-                });
-                this._save();
+            if (phrase) {
+                const existing = (await db.query(
+                        `SELECT *
+                         FROM phrases
+                         WHERE user_id = $1
+                           AND phrase = $2`,
+                    [user_id, phrase]
+                )).rows[0];
+                //try to guarantee no duplicate phrases (per user)
+                if (!existing) {
+                    await db.query(
+                            `INSERT INTO phrases(user_id, phrase)
+                             VALUES ($1, $2)`,
+                        [user_id, phrase]
+                    )
+                }
+                //if the phrase is a duplicate, but the other one was deleted, un-delete it
+                else if (existing.deleted) {
+                    await db.query(
+                        `UPDATE phrases SET deleted=false, deleted_at=null WHERE phrase_id=$1`,
+                        [existing.phrase_id]
+                    );
+                }
             }
-        });
+        }
     }
 
     /**
      * remove a phrase by its id
+     * @param user_id
      * @param id
      */
-    remove(id) {
-        const idx = this._data.findIndex(p => {
-            return p.id === id;
-        });
-
-        if (idx === -1) {
-            return;
-        }
-        
-        //keep a bit of a history around so we can undo
-        this._deleteHistory.push({data: this._data[idx], index: idx});
-        if (this._deleteHistory > this._maxInHistory) {
-            this._deleteHistory.shift();
-        }
-        
-        this._data.splice(idx, 1);
-        this._save();
+    async remove(user_id, id) {
+        //would probably be good enough to just delete by phrase ID, but also make sure the user_id matches
+        //for extra protection
+        await db.query(
+            `UPDATE phrases
+            SET deleted=true, deleted_at=timezone('utc', now())
+            WHERE user_id=$1 AND phrase_id=$2`,
+            [user_id, id]
+        )
     }
 
     /**
      * Undelete the last thing from the history
      */
-    undo() {
-        if (this._deleteHistory.length) {
-            const lastDeleted = this._deleteHistory.pop();
-            //other things may have been added since this was deleted, make sure it's unique again
-            lastDeleted.data.id = this.getGUID();
-            this._data.splice(lastDeleted.index, 0, lastDeleted.data);
-            this._save();
-        }
+    async undo(user_id) {
+        await db.query(
+            `UPDATE phrases
+            SET deleted=false, deleted_at=null
+            WHERE phrase_id=(
+                SELECT phrase_id FROM phrases
+                WHERE user_id=$1 AND deleted=true ORDER BY deleted_at DESC LIMIT 1
+            )
+            `, [user_id]
+        )
     }
 
     /**
      * get all phrases
      * @returns {any}
      */
-    list() {
-        return JSON.parse(JSON.stringify(this._data));
+    async list(user_id) {
+        return (
+            await db.query(`SELECT phrase_id, phrase, visible FROM phrases WHERE user_id=$1 AND deleted=false ORDER BY created_at ASC;`, [user_id])
+        ).rows;
     }
 
-    hide(id) {
-        this._data.some(phrase => {
-            if (phrase.id === id) {
-                phrase.visible = false;
-                this._save();
-                return true;
-            }
-        });
+    async hide(user_id, id) {
+        await db.query(
+            `UPDATE phrases SET visible=false WHERE user_id=$1 AND phrase_id=$2`,
+            [user_id, id]
+        );
     }
 
-    showAll() {
-        this._data.forEach(phrase => {
-            phrase.visible = true;
-        });
-        this._save();
-    }
-
-    /**
-     * save all phrases to a file
-     * @private
-     */
-    _save() {
-        const thenSave = (path, data) => () => {
-            return new Promise(resolve => {
-                fs.writeFile(path, JSON.stringify(data, null, 4), resolve)
-            });
-        };
-        
-        this._saveP = this._saveP
-            .then(thenSave(this._path, this._data))
-            .then(thenSave(this._deleteHistoryPath, this._deleteHistory));
+    async showAll(user_id) {
+        await db.query(
+            `UPDATE phrases SET visible=true WHERE user_id=$1`,
+            [user_id]
+        )
     }
 }
 

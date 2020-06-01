@@ -12,16 +12,21 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "connect-redis": "^4.0.4",
     "cookie-parser": "~1.4.3",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "~4.16.0",
+    "express-session": "^1.17.1",
     "file-loader": "^5.0.2",
     "handlebars": "^4.7.6",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "node-sass": "^4.14.1",
+    "passport": "^0.4.1",
+    "passport-google-oauth": "^2.0.0",
     "pg": "^8.2.1",
     "pug": "^2.0.4",
     "redis": "^3.0.2",
@@ -32,5 +37,8 @@
     "svelte-loader": "^2.13.6",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

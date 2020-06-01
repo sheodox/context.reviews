@@ -1,14 +1,7 @@
 const fs = require('fs'),
     fetch = require('./fetch'),
     cheerio = require('cheerio'),
-    {promisify} = require('util'),
-    redisModule = require('redis'),
-    redisClient = redisModule.createClient({
-        host: 'redis'
-    }),
-    redis = {};
-//node-redis doesn't natively support a promise API
-['get', 'set'].forEach(method => redis[method] = promisify(redisClient[method]).bind(redisClient));
+    {redis} = require('./redis');
 
 class Cache {
     constructor() {}
