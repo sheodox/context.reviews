@@ -3,6 +3,8 @@ const fs = require('fs'),
     cheerio = require('cheerio'),
     {redis} = require('./redis');
 
+const LOOKUP_TTL = 60 * 60 * 24 * 90; // about three months in seconds
+
 class Cache {
     constructor() {}
     cacheKey(source, word) {
@@ -18,13 +20,19 @@ class Cache {
 
         //cache miss if the schema version doesn't match
         if (newestSchemaVersion === schemaVersion) {
+            this.refreshTTL(key); //don't actually care if this gets done before returning the data
             return data;
         }
     }
     async set(source, word, data, schemaVersion) {
-        await redis.set(this.cacheKey(source, word), JSON.stringify({
+        const key = this.cacheKey(source, word);
+        await redis.set(key, JSON.stringify({
             schemaVersion, data
         }));
+        this.refreshTTL(key);
+    }
+    async refreshTTL(key) {
+        await redis.expire(key, LOOKUP_TTL);
     }
 }
 const cache = new Cache();

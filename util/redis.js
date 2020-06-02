@@ -6,7 +6,11 @@ const {promisify} = require('util'),
 	redis = {};
 
 //node-redis doesn't natively support a promise API
-['get', 'set'].forEach(method => redis[method] = promisify(redisClient[method]).bind(redisClient));
+[
+	'get',
+	'set',
+	'expire'
+].forEach(method => redis[method] = promisify(redisClient[method]).bind(redisClient));
 
 module.exports = {
 	//should use this for async/await
