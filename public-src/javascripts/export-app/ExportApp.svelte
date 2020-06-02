@@ -64,7 +64,7 @@
             {#if $phraseStore && $currentPhraseIndex < $phraseStore.length}
                 <CardList cards={cards} on:goToPhrase={goToPhrase}/>
                 <!-- using a keyed each for one element so it always rebuilds -->
-                {#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex]) }
+                {#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
                     <CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
                 {/each}
             {:else if $phraseStore}
