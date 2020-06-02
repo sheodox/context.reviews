@@ -10,6 +10,7 @@ body, #app-root {
 :root {
     --accent-blue: #06acfd;
     --accent-red: #e83450;
+    --accent-purple: #9400ff;
     --accent-primary: var(--accent-blue);
     --accent-secondary: var(--accent-red);
     --accent-gradient: linear-gradient(to right, var(--accent-red), var(--accent-blue)) fixed;
@@ -17,6 +18,7 @@ body, #app-root {
 
     --panel-bg: #151d29;
     --panel-header-bg: #2a3450;
+    --panel-footer-bg: #171920;
 }
 
 * {
@@ -31,7 +33,6 @@ a {
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: 20px;
 }
 $buttonBG: #1f2b3d;
 button, input[type=submit] {

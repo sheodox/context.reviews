@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Jisho Phrase Stasher
-// @namespace    http://tampermonkey.net/
+// @namespace    http://context.reviews/
 // @version      0.0.7
 // @description  Stores looked up phrases for later review
 // @author       sheodox
@@ -56,7 +56,7 @@
     function record(word) {
         if (serverUrl) {
             const phrase = word || document.querySelector('#keyword').value,
-                url = `${serverUrl}/add/${encodeURIComponent(phrase)}`;
+                url = `${serverUrl}/phrases/add/${encodeURIComponent(phrase)}`;
             GM_xmlhttpRequest({
                 method: 'GET',
                 url
