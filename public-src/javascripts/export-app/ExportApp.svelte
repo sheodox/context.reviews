@@ -38,7 +38,7 @@
     <div class="container">
         <header>
             <div class="row centered">
-                <h1> SRS Exporter </h1>
+                <h1>Anki Export - Context.Reviews</h1>
 
                 {#if $phraseStore}
                     <div class="row">

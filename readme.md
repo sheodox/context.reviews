@@ -1,4 +1,4 @@
-# Japanese Context Sentence Review
+# Context.Reviews
 
 Automatically cache sentences that were looked up on Jisho.org so you can review them all at once later. Has built in speech synthesis to read whatever you've highlighted, or read the entire sentence out. Also has quick access to look up the context sentence on Jisho again.
 

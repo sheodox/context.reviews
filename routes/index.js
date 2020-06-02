@@ -1,16 +1,8 @@
 const express = require('express'),
     router = express.Router(),
-    tracker = require('../util/tracker'),
     baseLocals = {
-        title: 'Context.reviews'
+        title: 'Context.Reviews'
     };
-
-let io;
-function refresh() {
-	return;
-	//TODO re-enable? this needs to send the list only to clients for this user
-    io.emit('refresh', tracker.list());
-}
 
 router.get('/', function(req, res, next) {
     if (!req.user) {
@@ -26,7 +18,7 @@ router.get('/export', function(req, res, next) {
 	    res.redirect('/');
     }
 	else {
-		res.render('export', {title: 'Anki Export'});
+		res.render('export', {title: 'Anki Export - Context.Reviews'});
 	}
 });
 

@@ -1,6 +1,42 @@
+<style>
+	.flex-column {
+		display: flex;
+		flex-direction: column;
+	}
+	#mode-radios {
+		display: flex;
+		justify-content: end;
+	}
+	#left {
+		width: 75%;
+		height: 100%;
+	}
+	th {
+		font-size: 1.1rem;
+		white-space: nowrap;
+	}
+
+	h1 {
+		flex: 1;
+	}
+
+	#toolbar {
+		display: flex;
+		flex-direction: row;
+		margin: 1rem;
+	}
+	table {
+		width: fit-content;
+	}
+	main {
+		margin: 1rem;
+		flex: 1;
+	}
+</style>
+
 <div id="left">
 	<div id="toolbar">
-		<h1>Japanese Context Sentence Review</h1>
+		<h1>Context.Reviews</h1>
         <div class="flex-column">
 			<div class="buttons">
 				<a href="export">Anki Export</a>
@@ -21,24 +57,28 @@
 			</div>
 		</div>
 	</div>
-	{#if showHints || phrases.length === 0}
-		<Help />
-	{:else if visiblePhrases.length > 0}
-		<table>
-			<tr>
-				<th>Actions</th>
-				<th>Phrases ({phraseCountDetails})</th>
-			</tr>
+	<main>
+		{#if showHints || phrases.length === 0}
+			<Help />
+		{:else if visiblePhrases.length > 0}
+			<table>
+				<tr>
+					<th>Actions</th>
+					<th>Phrases ({phraseCountDetails})</th>
+				</tr>
 
-            <tbody on:mouseup={selected}>
+				<tbody on:mouseup={selected}>
 				{#each visiblePhrases as phrase}
 					<Phrase phrase={phrase} mode={mode} forceShowDelete={forceShowDelete} />
 				{/each}
-			</tbody>
-		</table>
-	{:else}
-        <AllReviewed />
-	{/if}
+				</tbody>
+			</table>
+		{:else}
+			<AllReviewed />
+		{/if}
+
+	</main>
+	<Footer />
 </div>
 
 <Definitions term={selection} />
@@ -46,37 +86,6 @@
 <Toasts />
 
 <svelte:window on:keydown={keydown} on:keyup={checkModifiers} />
-
-<style>
-    .flex-column {
-		display: flex;
-		flex-direction: column;
-	}
-	#mode-radios {
-		display: flex;
-		justify-content: end;
-	}
-	#left {
-		width: 75%;
-	}
-	th {
-		font-size: 1.1rem;
-		white-space: nowrap;
-	}
-
-	h1 {
-		flex: 1;
-	}
-
-	#toolbar {
-		margin-bottom: 2rem;
-        display: flex;
-		flex-direction: row;
-	}
-	table {
-		width: fit-content;
-	}
-</style>
 
 <script>
 	import Definitions from './DictionarySearchPanel.svelte';
@@ -86,6 +95,7 @@
 	import {say} from '../speech'
 	import AllReviewed from "./AllReviewed.svelte";
 	import phraseStore from '../phraseStore';
+	import Footer from '../Footer.svelte';
 
 	let selection = '',
 		showHints = false,
