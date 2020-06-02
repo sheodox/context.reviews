@@ -10,6 +10,9 @@
 	#left {
 		width: 75%;
 		height: 100%;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
 	}
 	th {
 		font-size: 1.1rem;

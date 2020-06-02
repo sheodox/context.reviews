@@ -29,11 +29,6 @@ a {
     color: #00B7FF;
 }
 
-#left {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
 $buttonBG: #1f2b3d;
 button, input[type=submit] {
     background: $buttonBG;
