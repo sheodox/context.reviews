@@ -11,8 +11,7 @@ services:
     depends_on:
       - postgres
       - redis
-    ports:
-      - 4000:4000
+    restart: unless-stopped
   postgres:
     image: postgres:13-alpine
     environment:
@@ -28,6 +27,7 @@ services:
       - type: bind
         source: ./config/postgres
         target: /docker-entrypoint-initdb.d/
+    restart: unless-stopped
   redis:
     image: redis:6-alpine
     command: redis-server --appendonly yes
@@ -37,6 +37,7 @@ services:
         target: /data
         volume:
           nocopy: true
+    restart: unless-stopped
   nginx:
     image: nginx:1.18
     ports:
@@ -48,6 +49,7 @@ services:
         read_only: true
     depends_on:
       - app
+    restart: unless-stopped
 volumes:
   postgres:
   redis:
