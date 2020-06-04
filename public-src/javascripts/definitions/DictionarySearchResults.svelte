@@ -10,7 +10,7 @@
 	.definition {
 		flex: 1;
 		overflow: auto;
-		padding: 0 1rem 1rem 1rem;
+		padding: 0 0.5rem 0.5rem 0.5rem;
 	}
 </style>
 
