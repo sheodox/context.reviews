@@ -67,7 +67,7 @@
 
 <div class="builder" in:fly={{y:50, duration: 100}}>
 	<div class="row spaced-out title-bar header">
-		<h2 title={phrase.phrase}>Card Builder</h2>
+		<h2>Card Builder</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 		<div class="header-buttons">
 			<button on:click={back} disabled={$currentPhraseIndex === 0}>Back</button>
