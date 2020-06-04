@@ -9,8 +9,8 @@
         position: relative;
     }
     h2 {
-        background: var(--panel-header-bg);
         padding: 1rem;
+        margin: 0;
     }
 
     ul {
@@ -52,7 +52,7 @@
 </style>
 
 <aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null}>
-    <h2>Created Cards</h2>
+    <h2 class="header">Created Cards</h2>
     <label>
         Skip To Phrase
         <select bind:value={$currentPhraseIndex}>

@@ -3,6 +3,7 @@
 		background: var(--panel-header-bg);
 		width: 100%;
         justify-content: space-between;
+		border-bottom: 1px solid var(--accent-purple);
 	}
 
 	h1 {

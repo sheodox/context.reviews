@@ -20,7 +20,7 @@ body, #app-root {
 
     --panel-bg: #14171e;
     --panel-header-bg: #252833;
-    --panel-footer-bg: #171920;
+    --panel-footer-bg: #111118;
 }
 
 * {
@@ -32,8 +32,10 @@ a {
 }
 
 $buttonBG: #0a121563;
+$hoverLightenPercent: 10%;
 button, input[type=submit], .button{
     background: $buttonBG;
+    text-decoration: none;
     border-radius: 0.1rem;
     border: none;
     color: #3db4f2;
@@ -45,7 +47,7 @@ button, input[type=submit], .button{
     font-size: 0.9rem;
     box-shadow: 0.1rem 0.1rem 0.1rem #1212124f;
     &:hover {
-        background: lighten($buttonBG, 10%);
+        background: lighten($buttonBG, $hoverLightenPercent);
     }
 }
 
@@ -55,7 +57,7 @@ button.primary, .button.primary {
     background: $buttonBG;
 
     &:hover {
-        background: lighten($buttonBG, 5%);
+        background: lighten($buttonBG, $hoverLightenPercent);
     }
 }
 button:disabled, button.primary:disabled {
@@ -94,13 +96,20 @@ label {
 @mixin base-button($bg) {
     button:not(.primary) {
         background: $bg;
-        &:hover {
-            background: lighten($bg, 5%);
+        &:hover:not(:disabled) {
+            background: lighten($bg, $hoverLightenPercent);
         }
+    }
+    button:disabled {
+        background: darken($bg, 30%);
     }
 }
 .panel {
     background: var(--panel-bg);
+    @include base-button(#4a556054);
+}
+.header, header {
+    background: var(--panel-header-bg);
     @include base-button(#4a556054);
 }
 

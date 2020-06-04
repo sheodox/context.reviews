@@ -45,15 +45,16 @@
 <div id="left">
 	<Header>
         <nav>
-			<a href="export">Anki Export</a>
+			<a href="export"><Icon icon="note_add" />Anki Export</a>
 		</nav>
 	</Header>
 	<main>
 		<div class="panel" id="toolbar">
-			<button on:click={undo}>Undo Delete</button>
-			<button on:click={stop}>Stop Voice</button>
-			<button on:click={showAll}>Show All</button>
-			<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
+			<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
+			<button on:click={stop}><Icon icon="stop" />Stop Voice</button>
+			{#if mode === 'review'}
+				<button on:click={showAll}><Icon icon="visibility" />Show All</button>
+			{/if}
 			<div id="mode-radios">
 				<label>
 					<input type="radio" bind:group={mode} value="review">
@@ -64,6 +65,7 @@
 					Delete Mode
 				</label>
 			</div>
+			<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
 		</div>
 		{#if showHints || phrases.length === 0}
 			<Help />
@@ -101,6 +103,7 @@
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import Toasts from './Toasts.svelte';
+	import Icon from '../Icon.svelte';
 	import {say} from '../speech'
 	import AllReviewed from "./AllReviewed.svelte";
 	import phraseStore from '../phraseStore';

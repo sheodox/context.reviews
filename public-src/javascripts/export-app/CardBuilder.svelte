@@ -8,7 +8,6 @@
 		flex: 3;
 	}
 	.title-bar {
-		background: var(--panel-header-bg);
 		padding: 0 1rem;
 		align-items: center;
 	}
@@ -67,7 +66,7 @@
 </style>
 
 <div class="builder" in:fly={{y:50, duration: 100}}>
-	<div class="row spaced-out title-bar">
+	<div class="row spaced-out title-bar header">
 		<h2 title={phrase.phrase}>Card Builder</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 		<div class="header-buttons">
