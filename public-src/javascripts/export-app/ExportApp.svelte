@@ -44,7 +44,7 @@
             {#if $phraseStore}
 				<div class="row header-toolbar">
 					<nav>
-						<a href="/">Back to review list</a>
+						<a href="/"><Icon icon="list" />Back to review list</a>
 					</nav>
 					<CardWizard processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
 					<button
@@ -88,6 +88,7 @@
 	import CardWizard from './CardWizard.svelte';
 	import CardBuilder from './CardBuilder.svelte';
 	import Header from '../Header.svelte';
+	import Icon from '../Icon.svelte';
 	import AllProcessed from "./AllProcessed.svelte";
 	import CardList from './CardList.svelte';
 	import Footer from '../Footer.svelte';
