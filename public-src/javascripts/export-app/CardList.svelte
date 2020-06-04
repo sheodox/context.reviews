@@ -49,20 +49,24 @@
         border: 1px solid white;
         overflow: hidden;
     }
+    .phrase-select {
+        margin: 1rem 0;
+    }
 </style>
 
 <aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null}>
     <h2 class="header">Created Cards</h2>
-    <label>
-        Skip To Phrase
-        <select bind:value={$currentPhraseIndex}>
-            {#each Array.from($cardsByPhrase) as [phrase], index}
-                <option value={index}>{phrase}</option>
-            {/each}
-        </select>
-    </label>
-	<hr>
-    <ul>
+    <div class="phrase-select">
+		<label>
+			Skip To Phrase
+			<select bind:value={$currentPhraseIndex}>
+                {#each Array.from($cardsByPhrase) as [phrase], index}
+					<option value={index}>{phrase}</option>
+                {/each}
+			</select>
+		</label>
+	</div>
+	<ul>
         {#each cardSlice($cardsByPhrase, $currentPhrase) as card}
             <li in:fade={{duration: 100}} on:mouseenter={() => previewCard = card} >
                 <span class="word">
