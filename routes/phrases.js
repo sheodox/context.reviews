@@ -6,7 +6,6 @@ router.use(requireAuth);
 
 const defaultResponse = async (req, res) => {
 	res.json(await tracker.list(getUserId(req)));
-	refresh();
 }
 
 router.get('/add/:phrase', async (req, res) => {
