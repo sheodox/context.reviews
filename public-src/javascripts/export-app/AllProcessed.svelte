@@ -14,9 +14,16 @@
 		background: var(--accent-red);
 		color: black;
 	}
+	.panel {
+		padding: 1rem;
+		border-radius: 0.2rem;
+	}
+	h1 {
+		margin: 0;
+	}
 </style>
 
-<div>
+<div class="panel">
 	<h1 class="big">All phrases have been processed!</h1>
 
 	<p>{numCards} {numCards === 1 ? 'card has' : 'cards have'} been created from {numPhrases} {numPhrases === 1 ? 'phrase' : 'phrases'}.</p>
