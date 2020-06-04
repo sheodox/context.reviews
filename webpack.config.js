@@ -7,7 +7,8 @@ module.exports = {
 	mode: isProd ? 'production' : 'development',
 	entry: {
 		list: './public-src/javascripts/list-app/list-app.js',
-		export: './public-src/javascripts/export-app/export-app.js'
+		export: './public-src/javascripts/export-app/export-app.js',
+		landing: './public-src/javascripts/landing/landing-app.js',
 	},
 	output: {
 		filename: '[name].js',
