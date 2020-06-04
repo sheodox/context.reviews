@@ -5,6 +5,7 @@
         bottom: 0;
         padding: 1rem;
         background: var(--panel-footer-bg);
+        border-top: 1px solid var(--accent-purple);
     }
 </style>
 

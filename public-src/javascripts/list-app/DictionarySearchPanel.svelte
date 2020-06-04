@@ -27,7 +27,7 @@
 	}
 </style>
 
-<aside id="definitions">
+<aside id="definitions" class="panel">
 	<form on:submit|preventDefault>
 		<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
 	</form>

@@ -1,0 +1,37 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    margin: 2rem;
+    max-width: 60rem;
+    width: 95%;
+}
+header img {
+    width: 7rem;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+header h1 {
+    margin-left: 4rem;
+}
+
+.hero {
+    display: flex;
+    flex-direction: row;
+
+    .pitch {
+        flex: 3;
+    }
+    aside {
+        flex: 1
+    }
+}

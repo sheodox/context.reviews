@@ -11,15 +11,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
-    header {
-		background: var(--panel-header-bg);
-        width: 100vw;
-    }
-    header > .row {
-        max-width: 950px;
-        justify-content: space-between;
-        margin: 0 auto;
+		width: 100%;
     }
     h1 {
         margin: 0;
@@ -32,37 +24,46 @@
         height: 2px;
         background: var(--accent-gradient);
     }
+	.header-toolbar > * {
+		margin: 0 1rem;
+        align-content: baseline;
+		align-items: end;
+	}
+
+	#card-workspace {
+		flex: 1;
+	}
+	.max-height {
+		height: 100%;
+	}
 </style>
 
-<div class="row">
-    <div class="container">
-        <header>
-            <div class="row centered">
-                <h1>Anki Export - Context.Reviews</h1>
-
-                {#if $phraseStore}
-                    <div class="row">
+<div class="row max-height">
+    <div class="container max-height">
+        <Header pageName="Anki Export">
+            {#if $phraseStore}
+				<div class="row header-toolbar">
+					<nav>
 						<a href="/">Back to review list</a>
-						<CardWizard processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
-                        <button
-                            id="export-button"
-                            class:primary={$currentPhraseIndex === $phraseStore.length}
-                            on:click={exportCards}
-                            disabled={cards.length === 0}
-                        >
-                            Export
-                            <br>
-                            ({$cardCount} {$cardCount === 1 ? 'card' : 'cards'})
-                        </button>
-                    </div>
-                {/if}
-			</div>
-			<div class="header-line"></div>
-		</header>
+					</nav>
+					<CardWizard processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
+					<button
+						id="export-button"
+						class:primary={$currentPhraseIndex === $phraseStore.length}
+						on:click={exportCards}
+						disabled={cards.length === 0}
+					>
+						Export
+						<br>
+						({$cardCount} {$cardCount === 1 ? 'card' : 'cards'})
+					</button>
+				</div>
+            {/if}
+		</Header>
 
-        <div class="row">
+		<div class="row" id="card-workspace">
             {#if $phraseStore && $currentPhraseIndex < $phraseStore.length}
-                <CardList cards={cards} on:goToPhrase={goToPhrase}/>
+				<CardList cards={cards} on:goToPhrase={goToPhrase}/>
                 <!-- using a keyed each for one element so it always rebuilds -->
                 {#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
                     <CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
@@ -76,6 +77,7 @@
                 />
             {/if}
 		</div>
+		<Footer />
     </div>
 </div>
 
@@ -85,8 +87,10 @@
 	import phraseStore from '../phraseStore';
 	import CardWizard from './CardWizard.svelte';
 	import CardBuilder from './CardBuilder.svelte';
+	import Header from '../Header.svelte';
 	import AllProcessed from "./AllProcessed.svelte";
 	import CardList from './CardList.svelte';
+	import Footer from '../Footer.svelte';
 	import {get} from 'svelte/store';
 	import {
 		setPhrases,

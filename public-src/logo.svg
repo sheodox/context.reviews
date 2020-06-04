@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   viewBox="0 0 26.458333 26.458334"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/home/sheodox/code/js/japanese-context-sentence-review/public-src/favicon.png"
+   inkscape:export-xdpi="480"
+   inkscape:export-ydpi="480">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker6306"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="DotL">
+      <path
+         transform="scale(0.8) translate(7.4, 1)"
+         style="fill-rule:evenodd;stroke:#ffffff;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         id="path6304" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker6238"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Sstart">
+      <path
+         transform="scale(0.2) translate(6,0)"
+         style="fill-rule:evenodd;stroke:#ffffff;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path6236" />
+    </marker>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4610">
+      <stop
+         style="stop-color:#e55eff;stop-opacity:1"
+         offset="0"
+         id="stop4606" />
+      <stop
+         id="stop5910"
+         offset="0.64420849"
+         style="stop-color:#02d0ff;stop-opacity:1" />
+      <stop
+         style="stop-color:#08ffff;stop-opacity:1"
+         offset="1"
+         id="stop4608" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4610"
+       id="linearGradient4612"
+       x1="24.411716"
+       y1="292.86859"
+       x2="12.201228"
+       y2="271.71939"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5904"
+       x="-0.001220937"
+       width="1.0024419"
+       y="-0.001179422"
+       height="1.0023588">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.01242353"
+         id="feGaussianBlur5906" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.313708"
+     inkscape:cx="47.403984"
+     inkscape:cy="53.627364"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="2560"
+     inkscape:window-height="1373"
+     inkscape:window-x="1920"
+     inkscape:window-y="1080"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="bg back"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-270.54164)"
+     style="display:none">
+    <path
+       sodipodi:type="star"
+       style="fill:#000405;fill-opacity:1;stroke-width:0.26458332"
+       id="path4586"
+       sodipodi:sides="3"
+       sodipodi:cx="12.201228"
+       sodipodi:cy="285.81885"
+       sodipodi:r1="14.099457"
+       sodipodi:r2="11.181124"
+       sodipodi:arg1="-1.5707963"
+       sodipodi:arg2="-0.52359878"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 12.201229,271.71939 9.683136,8.5089 2.527351,12.64029 -12.210488,4.13139 -12.2104878,-4.13139 2.5273507,-12.64029 z"
+       inkscape:transform-center-y="-1.5271325"
+       transform="matrix(1.0834266,0,0,1.0465873,0.01003298,-13.836413)" />
+  </g>
+  <g
+     transform="translate(0,-270.54164)"
+     id="g4596"
+     inkscape:groupmode="layer"
+     inkscape:label="bg front"
+     style="display:inline;opacity:1">
+    <path
+       transform="matrix(0.9359994,0,0,0.93605718,1.8088243,16.228022)"
+       inkscape:transform-center-y="-1.3658402"
+       d="m 12.201229,271.71939 12.210487,7.04973 0,14.09946 -12.210488,7.04972 -12.2104878,-7.04972 3.7e-7,-14.09946 z"
+       inkscape:randomized="0"
+       inkscape:rounded="0"
+       inkscape:flatsided="false"
+       sodipodi:arg2="-0.52359875"
+       sodipodi:arg1="-1.5707963"
+       sodipodi:r2="14.099457"
+       sodipodi:r1="14.099457"
+       sodipodi:cy="285.81885"
+       sodipodi:cx="12.201228"
+       sodipodi:sides="3"
+       id="path4594"
+       style="opacity:1;fill:url(#linearGradient4612);fill-opacity:1;stroke-width:0.26458332;filter:url(#filter5904)"
+       sodipodi:type="star"
+       inkscape:export-filename="/home/sheodox/code/js/japanese-context-sentence-review/public-src/path4594.png"
+       inkscape:export-xdpi="480"
+       inkscape:export-ydpi="480" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="quote left"
+     style="display:inline">
+    <path
+       style="display:inline;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.89903921;stroke-linecap:round;stroke-miterlimit:9.10000038;stroke-dasharray:none;stroke-opacity:1"
+       d="M 6.8064274,9.2949126 6.1192917,19.554503 9.9452453,12.731924 15.222676,8.6802699 Z"
+       id="path5016"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/sheodox/code/js/japanese-context-sentence-review/public-src/path5016.png"
+       inkscape:export-xdpi="480"
+       inkscape:export-ydpi="480" />
+    <path
+       inkscape:export-ydpi="480"
+       inkscape:export-xdpi="480"
+       inkscape:export-filename="/home/sheodox/code/js/japanese-context-sentence-review/public-src/path5016.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path6372"
+       d="M 19.651907,17.163229 20.339044,6.9036429 16.513086,13.72622 11.235655,17.777872 Z"
+       style="display:inline;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.89903921;stroke-linecap:round;stroke-miterlimit:9.10000038;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>

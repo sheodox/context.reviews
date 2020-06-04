@@ -51,7 +51,7 @@
 	}
 	.tweaks {
 		margin: 1rem;
-		background: #14171e;
+		background: #404759;
 		border-radius: 5px;
 		align-items: end;
 	}

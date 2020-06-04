@@ -6,6 +6,7 @@ body, #app-root {
     margin: 0;
     padding: 0;
     height: 100vh;
+    opacity: 1;
 }
 :root {
     --accent-blue: #06acfd;
@@ -13,11 +14,12 @@ body, #app-root {
     --accent-purple: #9400ff;
     --accent-primary: var(--accent-blue);
     --accent-secondary: var(--accent-red);
-    --accent-gradient: linear-gradient(to right, var(--accent-red), var(--accent-blue)) fixed;
-    --accent-gradient-faint: linear-gradient(to right, rgba(232, 52, 80, 0.15), rgba(6, 172, 253, 0.15));
+    --accent-pink: #df61ff;
+    --accent-gradient: linear-gradient(to right, #08ffff, #e55eff) fixed;
+    --accent-gradient-faint: linear-gradient(to right, rgba(8, 255, 255, 0.15), rgba(229, 94, 255, 0.15));
 
-    --panel-bg: #151d29;
-    --panel-header-bg: #2a3450;
+    --panel-bg: #14171e;
+    --panel-header-bg: #252833;
     --panel-footer-bg: #171920;
 }
 
@@ -29,8 +31,8 @@ a {
     color: #00B7FF;
 }
 
-$buttonBG: #1f2b3d;
-button, input[type=submit] {
+$buttonBG: #0a121563;
+button, input[type=submit], .button{
     background: $buttonBG;
     border-radius: 0.1rem;
     border: none;
@@ -41,12 +43,13 @@ button, input[type=submit] {
     line-height: 1;
     font-weight: bold;
     font-size: 0.9rem;
-}
-button:hover {
-    background: lighten($buttonBG, 5%);
+    box-shadow: 0.1rem 0.1rem 0.1rem #1212124f;
+    &:hover {
+        background: lighten($buttonBG, 10%);
+    }
 }
 
-button.primary {
+button.primary, .button.primary {
     $buttonBG: #3db4f2;
     color: black;
     background: $buttonBG;
@@ -82,4 +85,32 @@ textarea {
 }
 hr {
     color: white;
+}
+
+label {
+    font-weight: bold;
+}
+
+@mixin base-button($bg) {
+    button:not(.primary) {
+        background: $bg;
+        &:hover {
+            background: lighten($bg, 5%);
+        }
+    }
+}
+.panel {
+    background: var(--panel-bg);
+    @include base-button(#4a556054);
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 0.2rem solid transparent;
+
+    &:hover {
+        border-bottom-color: var(--accent-purple);
+    }
 }

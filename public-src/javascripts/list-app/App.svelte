@@ -26,28 +26,34 @@
 	#toolbar {
 		display: flex;
 		flex-direction: row;
-		margin: 1rem;
+        align-items: center;
+		justify-content: center;
 	}
 	table {
 		width: fit-content;
+		margin: 1rem;
 	}
 	main {
 		margin: 1rem;
 		flex: 1;
 	}
+	.panel {
+		border-radius: 0.2rem;
+	}
 </style>
 
 <div id="left">
-	<div id="toolbar">
-		<h1>Context.Reviews</h1>
-        <div class="flex-column">
-			<div class="buttons">
-				<a href="export">Anki Export</a>
-				<button on:click={undo}>Undo Delete</button>
-				<button on:click={stop}>Stop Voice</button>
-				<button on:click={showAll}>Show All</button>
-				<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
-			</div>
+	<Header>
+        <nav>
+			<a href="export">Anki Export</a>
+		</nav>
+	</Header>
+	<main>
+		<div class="panel" id="toolbar">
+			<button on:click={undo}>Undo Delete</button>
+			<button on:click={stop}>Stop Voice</button>
+			<button on:click={showAll}>Show All</button>
+			<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
 			<div id="mode-radios">
 				<label>
 					<input type="radio" bind:group={mode} value="review">
@@ -59,16 +65,16 @@
 				</label>
 			</div>
 		</div>
-	</div>
-	<main>
 		{#if showHints || phrases.length === 0}
 			<Help />
 		{:else if visiblePhrases.length > 0}
-			<table>
-				<tr>
-					<th>Actions</th>
-					<th>Phrases ({phraseCountDetails})</th>
-				</tr>
+			<table class="panel">
+				<thead>
+					<tr>
+						<th>Actions</th>
+						<th>Phrases ({phraseCountDetails})</th>
+					</tr>
+				</thead>
 
 				<tbody on:mouseup={selected}>
 				{#each visiblePhrases as phrase}
@@ -99,6 +105,7 @@
 	import AllReviewed from "./AllReviewed.svelte";
 	import phraseStore from '../phraseStore';
 	import Footer from '../Footer.svelte';
+	import Header from '../Header.svelte';
 
 	let selection = '',
 		showHints = false,
