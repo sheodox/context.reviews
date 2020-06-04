@@ -35,7 +35,7 @@
 <header class="row">
 	<div class="branding row">
 		<img src="/favicon.png" alt="logo" class="logo">
-		<h1>{pageName ? `${pageName} -` : ''} Context.Review</h1>
+		<h1>{pageName ? `${pageName} -` : ''} Context.Reviews</h1>
 	</div>
 	<div class="toolbar">
 		<slot />
