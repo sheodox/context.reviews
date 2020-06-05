@@ -2,7 +2,6 @@
     aside {
         max-width: 30rem;
         align-self: flex-start;
-        background: var(--panel-bg);
         padding: 1rem;
         margin: 1rem;
         flex: 1;
@@ -54,7 +53,7 @@
     }
 </style>
 
-<aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null}>
+<aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null} class="panel">
     <h2 class="header">Created Cards</h2>
     <div class="phrase-select">
 		<label>
