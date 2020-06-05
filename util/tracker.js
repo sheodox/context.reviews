@@ -57,19 +57,24 @@ class Tracker {
     }
 
     /**
-     * remove a phrase by its id
+     * remove a phrase by its id (or ids if an array is passed)
      * @param user_id
      * @param id
      */
     async remove(user_id, id) {
-        //would probably be good enough to just delete by phrase ID, but also make sure the user_id matches
-        //for extra protection
-        await db.query(
-            `UPDATE phrases
-            SET deleted=true, deleted_at=timezone('utc', now())
-            WHERE user_id=$1 AND phrase_id=$2`,
-            [user_id, id]
-        )
+        const ids = Array.isArray(id) ? id : [id];
+        for (const id of ids) {
+            //would probably be good enough to just delete by phrase ID, but also make sure the user_id matches
+            //for extra protection
+            await db.query(
+                    `UPDATE phrases
+                     SET deleted= true,
+                         deleted_at=timezone('utc', now())
+                     WHERE user_id = $1
+                       AND phrase_id = $2`,
+                [user_id, id]
+            )
+        }
     }
 
     /**

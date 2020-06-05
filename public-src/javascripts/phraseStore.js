@@ -9,9 +9,23 @@ async function action(url) {
 	phraseStore.set(phrases);
 }
 
+async function remove(ids) {
+	const phrases = await fetch(`/phrases/remove`, {
+		method: 'POST',
+		body: JSON.stringify(ids),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(res => res.json())
+
+	phraseStore.set(phrases);
+}
+
 export default {
 	subscribe: phraseStore.subscribe,
-	action
+	action,
+	remove
 }
 
 setInterval(() => {

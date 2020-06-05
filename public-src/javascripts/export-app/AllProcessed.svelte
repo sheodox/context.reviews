@@ -30,15 +30,23 @@
 	<p>Time to export! Click the export button in the header and import the cards into an Anki deck.</p>
 
 	{#if numCards > 0}
-		<button
-				on:click={deleteConsumed}
-				disabled={!exportClicked || phrasesDeleted}
-				title={!exportClicked ? 'not available until the anki export is downloaded' : ''}
-		>
-			Delete {numPhrases} exported context {numPhrases === 1 ? 'sentence' : 'sentences'}
-		</button>
+		{#if !phrasesDeleted}
+			<button
+					on:click={deleteConsumed}
+					disabled={!exportClicked}
+					title={!exportClicked ? 'not available until the anki export is downloaded' : ''}
+			>
+				Delete {numPhrases} exported context {numPhrases === 1 ? 'sentence' : 'sentences'}
+			</button>
+		{/if}
 	{/if}
-
+	{#if deleting}
+		{#await deleting}
+			<Loading />
+		{:catch error}
+			<p>An error occurred deleting phrases!</p>
+		{/await}
+	{/if}
 	<h2>
 		Careful when importing!
 	</h2>
@@ -50,31 +58,36 @@
 </div>
 
 <script>
-    import {get} from 'svelte/store';
+	import {get} from 'svelte/store';
 	import phraseStore from '../phraseStore';
 	import {
 		cardCount,
 		usedPhrases,
 	} from './cardsStore';
+	import Loading from "../Loading.svelte";
 	// don't offer to delete used phrases until they've actually tried to download the exported phrases
 	export let exportClicked = false;
 
-	let phrasesDeleted = false;
+	let phrasesDeleted = false,
+		deleting;
 	const numCards = get(cardCount),
-		consumedPhrases = get(usedPhrases),
-		numPhrases = consumedPhrases.length;
+			consumedPhrases = get(usedPhrases),
+			numPhrases = consumedPhrases.length;
 
 	async function deleteConsumed() {
 		const phrases = get(phraseStore);
 		//find the phrase IDs from each phrase
-		consumedPhrases.forEach(contextSentence => {
+		const ids = consumedPhrases.map(contextSentence => {
 			const phrase = phrases.find(({phrase}) => {
 				return phrase === contextSentence
 			})
 			if (phrase) {
-				phraseStore.action(`remove/${phrase.id}`)
+				return phrase.phrase_id;
 			}
 		});
-		phrasesDeleted = true;
+		deleting = phraseStore.remove(ids);
+		deleting.then(() => {
+			phrasesDeleted = true;
+		});
 	}
 </script>

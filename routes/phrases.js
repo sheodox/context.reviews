@@ -22,6 +22,12 @@ router.get('/remove/:id', async (req, res) => {
 	defaultResponse(req, res);
 });
 
+// remove as a POST is a batch operation, it expects an array of phrase IDs to be sent as the body
+router.post('/remove', async (req, res) => {
+	await tracker.remove(getUserId(req), req.body);
+	defaultResponse(req, res);
+});
+
 router.get('/undo', async (req, res) => {
 	await tracker.undo(getUserId(req));
 	defaultResponse(req, res);
