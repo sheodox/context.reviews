@@ -4,25 +4,11 @@
         flex-direction: row;
         align-items: center;
     }
-    .centered {
-		justify-content: center;
-	}
 	.container {
         display: flex;
         flex-direction: column;
         align-items: center;
 		width: 100%;
-    }
-    h1 {
-        margin: 0;
-    }
-    header a {
-        margin: 1rem;
-    }
-    div.header-line {
-        width: 100%;
-        height: 2px;
-        background: var(--accent-gradient);
     }
 	.header-toolbar > * {
 		margin: 0 1rem;

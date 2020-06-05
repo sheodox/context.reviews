@@ -1,8 +1,4 @@
 <style>
-	.flex-column {
-		display: flex;
-		flex-direction: column;
-	}
 	#mode-radios {
 		display: flex;
 		justify-content: end;
@@ -17,10 +13,6 @@
 	th {
 		font-size: 1.1rem;
 		white-space: nowrap;
-	}
-
-	h1 {
-		flex: 1;
 	}
 
 	#toolbar {
