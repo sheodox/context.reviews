@@ -6,7 +6,7 @@ EXPOSE 4000
 
 FROM setup AS prod
 COPY . .
-CMD ["node", "bin/www"]
+CMD ["node", "app"]
 
 FROM setup as dev
 CMD ["npx", "nodemon", "app.js"]

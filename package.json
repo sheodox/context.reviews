@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "forever start ./bin/www",
-    "stop": "forever stop ./bin/www",
+    "start": "node app",
     "dev": "nodemon ./bin/www --ignore data/",
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",

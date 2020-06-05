@@ -3,11 +3,6 @@ services:
   app:
     build:
       context: .
-      target: dev
-    volumes:
-      - type: bind
-        source: .
-        target: /usr/src/app
     depends_on:
       - postgres
       - redis
@@ -41,7 +36,8 @@ services:
   nginx:
     image: nginx:1.18
     ports:
-      - 5000:5000
+      - 80:80
+      - 443:443
     volumes:
       - type: bind
         source: ./config/nginx/nginx.conf
