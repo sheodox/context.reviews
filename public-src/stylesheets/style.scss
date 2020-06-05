@@ -1,13 +1,3 @@
-body, #app-root {
-    font-size: 14px;
-    font-family: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
-    background-color: #0b0f15;
-    color: white;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    opacity: 1;
-}
 :root {
     --accent-blue: #06acfd;
     --accent-red: #e83450;
@@ -18,9 +8,21 @@ body, #app-root {
     --accent-gradient: linear-gradient(to right, #08ffff, #e55eff) fixed;
     --accent-gradient-faint: linear-gradient(to right, rgba(8, 255, 255, 0.15), rgba(229, 94, 255, 0.15));
 
+    --bg: #0b0f15;
     --panel-bg: #14171e;
     --panel-header-bg: #252833;
     --panel-footer-bg: #111118;
+}
+
+body, #app-root {
+    font-size: 14px;
+    font-family: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+    background-color: var(--bg);
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    opacity: 1;
 }
 
 * {
