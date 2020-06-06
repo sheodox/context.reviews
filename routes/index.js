@@ -1,7 +1,9 @@
 const express = require('express'),
     router = express.Router(),
     baseLocals = {
-        title: 'Context.Reviews'
+        title: 'Context.Reviews',
+		site: 'Context.Reviews',
+		description: 'Study Japanese with any resource!'
     };
 
 router.get('/', function(req, res, next) {
