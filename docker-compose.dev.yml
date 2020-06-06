@@ -7,3 +7,9 @@ services:
       - type: bind
         source: .
         target: /usr/src/app
+  nginx:
+    volumes:
+      - type: bind
+        source: ./config/nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true

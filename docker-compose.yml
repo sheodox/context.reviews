@@ -38,11 +38,6 @@ services:
     ports:
       - 80:80
       - 443:443
-    volumes:
-      - type: bind
-        source: ./config/nginx/nginx.conf
-        target: /etc/nginx/nginx.conf
-        read_only: true
     depends_on:
       - app
     restart: unless-stopped
