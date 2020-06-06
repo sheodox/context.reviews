@@ -14,7 +14,7 @@
 		await phraseStore.action(`hide/${phrase.phrase_id}`);
 	}
 	function define() {
-		window.open(`https:/jisho.org/search/${encodeURIComponent(phrase.phrase)}`);
+		window.open(`https://jisho.org/search/${encodeURIComponent(phrase.phrase)}`);
 	}
 	function read() {
 		say(phrase.phrase);
