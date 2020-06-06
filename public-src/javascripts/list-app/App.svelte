@@ -32,6 +32,32 @@
 	.panel {
 		border-radius: 0.2rem;
 	}
+
+	aside {
+		flex: 0;
+	}
+
+	#definitions {
+		background-color: var(--panel-bg);
+		position: fixed;
+		width: 25%;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	@media (max-width: 650px) {
+		#left {
+			width: 100%;
+			height: auto;
+		}
+        #definitions {
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
+	}
 </style>
 
 <div id="left">
@@ -79,12 +105,15 @@
 		{:else}
 			<AllReviewed />
 		{/if}
-
 	</main>
-	<Footer />
+
 </div>
 
-<Definitions term={selection} />
+<aside id="definitions" class="panel">
+	<Definitions term={selection} />
+</aside>
+
+<Footer />
 
 <Toasts />
 

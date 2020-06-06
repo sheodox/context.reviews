@@ -1,18 +1,4 @@
 <style>
-	aside {
-		flex: 0;
-	}
-
-	#definitions {
-		background-color: var(--panel-bg);
-		position: fixed;
-		width: 25%;
-        right: 0;
-		top: 0;
-		bottom: 0;
-		display: flex;
-		flex-direction: column;
-	}
     form {
 		flex: 0;
 		display: flex;
@@ -27,15 +13,13 @@
 	}
 </style>
 
-<aside id="definitions" class="panel">
-	<form on:submit|preventDefault>
-		<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
-	</form>
+<form on:submit|preventDefault>
+	<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
+</form>
 
-	<DictionarySearchResults {term} source="jisho" isPrimary={true} />
-	<hr>
-	<DictionarySearchResults {term} source="goo" />
-</aside>
+<DictionarySearchResults {term} source="jisho" isPrimary={true} />
+<hr>
+<DictionarySearchResults {term} source="goo" />
 
 <svelte:window on:keydown={keydown} />
 
