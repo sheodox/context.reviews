@@ -9,7 +9,6 @@ module.exports = (isProd) => {
 		.replace(/{{--server--}}/g, isProd ?
 			'https://context.reviews' : 'http://dev.context.reviews'
 		);
-	console.log(script);
 
 	fs.writeFileSync(userscriptDest, script);
 }
