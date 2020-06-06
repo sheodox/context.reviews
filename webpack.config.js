@@ -1,13 +1,15 @@
 const path = require('path'),
 	CopyPlugin = require('copy-webpack-plugin'),
-	isProd = process.argv.includes('production');
+	isProd = process.argv.includes('production'),
+	buildUserscript = require('./util/build-userscript');
 
 module.exports = {
 	watch: !isProd,
 	mode: isProd ? 'production' : 'development',
 	entry: {
 		list: './public-src/javascripts/list-app/list-app.js',
-		export: './public-src/javascripts/export-app/export-app.js'
+		export: './public-src/javascripts/export-app/export-app.js',
+		landing: './public-src/javascripts/landing/landing-app.js',
 	},
 	output: {
 		filename: '[name].js',
@@ -37,6 +39,12 @@ module.exports = {
 		new CopyPlugin([
 			{from: '**.png', context: './public-src'},
 			{from: '**/*.user.js', context: './public-src'},
-		])
+		]), {
+			apply: compiler => {
+				compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {
+					buildUserscript(isProd);
+				})
+			}
+		}
 	]
 };

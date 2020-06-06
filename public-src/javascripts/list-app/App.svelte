@@ -1,14 +1,52 @@
+<style>
+	#mode-radios {
+		display: flex;
+		justify-content: end;
+	}
+	#left {
+		width: 75%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+	th {
+		font-size: 1.1rem;
+		white-space: nowrap;
+	}
+
+	#toolbar {
+		display: flex;
+		flex-direction: row;
+        align-items: center;
+		justify-content: center;
+	}
+	table {
+		width: fit-content;
+		margin: 1rem;
+	}
+	main {
+		margin: 1rem;
+		flex: 1;
+	}
+	.panel {
+		border-radius: 0.2rem;
+	}
+</style>
+
 <div id="left">
-	<div id="toolbar">
-		<h1>Japanese Context Sentence Review</h1>
-        <div class="flex-column">
-			<div class="buttons">
-				<a href="export">Anki Export</a>
-				<button on:click={undo}>Undo Delete</button>
-				<button on:click={stop}>Stop Voice</button>
-				<button on:click={showAll}>Show All</button>
-				<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
-			</div>
+	<Header>
+        <nav>
+			<a href="export"><Icon icon="note_add" />Anki Export</a>
+		</nav>
+	</Header>
+	<main>
+		<div class="panel" id="toolbar">
+			<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
+			<button on:click={stop}><Icon icon="stop" />Stop Voice</button>
+			{#if mode === 'review'}
+				<button on:click={showAll}><Icon icon="visibility" />Show All</button>
+			{/if}
 			<div id="mode-radios">
 				<label>
 					<input type="radio" bind:group={mode} value="review">
@@ -19,26 +57,31 @@
 					Delete Mode
 				</label>
 			</div>
+			<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
 		</div>
-	</div>
-	{#if showHints || phrases.length === 0}
-		<Help />
-	{:else if visiblePhrases.length > 0}
-		<table>
-			<tr>
-				<th>Actions</th>
-				<th>Phrases ({phraseCountDetails})</th>
-			</tr>
+		{#if showHints || phrases.length === 0}
+			<Help />
+		{:else if visiblePhrases.length > 0}
+			<table class="panel">
+				<thead>
+					<tr>
+						<th>Actions</th>
+						<th>Phrases ({phraseCountDetails})</th>
+					</tr>
+				</thead>
 
-            <tbody on:mouseup={selected}>
+				<tbody on:mouseup={selected}>
 				{#each visiblePhrases as phrase}
 					<Phrase phrase={phrase} mode={mode} forceShowDelete={forceShowDelete} />
 				{/each}
-			</tbody>
-		</table>
-	{:else}
-        <AllReviewed />
-	{/if}
+				</tbody>
+			</table>
+		{:else}
+			<AllReviewed />
+		{/if}
+
+	</main>
+	<Footer />
 </div>
 
 <Definitions term={selection} />
@@ -47,45 +90,17 @@
 
 <svelte:window on:keydown={keydown} on:keyup={checkModifiers} />
 
-<style>
-    .flex-column {
-		display: flex;
-		flex-direction: column;
-	}
-	#mode-radios {
-		display: flex;
-		justify-content: end;
-	}
-	#left {
-		width: 75%;
-	}
-	th {
-		font-size: 1.1rem;
-		white-space: nowrap;
-	}
-
-	h1 {
-		flex: 1;
-	}
-
-	#toolbar {
-		margin-bottom: 2rem;
-        display: flex;
-		flex-direction: row;
-	}
-	table {
-		width: fit-content;
-	}
-</style>
-
 <script>
 	import Definitions from './DictionarySearchPanel.svelte';
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import Toasts from './Toasts.svelte';
+	import Icon from '../Icon.svelte';
 	import {say} from '../speech'
 	import AllReviewed from "./AllReviewed.svelte";
 	import phraseStore from '../phraseStore';
+	import Footer from '../Footer.svelte';
+	import Header from '../Header.svelte';
 
 	let selection = '',
 		showHints = false,

@@ -1,47 +1,38 @@
 const fs = require('fs'),
     fetch = require('./fetch'),
-    cheerio = require('cheerio');
+    cheerio = require('cheerio'),
+    {redis} = require('./redis');
+
+const LOOKUP_TTL = 60 * 60 * 24 * 90; // about three months in seconds
 
 class Cache {
-    constructor() {
-        const getData = (path, fallback) => {
-            try {
-                return JSON.parse(fs.readFileSync(path));
-            } catch(e) {
-                return fallback;
-            }
-        };
-
-        this._path = './data/lookup-cache.json';
-        this._data = getData(this._path, {jisho: {}, goo: {}});
-        
-        this._write = Promise.resolve();
-    } 
-    get(source, word, newestSchemaVersion) {
-        const cached = this._data[source][word];
+    constructor() {}
+    cacheKey(source, word) {
+        return `dictionary-${source}-${word}`;
+    }
+    async get(source, word, newestSchemaVersion) {
+        const key = this.cacheKey(source, word),
+            cached = await redis.get(key);
         if (!cached) {
             return;
         }
-        const {schemaVersion, data} = this._data[source][word];
+        const {schemaVersion, data} = JSON.parse(cached);
 
         //cache miss if the schema version doesn't match
         if (newestSchemaVersion === schemaVersion) {
+            this.refreshTTL(key); //don't actually care if this gets done before returning the data
             return data;
         }
     }
-    set(source, word, data, schemaVersion) {
-        this._data[source][word] = {schemaVersion, data};
-        this.save();
+    async set(source, word, data, schemaVersion) {
+        const key = this.cacheKey(source, word);
+        await redis.set(key, JSON.stringify({
+            schemaVersion, data
+        }));
+        this.refreshTTL(key);
     }
-    save() {
-        const saveFile = (path, data) => () => {
-            return new Promise(resolve => {
-                fs.writeFile(path, JSON.stringify(data, null, 4), resolve);
-            });
-        };
-        
-        this._write = this._write
-            .then(saveFile(this._path, this._data))
+    async refreshTTL(key) {
+        await redis.expire(key, LOOKUP_TTL);
     }
 }
 const cache = new Cache();
@@ -49,7 +40,7 @@ const cache = new Cache();
 class JishoSearch {
 	static schemaVersion = 5;
     static async search(searchText) {
-        const cached = cache.get('jisho', searchText, JishoSearch.schemaVersion);
+        const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
             return cached;
         }
@@ -97,7 +88,7 @@ class JishoSearch {
                 href: searchResultsUrl(searchText),
                 definitions,
             };
-            cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
+            await cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
             return searchResults;
         }
     }
@@ -109,7 +100,7 @@ class GooSearch {
         return cheerio.load(await fetch(url));
     }
     static async search(word) {
-        const cached = cache.get('goo', word, GooSearch.schemaVersion);
+        const cached = await cache.get('goo', word, GooSearch.schemaVersion);
         if (cached) {
             return cached;
         }

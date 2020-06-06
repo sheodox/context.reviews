@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    header
+        img(src='/favicon.png')
+        h1= title
+    main
+        section.hero
+            div.pitch.panel
+                h1 Use anything as a study resource!
+                p Study Japanese using your favorite native materials, then come back here and review or export to Anki!
+
+                ul
+                    li Read your own preferred native Japanese materials
+                    li Look up the full sentence on #[a(href="https://jisho.org",rel="noreferrer noopener",target="_blank") Jisho.org]
+                    li Come back here to review everything you've looked up
+                    li Quickly and easily make an Anki deck with full definitions from your context sentences!
+
+            aside.panel.outlined
+                h2 Get Started!
+                a.primary.button(href="/auth/google") #[i.material-icons login]Log in with Google
+
+
+    script(src='landing.js')

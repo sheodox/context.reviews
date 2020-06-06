@@ -8,10 +8,10 @@
 	let visible = true;
 
 	async function deletePhrase() {
-		await phraseStore.action(`remove/${phrase.id}`);
+		await phraseStore.action(`remove/${phrase.phrase_id}`);
 	}
 	async function hidePhrase() {
-		await phraseStore.action(`hide/${phrase.id}`);
+		await phraseStore.action(`hide/${phrase.phrase_id}`);
 	}
 	function define() {
 		window.open(`https:/jisho.org/search/${encodeURIComponent(phrase.phrase)}`);

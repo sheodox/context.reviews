@@ -8,7 +8,6 @@
 		flex: 3;
 	}
 	.title-bar {
-		background: var(--panel-header-bg);
 		padding: 0 1rem;
 		align-items: center;
 	}
@@ -51,7 +50,7 @@
 	}
 	.tweaks {
 		margin: 1rem;
-		background: #14171e;
+		background: #404759;
 		border-radius: 5px;
 		align-items: end;
 	}
@@ -67,8 +66,8 @@
 </style>
 
 <div class="builder" in:fly={{y:50, duration: 100}}>
-	<div class="row spaced-out title-bar">
-		<h2 title={phrase.phrase}>Card Builder</h2>
+	<div class="row spaced-out title-bar header">
+		<h2>Card Builder</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 		<div class="header-buttons">
 			<button on:click={back} disabled={$currentPhraseIndex === 0}>Back</button>

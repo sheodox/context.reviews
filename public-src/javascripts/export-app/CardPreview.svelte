@@ -4,10 +4,15 @@
     import {compileAnkiCard} from './SRSConstructor';
     export let card = {};
 
-    function mountPreview(element) {
+	/**
+     * Compile the card's markup, and mount it within a shadow DOM to keep styles separate
+	 * @param element
+	 */
+	function mountPreview(element) {
         const [cardFront, cardBack] = compileAnkiCard(card),
             shadow = element.attachShadow({mode: 'closed'}),
             cardContainer = document.createElement('div');
+        cardContainer.style.padding = '1rem';
         cardContainer.classList.add('card');
         cardContainer.innerHTML = `
             ${cardFront}

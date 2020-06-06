@@ -1,10 +1,12 @@
 <script>
-	const url = location.href;
-
-	function copyUrl() {
-		document.querySelector('#userscript-url').select();
-		document.execCommand('copy');
-	}
+	import ExternalLink from "../ExternalLink.svelte";
+	const jishoSearchBookmarklet = `javascript:(function() {
+			const selection = window.getSelection().toString();
+			if (selection) {
+				window.open('https://jisho.org/search/' + encodeURIComponent(selection))
+			}
+		}())
+		`
 </script>
 <style>
 	ol li {
@@ -13,28 +15,42 @@
 	dt {
 		font-weight: bold;
 	}
+	a:not(:hover) {
+		text-decoration: none;
+	}
+    p {
+		margin: 0;
+	}
+	p.hint {
+		margin-left: 2rem;
+	}
 </style>
 
-<h2>Usage</h2>
+<h2>Setup</h2>
 <ol>
-	<li>
-		<a href="javascripts/jisho-phrase-stasher.user.js">Install this userscript</a>
+    <li>
+		<ExternalLink href="https://www.tampermonkey.net/">Install the Tampermonkey browser extension.</ExternalLink>
 	</li>
 	<li>
-		Go to <a href="https://jisho.org">Jisho.org</a>
+		<!-- not using ExternalLink because it'd leave you with a blank tab as Tampermonkey takes over -->
+		<a href="javascripts/jisho-phrase-stasher.user.js">Click here then click the "install" button on the Tampermonkey page that shows up.</a>
+		This will automatically make a note of all of the searches you make for Japanese words and phrases.
 	</li>
 	<li>
-		<label for="userscript-url">
-			Paste in this url:
-		</label>
-		<input id="userscript-url" type="text" value={url}>
-		<button on:click={copyUrl}>Copy</button>
+		Look up sentences containing unknown words as you read some Japanese.
+        <br>
+		<p class="hint">
+			<strong>Hint!</strong> Drag this link to your bookmark bar: <a href={jishoSearchBookmarklet}>Jisho Search</a>
+			When you are reading a web page you can select some Japanese text then click that bookmark to quickly open a Jisho search!
+		</p>
 	</li>
 	<li>
-		Look up sentences containing unknown words as you read
-	</li>
-	<li>
-		Return here to review!
+		Return here to review and export to an Anki deck!
+		<p class="hint">
+            <strong>Hint!</strong>
+			If you had searched for full sentences you'll see it included as
+			a context sentence on the back of the Anki cards.
+		</p>
 	</li>
 </ol>
 

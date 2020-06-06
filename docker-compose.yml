@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: $PGUSER
+      POSTGRES_PASSWORD: $PGPASSWORD
+      POSTGRES_DB: $PGDATABASE
+    volumes:
+      - type: volume
+        source: postgres
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./config/postgres
+        target: /docker-entrypoint-initdb.d/
+    restart: unless-stopped
+  redis:
+    image: redis:6-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - type: volume
+        source: redis
+        target: /data
+        volume:
+          nocopy: true
+    restart: unless-stopped
+  nginx:
+    image: nginx:1.18
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - type: bind
+        source: ./config/nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+    depends_on:
+      - app
+    restart: unless-stopped
+volumes:
+  postgres:
+  redis:

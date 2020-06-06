@@ -1,22 +1,28 @@
+:root {
+    --accent-blue: #06acfd;
+    --accent-red: #e83450;
+    --accent-purple: #9400ff;
+    --accent-primary: var(--accent-blue);
+    --accent-secondary: var(--accent-red);
+    --accent-pink: #df61ff;
+    --accent-gradient: linear-gradient(to right, #08ffff, #e55eff) fixed;
+    --accent-gradient-faint: linear-gradient(to right, rgba(8, 255, 255, 0.15), rgba(229, 94, 255, 0.15));
+
+    --bg: #0b0f15;
+    --panel-bg: #14171e;
+    --panel-header-bg: #252833;
+    --panel-footer-bg: #111118;
+}
+
 body, #app-root {
     font-size: 14px;
     font-family: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
-    background-color: #0b0f15;
+    background-color: var(--bg);
     color: white;
     margin: 0;
     padding: 0;
     height: 100vh;
-}
-:root {
-    --accent-blue: #06acfd;
-    --accent-red: #e83450;
-    --accent-primary: var(--accent-blue);
-    --accent-secondary: var(--accent-red);
-    --accent-gradient: linear-gradient(to right, var(--accent-red), var(--accent-blue)) fixed;
-    --accent-gradient-faint: linear-gradient(to right, rgba(232, 52, 80, 0.15), rgba(6, 172, 253, 0.15));
-
-    --panel-bg: #151d29;
-    --panel-header-bg: #2a3450;
+    opacity: 1;
 }
 
 * {
@@ -27,15 +33,11 @@ a {
     color: #00B7FF;
 }
 
-#left {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 20px;
-}
-$buttonBG: #1f2b3d;
-button, input[type=submit] {
+$buttonBG: #0a121563;
+$hoverLightenPercent: 10%;
+button, input[type=submit], .button {
     background: $buttonBG;
+    text-decoration: none;
     border-radius: 0.1rem;
     border: none;
     color: #3db4f2;
@@ -45,18 +47,19 @@ button, input[type=submit] {
     line-height: 1;
     font-weight: bold;
     font-size: 0.9rem;
-}
-button:hover {
-    background: lighten($buttonBG, 5%);
+    box-shadow: 0.1rem 0.1rem 0.1rem #1212124f;
+    &:hover {
+        background: lighten($buttonBG, $hoverLightenPercent);
+    }
 }
 
-button.primary {
+button.primary, .button.primary {
     $buttonBG: #3db4f2;
     color: black;
     background: $buttonBG;
 
     &:hover {
-        background: lighten($buttonBG, 5%);
+        background: lighten($buttonBG, $hoverLightenPercent);
     }
 }
 button:disabled, button.primary:disabled {
@@ -65,7 +68,7 @@ button:disabled, button.primary:disabled {
     cursor: auto;
 }
 
-input[type=text], input:not([type]), textarea {
+input[type=text], input:not([type]), textarea, select {
     color: white;
     border: none;
     border-bottom: 0.2rem solid #364962;
@@ -77,7 +80,7 @@ input[type=text], input:not([type]), textarea {
         border-bottom-color: #3db4f2;
     }
 }
-input[type=text], input:not([type]), textarea {
+input[type=text], input:not([type]), textarea, select {
     font-size: 1.1rem;
     height: 2.5rem;
 }
@@ -86,4 +89,39 @@ textarea {
 }
 hr {
     color: white;
+}
+
+label {
+    font-weight: bold;
+}
+
+@mixin base-button($bg) {
+    button:not(.primary) {
+        background: $bg;
+        &:hover:not(:disabled) {
+            background: lighten($bg, $hoverLightenPercent);
+        }
+    }
+    button:disabled {
+        background: darken($bg, 30%);
+    }
+}
+.panel {
+    background: var(--panel-bg);
+    @include base-button(#4a556054);
+}
+.header, header {
+    background: var(--panel-header-bg);
+    @include base-button(#4a556054);
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 0.2rem solid transparent;
+
+    &:hover {
+        border-bottom-color: var(--accent-purple);
+    }
 }
