@@ -81,8 +81,8 @@
 		</div>
 	</div>
 	<p>Please select a word from this context sentence you didn't know, or hit the button above when you're done.</p>
-	<p class="context-sentence" on:mouseup={setSelection}>
-		{phrase.phrase}
+	<p class="context-sentence">
+		<SelectableText text={phrase.phrase} on:text-select={setSelection}/>
 	</p>
 	{#if selection}
 		{#if $definition}
@@ -145,9 +145,9 @@
 	{/if}
 </div>
 <script>
-    import {fly} from 'svelte/transition';
-    import {flip} from 'svelte/animate';
-    import {get} from 'svelte/store';
+	import {fly} from 'svelte/transition';
+	import {flip} from 'svelte/animate';
+	import {get} from 'svelte/store';
 	import {createEventDispatcher} from 'svelte';
 	import DictionarySearchResults from '../definitions/DictionarySearchResults.svelte';
 	import {
@@ -163,6 +163,7 @@
 		currentPhraseIndex,
 		addCard as addCardToStore
 	} from './cardsStore';
+	import SelectableText from "../SelectableText.svelte";
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
 	resetCard();
 
@@ -171,14 +172,14 @@
 	$: context.set(phrase.phrase);
 
 	const DEBOUNCE_TIMEOUT = 500,
-		dispatch = createEventDispatcher();
+			dispatch = createEventDispatcher();
 
 	let selection = '', //what was selected from the phrase
-        searchTerm = '', //what we're searching dictionaries for
-		selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
+			searchTerm = '', //what we're searching dictionaries for
+			selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
 
-	function setSelection() {
-		const selected = window.getSelection().toString().trim();
+	function setSelection(e) {
+		const selected = e.detail
 		if (selected) {
 			selection = selected;
 			searchTerm = selected;
@@ -186,6 +187,7 @@
 	}
 
 	let searchTypingDebounce;
+
 	function onSearchType() {
 		//if escape was pressed twice in a row quickly, it's the clear field shortcut
 		clearTimeout(searchTypingDebounce);
@@ -198,13 +200,14 @@
 
 	function addCard() {
 		addCardToStore(get(card));
-        resetCard();
+		resetCard();
 		selection = '';
 	}
 
 	function done() {
 		dispatch('done');
 	}
+
 	function back() {
 		dispatch('back');
 	}

@@ -96,10 +96,10 @@
 					</tr>
 				</thead>
 
-				<tbody on:mouseup={selected}>
-				{#each visiblePhrases as phrase}
-					<Phrase phrase={phrase} mode={mode} forceShowDelete={forceShowDelete} />
-				{/each}
+				<tbody>
+					{#each visiblePhrases as phrase}
+						<Phrase phrase={phrase} mode={mode} forceShowDelete={forceShowDelete} on:text-select={selected} />
+					{/each}
 				</tbody>
 			</table>
 		{:else}
@@ -158,15 +158,9 @@
 	}
 
 	function selected(e) {
-		//don't read things if they're clicking one of the phrase buttons and happen to have text selected
-		if (e.target.tagName === 'BUTTON') {
-			return;
-		}
-		const text = window.getSelection().toString();
-		if (text) {
-			say(text);
-			selection = text;
-		}
+		const text = e.detail
+		say(text);
+		selection = text;
 	}
 
 	function undo() {

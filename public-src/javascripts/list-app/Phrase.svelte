@@ -1,6 +1,8 @@
 <script>
 	import {say} from '../speech';
 	import phraseStore from '../phraseStore';
+	import SelectableText from "../SelectableText.svelte";
+
 	export let phrase = '';
 	export let mode;
 	export let forceShowDelete = false;
@@ -10,12 +12,15 @@
 	async function deletePhrase() {
 		await phraseStore.action(`remove/${phrase.phrase_id}`);
 	}
+
 	async function hidePhrase() {
 		await phraseStore.action(`hide/${phrase.phrase_id}`);
 	}
+
 	function define() {
 		window.open(`https://jisho.org/search/${encodeURIComponent(phrase.phrase)}`);
 	}
+
 	function read() {
 		say(phrase.phrase);
 	}
@@ -61,7 +66,7 @@
 			<button on:click={read} class="read">音声</button>
 		</td>
 		<td class="phrase">
-			{phrase.phrase}
+			<SelectableText text={phrase.phrase} on:text-select />
 		</td>
 	</tr>
 {/if}
