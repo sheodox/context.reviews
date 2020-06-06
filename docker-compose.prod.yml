@@ -6,7 +6,21 @@ services:
     restart: always
   nginx:
     restart: always
+    volumes:
+      - type: bind
+        source: ./config/nginx/nginx.prod.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+      - ../certbot/conf:/etc/letsencrypt
+      - ../certbot/www:/var/www/certbot
+    depends_on:
+      - certbot
   postgres:
     restart: always
   redis:
     restart: always
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ../certbot/conf:/etc/letsencrypt
+      - ../certbot/www:/var/www/certbot
