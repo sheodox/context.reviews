@@ -9,9 +9,6 @@
 		`
 </script>
 <style>
-	ol li {
-		line-height: 2rem;
-	}
 	dt {
 		font-weight: bold;
 	}
@@ -26,6 +23,11 @@
 	}
     .panel {
 		max-width: 50rem;
+		padding: 1rem;
+		margin: 1rem;
+	}
+	h2 {
+		margin: 0;
 	}
 </style>
 
@@ -47,6 +49,10 @@
 				<strong>Hint!</strong> Drag this link to your bookmark bar: <a href={jishoSearchBookmarklet}>Jisho Search</a>.
 				When you are reading a web page you can select some Japanese text then click that bookmark to quickly open a Jisho search!
 			</p>
+		</li>
+		<li>
+			The first time you make a search on Jisho Tampermonkey will show a warning screen that a userscript is trying to access a cross origin resource.
+			This is expected, it's the script automatically saving your search here so you can review. Just click "Always allow domain".
 		</li>
 		<li>
 			Return here to review and export to an Anki deck!
