@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Context.Reviews Phrase Stasher
 // @namespace    http://context.reviews/
-// @version      1.0.0
+// @version      1.1.0
 // @description  Stores looked up phrases for later review
 // @author       sheodox
 // @match        https://jisho.org/search/*
@@ -25,17 +25,18 @@
             left: 0;
         }
         .context-toast {
-            padding: 0.5rem 1rem;
             margin: 0.3rem;
             border-radius: 0.2rem;
             box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            max-width: 30rem;
         }
         .context-toast a {
             color: black;
         }
         .context-toast img {
-            width: 1rem;
-            height: 1rem;
+            width: 2rem;
+            height: 2rem;
         }
         .context-toast.error {
             background: #e83450;
@@ -48,6 +49,50 @@
         .context-toast.hidden {
             display: none;
         }
+        .context-toast ul {
+            margin: 0;
+            list-style: none;
+        }
+        .context-toast-phrase:hover {
+            background: #3e4553;
+        }
+        .context-toast-phrase {
+            display: flex;
+            padding: 0.2rem;
+        }
+        .context-toast-phrase span {
+            color: white;
+            flex: 1;
+        }
+        .context-toast-phrase span.deleted {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .context-toast-phrase button {
+            flex: 0;
+            margin: 0;
+            padding: 0 0.1rem;
+            border-radius: 3px;
+            white-space: nowrap;
+            color: #3db4f2;
+            background: #252b31;
+            transition: background 0.1s, color 0.1s;
+        }
+        .context-toast-phrase button:disabled {
+            background: #2e3b48;
+            color: #606060;
+        }
+        .context-toast-phrase button:not(:disabled):hover {
+            color: red;
+        }
+        .context-toast-main {
+            margin: 1rem;
+            margin: 0.3rem;
+        }
+        .context-toast-phrase-list {
+            margin: 0.3rem;
+            background: #343944;
+        }
     `;
     mount.innerHTML = `
         <toast v-for="toast in toasts" :toast="toast" :key="toast.text"/>
@@ -55,6 +100,44 @@
     mount.id = "context-reviews-root"
     document.head.appendChild(style);
     document.body.appendChild(mount);
+
+    Vue.component('toast-phrase', {
+        props: ['phrase'],
+        data: function () {
+            return {
+                deleted: false
+            }
+        },
+		template: `
+            <li class="context-toast-phrase">
+                <span :class="{deleted: deleted}">
+                    {{phrase.phrase}}
+                </span>
+                <button @click="removePhrase(phrase.phrase_id)" :disabled="deleted">
+                    削除
+                </button>
+            </li>
+		`,
+        methods: {
+            removePhrase(id) {
+                const url = `{{--server--}}/phrases/remove/${this.phrase.phrase_id}`;
+                GM_xmlhttpRequest({
+                    method: 'GET',
+                    url,
+                    onload: (res) => {
+                    	this.deleted = true;
+                    },
+                    onerror: res => {
+                        createToast({
+                            type: 'error',
+                            ttl: 5000,
+                            text: `Couldn't connect to Context.Reviews. Is the site down?`
+                        })
+                    }
+                });
+            }
+        },
+    })
 
     Vue.component('toast', {
         props: ['toast'],
@@ -65,8 +148,14 @@
         },
         template: `
             <div :class="['context-toast', toast.type, {hidden: hidden}]">
-                <img src="{{--server--}}/favicon.png" alt="Context.Reviews logo"/>
-                <a href="{{--server--}}" target="_blank" rel="noreferrer noopener">{{toast.text}}</a>
+                <div class="context-toast-main">
+                    <img src="{{--server--}}/favicon.png" alt="Context.Reviews logo"/>
+                    <a href="{{--server--}}" target="_blank" rel="noreferrer noopener">{{toast.text}}</a>
+                </div>
+                
+                <ul v-if="toast.phrases" class="context-toast-phrase-list">
+                    <toast-phrase v-for="phrase in toast.phrases" :phrase="phrase" :key="phrase.phrase_id" />
+                </ul>                
             </div>
         `,
         mounted() {
@@ -105,18 +194,22 @@
     
     function record(word) {
         const phrase = word || document.querySelector('#keyword').value,
-            url = `{{--server--}}/phrases/add/${encodeURIComponent(phrase)}`;
+            url = `{{--server--}}/phrases/add/${encodeURIComponent(phrase)}?diff=true`;
         GM_xmlhttpRequest({
             method: 'GET',
             url,
             onload: (res) => {
                 if (res.status === 200) {
                     const phrases = JSON.parse(res.responseText);
-                    createToast({
-                        type: 'success',
-                        ttl: 3000,
-                        text: `Phrase added, you have ${phrases.length} ${phrases.length === 1 ? 'phrase' : 'phrases'}.`
-                    })
+                    //if nothing was actually added, don't show any toasts
+                    if (phrases.length) {
+                        createToast({
+                            type: 'success',
+                            ttl: 5000,
+                            text: `Phrases added.`,
+                            phrases
+                        })
+                    }
                     return;
                 }
 
@@ -126,14 +219,12 @@
                 }[res.status]
                 createToast({
                     type: 'error',
-                    ttl: 3000,
                     text: error || `Error: status code ${res.status}`
                 })
             },
             onerror: res => {
                 createToast({
                     type: 'error',
-                    ttl: 3000,
                     text: `Couldn't connect to Context.Reviews. Is the site down?`
                 })
             }

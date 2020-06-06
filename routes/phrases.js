@@ -8,9 +8,17 @@ const defaultResponse = async (req, res) => {
 	res.json(await tracker.list(getUserId(req)));
 }
 
-router.get('/add/:phrase', async (req, res) => {
-	await tracker.add(getUserId(req), req.params.phrase);
-	defaultResponse(req, res);
+router.get('/add/:search', async (req, res) => {
+	const addedPhrases = await tracker.add(getUserId(req), req.params.search);
+
+	//return only the phrases that were added for the userscript. it will show
+	//them individually and show delete buttons for each phrase to undo adding
+	if (req.query.diff === 'true') {
+		res.json(addedPhrases);
+	}
+	else {
+		defaultResponse(req, res);
+	}
 });
 
 router.get('/list', async (req, res) => {

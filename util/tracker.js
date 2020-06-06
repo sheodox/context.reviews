@@ -23,6 +23,7 @@ class Tracker {
      * @param phrases - a string of phrases, will be broken apart and stored individually
      */
     async add(user_id, phrases) {
+        const newPhrases = [];
         if (!phrases) {
             return;
         }
@@ -39,21 +40,25 @@ class Tracker {
                 )).rows[0];
                 //try to guarantee no duplicate phrases (per user)
                 if (!existing) {
-                    await db.query(
+                    const {rows} = await db.query(
                             `INSERT INTO phrases(user_id, phrase)
-                             VALUES ($1, $2)`,
+                             VALUES ($1, $2) RETURNING phrase, phrase_id`,
                         [user_id, phrase]
-                    )
+                    );
+                    newPhrases.push(rows[0]);
                 }
                 //if the phrase is a duplicate, but the other one was deleted, un-delete it
                 else if (existing.deleted) {
-                    await db.query(
-                        `UPDATE phrases SET deleted=false, deleted_at=null WHERE phrase_id=$1`,
+                    const {rows} = await db.query(
+                        `UPDATE phrases SET deleted=false, deleted_at=null WHERE phrase_id=$1
+                         RETURNING phrase, phrase_id`,
                         [existing.phrase_id]
                     );
+                    newPhrases.push(rows[0]);
                 }
             }
         }
+        return newPhrases;
     }
 
     /**
