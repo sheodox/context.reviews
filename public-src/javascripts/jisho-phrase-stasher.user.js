@@ -38,11 +38,11 @@
             width: 2rem;
             height: 2rem;
         }
-        .context-toast.error {
+        .context-toast.error .context-toast-main {
             background: #e83450;
             color: black;
         }
-        .context-toast.success {
+        .context-toast.success .context-toast-main {
             background: #46fb51;
             color: black;
         }
@@ -86,8 +86,7 @@
             color: red;
         }
         .context-toast-main {
-            margin: 1rem;
-            margin: 0.3rem;
+            padding: 0.3rem;
         }
         .context-toast-phrase-list {
             margin: 0.3rem;
