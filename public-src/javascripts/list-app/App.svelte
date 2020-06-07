@@ -107,13 +107,12 @@
 		{/if}
 	</main>
 
+	<Footer />
 </div>
 
 <aside id="definitions" class="panel">
 	<Definitions term={selection} />
 </aside>
-
-<Footer />
 
 <Toasts />
 
