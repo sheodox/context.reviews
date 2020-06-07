@@ -4,7 +4,7 @@
 // @version      1.1.0
 // @description  Stores looked up phrases for later review
 // @author       sheodox
-// @match        https://jisho.org/search/*
+// @match        https://jisho.org/search*
 // @grant        GM_registerMenuCommand
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getValue
@@ -58,7 +58,7 @@
         }
         .context-toast-phrase {
             display: flex;
-            padding: 0.2rem;
+            padding: 0.4rem;
         }
         .context-toast-phrase span {
             color: white;
