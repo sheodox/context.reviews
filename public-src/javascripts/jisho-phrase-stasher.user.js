@@ -29,7 +29,7 @@
             border-radius: 0.2rem;
             box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.6);
             overflow: hidden;
-            max-width: 30rem;
+            max-width: 20rem;
         }
         .context-toast a {
             color: black;
