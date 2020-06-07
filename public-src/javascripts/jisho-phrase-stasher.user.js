@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Context.Reviews Phrase Stasher
 // @namespace    http://context.reviews/
-// @version      1.1.0
+// @version      1.2.0
 // @description  Stores looked up phrases for later review
 // @author       sheodox
 // @match        https://jisho.org/search*
@@ -93,9 +93,16 @@
             margin: 0.3rem;
             background: #343944;
         }
-    `;
-    mount.innerHTML = `
-        <toast v-for="toast in toasts" :toast="toast" :key="toast.text"/>
+        .ttl-track {
+            height: 0.3rem;
+            background: #343944;
+            border-bottom: 1px solid #343944;
+            width: 100%;
+        }
+        .ttl-bar {
+            background: #3db4f2;
+            height: 100%;
+        }
     `;
     mount.id = "context-reviews-root"
     document.head.appendChild(style);
@@ -140,14 +147,22 @@
     })
 
     Vue.component('toast', {
-        props: ['toast'],
+        props: ['toast', 'frozen'],
         data: function() {
             return {
                 hidden: false,
+                ttlStyle: '100%',
+                ttlMs: null,
+                ttlMax: null,
+                lastFrame: null,
             };
         },
         template: `
             <div :class="['context-toast', toast.type, {hidden: hidden}]">
+                <div class="ttl-track">
+                    <div class="ttl-bar" :style="{width: ttlStyle}" />
+                </div>
+                
                 <div class="context-toast-main">
                     <img src="{{--server--}}/favicon.png" alt="Context.Reviews logo"/>
                     <a href="{{--server--}}" target="_blank" rel="noreferrer noopener">{{toast.text}}</a>
@@ -159,18 +174,54 @@
             </div>
         `,
         mounted() {
+            this.ttlMs = this.toast.ttl || 3000;
+            this.ttlMax = this.ttlMs;
+            this.lastFrame = Date.now();
+
+            //slowly tick down and eventually hide the toast, providing a reverse loading bar showing how much time is left
+            const tickTTL = () => {
+                const now = Date.now();
+                //if the user is hovering over the toasts we don't want them to randomly disappear, they probably want to interact with them
+                if (!this.frozen) {
+                    this.ttlMs -= (now - this.lastFrame);
+                    this.ttlStyle = (this.ttlMs / this.ttlMax) * 100 + '%';
+                }
+
+                this.lastFrame = now;
+                //keep ticking down the timer until the toast TTL has expired, then hide it
+                if (this.ttlMs > 0) {
+                    requestAnimationFrame(tickTTL)
+                }
+                else {
+                    this.hidden = true;
+                }
+            }
+            tickTTL();
             setTimeout(() => {
-                this.hidden = true;
             }, this.toast.ttl || 3000);
         }
     });
 
 
+    mount.innerHTML = `
+        <div @mouseenter="mouseEnter()" @mouseleave="mouseLeave()">
+            <toast v-for="toast in toasts" :toast="toast" :key="toast.text" :frozen="frozen"/>
+        </div>
+    `;
     let createToast;
     const app = new Vue({
         el: mount,
         data: {
-            toasts: []
+            toasts: [],
+            frozen: false,
+        },
+        methods: {
+            mouseEnter() {
+                this.frozen = true;
+            },
+            mouseLeave() {
+                this.frozen = false;
+            }
         },
         mounted() {
             createToast = (toastData) => {
