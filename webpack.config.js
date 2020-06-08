@@ -1,5 +1,6 @@
 const path = require('path'),
 	CopyPlugin = require('copy-webpack-plugin'),
+	ManifestPlugin = require('webpack-manifest-plugin'),
 	isProd = process.argv.includes('production'),
 	buildUserscript = require('./util/build-userscript');
 
@@ -12,7 +13,7 @@ module.exports = {
 		landing: './public-src/javascripts/landing/landing-app.js',
 	},
 	output: {
-		filename: '[name].js',
+		filename: '[name].[contenthash].js',
 		path: path.resolve(__dirname, './public')
 	},
 	resolve: {
@@ -45,6 +46,7 @@ module.exports = {
 					buildUserscript(isProd);
 				})
 			}
-		}
+		},
+		new ManifestPlugin()
 	]
 };

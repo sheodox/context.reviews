@@ -36,7 +36,8 @@
     "svelte": "^3.22.3",
     "svelte-loader": "^2.13.6",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-manifest-plugin": "^2.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

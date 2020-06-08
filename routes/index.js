@@ -3,12 +3,13 @@ const express = require('express'),
     baseLocals = {
         title: 'Context.Reviews',
 		site: 'Context.Reviews',
-		description: 'Study Japanese with any resource!'
+		description: 'Study Japanese with any resource!',
+		manifest: require('../public/manifest.json')
     };
 
 router.get('/', function(req, res, next) {
     if (!req.user) {
-         res.render('landing', baseLocals)
+         res.render('landing', baseLocals);
     }
     else {
         res.render('index', baseLocals);
