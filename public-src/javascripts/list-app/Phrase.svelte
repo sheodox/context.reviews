@@ -11,10 +11,6 @@
 		await phraseStore.action(`remove/${phrase.phrase_id}`);
 	}
 
-	async function hidePhrase() {
-		await phraseStore.action(`hide/${phrase.phrase_id}`);
-	}
-
 	function define() {
 		window.open(`https://jisho.org/search/${encodeURIComponent(phrase.phrase)}`);
 	}
