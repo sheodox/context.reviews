@@ -1,10 +1,13 @@
 const express = require('express'),
     router = express.Router(),
+	manifest = require('../public/manifest.json'),
+	serialize = require('serialize-javascript'),
     baseLocals = {
         title: 'Context.Reviews',
 		site: 'Context.Reviews',
 		description: 'Study Japanese with any resource!',
-		manifest: require('../public/manifest.json')
+		manifest,
+		manifestSerialized: serialize(manifest)
     };
 
 router.get('/', function(req, res, next) {
@@ -21,7 +24,10 @@ router.get('/export', function(req, res, next) {
 	    res.redirect('/');
     }
 	else {
-		res.render('export', {title: 'Anki Export - Context.Reviews'});
+		res.render('export', {
+			...baseLocals,
+			title: 'Anki Export - Context.Reviews'
+		});
 	}
 });
 

@@ -37,8 +37,10 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new CopyPlugin([
-			{from: '**.png', context: './public-src'},
+		new CopyPlugin([{
+			from: '**.png',
+			context: './public-src',
+		},
 			{from: '**/*.user.js', context: './public-src'},
 		]), {
 			apply: compiler => {
