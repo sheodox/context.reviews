@@ -4,8 +4,6 @@
 	import SelectableText from "../SelectableText.svelte";
 
 	export let phrase = '';
-	export let mode;
-	export let forceShowDelete = false;
 
 	let visible = true;
 
@@ -36,9 +34,6 @@
 	.read {
 		color: #2a83c5;
 	}
-	.hide {
-		color: #8893a5;
-	}
 	.buttons {
 		display: flex;
 		flex-direction: row;
@@ -54,19 +49,13 @@
 	}
 </style>
 
-{#if mode !== 'review' || phrase.visible}
-	<tr>
-		<td class="buttons">
-			{#if mode === 'delete' || forceShowDelete}
-				<button on:click={deletePhrase} class="delete">削除</button>
-			{:else if mode === 'review'}
-				<button on:click={hidePhrase} class="hide">非表示</button>
-			{/if}
-			<button on:click={define} class="search">辞書</button>
-			<button on:click={read} class="read">音声</button>
-		</td>
-		<td class="phrase">
-			<SelectableText text={phrase.phrase} on:text-select />
-		</td>
-	</tr>
-{/if}
+<tr>
+	<td class="buttons">
+		<button on:click={deletePhrase} class="delete">削除</button>
+		<button on:click={define} class="search">辞書</button>
+		<button on:click={read} class="read">音声</button>
+	</td>
+	<td class="phrase">
+		<SelectableText text={phrase.phrase} on:text-select />
+	</td>
+</tr>

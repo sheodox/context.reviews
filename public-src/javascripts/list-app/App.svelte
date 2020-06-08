@@ -1,8 +1,4 @@
 <style>
-	#mode-radios {
-		display: flex;
-		justify-content: end;
-	}
 	#left {
 		width: 75%;
 		height: 100%;
@@ -70,35 +66,22 @@
 		<div class="panel" id="toolbar">
 			<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
 			<button on:click={stop}><Icon icon="stop" />Stop Voice</button>
-			{#if mode === 'review'}
-				<button on:click={showAll}><Icon icon="visibility" />Show All</button>
-			{/if}
-			<div id="mode-radios">
-				<label>
-					<input type="radio" bind:group={mode} value="review">
-					Review Mode
-				</label>
-				<label>
-					<input type="radio" bind:group={mode} value="delete">
-					Delete Mode
-				</label>
-			</div>
 			<button on:click={e => showHelp = true}>Help</button>
 		</div>
 		{#if phrases.length === 0}
 			<Help />
-		{:else if visiblePhrases.length > 0}
+		{:else if phrases.length > 0}
 			<table class="panel">
 				<thead>
 					<tr>
 						<th>Actions</th>
-						<th>Phrases ({phraseCountDetails})</th>
+						<th>Phrases ({phrases.length})</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					{#each visiblePhrases as phrase}
-						<Phrase phrase={phrase} mode={mode} forceShowDelete={forceShowDelete} on:text-select={selected} />
+					{#each phrases as phrase}
+						<Phrase phrase={phrase} on:text-select={selected} />
 					{/each}
 				</tbody>
 			</table>
@@ -122,7 +105,7 @@
 
 <Toasts />
 
-<svelte:window on:keydown={keydown} on:keyup={checkModifiers} />
+<svelte:window on:keydown={keydown} />
 
 <script>
 	import Definitions from './DictionarySearchPanel.svelte';
@@ -139,13 +122,7 @@
 
 	let selection = '',
 		showHelp = false,
-		phrases = [],
-		useXHR = false,
-		phraseCountDetails = '',
-		mode = 'delete',
-		forceShowDelete = false,
-		visiblePhrases = [],
-		numVisiblePhrases = 0;
+		phrases = [];
 
 	phraseStore.subscribe(list => {
 		//phrases inits null for toasts (it's null until the list is known) so need a fallback
@@ -153,14 +130,7 @@
 	});
 
 	$: {
-		visiblePhrases = mode !== 'review' ? phrases : phrases.filter(phrase => {
-			return phrase.visible;
-		});
-
-		const numPhrases = phrases.length,
-			reviewedPhrases = numPhrases - visiblePhrases.length;
-		document.title = `${numPhrases} - Japanese Context Sentence Review`;
-		phraseCountDetails = reviewedPhrases === 0 ? numPhrases : `${numPhrases}, ${reviewedPhrases} reviewed`
+		document.title = `${phrases.length} - Context.Reviews`;
 	}
 
 	function selected(e) {
@@ -171,10 +141,6 @@
 
 	function undo() {
 		phraseStore.action('undo');
-	}
-
-	function showAll() {
-		phraseStore.action('show-all')
 	}
 
 	function stop() {
@@ -189,10 +155,5 @@
 		if (e.key === 'z' && e.ctrlKey && e.target.tagName !== 'INPUT') {
 			undo();
 		}
-		checkModifiers(e);
-	}
-
-	function checkModifiers(e) {
-		forceShowDelete = e.shiftKey;
 	}
 </script>
