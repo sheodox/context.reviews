@@ -63,6 +63,9 @@
 		left: 50%;
 		transform: translateX(-50%);
 	}
+	.sentence-select-hint {
+		text-align: center;
+	}
 </style>
 
 <div class="builder" in:fly={{y:50, duration: 100}}>
@@ -80,7 +83,7 @@
 			</button>
 		</div>
 	</div>
-	<p>Please select a word from this context sentence you didn't know, or hit the button above when you're done.</p>
+	<p class="sentence-select-hint">Please select a word from this context sentence you didn't know.</p>
 	<p class="context-sentence">
 		<SelectableText text={phrase.phrase} on:text-select={setSelection}/>
 	</p>
