@@ -65,7 +65,7 @@
 	<main>
 		<div class="panel" id="toolbar">
 			<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
-			<button on:click={stop}><Icon icon="stop" />Stop Voice</button>
+			<button on:click={stop} disabled={!speaking}><Icon icon="stop" />Stop Voice</button>
 			<button on:click={e => showHelp = true}>Help</button>
 		</div>
 		{#if phrases.length === 0}
@@ -122,7 +122,8 @@
 
 	let selection = '',
 		showHelp = false,
-		phrases = [];
+		phrases = [],
+		speaking = false;
 
 	phraseStore.subscribe(list => {
 		//phrases inits null for toasts (it's null until the list is known) so need a fallback
@@ -156,4 +157,10 @@
 			undo();
 		}
 	}
+
+	function eachFrame() {
+		speaking = window.speechSynthesis.speaking;
+		requestAnimationFrame(eachFrame);
+	}
+	eachFrame();
 </script>
