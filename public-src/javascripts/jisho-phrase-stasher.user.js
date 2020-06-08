@@ -63,6 +63,7 @@
         .context-toast-phrase span {
             color: white;
             flex: 1;
+            margin-right: 0.2rem;
         }
         .context-toast-phrase span.deleted {
             text-decoration: line-through;
