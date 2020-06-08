@@ -83,9 +83,9 @@
 					Delete Mode
 				</label>
 			</div>
-			<button on:click={e => showHints = !showHints}>{showHints ? 'List' : 'Help'}</button>
+			<button on:click={e => showHelp = true}>Help</button>
 		</div>
-		{#if showHints || phrases.length === 0}
+		{#if phrases.length === 0}
 			<Help />
 		{:else if visiblePhrases.length > 0}
 			<table class="panel">
@@ -104,6 +104,12 @@
 			</table>
 		{:else}
 			<AllReviewed />
+		{/if}
+
+		{#if showHelp}
+			<Modal title="Help" bind:visible={showHelp}>
+				<Help />
+			</Modal>
 		{/if}
 	</main>
 
@@ -129,9 +135,10 @@
 	import phraseStore from '../phraseStore';
 	import Footer from '../Footer.svelte';
 	import Header from '../Header.svelte';
+	import Modal from '../Modal.svelte';
 
 	let selection = '',
-		showHints = false,
+		showHelp = false,
 		phrases = [],
 		useXHR = false,
 		phraseCountDetails = '',
