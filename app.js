@@ -26,8 +26,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'), {
     setHeaders: (res, path, stat) => {
-    	//don't cache the userscript path, it doesn't use manifest generated content paths
-        if (!path.includes('.user.js')) {
+        if (
+            //don't cache the userscript path, it doesn't use manifest generated content paths
+            !path.includes('.user.js') &&
+            //don't give the base favicon image a long cache time, because it's not easily cache busted for the userscript.
+            //instead we'll just depend on the default etag behavior
+            !path.includes('favicon.png')
+        ) {
             res.set('Cache-Control', 'max-age=3153600');
         }
     }
