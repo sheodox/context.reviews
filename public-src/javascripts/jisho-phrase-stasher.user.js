@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Context.Reviews Phrase Stasher
 // @namespace    http://context.reviews/
-// @version      1.2.0
+// @version      1.2.1
 // @description  Stores looked up phrases for later review
 // @author       sheodox
 // @match        https://jisho.org/search*
