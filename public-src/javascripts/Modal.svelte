@@ -13,8 +13,7 @@
         align-items: center;
     }
     .modal {
-		max-width: 50rem;
-        width: 90vw;
+        max-width: 90vw;
         border-radius: 0.3rem;
         overflow: hidden;
         display: flex;
