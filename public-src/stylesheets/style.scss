@@ -1,7 +1,10 @@
+@import 'button';
+
 :root {
     --accent-blue: #06acfd;
     --accent-red: #e83450;
     --accent-purple: #9400ff;
+    --accent-purple-bright: #b300ff;
     --accent-primary: var(--accent-blue);
     --accent-secondary: var(--accent-red);
     --accent-pink: #df61ff;
@@ -33,41 +36,6 @@ a {
     color: #00B7FF;
 }
 
-$buttonBG: #0a121563;
-$hoverLightenPercent: 10%;
-button, input[type=submit], .button {
-    background: $buttonBG;
-    text-decoration: none;
-    border-radius: 0.1rem;
-    border: none;
-    color: #3db4f2;
-    cursor: pointer;
-    padding: 0.7rem;
-    margin: 0.2rem;
-    line-height: 1;
-    font-weight: bold;
-    font-size: 0.9rem;
-    box-shadow: 0.1rem 0.1rem 0.1rem #1212124f;
-    &:hover {
-        background: lighten($buttonBG, $hoverLightenPercent);
-    }
-}
-
-button.primary, .button.primary {
-    $buttonBG: #3db4f2;
-    color: black;
-    background: $buttonBG;
-
-    &:hover {
-        background: lighten($buttonBG, $hoverLightenPercent);
-    }
-}
-button:disabled, button.primary:disabled {
-    color: black;
-    background: #161d26;
-    cursor: auto;
-}
-
 input[type=text], input:not([type]), textarea, select {
     color: white;
     border: none;
@@ -96,7 +64,7 @@ label {
 }
 
 @mixin base-button($bg) {
-    button:not(.primary) {
+    button:not(.primary):not(.galaxy) {
         background: $bg;
         &:hover:not(:disabled) {
             background: lighten($bg, $hoverLightenPercent);

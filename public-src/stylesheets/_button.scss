@@ -1,0 +1,58 @@
+$buttonBG: #0a121563;
+$hoverLightenPercent: 10%;
+button, input[type=submit], .button {
+    background: $buttonBG;
+    text-decoration: none;
+    border-radius: 0.1rem;
+    border: none;
+    color: #3db4f2;
+    cursor: pointer;
+    padding: 0.7rem;
+    margin: 0.2rem;
+    line-height: 1;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0.1rem 0.1rem 0.1rem #1212124f;
+    &:hover {
+        background: lighten($buttonBG, $hoverLightenPercent);
+    }
+}
+
+button.primary, .button.primary {
+    $buttonBG: #3db4f2;
+    color: black;
+    background: $buttonBG;
+
+    &:hover {
+        background: lighten($buttonBG, $hoverLightenPercent);
+    }
+}
+button:disabled, button.primary:disabled {
+    color: black;
+    background: #161d26;
+    cursor: auto;
+}
+
+@keyframes galaxy-highlight {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 100% 0;
+    }
+}
+
+button:not(:disabled).galaxy, a.galaxy {
+    color: white;
+    $back: var(--accent-purple);
+    $pulse: var(--accent-pink);
+    background: linear-gradient(120deg, $back 0%, $back 40%, $pulse 50%, $back 60%, $back 100%);
+    background-size: 500% 500%;
+    animation: galaxy-highlight 1s;
+    animation-delay: 1s;
+    box-shadow: inset 0 0 1rem rgba(255, 255, 255, 0.6);
+
+    &:hover {
+        background: var(--accent-purple-bright);
+    }
+}
