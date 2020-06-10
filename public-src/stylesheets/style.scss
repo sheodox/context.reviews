@@ -3,6 +3,7 @@
 :root {
     --accent-blue: #06acfd;
     --accent-red: #e83450;
+    --accent-red-bright: #ff0e32;
     --accent-purple: #9400ff;
     --accent-purple-bright: #b300ff;
     --accent-primary: var(--accent-blue);
@@ -64,7 +65,7 @@ label {
 }
 
 @mixin base-button($bg) {
-    button:not(.primary):not(.galaxy) {
+    button:not(.primary):not(.galaxy):not(.danger) {
         background: $bg;
         &:hover:not(:disabled) {
             background: lighten($bg, $hoverLightenPercent);

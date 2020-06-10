@@ -51,11 +51,15 @@
     .phrase-select {
         margin: 1rem 0;
     }
+    h2 {
+        margin-bottom: 1rem;
+    }
 </style>
 
 <aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null} class="panel">
     <h2 class="header">Created Cards</h2>
-    <div class="phrase-select">
+	<CardProgress processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
+	<div class="phrase-select">
 		<label>
 			Skip To Phrase
 			<select bind:value={$currentPhraseIndex}>
@@ -92,6 +96,7 @@
     import {flip} from 'svelte/animate';
     import JapaneseWord from '../definitions/JapaneseWord.svelte';
     import CardPreview from './CardPreview.svelte';
+    import CardProgress from './CardProgress.svelte';
     import {createEventDispatcher} from 'svelte';
     import {get} from 'svelte/store';
     import phraseStore from '../phraseStore';

@@ -56,3 +56,11 @@ button:not(:disabled).galaxy, a.galaxy {
         background: var(--accent-purple-bright);
     }
 }
+
+button.danger:not(:disabled) {
+    background: var(--accent-red);
+    color: black;
+    &:hover {
+        background: var(--accent-red-bright);
+    }
+}

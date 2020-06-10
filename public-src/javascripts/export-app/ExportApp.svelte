@@ -18,6 +18,7 @@
 
 	#card-workspace {
 		flex: 1;
+		display: flex;
 	}
 	.max-height {
 		height: 100%;
@@ -32,11 +33,9 @@
 					<nav>
 						<a href="/"><Icon icon="list" />Back to review list</a>
 					</nav>
-					<CardWizard processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
 					<button
 						id="export-button"
-						class:primary={$currentPhraseIndex === $phraseStore.length}
-						on:click={exportCards}
+						on:click={() => currentPhraseIndex.set($phraseStore.length)}
 						disabled={cards.length === 0}
 					>
 						Export
@@ -54,28 +53,26 @@
                 {#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
                     <CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
                 {/each}
-            {:else if $phraseStore}
-                <AllProcessed
-                    numPhrases={$usedPhrases.length}
-                    numCards={$cardCount}
-                    consumedPhrases={$usedPhrases}
-                    exportClicked={exportClicked}
-                />
-            {/if}
+			{:else if $phraseStore}
+				<Exporter />
+			{/if}
+
 		</div>
+
+
 		<Footer />
-    </div>
+	</div>
 </div>
 
 <svelte:window on:beforeunload={beforeUnload} />
 <script>
-	import SRSConstructor from './SRSConstructor';
+	import {derived} from 'svelte/store';
 	import phraseStore from '../phraseStore';
-	import CardWizard from './CardWizard.svelte';
 	import CardBuilder from './CardBuilder.svelte';
 	import Header from '../Header.svelte';
 	import Icon from '../Icon.svelte';
-	import AllProcessed from "./AllProcessed.svelte";
+	import Exporter from "./Exporter.svelte";
+	import Modal from '../Modal.svelte';
 	import CardList from './CardList.svelte';
 	import Footer from '../Footer.svelte';
 	import {get} from 'svelte/store';
@@ -88,9 +85,18 @@
         usedPhrases,
     } from './cardsStore';
 
-	let exportClicked = false;
+	let showExport = false;
 
 	phraseStore.subscribe(setPhrases);
+
+	const finishedProcessing = derived([currentPhraseIndex, phraseStore], ([currentPhraseIndex, phrases]) => {
+		return phrases && currentPhraseIndex === phrases.length;
+	});
+	finishedProcessing.subscribe(finished => {
+		if (finished) {
+			showExport = true;
+		}
+	})
 
 	function nextPhrase() {
 		currentPhraseIndex.update(phrase => phrase + 1);
@@ -103,14 +109,6 @@
 	function goToPhrase(e) {
         currentPhraseIndex.set(e.detail);
     }
-
-	function exportCards() {
-		const srs = new SRSConstructor();
-        srs.addCards(get(cards));
-		srs.export();
-		//give them a button to delete used phrases, but not until they've tried to download the exported phrases
-		exportClicked = true;
-	}
 
 	function beforeUnload(e) {
 		if (get(cardCount) > 0) {

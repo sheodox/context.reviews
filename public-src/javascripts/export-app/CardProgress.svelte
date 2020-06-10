@@ -1,17 +1,22 @@
 <style>
+	div {
+		display: flex;
+	}
+	label {
+		white-space: nowrap;
+		margin-right: 0.2rem;
+	}
 </style>
 
 <div>
 	<label for="processed-phrases">
-		Phrases processed
+		Phrases processed:
 	</label>
-    <br>
 	<progress id="processed-phrases" value={processedPhrases} max={totalPhrases} title="{processedPhrases} / {totalPhrases}"></progress>
 </div>
 
 
 <script>
-	import CardBuilder from "./CardBuilder.svelte";
     export let processedPhrases = 0;
     export let totalPhrases = 1;
 </script>

@@ -73,13 +73,14 @@
 		<h2>Card Builder</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 		<div class="header-buttons">
-			<button on:click={back} disabled={$currentPhraseIndex === 0}>Back</button>
+			<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="arrow_back_ios" />Back</button>
 			<button on:click={done} class="done" class:primary={!selection && $currentPhraseCardCount}>
 				{#if $currentPhraseCardCount}
 					Next phrase
 				{:else}
 					Skip this phrase
 				{/if}
+				<Icon icon="arrow_forward_ios" />
 			</button>
 		</div>
 	</div>
@@ -167,6 +168,7 @@
 		addCard as addCardToStore
 	} from './cardsStore';
 	import SelectableText from "../SelectableText.svelte";
+	import Icon from '../Icon.svelte';
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
 	resetCard();
 
