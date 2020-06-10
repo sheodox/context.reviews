@@ -1,0 +1,7 @@
+body {
+    /*
+    when definitions show up there will almost always be a scrollbar, so lets show a scrollbar all the time
+    so that the page doesn't shift left/right a bit when the scrollbar appears
+     */
+    overflow-y: scroll;
+}
