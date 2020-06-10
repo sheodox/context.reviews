@@ -81,7 +81,7 @@
 		</ol>
 	{:else}
 		<p>You didn't create any cards!</p>
-		<button class="primary" on:click={() => currentPhraseIndex.set(0)}>Start Over</button>
+		<button class="primary" on:click={() => dispatch('restart')}>Start Over</button>
 	{/if}
 </div>
 

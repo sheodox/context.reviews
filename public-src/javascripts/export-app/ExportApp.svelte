@@ -19,6 +19,9 @@
 	#card-workspace {
 		flex: 1;
 		display: flex;
+		width: 95vw;
+		max-width: 90rem;
+		justify-content: center;
 	}
 	.max-height {
 		height: 100%;
@@ -48,7 +51,10 @@
 
 		<div class="row" id="card-workspace">
 			{#if showExport}
-				<Exporter on:back={() => showExport = false} />
+				<Exporter
+					on:back={() => showExport = false}
+					on:restart={() => {showExport = false; currentPhraseIndex.set(0)}}
+				/>
             {:else if $phraseStore}
 				<CardList cards={cards} on:goToPhrase={goToPhrase}/>
                 <!-- using a keyed each for one element so it always rebuilds -->
