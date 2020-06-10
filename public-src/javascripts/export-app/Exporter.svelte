@@ -35,7 +35,7 @@
 	<div class="header">
 		<h1>Export</h1>
 		<button
-			on:click={() => currentPhraseIndex.set($phraseStore.length - 1)}
+			on:click={() => dispatch('back')}
 		><Icon icon="arrow_back_ios" />Back</button>
 	</div>
 
@@ -86,6 +86,7 @@
 </div>
 
 <script>
+	import {createEventDispatcher} from 'svelte';
 	import {get} from 'svelte/store';
 	import phraseStore from '../phraseStore';
 	import {
@@ -101,7 +102,8 @@
 	let phrasesDeleted = false,
 		exportClicked = false,
 		deleting;
-	const srs = new SRSConstructor(),
+	const dispatch = createEventDispatcher(),
+		srs = new SRSConstructor(),
 		numCards = get(cardCount),
 		consumedPhrases = get(usedPhrases),
 		numPhrases = consumedPhrases.length;

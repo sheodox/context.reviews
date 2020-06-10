@@ -35,7 +35,7 @@
 					</nav>
 					<button
 						id="export-button"
-						on:click={() => currentPhraseIndex.set($phraseStore.length)}
+						on:click={() => showExport = true}
 						disabled={cards.length === 0}
 					>
 						Export
@@ -47,14 +47,14 @@
 		</Header>
 
 		<div class="row" id="card-workspace">
-            {#if $phraseStore && $currentPhraseIndex < $phraseStore.length}
+			{#if showExport}
+				<Exporter on:back={() => showExport = false} />
+            {:else if $phraseStore}
 				<CardList cards={cards} on:goToPhrase={goToPhrase}/>
                 <!-- using a keyed each for one element so it always rebuilds -->
                 {#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
                     <CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
                 {/each}
-			{:else if $phraseStore}
-				<Exporter />
 			{/if}
 
 		</div>
@@ -85,21 +85,19 @@
         usedPhrases,
     } from './cardsStore';
 
+	phraseStore.subscribe(setPhrases);
 	let showExport = false;
 
-	phraseStore.subscribe(setPhrases);
-
-	const finishedProcessing = derived([currentPhraseIndex, phraseStore], ([currentPhraseIndex, phrases]) => {
-		return phrases && currentPhraseIndex === phrases.length;
-	});
-	finishedProcessing.subscribe(finished => {
-		if (finished) {
-			showExport = true;
-		}
-	})
-
 	function nextPhrase() {
-		currentPhraseIndex.update(phrase => phrase + 1);
+		const numPhrases = get(phraseStore).length;
+		currentPhraseIndex.update(index => {
+			if (index + 1 < numPhrases) {
+				return index + 1;
+			}
+			showExport = true;
+			//maintain the current index if they're hitting 'next' on the last phrase
+			return index;
+		});
 	}
 
 	function prevPhrase() {
