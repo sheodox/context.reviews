@@ -87,6 +87,10 @@ function createTemplates() {
 					border-radius: 3px;
 					background: ${getCSSVar('panel-bg')};
 				}
+				.dictionary-form {
+					font-size: 1.3rem;
+					margin: 0;
+				}
 			</style>
 		`,
 		ankiFrontTemplate = Handlebars.compile(`
@@ -177,6 +181,10 @@ export function compileAnkiCard(c) {
 	card.showOriginal = card.word !== card.definition.word || card.reading !== card.definition.reading;
 	//don't want to repeat ourselves for only-kana words
 	card.showReading = card.word !== card.reading;
+	//don't show furigana in the dictionary definition if it's the same as the word itself
+	if (card.definition.reading === card.definition.word) {
+		card.definition.reading = '';
+	}
 
 	return [
 		ankiFrontTemplate(card),
