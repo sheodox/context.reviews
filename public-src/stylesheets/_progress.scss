@@ -1,0 +1,19 @@
+progress {
+    -webkit-appearance: none;
+    background: var(--bg);
+    border-radius: 0.2rem;
+    border: none;
+    overflow: hidden;
+
+    &::-webkit-progress-bar {
+        background: var(--bg);
+    }
+    &::-moz-progress-bar {
+        background: var(--accent-gradient);
+        background-attachment: local;
+    }
+    &::-webkit-progress-value {
+        background: var(--accent-gradient);
+        background-attachment: local;
+    }
+}

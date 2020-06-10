@@ -1,18 +1,22 @@
 <style>
 	div {
 		display: flex;
+        flex-direction: column;
 	}
 	label {
 		white-space: nowrap;
 		margin-right: 0.2rem;
 	}
+	progress {
+		flex: 1;
+	}
 </style>
 
 <div>
 	<label for="processed-phrases">
-		Phrases processed:
+		Phrases processed ({processedPhrases}/{totalPhrases})
 	</label>
-	<progress id="processed-phrases" value={processedPhrases} max={totalPhrases} title="{processedPhrases} / {totalPhrases}"></progress>
+	<progress id="processed-phrases" value={processedPhrases} max={totalPhrases}></progress>
 </div>
 
 
