@@ -22,7 +22,7 @@
 		margin: 0;
 		flex: 1;
 	}
-	button {
+	button, a[download] {
 		align-self: center;
 	}
 	.panel {
@@ -44,18 +44,21 @@
 			Time to export!
             You created {numCards} {numCards === 1 ? 'card' : 'cards'} from {numPhrases} {numPhrases === 1 ? 'phrase' : 'phrases'}.
 		</p>
-		<button
-			class="galaxy"
-			on:click={exportCards}
+		<a
+			class="button galaxy"
+			href={exported.href}
+			on:click={enableDelete}
+			on:contextmenu={() => enableDelete(2000)}
+			download={exported.fileName}
 		>
 			<Icon icon="get_app" />Download Deck
-		</button>
+		</a>
 		{#if !phrasesDeleted}
 			<button
-					on:click={deleteConsumed}
-					disabled={!exportClicked}
-					class="danger"
-					title={!exportClicked ? 'not available until the anki export is downloaded' : ''}
+				on:click={deleteConsumed}
+				disabled={!exportClicked}
+				class="danger"
+				title={!exportClicked ? 'not available until the anki export is downloaded' : ''}
 			>
 				<Icon icon="delete" />
 				Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
@@ -96,19 +99,22 @@
 	import SRSConstructor from './SRSConstructor';
 
 	let phrasesDeleted = false,
-		// don't offer to delete used phrases until they've actually tried to download the exported phrases
 		exportClicked = false,
 		deleting;
-	const numCards = get(cardCount),
+	const srs = new SRSConstructor(),
+		numCards = get(cardCount),
 		consumedPhrases = get(usedPhrases),
 		numPhrases = consumedPhrases.length;
+	srs.addCards(get(cards));
+	const exported = srs.export();
 
-	function exportCards() {
-		const srs = new SRSConstructor();
-		srs.addCards(get(cards));
-		srs.export();
-		//give them a button to delete used phrases, but not until they've tried to download the exported phrases
-		exportClicked = true;
+	function enableDelete(delay=0) {
+		//to prevent the user from deleting the phrases they used and forgetting to download the deck, we don't enable
+		//the button until they've interacted with the download link. this is called from a timer on right click because it's
+		//assumed they're trying to hit "Save Link As..." and that just takes a bit longer
+		setTimeout(() => {
+			exportClicked = true;
+		}, delay)
 	}
 
 	async function deleteConsumed() {

@@ -11,14 +11,13 @@ export default class SRSConstructor {
 	}
 	export() {
 		const exported =  ankiExport(this.cards),
-			a = document.createElement('a'),
 			blob = new Blob([exported], {type: 'text/plain'}),
 			d = new Date();
-		a.download = `context-sentence-anki-export-${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}.txt`;
-		a.href = URL.createObjectURL(blob);
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
+
+		return {
+			fileName: `context-reviews-anki-export-${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}.txt`,
+			href: URL.createObjectURL(blob)
+		};
 	}
 }
 
