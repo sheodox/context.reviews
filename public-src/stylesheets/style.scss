@@ -66,7 +66,7 @@ label {
 }
 
 @mixin base-button($bg) {
-    button:not(.primary):not(.galaxy):not(.danger) {
+    button:not(.primary):not(.galaxy):not(.danger):enabled {
         background: $bg;
         &:hover:not(:disabled) {
             background: lighten($bg, $hoverLightenPercent);
