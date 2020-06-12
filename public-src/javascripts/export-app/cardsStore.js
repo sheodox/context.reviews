@@ -4,18 +4,20 @@ import {card} from "./currentCardStore";
 
 export const cardsByPhrase = writable(new Map());
 
+function primeMap(baseMap, phraseList) {
+	phraseList.forEach(phrase => {
+		if (!baseMap.has(phrase.phrase)) {
+			baseMap.set(phrase.phrase, []);
+		}
+	})
+	return new Map(baseMap);
+}
+
 export const setPhrases = (phraseList) => {
 	if (!phraseList) {
 		return;
 	}
-	cardsByPhrase.update(phraseMap => {
-		phraseList.forEach(phrase => {
-			if (!phraseMap.has(phrase.phrase)) {
-				phraseMap.set(phrase.phrase, []);
-			}
-		})
-		return new Map(phraseMap);
-	})
+	cardsByPhrase.update(phraseMap => primeMap(phraseMap, phraseList));
 }
 
 export const addCard = (card) => {
@@ -59,6 +61,12 @@ export const usedPhrases = derived(cards, cards => {
 	cards.forEach(({context}) => phraseSet.add(context));
 	return Array.from(phraseSet);
 })
+
+export function reset() {
+	//re-prime cardsByPhrase with the current list
+	cardsByPhrase.set(primeMap(new Map(), get(phraseStore)));
+	currentPhraseIndex.set(0);
+}
 
 //subscribe to all stores so they can be used internally without `get()`
 const cached = new Map();

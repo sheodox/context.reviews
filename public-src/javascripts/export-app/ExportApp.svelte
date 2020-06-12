@@ -53,7 +53,7 @@
 			{#if showExport}
 				<Exporter
 					on:back={() => showExport = false}
-					on:restart={() => {showExport = false; currentPhraseIndex.set(0)}}
+					on:restart={startOver}
 				/>
             {:else if $phraseStore}
 				<CardList cards={cards} on:goToPhrase={goToPhrase}/>
@@ -89,6 +89,7 @@
         currentPhraseIndex,
         cardCount,
         usedPhrases,
+		reset as resetCardsStores
     } from './cardsStore';
 
 	phraseStore.subscribe(setPhrases);
@@ -120,4 +121,9 @@
             e.returnValue = '';
         }
     }
+
+    function startOver() {
+		resetCardsStores()
+		showExport = false;
+	}
 </script>

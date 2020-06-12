@@ -34,9 +34,15 @@
 <div class="panel">
 	<div class="header">
 		<h1>Export</h1>
-		<button
-			on:click={() => dispatch('back')}
-		><Icon icon="arrow_back_ios" />Back</button>
+		{#if phrasesDeleted}
+			<button
+				on:click={() => dispatch('restart')}
+			><Icon icon="arrow_back_ios" />Start Over</button>
+		{:else}
+			<button
+				on:click={() => dispatch('back')}
+			><Icon icon="arrow_back_ios" />Back</button>
+		{/if}
 	</div>
 
 	{#if numCards > 0}
