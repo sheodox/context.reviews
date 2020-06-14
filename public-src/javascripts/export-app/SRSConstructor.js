@@ -60,7 +60,7 @@ function createTemplates() {
 					padding: 0 0.2rem;
 					border-radius: 2px;
 				}
-				a.source {
+				.source {
 					text-transform: capitalize;
 					font-size: 0.7rem;
 				}
@@ -152,7 +152,12 @@ function createTemplates() {
 			{{#if context}}
 				<p class="context">Context: 「{{context}}」</p>
 			{{/if}}
-			<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
+			{{#if definition.href}}
+				<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
+			{{/if}}
+			{{#unless definition.href}}
+				<p class="source">Definition source: {{source}}</p>
+			{{/unless}}
 		`);
 
 	return [
