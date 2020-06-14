@@ -7,7 +7,11 @@
 		white-space: nowrap;
 		margin-right: 0.2rem;
 	}
-	progress {
+	.progress-border {
+		background: var(--accent-gradient);
+		background-attachment: local;
+		padding: 0.15rem;
+		border-radius: 0.2rem;
 		flex: 1;
 	}
 </style>
@@ -16,7 +20,9 @@
 	<label for="processed-phrases">
 		Phrases processed ({processedPhrases}/{totalPhrases})
 	</label>
-	<progress id="processed-phrases" value={processedPhrases} max={totalPhrases}></progress>
+    <div class="progress-border">
+		<progress id="processed-phrases" value={processedPhrases} max={totalPhrases}></progress>
+	</div>
 </div>
 
 
