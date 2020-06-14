@@ -1,9 +1,7 @@
-<span bind:this={textElement}>
+<!-- use mouseup to short circuit the selectionchange debounce -->
+<span bind:this={textElement} on:mouseup={onSelection}>
     {text}
 </span>
-
-<!-- use mouseup to short circuit the selectionchange debounce -->
-<svelte:body on:mouseup={onSelection} />
 
 <script>
     import {
