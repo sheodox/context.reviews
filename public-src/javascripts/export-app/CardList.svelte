@@ -1,6 +1,5 @@
 <style>
     aside {
-        padding: 1rem;
         margin: 1rem;
         flex: 1;
         position: relative;
@@ -49,44 +48,43 @@
     .phrase-select {
         margin: 1rem 0;
     }
-    h2 {
-        margin-bottom: 1rem;
-    }
 </style>
 
 <aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null} class="panel">
     <h2 class="header">Created Cards</h2>
-	<CardProgress processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
-	<div class="phrase-select">
-		<label>
-			Skip To Phrase
-			<select bind:value={$currentPhraseIndex}>
-                {#each Array.from($cardsByPhrase) as [phrase], index}
-					<option value={index}>{phrase}</option>
-                {/each}
-			</select>
-		</label>
-	</div>
-	<ul>
-        {#each cardSlice($cardsByPhrase, $currentPhrase) as card}
-            <li in:fade={{duration: 100}} on:mouseenter={() => previewCard = card} >
+    <div class="panel-body">
+		<CardProgress processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
+		<div class="phrase-select">
+			<label>
+				Skip To Phrase
+				<select bind:value={$currentPhraseIndex}>
+                    {#each Array.from($cardsByPhrase) as [phrase], index}
+						<option value={index}>{phrase}</option>
+                    {/each}
+				</select>
+			</label>
+		</div>
+		<ul>
+            {#each cardSlice($cardsByPhrase, $currentPhrase) as card}
+				<li in:fade={{duration: 100}} on:mouseenter={() => previewCard = card} >
                 <span class="word">
                     <JapaneseWord word={card.word} reading={card.reading}/>
                 </span>
-                <button on:click={() => removeCard($currentPhrase, card)}>Remove</button>
-            </li>
-        {:else}
-            <li class="no-cards">No cards for this phrase yet.</li>
-        {/each}
-	</ul>
+					<button on:click={() => removeCard($currentPhrase, card)}>Remove</button>
+				</li>
+            {:else}
+				<li class="no-cards">No cards for this phrase yet.</li>
+            {/each}
+		</ul>
 
-    {#if previewCard}
-        {#each [previewCard] as preview (preview)}
-            <div class="preview-container">
-				<CardPreview card={preview} />
-            </div>
-        {/each}
-    {/if}
+        {#if previewCard}
+            {#each [previewCard] as preview (preview)}
+				<div class="preview-container">
+					<CardPreview card={preview} />
+				</div>
+            {/each}
+        {/if}
+	</div>
 </aside>
 
 <script>

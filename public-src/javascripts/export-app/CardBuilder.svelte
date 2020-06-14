@@ -2,13 +2,11 @@
     .builder {
 		background: var(--panel-bg);
 		margin: 1rem;
-		padding: 1rem;
 		flex: 3;
 		display: flex;
 		flex-direction: column;
 	}
 	.title-bar {
-		padding: 0 1rem;
 		align-items: center;
 	}
 	.context-sentence {
@@ -43,6 +41,7 @@
 		text-overflow: ellipsis;
         overflow: hidden;
 		white-space: nowrap;
+		margin: 0;
 	}
 	button.done {
 		white-space: nowrap;
@@ -87,76 +86,78 @@
 			</button>
 		</div>
 	</div>
-	<p class="sentence-select-hint">Please select a word from this context sentence you didn't know.</p>
-	<p class="context-sentence">
-		<SelectableText text={phrase.phrase} on:text-select={setSelection}/>
-	</p>
-	{#if selection}
-		{#if $definition}
-			<div class="row centered">
-			<div class="row tweaks" in:fly={{y: 50}}>
-				<div class="column">
-					<label for="tweak-word">Word</label>
-                    <div>
-						<input id="tweak-word" bind:value={$word} />
-						<button
-								on:click={() => word.set(get(reading))}
-								title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
-								disabled={$word === $reading}
-						>
-							Use Kana
-						</button>
-					</div>
-				</div>
+	<div class="panel-body">
+		<p class="sentence-select-hint">Please select a word from this context sentence you didn't know.</p>
+		<p class="context-sentence">
+			<SelectableText text={phrase.phrase} on:text-select={setSelection}/>
+		</p>
+		{#if selection}
+			{#if $definition}
+				<div class="row centered">
+					<div class="row tweaks" in:fly={{y: 50}}>
+						<div class="column">
+							<label for="tweak-word">Word</label>
+							<div>
+								<input id="tweak-word" bind:value={$word} />
+								<button
+										on:click={() => word.set(get(reading))}
+										title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
+										disabled={$word === $reading}
+								>
+									Use Kana
+								</button>
+							</div>
+						</div>
 
-				<div class="column">
-					<label for="tweak-reading">Reading</label>
-					<input id="tweak-reading" bind:value={$reading} />
-				</div>
+						<div class="column">
+							<label for="tweak-reading">Reading</label>
+							<input id="tweak-reading" bind:value={$reading} />
+						</div>
 
-				<div class="column">
-					<button
-						class="primary"
-						on:click={addCard}
-						disabled={!$word}
-					>
-						Add Card
-					</button>
-				</div>
-				</div>
-			</div>
-		{/if}
-
-		{#if showMeaningEditor}
-        	<button on:click={() => showMeaningEditor = false} class="edit-definition"><Icon icon="clear" />Discard Custom Definition</button>
-			<MeaningEditor bind:meanings={$definition.meanings} />
-		{:else}
-			<div class="definition-area">
-				<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
-				<!-- using a keyed each for one element so it always rebuilds -->
-				{#each [selection] as sel (sel) }
-					<div class="column" in:fly={{y: 50}} >
-						<div class="definitions">
-							<DictionarySearchResults
-								source="jisho"
-								isPrimary={true}
-								term={sel}
-								mode="export"
-								on:editDefinition={() => showMeaningEditor = true}
-							/>
-							<DictionarySearchResults
-								source="goo"
-								isPrimary={false}
-								term={sel}
-								mode="export"
-								on:editDefinition={() => showMeaningEditor = true}
-							/>
+						<div class="column">
+							<button
+									class="primary"
+									on:click={addCard}
+									disabled={!$word}
+							>
+								Add Card
+							</button>
 						</div>
 					</div>
-				{/each}
-			</div>
+				</div>
+			{/if}
+
+			{#if showMeaningEditor}
+				<button on:click={() => showMeaningEditor = false} class="edit-definition"><Icon icon="clear" />Discard Custom Definition</button>
+				<MeaningEditor bind:meanings={$definition.meanings} />
+			{:else}
+				<div class="definition-area">
+					<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
+					<!-- using a keyed each for one element so it always rebuilds -->
+					{#each [selection] as sel (sel) }
+						<div class="column" in:fly={{y: 50}} >
+							<div class="definitions">
+								<DictionarySearchResults
+										source="jisho"
+										isPrimary={true}
+										term={sel}
+										mode="export"
+										on:editDefinition={() => showMeaningEditor = true}
+								/>
+								<DictionarySearchResults
+										source="goo"
+										isPrimary={false}
+										term={sel}
+										mode="export"
+										on:editDefinition={() => showMeaningEditor = true}
+								/>
+							</div>
+						</div>
+					{/each}
+				</div>
+			{/if}
 		{/if}
-	{/if}
+	</div>
 </div>
 <script>
 	import {fly} from 'svelte/transition';

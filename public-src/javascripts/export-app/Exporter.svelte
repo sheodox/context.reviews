@@ -6,12 +6,6 @@
 	div {
 		text-align: center;
 	}
-	.panel {
-		padding: 1rem;
-		border-radius: 0.2rem;
-		display: flex;
-		flex-direction: column;
-	}
 	.header {
 		padding: 1rem;
 		display: flex;
@@ -45,50 +39,52 @@
 		{/if}
 	</div>
 
-	{#if numCards > 0}
-		<p>
-			Time to export!
-            You created {numCards} {numCards === 1 ? 'card' : 'cards'} from {numPhrases} {numPhrases === 1 ? 'phrase' : 'phrases'}.
-		</p>
-		<a
-			class="button galaxy"
-			href={exported.href}
-			on:click={enableDelete}
-			on:contextmenu={() => enableDelete(2000)}
-			download={exported.fileName}
-		>
-			<Icon icon="get_app" />Download Deck
-		</a>
-		{#if !phrasesDeleted}
-			<button
-				on:click={deleteConsumed}
-				disabled={!exportClicked}
-				class="danger"
-				title={!exportClicked ? 'not available until the anki export is downloaded' : ''}
+	<div class="panel-body">
+		{#if numCards > 0}
+			<p>
+				Time to export!
+				You created {numCards} {numCards === 1 ? 'card' : 'cards'} from {numPhrases} {numPhrases === 1 ? 'phrase' : 'phrases'}.
+			</p>
+			<a
+					class="button galaxy"
+					href={exported.href}
+					on:click={enableDelete}
+					on:contextmenu={() => enableDelete(2000)}
+					download={exported.fileName}
 			>
-				<Icon icon="delete" />
-				Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
-			</button>
+				<Icon icon="get_app" />Download Deck
+			</a>
+			{#if !phrasesDeleted}
+				<button
+						on:click={deleteConsumed}
+						disabled={!exportClicked}
+						class="danger"
+						title={!exportClicked ? 'not available until the anki export is downloaded' : ''}
+				>
+					<Icon icon="delete" />
+					Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
+				</button>
+			{/if}
+			{#if deleting}
+				{#await deleting}
+					<Loading />
+				{:catch error}
+					<p>An error occurred deleting phrases!</p>
+				{/await}
+			{/if}
+			<h2>
+				How to import
+			</h2>
+			<ol>
+				<li>Select a deck in Anki, then hit "File" → "Import..."</li>
+				<li>Ensure "Allow HTML in Fields" is checked, and "Fields separated by" is set to semicolon.</li>
+				<li>Field mapping should be <strong>Field 1: Front, Field 2: Back.</strong> This will probably be the default.</li>
+			</ol>
+		{:else}
+			<p>You didn't create any cards!</p>
+			<button class="primary" on:click={() => dispatch('restart')}>Start Over</button>
 		{/if}
-		{#if deleting}
-			{#await deleting}
-				<Loading />
-			{:catch error}
-				<p>An error occurred deleting phrases!</p>
-			{/await}
-		{/if}
-		<h2>
-			How to import
-		</h2>
-		<ol>
-			<li>Select a deck in Anki, then hit "File" → "Import..."</li>
-			<li>Ensure "Allow HTML in Fields" is checked, and "Fields separated by" is set to semicolon.</li>
-			<li>Field mapping should be <strong>Field 1: Front, Field 2: Back.</strong> This will probably be the default.</li>
-		</ol>
-	{:else}
-		<p>You didn't create any cards!</p>
-		<button class="primary" on:click={() => dispatch('restart')}>Start Over</button>
-	{/if}
+	</div>
 </div>
 
 <script>

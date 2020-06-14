@@ -79,6 +79,22 @@ label {
 .panel {
     background: var(--panel-bg);
     @include base-button(#4a556054);
+    padding: 0;
+    margin: 0;
+    border-radius: 0.2rem;
+
+    > {
+        header, .header {
+            &:first-child {
+                padding: 1rem;
+                border-radius: 0.2rem 0.2rem 0 0;
+            }
+        }
+
+    }
+    .panel-body {
+        padding: 1rem;
+    }
 }
 .header, header {
     background: var(--panel-header-bg);
