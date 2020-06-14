@@ -48,6 +48,16 @@
     .phrase-select {
         margin: 1rem 0;
     }
+    .panel-body {
+        display: flex;
+        flex-direction: column;
+    }
+	@media (max-width: 1400px) {
+		.preview-container {
+            position: static;
+            align-self: center;
+		}
+	}
 </style>
 
 <aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null} class="panel">
