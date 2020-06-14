@@ -31,6 +31,7 @@
 							source={source}
 							definition={definition}
 							mode={mode}
+							on:editDefinition
 						/>
 					{/each}
 				{:else}

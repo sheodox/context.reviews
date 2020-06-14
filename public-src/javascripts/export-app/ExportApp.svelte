@@ -22,6 +22,14 @@
 		width: 95vw;
 		max-width: 90rem;
 		justify-content: center;
+		align-items: start;
+	}
+	@media (max-width: 1400px) {
+		#card-workspace {
+			flex-direction: column;
+			align-items: center;
+		}
+
 	}
 	.max-height {
 		height: 100%;
@@ -64,7 +72,6 @@
 			{/if}
 
 		</div>
-
 
 		<Footer />
 	</div>

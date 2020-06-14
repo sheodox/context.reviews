@@ -80,6 +80,9 @@
 		{#if definition.reading}
 			<button on:click={() => say(definition.reading)} class="small">Say reading</button>
 		{/if}
+		{#if mode === 'export' && isWordSelected($card.id)}
+			<button on:click={() => dispatch('editDefinition')} class="small">Edit</button>
+		{/if}
 		<ol>
 			{#each definition.meanings as meaning}
 				<li>

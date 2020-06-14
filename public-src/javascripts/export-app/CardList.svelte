@@ -1,7 +1,5 @@
 <style>
     aside {
-        max-width: 30rem;
-        align-self: flex-start;
         padding: 1rem;
         margin: 1rem;
         flex: 1;

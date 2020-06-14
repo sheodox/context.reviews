@@ -3,9 +3,9 @@
 		background: var(--panel-bg);
 		margin: 1rem;
 		padding: 1rem;
-		max-width: 950px;
-		align-self: flex-start;
 		flex: 3;
+		display: flex;
+		flex-direction: column;
 	}
 	.title-bar {
 		padding: 0 1rem;
@@ -66,9 +66,12 @@
 	.sentence-select-hint {
 		text-align: center;
 	}
+	button.edit-definition {
+		align-self: center;
+	}
 </style>
 
-<div class="builder" in:fly={{y:50, duration: 100}}>
+<div class="builder panel" in:fly={{y:50, duration: 100}}>
 	<div class="row spaced-out title-bar header">
 		<h2>Card Builder</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
@@ -124,28 +127,35 @@
 			</div>
 		{/if}
 
-		<div class="definition-area">
-			<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
-			<!-- using a keyed each for one element so it always rebuilds -->
-			{#each [selection] as sel (sel) }
-				<div class="column" in:fly={{y: 50}} >
-					<div class="definitions">
-						<DictionarySearchResults
-							source="jisho"
-							isPrimary={true}
-							term={sel}
-							mode="export"
-						/>
-						<DictionarySearchResults
-							source="goo"
-							isPrimary={false}
-							term={sel}
-							mode="export"
-						/>
+		{#if showMeaningEditor}
+        	<button on:click={() => showMeaningEditor = false} class="edit-definition"><Icon icon="clear" />Discard Custom Definition</button>
+			<MeaningEditor bind:meanings={$definition.meanings} />
+		{:else}
+			<div class="definition-area">
+				<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
+				<!-- using a keyed each for one element so it always rebuilds -->
+				{#each [selection] as sel (sel) }
+					<div class="column" in:fly={{y: 50}} >
+						<div class="definitions">
+							<DictionarySearchResults
+								source="jisho"
+								isPrimary={true}
+								term={sel}
+								mode="export"
+								on:editDefinition={() => showMeaningEditor = true}
+							/>
+							<DictionarySearchResults
+								source="goo"
+								isPrimary={false}
+								term={sel}
+								mode="export"
+								on:editDefinition={() => showMeaningEditor = true}
+							/>
+						</div>
 					</div>
-				</div>
-			{/each}
-		</div>
+				{/each}
+			</div>
+		{/if}
 	{/if}
 </div>
 <script>
@@ -159,6 +169,7 @@
 		resetCard,
 		word,
 		reading,
+		source,
 		definition,
 		context
 	} from './currentCardStore';
@@ -169,6 +180,7 @@
 	} from './cardsStore';
 	import SelectableText from "../SelectableText.svelte";
 	import Icon from '../Icon.svelte';
+	import MeaningEditor from './MeaningEditor.svelte';
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
 	resetCard();
 
@@ -177,13 +189,15 @@
 	$: context.set(phrase.phrase);
 
 	const DEBOUNCE_TIMEOUT = 500,
-			dispatch = createEventDispatcher();
+		dispatch = createEventDispatcher();
 
-	let selection = '', //what was selected from the phrase
-			searchTerm = '', //what we're searching dictionaries for
-			selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
+	let showMeaningEditor = false,
+		selection = '', //what was selected from the phrase
+		searchTerm = '', //what we're searching dictionaries for
+		selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
 
 	function setSelection(e) {
+		showMeaningEditor = false;
 		const selected = e.detail
 		if (selected) {
 			selection = selected;
