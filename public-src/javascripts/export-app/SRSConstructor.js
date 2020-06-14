@@ -190,6 +190,12 @@ export function compileAnkiCard(c) {
 	if (card.definition.reading === card.definition.word) {
 		card.definition.reading = '';
 	}
+	//don't show furigana on alternate forms if the word is the same as the reading
+	(card.definition.alternateForms || []).map(form => {
+		if (form.word === form.reading) {
+			form.reading = '';
+		}
+	})
 
 	return [
 		ankiFrontTemplate(card),
