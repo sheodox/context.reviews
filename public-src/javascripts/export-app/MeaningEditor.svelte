@@ -24,7 +24,7 @@
 		align-self: center;
         padding: 0.3rem;
 	}
-	.meaning {
+	.sub-panel {
 		margin: 1rem 1rem 2rem;
 		background: var(--panel-header-bg);
 		padding: 0.5rem;
@@ -47,22 +47,15 @@
 		flex: 1;
 	}
     .card-preview {
-		margin-top: 1rem;
 		overflow: hidden;
 		border-radius: 0.3rem;
-	}
-	.preview-column {
-		margin: 1rem;
-	}
-	.preview-column .header:not(:first-child) {
-		margin-top: 2rem;
 	}
 </style>
 
 <div class="editor">
 	<div class="meanings">
 		{#each meanings as meaning, index}
-			<div class="meaning">
+			<div class="sub-panel">
 				<div class="meaning-header">
 					<h3>Meaning {index + 1}</h3>
 					<button on:click={() => removeMeaning(meaning)}>
@@ -95,26 +88,30 @@
 		</button>
 	</div>
 	<div class="preview-column">
-		<div class="header">
-			<h3>Metadata</h3>
+		<div class="sub-panel">
+			<div class="header">
+				<h3>Metadata</h3>
+			</div>
+			<div class="side-by-side-fields">
+				<label>
+					Source
+					<input bind:value={$source} />
+				</label>
+				<label>
+					Source URL
+					<input bind:value={$definition.href} placeholder="https://..."/>
+				</label>
+			</div>
+			<EditTags bind:tags={$definition.tags} />
 		</div>
-		<div class="side-by-side-fields">
-			<label>
-				Source
-				<input bind:value={$source} />
-			</label>
-			<label>
-				Source URL
-				<input bind:value={$definition.href} placeholder="https://..."/>
-			</label>
-		</div>
-		<EditTags bind:tags={$definition.tags} />
 
-		<div class="header">
-			<h3>Preview</h3>
-		</div>
-		<div class="card-preview">
-			<CardPreview card={$card} />
+        <div class="sub-panel">
+			<div class="header">
+				<h3>Preview</h3>
+			</div>
+			<div class="card-preview">
+				<CardPreview card={$card} />
+			</div>
 		</div>
 	</div>
 </div>

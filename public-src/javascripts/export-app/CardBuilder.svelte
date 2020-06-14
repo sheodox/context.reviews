@@ -68,6 +68,10 @@
 	button.edit-definition {
 		align-self: center;
 	}
+	.panel-body {
+		display: flex;
+		flex-direction: column;
+	}
 </style>
 
 <div class="builder panel" in:fly={{y:50, duration: 100}}>
