@@ -42,7 +42,7 @@
         top: 0;
         width: 30rem;
         border-radius: 5px;
-        border: 1px solid white;
+        border: 1px solid var(--accent-purple);
         overflow: hidden;
     }
     .phrase-select {
