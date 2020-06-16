@@ -58,7 +58,6 @@
 	}
 	#definition-search {
 		position: absolute;
-		top: -1rem;
 		left: 50%;
 		transform: translateX(-50%);
 	}
