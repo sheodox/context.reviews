@@ -131,7 +131,7 @@
 			{/if}
 
 			{#if showMeaningEditor}
-				<button on:click={() => showMeaningEditor = false} class="edit-definition"><Icon icon="clear" />Discard Custom Definition</button>
+				<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="clear" />Discard Customizations</button>
 				<MeaningEditor bind:meanings={$definition.meanings} />
 			{:else}
 				<div class="definition-area">
