@@ -94,6 +94,16 @@
 			</div>
 			<div class="side-by-side-fields">
 				<label>
+					Dictionary form
+					<input bind:value={$definition.word} />
+				</label>
+				<label>
+					Dictionary form reading
+					<input bind:value={$definition.reading} />
+				</label>
+			</div>
+			<div class="side-by-side-fields">
+				<label>
 					Source
 					<input bind:value={$source} />
 				</label>
