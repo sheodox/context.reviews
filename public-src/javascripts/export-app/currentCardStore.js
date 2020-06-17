@@ -1,4 +1,5 @@
 import {derived, writable} from "svelte/store";
+import {cards} from './cardsStore';
 const cloneObject = obj => JSON.parse(JSON.stringify(obj));
 
 export const word = writable('');
@@ -14,6 +15,10 @@ export const card = derived([
 		id: definition ? definition.href : '',
 		word, reading, context, definition, source
 	}
+})
+
+export const wordIsUnique = derived([cards, word], ([cards, word]) => {
+	return !cards.some(card => card.word === word);
 })
 
 export const selectDefinition = (src, def, alternate={}) => {

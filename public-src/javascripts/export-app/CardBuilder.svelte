@@ -31,9 +31,6 @@
 	.spaced-out {
 		justify-content: space-between;
 	}
-    .centered {
-		justify-content: center;
-	}
 	p {
 		font-size: 1.1rem;
 	}
@@ -49,8 +46,11 @@
 	}
 	.tweaks {
 		margin: 1rem;
-		background: #404759;
+		background: var(--panel-header-bg);
 		border-radius: 5px;
+		align-self: center;
+	}
+    .tweaks .card-fields {
 		align-items: end;
 	}
     .definition-area {
@@ -70,6 +70,14 @@
 	.panel-body {
 		display: flex;
 		flex-direction: column;
+	}
+	.card-errors {
+		justify-content: center;
+	}
+    .card-errors p {
+		color: #ff6363;
+		font-size: 0.9rem;
+		margin: 0;
 	}
 </style>
 
@@ -96,8 +104,8 @@
 		</p>
 		{#if selection}
 			{#if $definition}
-				<div class="row centered">
-					<div class="row tweaks" in:fly={{y: 50}}>
+				<div class="centered tweaks" in:fly={{y: 50}}>
+					<div class="row card-fields">
 						<div class="column">
 							<label for="tweak-word">Word</label>
 							<div>
@@ -121,11 +129,16 @@
 							<button
 									class="primary"
 									on:click={addCard}
-									disabled={!$word}
+									disabled={!$word || !$wordIsUnique}
 							>
 								Add Card
 							</button>
 						</div>
+					</div>
+					<div class="row card-errors">
+						{#if !$wordIsUnique}
+							<p>A card has already been created for this word.</p>
+						{/if}
 					</div>
 				</div>
 			{/if}
@@ -175,7 +188,8 @@
 		reading,
 		source,
 		definition,
-		context
+		context,
+		wordIsUnique
 	} from './currentCardStore';
 	import {
 		currentPhraseCardCount,

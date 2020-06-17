@@ -28,6 +28,7 @@ button.primary, .button.primary {
 }
 button:disabled, button.primary:disabled {
     color: black;
+    background: none;
     cursor: auto;
 }
 
