@@ -48,7 +48,7 @@ export const currentPhraseCardCount = derived([cardsByPhrase, currentPhrase], ([
 	if (!currentPhrase) {
 		return 0;
 	}
-	return cardsByPhrase.get(currentPhrase).length;
+	return (cardsByPhrase.get(currentPhrase) || []).length;
 })
 
 export const cards = derived(cardsByPhrase, cardsByPhrase => {
