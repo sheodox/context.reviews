@@ -53,25 +53,9 @@ function createTemplates() {
 				.context {
 					font-size: 1.5rem;
 				}
-				.tag {
-					color: #8293a1;
-					border: 1px solid #8293a1;
-					font-size: 0.7rem;
-					padding: 0 0.2rem;
-					border-radius: 2px;
-				}
 				.source {
 					text-transform: capitalize;
 					font-size: 0.7rem;
-				}
-				.tag.common {
-					color: #00ffac;
-					border-color: #00ffac;
-				}
-				.tag.wanikani {
-					border-color: #82216f;
-					color: white;
-					text-shadow: 0 0 1px black;
 				}
 				.tag:not(:last-of-type) {
 					margin-right: 0.3rem;
@@ -116,7 +100,7 @@ function createTemplates() {
 				
 				{{#if definition.tags}}
 					{{#each definition.tags}}
-						<span class="tag {{this.type}}" style="{{this.styles}}">{{this.text}}</span>
+						<span class="tag" style="{{this.styles}}">{{this.text}}</span>
 					{{/each}}
 				{{/if}}
 				<ol>

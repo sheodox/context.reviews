@@ -1,13 +1,31 @@
-export let tag = '';
 const MAX_WK_LEVEL = 60;
+
+function genStyles(overrides) {
+	const genericGray = '#8293a1',
+		styles = Object.assign({
+			'font-size': '0.7rem',
+			'padding': '0 0.2rem',
+			'border-radius': '2px',
+			'color': genericGray,
+			'border': `1px solid ${genericGray}`
+		}, overrides);
+
+	return Object.entries(styles).reduce((style, styleProp) => {
+		return style + styleProp.join(':') + ';'
+	}, '')
+}
 
 export function analyzeTag(tag='') {
 	let type = '',
 		text = '',
-		styles = '';
+		styleOverrides = {};
 
 	if (tag === 'common') {
-		type = 'common';
+		const green = '#00ffac';
+		styleOverrides = {
+			color: green,
+			'border-color': green
+		};
 		text = 'Common'
 	}
 	else if (tag.includes('jlpt')) {
@@ -20,14 +38,17 @@ export function analyzeTag(tag='') {
 			wkCompletionPercent = (wkLevel / MAX_WK_LEVEL) * 100;
 
 		text = `Wanikani ${wkLevel}`;
-		type = 'wanikani';
-		styles = `background: linear-gradient(
+		styleOverrides = {
+			'color' : 'white',
+			'border-color': fillColor,
+			'background': `linear-gradient(
 				to right,
 				${fillColor},
 				${fillColor} ${wkCompletionPercent - 10}%,
 				${barEndColor} ${wkCompletionPercent}%,
 				transparent ${wkCompletionPercent}%,
-				transparent)`;
+				transparent)`
+		}
 	}
 	else {
 		text = tag;
@@ -35,6 +56,6 @@ export function analyzeTag(tag='') {
 	return {
 		text,
 		type,
-		styles
+		styles: genStyles(styleOverrides)
 	}
 }
