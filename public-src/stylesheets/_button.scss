@@ -2,6 +2,7 @@ $buttonBG: #0a121563;
 $hoverLightenPercent: 10%;
 button, input[type=submit], .button {
     text-decoration: none;
+    display: inline-block;
     border-radius: 0.2rem;
     background: none;
     border: none;
