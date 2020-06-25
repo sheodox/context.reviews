@@ -50,6 +50,9 @@
 	.selected .selected-definition-message {
 		display: block;
 	}
+	.exact-match {
+        border: 1px solid var(--accent-purple);
+	}
 </style>
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
 	<div class="search-result">
@@ -70,8 +73,10 @@
 		{:else}
 			<button
 				class="small primary"
+				class:exact-match={definition.word === searchTerm}
 				on:click={() => selectForExport()}
 				disabled={isFormSelected($card, definition.word, definition.reading)}
+				title={definition.word === searchTerm ? exactMatchExplanation : ''}
 			>
 				Select
 			</button>
@@ -101,6 +106,8 @@
 					{#if mode === 'export'}
 						<button
 							class="small"
+							class:exact-match={alt.word === searchTerm}
+                            title={alt.word === searchTerm ? exactMatchExplanation : ''}
 							on:click={() => selectForExport(alt)}
 							disabled={isFormSelected($card, alt.word, alt.reading)}
 						>
@@ -136,8 +143,12 @@
 	export let mode = 'list';
 	//the definition being rendered here
 	export let definition = {};
+	//what was searched for, in export mode this can show an indicator of which forms match the search exactly
+	//to make it easier to find an alternate form that matches the kanji
+	export let searchTerm = '';
 
-	const dispatch = createEventDispatcher(),
+	const exactMatchExplanation = `This word's spelling is an exact match to your search term.`,
+		dispatch = createEventDispatcher(),
 		cloneObject = obj => JSON.parse(JSON.stringify(obj));
 
 	function selectForExport(alternate) {
