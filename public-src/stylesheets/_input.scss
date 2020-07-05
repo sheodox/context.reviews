@@ -1,0 +1,33 @@
+textarea {
+    font-size: 0.7rem;
+}
+
+input[type=text], input:not([type]), textarea, select {
+    color: white;
+    border: 1px solid var(--input-bg);
+    transition: border 0.2s;
+    border-radius: 0.2rem;
+    background: var(--input-bg);
+    padding: 0.2rem;
+
+    &:focus {
+        background: rgba(11,15,21,0.8);
+    }
+}
+input[type=text], input:not([type]), textarea, select {
+    font-size: 1.1rem;
+}
+
+.input-group {
+    border-radius: 0.2rem;
+    background: var(--input-bg);
+    border: 1px solid var(--input-bg);
+    display: flex;
+
+    input {
+        border: none;
+    }
+    button {
+        margin: 0;
+    }
+}

@@ -24,12 +24,6 @@
 		align-self: center;
         padding: 0.3rem;
 	}
-	.sub-panel {
-		margin: 1rem 1rem 2rem;
-		background: var(--panel-header-bg);
-		padding: 0.5rem;
-		border-radius: 0.2rem;
-	}
 	.header {
 		padding: 0.5rem;
 	}

@@ -46,7 +46,7 @@
 	}
 	.tweaks {
 		margin: 1rem;
-		background: var(--panel-header-bg);
+		background: var(--sub-panel-bg);
 		border-radius: 5px;
 		align-self: center;
 	}
@@ -112,7 +112,7 @@
 					<div class="row card-fields">
 						<div class="column">
 							<label for="tweak-word">Word</label>
-							<div>
+							<div class="input-group">
 								<input id="tweak-word" bind:value={$word} />
 								<button
 										on:click={() => word.set(get(reading))}

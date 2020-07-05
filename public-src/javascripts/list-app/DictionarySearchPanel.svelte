@@ -6,6 +6,7 @@
 	}
 	form input[type=text] {
 		width: 100%;
+		margin: 0.5rem;
 	}
     hr {
 		width: 100%;

@@ -1,5 +1,6 @@
 @import 'button';
 @import 'progress';
+@import 'input';
 
 :root {
     --accent-blue: #06acfd;
@@ -16,8 +17,10 @@
 
     --bg: #0b0f15;
     --panel-bg: #14171e;
+    --sub-panel-bg: #1b1d26;
     --panel-header-bg: #252833;
     --panel-footer-bg: #111118;
+    --input-bg: rgba(53, 54, 64, 0.6);
 }
 
 body, #app-root {
@@ -39,25 +42,6 @@ a {
     color: #00B7FF;
 }
 
-input[type=text], input:not([type]), textarea, select {
-    color: white;
-    border: none;
-    border-bottom: 0.2rem solid #364962;
-    transition: border 0.2s;
-    border-radius: 0.1rem;
-    background: rgba(11,15,21,0.8);
-
-    &:focus {
-        border-bottom-color: #3db4f2;
-    }
-}
-input[type=text], input:not([type]), textarea, select {
-    font-size: 1.1rem;
-    height: 2.5rem;
-}
-textarea {
-    font-size: 0.7rem;
-}
 hr {
     color: white;
 }
@@ -94,6 +78,12 @@ label {
     .panel-body {
         padding: 1rem;
     }
+}
+.sub-panel {
+    margin: 1rem 1rem 2rem;
+    background: var(--sub-panel-bg);
+    padding: 0.5rem;
+    border-radius: 0.2rem;
 }
 .header, header {
     background: var(--panel-header-bg);
