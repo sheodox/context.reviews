@@ -42,6 +42,7 @@ module.exports = {
 			context: './public-src',
 		},
 			{from: '**/*.user.js', context: './public-src'},
+			{from: '**/*.mp4', context: './public-src'},
 		]), {
 			apply: compiler => {
 				compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {

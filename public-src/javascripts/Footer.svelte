@@ -9,22 +9,35 @@
         display: flex;
         justify-content: center;
     }
-    footer a + a {
+    footer * + * {
         margin-left: 1rem;
     }
 </style>
 
 <footer>
-    <a href="/auth/logout">
-        <Icon icon="login" />
-        Sign Out
-    </a>
-    <a href="mailto:help@context.reviews">
+    {#if signedIn}
+		<a href="/auth/logout">
+			<Icon icon="login" />
+			Sign Out
+		</a>
+    {:else}
+		<a href="/auth/google">
+			<Icon icon="login" />
+            Log In
+		</a>
+    {/if}
+
+	<a href="mailto:help@context.reviews">
         <Icon icon="email" />
         Help & Feedback
     </a>
+
+    <span>
+        &copy; 2020 sheodox
+    </span>
 </footer>
 
 <script>
     import Icon from './Icon.svelte';
+    export let signedIn = true;
 </script>
