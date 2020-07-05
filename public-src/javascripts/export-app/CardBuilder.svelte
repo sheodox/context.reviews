@@ -50,6 +50,10 @@
 		border-radius: 5px;
 		align-self: center;
 	}
+	.tweaks input {
+		font-size: 1.8rem;
+        width: 15rem;
+	}
     .tweaks .card-fields {
 		align-items: end;
 	}
