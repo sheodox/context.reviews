@@ -54,6 +54,10 @@ button:not(:disabled).galaxy, a.galaxy {
 
     &:hover {
         background: var(--accent-purple-bright);
+        box-shadow: inset 0 0 1rem rgba(255, 255, 255, 0.2);
+    }
+    &:active {
+        background: var(--accent-purple-dark);
     }
 }
 
