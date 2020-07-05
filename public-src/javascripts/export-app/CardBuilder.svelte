@@ -61,7 +61,7 @@
 		position: relative;
 	}
 	#definition-search {
-		position: absolute;
+		position: relative;
 		left: 50%;
 		transform: translateX(-50%);
 	}
@@ -155,23 +155,15 @@
 					<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
 					<!-- using a keyed each for one element so it always rebuilds -->
 					{#each [selection] as sel (sel) }
-						<div class="column" in:fly={{y: 50}} >
-							<div class="definitions">
-								<DictionarySearchResults
-										source="jisho"
-										isPrimary={true}
-										term={sel}
-										mode="export"
-										on:editDefinition={() => showMeaningEditor = true}
-								/>
-								<DictionarySearchResults
-										source="goo"
-										isPrimary={false}
-										term={sel}
-										mode="export"
-										on:editDefinition={() => showMeaningEditor = true}
-								/>
-							</div>
+						<div class="definitions" in:fly={{y: 50}} >
+							<DictionarySearchResults
+									source="jisho"
+									isPrimary={true}
+									term={sel}
+									mode="export"
+									on:editDefinition={() => showMeaningEditor = true}
+							/>
+							<OtherDictionaryLinks term={$word} />
 						</div>
 					{/each}
 				</div>
@@ -203,6 +195,7 @@
 	import SelectableText from "../SelectableText.svelte";
 	import Icon from '../Icon.svelte';
 	import MeaningEditor from './MeaningEditor.svelte';
+	import OtherDictionaryLinks from "../definitions/OtherDictionaryLinks.svelte";
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
 	resetCard();
 

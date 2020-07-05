@@ -24,7 +24,7 @@
 			<Loading />
 		{:then result}
 			<h1><ExternalLink href="{result.href}">{source}</ExternalLink></h1>
-			<div in:fly={{y: 200}}>
+			<div in:fly={{y: 50}}>
 				{#if result.definitions.length > 0}
 					{#each result.definitions as definition}
                         <Word
@@ -95,6 +95,7 @@
 				// auto-select the first definition, depends on the consumer of this component to listen or not
 				if (results.definitions.length && isPrimary) {
 					selectDefinition(source, results.definitions[0])
+					dispatch('first-word', results.definitions[0].word)
 				}
 			})
 		}

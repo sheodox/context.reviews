@@ -24,24 +24,4 @@ router.get('/jisho/:word', async (req, res) => {
 });
 
 
-router.get('/goo/:word', async (req, res) => {
-	const word = req.params.word,
-		noResults = () => sendNoResults(res, 'Goo辞書', word),
-		//the jisho search should be cached
-		jishoResults = await lookup.jisho.search(word);
-	if (!jishoResults.definitions.length) {
-		return noResults();
-	}
-
-	const gooResults = await lookup.goo.search(jishoResults.definitions[0].word);
-	if (gooResults.definitions.length) {
-		res.json(
-			{source: 'Goo辞書', ...gooResults}
-		);
-	}
-	else {
-		noResults();
-	}
-});
-
 module.exports = router;
