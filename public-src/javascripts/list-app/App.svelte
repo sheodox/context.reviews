@@ -68,7 +68,10 @@
 			<button on:click={stop} disabled={!speaking}><Icon icon="stop" />Stop Voice</button>
 			<button on:click={e => showHelp = true}>Help</button>
 		</div>
-		{#if phrases.length === 0}
+		{#if initiallyLoading}
+			<!-- show nothing when doing the initial list load, because if
+			a loading indicator is shown for a super short time it'll be kind of jarring -->
+		{:else if phrases.length === 0}
 			<Help />
 		{:else if phrases.length > 0}
 			<table class="panel">
@@ -121,6 +124,7 @@
 	import Modal from '../Modal.svelte';
 
 	let selection = '',
+		initiallyLoading = true,
 		showHelp = false,
 		phrases = [],
 		speaking = false;
@@ -128,6 +132,9 @@
 	phraseStore.subscribe(list => {
 		//phrases inits null for toasts (it's null until the list is known) so need a fallback
 		phrases = list || [];
+		if (list) {
+			initiallyLoading = false;
+		}
 	});
 
 	$: {
@@ -162,5 +169,6 @@
 		speaking = window.speechSynthesis.speaking;
 		requestAnimationFrame(eachFrame);
 	}
+
 	eachFrame();
 </script>
