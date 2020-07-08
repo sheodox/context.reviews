@@ -3,6 +3,7 @@
 		display: flex;
 		align-items: center;
 		padding: 1rem;
+		margin: 1rem;
 	}
 	h2 {
 		margin: 0.5rem;
