@@ -88,8 +88,6 @@
 					{/each}
 				</tbody>
 			</table>
-		{:else}
-			<AllReviewed />
 		{/if}
 
 		{#if showHelp}
@@ -117,7 +115,6 @@
 	import Toasts from './Toasts.svelte';
 	import Icon from '../Icon.svelte';
 	import {say} from '../speech'
-	import AllReviewed from "./AllReviewed.svelte";
 	import phraseStore from '../phraseStore';
 	import Footer from '../Footer.svelte';
 	import Header from '../Header.svelte';
