@@ -31,16 +31,25 @@
 	}
 	.row > * {
 		flex: 1;
+		margin: 1rem;
 	}
 	@media (max-width: 800px) {
 		.row {
 			flex-direction: column;
 			align-items: center;
+			margin: 0;
+		}
+		.row > * {
+			margin: 0;
+		}
+        .panel {
+			padding: 1rem;
 		}
 	}
 	h2 {
 		font-size: 2.5rem;
 		text-align: center;
+		margin-top: 0.5rem;
 	}
     p {
 		line-height: 1.7;
@@ -52,7 +61,7 @@
 	<div class="row">
 		<div>
 			<h2>Study Japanese Using Anything</h2>
-			<div class="panel-body">
+			<div>
 				<p>
 					Context.Reviews aims to make studying Japanese more interesting by helping you learn the vocabulary
 					you encounter. Words you encounter in native material are more memorable than drilling pre-made
