@@ -10,7 +10,10 @@
 	}
     hr {
 		width: 100%;
-		border:	3px solid #2a83c5;
+		border:	none;
+		background: var(--accent-gradient);
+		background-attachment: local;
+		height: 0.2rem;
 	}
 </style>
 
