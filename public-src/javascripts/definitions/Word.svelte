@@ -57,7 +57,7 @@
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
 	<div class="search-result">
 		<div class="title">
-			<h2>
+			<h2 class="japanese">
 				<ExternalLink href={definition.href}>
 					<JapaneseWord word={definition.word} reading={definition.reading} />
 				</ExternalLink>
