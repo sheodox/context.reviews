@@ -1,7 +1,7 @@
 <style>
     .panel {
         margin: 1rem;
-		padding: 2rem;
+		padding: 1rem;
     }
     h2 {
         margin: 0;
@@ -31,7 +31,7 @@
 	}
 	.row > * {
 		flex: 1;
-		margin: 1rem;
+		margin: 0.5rem;
 	}
 	@media (max-width: 800px) {
 		.row {
