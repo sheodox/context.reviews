@@ -1,7 +1,7 @@
 <style>
 </style>
 
-<CardPreview card={card} />
+<CardPreview card={card} demoMode={true} />
 
 <script>
     import CardPreview from '../export-app/CardPreview.svelte';

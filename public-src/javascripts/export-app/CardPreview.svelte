@@ -1,24 +1,50 @@
-<div class="card-preview" use:mountPreview={card}></div>
+<style>
+    .demo-reveal {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<div>
+	<div class="card-preview" bind:this={previewElement} use:mountPreview={card}></div>
+    {#if demoMode && !revealed}
+        <div class="demo-reveal">
+            <button on:click={demoCardReveal}>Show Answer</button>
+        </div>
+    {:else if demoMode}
+        <div class="demo-reveal">
+            <button on:click={demoCardHide}>Again (&lt;1m)</button>
+			<button on:click={demoCardHide}>Good (&lt;10m)</button>
+			<button on:click={demoCardHide}>Easy (4d)</button>
+		</div>
+    {/if}
+</div>
 
 <script>
     import {compileAnkiCard} from './SRSConstructor';
     export let card = {};
+    export let demoMode = false;
+    let previewElement,
+        //if this card is in demo mode (landing page) the 'show answer' button toggles if the back of
+        //the card is revealed
+        revealed = true;
 
 	/**
      * Compile the card's markup, and mount it within a shadow DOM to keep styles separate
-	 * @param element
-     * @param card - the card store
 	 */
-	function mountPreview(element) {
+	function mountPreview(element=previewElement) {
         const [cardFront, cardBack] = compileAnkiCard(card),
             shadow = element.shadowRoot || element.attachShadow({mode: 'open'}),
             cardContainer = document.createElement('div');
+
         cardContainer.style.padding = '1rem';
         cardContainer.classList.add('card');
         cardContainer.innerHTML = `
             ${cardFront}
             <hr>
-            ${cardBack}
+            <div class="back">
+                ${cardBack}
+            </div>
 
             <style>
                 .card {
@@ -27,9 +53,10 @@
                 p.word {
                     margin: 0;
                 }
+                ${revealed ? '' : '.back { opacity: 0; } '}
             </style>
-
         `;
+
         shadow.innerHTML = '';
         shadow.appendChild(cardContainer);
         //can't set target=_blank in the template or Anki won't open it,
@@ -38,8 +65,17 @@
 
 		return {
             update() {
-                mountPreview(element, card);
+                mountPreview(element);
             }
-        }
+        };
 	}
+
+    function demoCardReveal() {
+        revealed = true;
+        mountPreview();
+    }
+	function demoCardHide() {
+        revealed = false;
+        mountPreview();
+    }
 </script>
