@@ -1,44 +1,32 @@
 <style>
 </style>
 
-<CardPreview card={card} demoMode={true} />
+<CardPreview card={cards[currentCard]} demoMode={true} on:demo-learned={nextCard} />
 
 <script>
     import CardPreview from '../export-app/CardPreview.svelte';
+    let currentCard = 0;
 
-    const card = {
-		"id": "https://jisho.org/word/%E6%B2%88%E3%82%81%E3%82%8B",
-		"word": "沈める",
-		"reading": "しずめる",
-		"context": "懸賞金の提供者は、市民や兵士の殺害、窃盗船を沈めるなどの違法行為を行ったプレイヤーに賞金を懸ける",
-		"definition": {
-		"word": "沈める",
-			"href": "https://jisho.org/word/%E6%B2%88%E3%82%81%E3%82%8B",
-			"tags": [
-			"common",
-			"jlpt-n1",
-			"wanikani43"
-		],
-			"alternateForms": [],
-			"reading": "しずめる",
-			"meanings": [
-			{
-				"preInfo": "Ichidan verb, Transitive verb",
-				"definition": "to sink (e.g. a ship), to submerge",
-				"info": ""
-			},
-			{
-				"preInfo": "",
-				"definition": "to lower (e.g. one's body into a chair)",
-				"info": ""
-			},
-			{
-				"preInfo": "",
-				"definition": "to floor (an opponent)",
-				"info": ""
-			}
-		]
-	},
-		"source": "jisho"
+    function nextCard() {
+		if (currentCard + 1 < cards.length) {
+			currentCard += 1;
+		}
+		else {
+			currentCard = 0;
+		}
 	}
+
+	const cards = [
+		{ "id": "https://jisho.org/word/%E4%BA%BA%E6%B0%97", "word": "人気", "reading": "にんき", "context": "僕の出身の徳島もこってり系のラーメンが人気でよくそれに慣れていた。", "definition": { "word": "人気", "href": "https://jisho.org/word/%E4%BA%BA%E6%B0%97", "tags": [ "common", "jlpt-n3", "wanikani4" ], "alternateForms": [], "reading": "にんき", "meanings": [ { "preInfo": "Noun, No-adjective, Na-adjective", "definition": "popularity, public favor", "info": "" }, { "preInfo": "Noun", "definition": "condition (e.g. market), tone, character, nature", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E8%BA%AB%E4%BD%93", "word": "身体", "reading": "しんたい", "context": "近未来、ICチップを身体に埋め込むだけで全ての言語を簡単に話せるようになったりね", "definition": { "word": "身体", "href": "https://jisho.org/word/%E8%BA%AB%E4%BD%93", "tags": [ "common" ], "alternateForms": [ { "reading": "しんだい", "word": "身体" }, { "reading": "しんてい", "word": "身体" } ], "reading": "しんたい", "meanings": [ { "preInfo": "Noun", "definition": "body, physical system, person", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E5%BA%AD", "word": "庭", "reading": "にわ", "context": "どうやって鹿は庭に入ったかな", "definition": { "word": "庭", "href": "https://jisho.org/word/%E5%BA%AD", "tags": [ "common", "jlpt-n5", "wanikani12" ], "alternateForms": [], "reading": "にわ", "meanings": [ { "preInfo": "Noun", "definition": "garden, yard, courtyard", "info": "" }, { "preInfo": "", "definition": "field (of action), area", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E6%9C%AA%E7%9F%A5", "word": "未知", "reading": "みち", "context": "遊泳中に見えない水面下より未知の生物に噛まれ、毒を注入され誰にも気付かれず溺れて死ぬこと。", "definition": { "word": "未知", "href": "https://jisho.org/word/%E6%9C%AA%E7%9F%A5", "tags": [ "common", "jlpt-n1" ], "alternateForms": [], "reading": "みち", "meanings": [ { "preInfo": "No-adjective, Noun", "definition": "not yet known, unknown, strange", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E8%B1%9A%E9%AA%A8", "word": "豚骨", "reading": "とんこつ", "context": "好きなラーメンは豚骨スープベースのものだ。", "definition": { "word": "豚骨", "href": "https://jisho.org/word/%E8%B1%9A%E9%AA%A8", "tags": [], "alternateForms": [], "reading": "とんこつ", "meanings": [ { "preInfo": "Noun", "definition": "dish made with pork belly and bones, simmered with miso, sake, vegetables, etc. (from Kagoshima)", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E7%B0%A1%E5%8D%98", "word": "簡単", "reading": "かんたん", "context": "近未来、ICチップを身体に埋め込むだけで全ての言語を簡単に話せるようになったりね", "definition": { "word": "簡単", "href": "https://jisho.org/word/%E7%B0%A1%E5%8D%98", "tags": [ "common", "jlpt-n4", "wanikani33" ], "alternateForms": [ { "reading": "かんたん", "word": "簡短" }, { "reading": "かんたん", "word": "簡端" } ], "reading": "かんたん", "meanings": [ { "preInfo": "Na-adjective, Noun", "definition": "simple, easy, uncomplicated", "info": "" }, { "preInfo": "", "definition": "brief, quick, light", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E3%81%82%E3%81%A3%E3%81%95%E3%82%8A", "word": "あっさり", "reading": "あっさり", "context": "東京は逆にあっさりした醤油ベースのラーメンが多いが口に合わない。", "definition": { "word": "あっさり", "href": "https://jisho.org/word/%E3%81%82%E3%81%A3%E3%81%95%E3%82%8A", "tags": [ "common", "jlpt-n1" ], "alternateForms": [ { "reading": "アッサリ", "word": "アッサリ" } ], "reading": "あっさり", "meanings": [ { "preInfo": "Adverb, Adverb taking the 'to' particle, Suru verb", "definition": "easily, readily, quickly, flatly (refuse)", "info": "Onomatopoeic or mimetic word" }, { "preInfo": "", "definition": "lightly (seasoned food, applied make-up, etc.), plainly, simply", "info": "Onomatopoeic or mimetic word" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E6%9C%AA%E6%9D%A5", "word": "未来", "reading": "みらい", "context": "人に触れることでその人の未来を見ること。", "definition": { "word": "未来", "href": "https://jisho.org/word/%E6%9C%AA%E6%9D%A5", "tags": [ "common", "jlpt-n3", "wanikani7" ], "alternateForms": [], "reading": "みらい", "meanings": [ { "preInfo": "Noun, No-adjective", "definition": "the future (usually distant)", "info": "" }, { "preInfo": "", "definition": "future tense", "info": "" }, { "preInfo": "", "definition": "the world to come", "info": "" }, { "preInfo": "Wikipedia definition", "definition": "Future", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E8%A6%8B%E5%BC%B5%E3%82%8B", "word": "見張る", "reading": "みはる", "context": "森を抜けると目を見張るような風景が広がっています。", "definition": { "word": "見張る", "href": "https://jisho.org/word/%E8%A6%8B%E5%BC%B5%E3%82%8B", "tags": [ "common" ], "alternateForms": [ { "reading": "みはる", "word": "見はる" }, { "reading": "みはる", "word": "瞠る" } ], "reading": "みはる", "meanings": [ { "preInfo": "Godan verb with ru ending, Transitive verb", "definition": "to stand watch, to stand guard, to look out", "info": "Only applies to 見張る, Only applies to 見はる" }, { "preInfo": "", "definition": "to open (one's eyes) wide", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E8%A8%80%E8%AA%9E", "word": "言語", "reading": "げんご", "context": "近未来、ICチップを身体に埋め込むだけで全ての言語を簡単に話せるようになったりね", "definition": { "word": "言語", "href": "https://jisho.org/word/%E8%A8%80%E8%AA%9E", "tags": [ "common", "jlpt-n3", "wanikani10" ], "alternateForms": [ { "reading": "ごんご", "word": "言語" }, { "reading": "げんきょ", "word": "言語" } ], "reading": "げんご", "meanings": [ { "preInfo": "Noun", "definition": "language", "info": "" }, { "preInfo": "Wikipedia definition", "definition": "Language", "info": "" } ] }, "source": "jisho" },
+		{ "id": "https://jisho.org/word/%E9%A2%A8%E6%99%AF", "word": "風景", "reading": "ふうけい", "context": "森を抜けると目を見張るような風景が広がっています。", "definition": { "word": "風景", "href": "https://jisho.org/word/%E9%A2%A8%E6%99%AF", "tags": [ "common", "jlpt-n3" ], "alternateForms": [], "reading": "ふうけい", "meanings": [ { "preInfo": "Noun, No-adjective", "definition": "scenery, scene, landscape, view, sight", "info": "" }, { "preInfo": "", "definition": "scene (e.g. of a crime)", "info": "" } ] }, "source": "jisho" }
+	]
 </script>

@@ -22,15 +22,26 @@
 
 <script>
     import {compileAnkiCard} from './SRSConstructor';
+    import {createEventDispatcher} from 'svelte';
     export let card = {};
     export let demoMode = false;
+    const dispatch = createEventDispatcher();
     let previewElement,
         //if this card is in demo mode (landing page) the 'show answer' button toggles if the back of
         //the card is revealed
         revealed = true;
 
+	function demoCardReveal() {
+		revealed = true;
+		mountPreview();
+	}
+	function demoCardHide() {
+		revealed = false;
+		dispatch('demo-learned');
+	}
+
 	/**
-     * Compile the card's markup, and mount it within a shadow DOM to keep styles separate
+	 * Compile the card's markup, and mount it within a shadow DOM to keep styles separate
 	 */
 	function mountPreview(element=previewElement) {
         const [cardFront, cardBack] = compileAnkiCard(card),
@@ -53,7 +64,7 @@
                 p.word {
                     margin: 0;
                 }
-                ${revealed ? '' : '.back { opacity: 0; } '}
+                ${revealed ? '' : '.back { opacity: 0; pointer-events: none; } '}
             </style>
         `;
 
@@ -69,13 +80,4 @@
             }
         };
 	}
-
-    function demoCardReveal() {
-        revealed = true;
-        mountPreview();
-    }
-	function demoCardHide() {
-        revealed = false;
-        mountPreview();
-    }
 </script>
