@@ -68,5 +68,5 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(4000, () => {
-    console.log(`Context.review server started!`)
+    console.log(`Context.Reviews server started!`)
 });
