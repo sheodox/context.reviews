@@ -16,6 +16,16 @@ router.get('/add/:search', async (req, res) => {
 	if (req.query.diff === 'true') {
 		res.json(addedPhrases);
 	}
+	//allow versioning by extension if incompatible responses are expected
+	// in the future this number can be incremented
+	else if (req.query.extension) {
+		res.json({
+			addedPhrases,
+			stats: {
+				totalPhrases: (await tracker.list(getUserId(req))).length
+			}
+		})
+	}
 	else {
 		defaultResponse(req, res);
 	}

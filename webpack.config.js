@@ -2,9 +2,10 @@ const path = require('path'),
 	CopyPlugin = require('copy-webpack-plugin'),
 	ManifestPlugin = require('webpack-manifest-plugin'),
 	isProd = process.argv.includes('production'),
-	buildUserscript = require('./util/build-userscript');
+	buildExtension = require('./extension-src/build');
 
-module.exports = {
+module.exports = [{
+	name: 'website',
 	watch: !isProd,
 	mode: isProd ? 'production' : 'development',
 	entry: {
@@ -43,13 +44,49 @@ module.exports = {
 		},
 			{from: '**/*.user.js', context: './public-src'},
 			{from: '**/*.mp4', context: './public-src'},
+		]),
+		new ManifestPlugin()
+	]
+}, {
+	name: 'extension',
+	watch: !isProd,
+	// don't minify the extension code
+	mode: 'development',
+	devtool: 'hidden-source-map',
+	entry: {
+		'phrase-stasher': './extension-src/phrase-stasher.js',
+	},
+	output: {
+		filename: '[name].js',
+		path: path.resolve(__dirname, './extension')
+	},
+	resolve: {
+		alias: {
+			'vue$': 'vue/dist/vue.esm.js'
+		}
+	},
+	module: {
+		rules: [
+			{
+				test: /\.scss$/,
+				use: ['style-loader', 'css-loader', 'sass-loader']
+			}
+		]
+	},
+	plugins: [
+		new CopyPlugin([{
+			from: '**.png',
+			context: './public-src',
+		},
+			{from: '**/*.user.js', context: './public-src'},
+			{from: '**/*.mp4', context: './public-src'},
 		]), {
 			apply: compiler => {
 				compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {
-					buildUserscript(isProd);
+					buildExtension(isProd);
 				})
 			}
 		},
 		new ManifestPlugin()
 	]
-};
+}];

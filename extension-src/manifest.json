@@ -1,0 +1,30 @@
+{
+
+  "manifest_version": 2,
+  "name": "Context.Reviews",
+  "version": "1.0",
+
+  "description": "Automatically stores Jisho searches on Context.Reviews for Anki export.",
+  "homepage_url": "https://context.reviews",
+
+  "icons": {
+    "48": "icons/context-reviews-48.png",
+    "96": "icons/context-reviews-96.png"
+  },
+
+  "permissions": [
+    "*://*.context.reviews/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.jisho.org/search*"],
+      "js": ["phrase-stasher.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "web_accessible_resources": [
+    "icons/context-reviews-96.png"
+  ]
+}

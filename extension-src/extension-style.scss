@@ -1,0 +1,123 @@
+#context-reviews-root {
+    position: fixed;
+    z-index: 10000000;
+    top: 0;
+    left: 0;
+
+    $bg: #14171e;
+    $purple: #9400ff;
+
+    .context-toast {
+        margin: 0.3rem;
+        border-radius: 0.2rem;
+        box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+        max-width: 20rem;
+        background: $bg;
+        color: white;
+
+
+        &.error .context-toast-title-bar {
+            background: #e83450;
+            color: black;
+        }
+    }
+
+    a {
+        color: white;
+
+        &:hover {
+            color: #eee;
+        }
+    }
+
+    img {
+        width: 2rem;
+        height: 2rem;
+    }
+
+
+    .hidden {
+        display: none;
+    }
+
+    ul {
+        margin: 0.3rem;
+        list-style: none;
+    }
+
+
+    .context-toast-phrase {
+        display: flex;
+        padding: 0.4rem;
+
+        &:hover {
+            background: lighten($bg, 5%);
+        }
+
+        span {
+            color: white;
+            flex: 1;
+            margin-right: 0.2rem;
+
+            &.deleted {
+                text-decoration: line-through;
+                color: #888;
+            }
+        }
+    }
+
+    $buttonBG: #0a121563;
+    $hoverLightenPercent: 10%;
+    button {
+        display: inline-block;
+        border-radius: 0.2rem;
+        background: none;
+        border: none;
+        color: #3db4f2;
+        cursor: pointer;
+        padding: 0.7rem;
+        margin: 0.2rem;
+        line-height: 1;
+        font-weight: bold;
+        font-size: 0.9rem;
+        transition: background 0s, color 0s;
+
+        &:hover:enabled {
+            background: lighten($buttonBG, $hoverLightenPercent);
+        }
+    }
+
+    .context-toast-title-bar {
+        padding: 0.3rem;
+        display: flex;
+        align-items: center;
+
+        a {
+            border-left: 0.2rem solid $purple;
+            flex: 1;
+            padding-left: 0.4rem;
+            margin-left: 0.4rem;
+        }
+    }
+
+    .ttl-track {
+        height: 0.3rem;
+        background: #343944;
+        border-bottom: 1px solid #343944;
+        width: 100%;
+    }
+
+    .ttl-bar {
+        background: $purple;
+        height: 100%;
+    }
+}
+.sr-only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
