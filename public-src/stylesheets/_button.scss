@@ -5,7 +5,7 @@ button, input[type=submit], .button {
     display: inline-block;
     border-radius: 0.2rem;
     background: none;
-    border: none;
+    border: 1px solid transparent;
     color: #3db4f2;
     cursor: pointer;
     padding: 0.7rem;
@@ -15,6 +15,9 @@ button, input[type=submit], .button {
     font-size: 0.9rem;
     &:hover:enabled {
         background: lighten($buttonBG, $hoverLightenPercent);
+    }
+    &:focus {
+        border-color: var(--input-focus-color);
     }
 }
 

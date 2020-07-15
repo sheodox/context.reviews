@@ -12,6 +12,7 @@ input[type=text], input:not([type]), textarea, select {
 
     &:focus {
         background: rgba(11,15,21,0.8);
+        border-color: var(--input-focus-color);
     }
 }
 input[type=text], input:not([type]), textarea, select {
@@ -25,7 +26,7 @@ input[type=text], input:not([type]), textarea, select {
     display: flex;
 
     input {
-        border: none;
+        border: 1px solid transparent;
     }
     button {
         margin: 0;
