@@ -31,6 +31,12 @@ router.get('/export', function(req, res, next) {
 	}
 });
 
+router.get('/privacy', (req, res) => {
+	res.render('privacy', {
+		...baseLocals
+	})
+})
+
 router.use('/lookup', require('./lookup'));
 router.use('/phrases', require('./phrases'));
 

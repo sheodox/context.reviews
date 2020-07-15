@@ -12,6 +12,9 @@
     footer * + * {
         margin-left: 1rem;
     }
+    a:not(:hover) {
+        text-decoration: none;
+    }
 </style>
 
 <footer>
@@ -28,16 +31,21 @@
     {/if}
 
 	<a href="mailto:help@context.reviews">
-        <Icon icon="email" />
-        Help & Feedback
+        <Icon icon="email" /> Help & Feedback
+    </a>
+
+	<a href="/privacy">
+        <Icon icon="privacy_tip" /> Privacy Policy
     </a>
 
     <span>
-        &copy; 2020 sheodox
+        <ExternalLink href="https://github.com/sheodox">&copy;2020 sheodox</ExternalLink>
     </span>
 </footer>
 
 <script>
-    import Icon from './Icon.svelte';
-    export let signedIn = true;
+	import Icon from './Icon.svelte';
+	import ExternalLink from "./ExternalLink.svelte";
+
+	export let signedIn = true;
 </script>
