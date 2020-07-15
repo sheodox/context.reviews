@@ -70,7 +70,7 @@
 				<p>
 					As you're reading any Japanese material of your choosing, look up sentences containing words you don't yet know
 					on <ExternalLink href="https://jisho.org">Jisho.org</ExternalLink>, then come back here to quickly create
-					a beautiful Anki deck out of everything you just learned!
+					a beautiful <ExternalLink href="https://apps.ankiweb.net/">Anki</ExternalLink> deck out of everything you just learned!
 				</p>
 			</div>
 		</div>
@@ -84,7 +84,7 @@
 		Anki Card Wizard
 	</h2>
 	<p>
-		Create Anki cards just by selecting the unknown words in each context sentence you looked up.
+		Create <ExternalLink href="https://apps.ankiweb.net/">Anki</ExternalLink> cards just by selecting the unknown words in each context sentence you looked up.
 	</p>
 	<p>
 		Making good Anki cards takes time, wizard should help make it a lot easier. Definitions are automatically pulled
