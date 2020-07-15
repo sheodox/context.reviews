@@ -3,3 +3,4 @@ node_modules
 public
 extension
 .env
+web-ext-artifacts
