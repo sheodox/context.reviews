@@ -176,11 +176,10 @@ function setup() {
     //if the first result ever changes (like when clicking through parts of a sentence), run a callback
     let lastKnownFirstResult = '';
     setInterval(() => {
-        const firstResult = document.querySelector('.concept_light .concept_light-representation .text'),
-            firstResultText = firstResult ? firstResult.textContent.trim() : null;
+        const firstResult = document.querySelector('.concept_light .concept_light-representation .text');
 
-        if (firstResultText && firstResultText !== lastKnownFirstResult) {
-            lastKnownFirstResult = firstResultText;
+        if (firstResult && firstResult !== lastKnownFirstResult) {
+            lastKnownFirstResult = firstResult;
             onResultsChange();
         }
     }, 20);
@@ -222,7 +221,7 @@ function onResultsChange() {
         const word = wrapper.querySelector('.concept_light-representation .text').textContent.trim(),
             addReview = document.createElement('a');
 
-        addReview.textContent = `Add ${word} to review list`;
+        addReview.textContent = `Add ${word} to Context.Reviews`;
         addReview.setAttribute('href', '#');
         addReview.classList.add('concept_light-status_link');
         addReview.addEventListener('click', e => {
