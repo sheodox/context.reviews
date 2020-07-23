@@ -72,9 +72,14 @@ Vue.component('toast-phrase', {
         }
     },
 })
+Vue.component('logo-image', {
+    template: `
+        <img src="${getResourceUrl('/icons/context-reviews-96.png')}" alt="Context.Reviews logo"/>
+    `
+})
 
 Vue.component('toast', {
-    props: ['toast', 'frozen'],
+    props: ['toast', 'frozen', 'startTime'],
     data: function() {
         return {
             hidden: false,
@@ -91,7 +96,7 @@ Vue.component('toast', {
                 </div>
                 
                 <div class="context-toast-title-bar">
-                    <img src="${getResourceUrl('/icons/context-reviews-96.png')}" alt="Context.Reviews logo"/>
+                    <logo-image />
                     <a href="{{--server--}}" target="_blank" rel="noreferrer noopener">{{toast.text}}</a>
                     <button @click="hideToast()">
                         &Cross;
@@ -108,45 +113,66 @@ Vue.component('toast', {
         hideToast () {
             this.ttlMs = 0;
             this.hidden = true;
+            this.$emit('expired');
+        },
+        showToast() {
+            this.hidden = false;
+            this.ttlMs = this.toast.ttl || 3000;
+            this.ttlMax = this.ttlMs;
+            this.lastFrame = this.startTime;
+
+            //slowly tick down and eventually hide the toast, providing a reverse loading bar showing how much time is left
+            const tickTTL = () => {
+                const now = Date.now();
+                //if the user is hovering over the toasts we don't want them to randomly disappear, they probably want to interact with them
+                if (!this.frozen) {
+                    this.ttlMs -= (now - this.lastFrame);
+                }
+                else {
+                    //reset the ttl on hover
+                    this.ttlMs = this.ttlMax;
+                }
+
+                this.ttlStyle = (this.ttlMs / this.ttlMax) * 100 + '%';
+                this.lastFrame = now;
+                //keep ticking down the timer until the toast TTL has expired, then hide it
+                if (this.ttlMs > 0) {
+                    requestAnimationFrame(tickTTL)
+                }
+                else {
+                    this.hideToast();
+                }
+            }
+            tickTTL();
+        }
+    },
+    watch: {
+        startTime() {
+            this.showToast();
         }
     },
     mounted() {
-        this.ttlMs = this.toast.ttl || 3000;
-        this.ttlMax = this.ttlMs;
-        this.lastFrame = Date.now();
-
-        //slowly tick down and eventually hide the toast, providing a reverse loading bar showing how much time is left
-        const tickTTL = () => {
-            const now = Date.now();
-            //if the user is hovering over the toasts we don't want them to randomly disappear, they probably want to interact with them
-            if (!this.frozen) {
-                this.ttlMs -= (now - this.lastFrame);
-            }
-            else {
-                //reset the ttl on hover
-                this.ttlMs = this.ttlMax;
-            }
-
-            this.ttlStyle = (this.ttlMs / this.ttlMax) * 100 + '%';
-            this.lastFrame = now;
-            //keep ticking down the timer until the toast TTL has expired, then hide it
-            if (this.ttlMs > 0) {
-                requestAnimationFrame(tickTTL)
-            }
-            else {
-                this.hidden = true;
-            }
-        }
-        tickTTL();
-        setTimeout(() => {
-        }, this.toast.ttl || 3000);
-    }
+        this.showToast();
+    },
 });
 
 
 mount.innerHTML = `
     <div @mouseenter="mouseEnter()" @mouseleave="mouseLeave()">
-        <toast v-for="toast in toasts" :toast="toast" :key="toast.text" :frozen="frozen"/>
+        <toast
+            v-for="toast in toasts"
+            :toast="toast"
+            :key="toast.text"
+            :frozen="frozen"
+            :start-time="startTime"
+            @expired="toastExpired"
+            />
+    </div>
+    <div v-if="toastsHidden > 0">
+        <button @click="replay" id="replay-toasts">
+            <logo-image></logo-image>
+            Replay
+        </button>
     </div>
 `;
 
@@ -155,7 +181,9 @@ const app = new Vue({
     el: mount,
     data: {
         toasts: [],
+        toastsHidden: 0,
         frozen: false,
+		startTime: Date.now(),
     },
     methods: {
         mouseEnter() {
@@ -163,10 +191,18 @@ const app = new Vue({
         },
         mouseLeave() {
             this.frozen = false;
+        },
+        toastExpired() {
+            this.toastsHidden++;
+        },
+        replay() {
+            this.toastsHidden = 0;
+            this.startTime = Date.now();
         }
     },
     mounted() {
         createToast = (toastData) => {
+            this.startTime = Date.now()
             this.toasts.push(toastData);
         }
     }

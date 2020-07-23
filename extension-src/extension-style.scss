@@ -1,11 +1,11 @@
+$bg: #14171e;
+$purple: #9400ff;
+
 #context-reviews-root {
     position: fixed;
     z-index: 10000000;
     top: 0;
     left: 0;
-
-    $bg: #14171e;
-    $purple: #9400ff;
 
     .context-toast {
         margin: 0.3rem;
@@ -111,6 +111,10 @@
     .ttl-bar {
         background: $purple;
         height: 100%;
+    }
+
+    #replay-toasts {
+        background: $bg;
     }
 }
 .sr-only {
