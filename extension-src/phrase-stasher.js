@@ -79,10 +79,9 @@ Vue.component('logo-image', {
 })
 
 Vue.component('toast', {
-    props: ['toast', 'frozen', 'startTime'],
+    props: ['toast', 'frozen', 'hidden'],
     data: function() {
         return {
-            hidden: false,
             ttlStyle: '100%',
             ttlMs: null,
             ttlMax: null,
@@ -112,14 +111,12 @@ Vue.component('toast', {
     methods: {
         hideToast () {
             this.ttlMs = 0;
-            this.hidden = true;
-            this.$emit('expired');
+            this.$emit('expired', this.toast);
         },
         showToast() {
-            this.hidden = false;
             this.ttlMs = this.toast.ttl || 3000;
             this.ttlMax = this.ttlMs;
-            this.lastFrame = this.startTime;
+            this.lastFrame = Date.now();
 
             //slowly tick down and eventually hide the toast, providing a reverse loading bar showing how much time is left
             const tickTTL = () => {
@@ -147,8 +144,10 @@ Vue.component('toast', {
         }
     },
     watch: {
-        startTime() {
-            this.showToast();
+        hidden() {
+            if (!this.hidden) {
+                this.showToast();
+            }
         }
     },
     mounted() {
@@ -165,10 +164,11 @@ mount.innerHTML = `
             :key="toast.text"
             :frozen="frozen"
             :start-time="startTime"
+            :hidden="hiddenToasts.includes(toast)"
             @expired="toastExpired"
             />
     </div>
-    <div v-if="toastsHidden > 0">
+    <div v-if="aToastIsHidden">
         <button @click="replay" id="replay-toasts">
             <logo-image></logo-image>
             Replay
@@ -181,9 +181,14 @@ const app = new Vue({
     el: mount,
     data: {
         toasts: [],
-        toastsHidden: 0,
+        hiddenToasts: [],
         frozen: false,
 		startTime: Date.now(),
+    },
+    computed: {
+        aToastIsHidden() {
+            return this.hiddenToasts.length > 0;
+        }
     },
     methods: {
         mouseEnter() {
@@ -192,17 +197,17 @@ const app = new Vue({
         mouseLeave() {
             this.frozen = false;
         },
-        toastExpired() {
-            this.toastsHidden++;
+        toastExpired(toast) {
+        	if (!this.hiddenToasts.includes(toast)) {
+        	    this.hiddenToasts.push(toast)
+            }
         },
         replay() {
-            this.toastsHidden = 0;
-            this.startTime = Date.now();
+            this.hiddenToasts = [];
         }
     },
     mounted() {
         createToast = (toastData) => {
-            this.startTime = Date.now()
             this.toasts.push(toastData);
         }
     }
