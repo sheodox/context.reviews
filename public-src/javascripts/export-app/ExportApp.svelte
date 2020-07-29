@@ -96,7 +96,8 @@
         currentPhraseIndex,
         cardCount,
         usedPhrases,
-		reset as resetCardsStores
+		reset as resetCardsStores,
+		downloadedDeck
     } from './cardsStore';
 
 	phraseStore.subscribe(setPhrases);
@@ -123,7 +124,9 @@
     }
 
 	function beforeUnload(e) {
-		if (get(cardCount) > 0) {
+		//try to prevent them from navigating away if they haven't downloaded the deck yet but have made cards
+		//otherwise they will have to remake the whole thing if they misclicked
+		if (get(cardCount) > 0 && !get(downloadedDeck)) {
 			e.preventDefault();
             e.returnValue = '';
         }

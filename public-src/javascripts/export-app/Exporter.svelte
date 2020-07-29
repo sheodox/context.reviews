@@ -57,9 +57,9 @@
 			{#if !phrasesDeleted}
 				<button
 						on:click={deleteConsumed}
-						disabled={!exportClicked}
+						disabled={!$downloadedDeck}
 						class="danger"
-						title={!exportClicked ? 'not available until the anki export is downloaded' : ''}
+						title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
 				>
 					<Icon icon="delete" />
 					Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
@@ -95,14 +95,14 @@
 		cardCount,
 		usedPhrases,
 		currentPhraseIndex,
-		cards
+		cards,
+		downloadedDeck
 	} from './cardsStore';
 	import Loading from "../Loading.svelte";
 	import Icon from '../Icon.svelte';
 	import SRSConstructor from './SRSConstructor';
 
 	let phrasesDeleted = false,
-		exportClicked = false,
 		deleting;
 	const dispatch = createEventDispatcher(),
 		srs = new SRSConstructor(),
@@ -117,7 +117,7 @@
 		//the button until they've interacted with the download link. this is called from a timer on right click because it's
 		//assumed they're trying to hit "Save Link As..." and that just takes a bit longer
 		setTimeout(() => {
-			exportClicked = true;
+			downloadedDeck.set(true);
 		}, delay)
 	}
 
