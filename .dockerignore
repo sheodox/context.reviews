@@ -10,3 +10,5 @@ docker-compose*
 README.md
 LICENSE
 .vscode
+extension-src
+extension

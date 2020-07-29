@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node app",
     "dev": "nodemon ./bin/www --ignore data/",
-    "build": "webpack --mode production --env.SITE_TARGET=prod",
-    "build:dev": "webpack --mode development --watch --env.SITE_TARGET=dev",
+    "build": "webpack --mode production --env.SITE_TARGET=prod --config-name website",
+    "build:dev": "webpack --mode development --watch --env.SITE_TARGET=dev --config-name website",
     "build-extension:dev": "webpack --mode development --config-name extension --watch --env.SITE_TARGET=dev",
     "build-extension:prod": "webpack --mode development --config-name extension --env.SITE_TARGET=prod",
     "extension:package": "npm run build-extension:prod && web-ext build --source-dir ./extension -o",
