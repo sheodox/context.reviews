@@ -42,7 +42,6 @@
 	}
 	button.done {
 		white-space: nowrap;
-        transition: color 0.3s, background 0.3s;
 	}
 	.tweaks {
 		margin: 1rem;
