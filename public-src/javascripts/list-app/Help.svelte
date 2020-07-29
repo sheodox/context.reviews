@@ -47,7 +47,7 @@
 			</p>
 		</li>
 		<li>
-			Return here to review and export to an Anki deck!
+			Return here to review and export to an Anki deck using the "Anki Export" link at the top of the page.
 			<p class="hint">
 				<Icon icon="info" />
 				<strong>Hint!</strong>
@@ -69,10 +69,7 @@
 		<dd>Undo the last phrase deletion.</dd>
 
 		<dt>Ctrl+Enter</dt>
-		<dd>Add the first Jisho search result to the review list.</dd>
-
-		<dt>Hold Shift</dt>
-		<dd>When in Review Mode, holding shift will momentarily change the hide button to a delete button.</dd>
+		<dd>Add the first Jisho search result to the phrase list.</dd>
 
 		<dt>Hover words in the definition search</dt>
 		<dd>Hover over a word with furigana for a bit and the word and furigana will get bigger so it's easier to read.</dd>
