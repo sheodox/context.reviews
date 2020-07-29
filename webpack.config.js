@@ -1,8 +1,7 @@
 const path = require('path'),
 	CopyPlugin = require('copy-webpack-plugin'),
 	ManifestPlugin = require('webpack-manifest-plugin'),
-	isProd = process.argv.includes('production'),
-	buildExtension = require('./extension-src/build');
+	isProd = process.argv.includes('production');
 
 module.exports = env => {
 	return [{
@@ -76,7 +75,7 @@ module.exports = env => {
 			{
 				apply: compiler => {
 					compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {
-						buildExtension(env.SITE_TARGET === 'prod');
+						require('./extension-src/build')(env.SITE_TARGET === 'prod');
 					})
 				}
 			},
