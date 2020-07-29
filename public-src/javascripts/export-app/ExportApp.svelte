@@ -42,7 +42,7 @@
             {#if $phraseStore}
 				<div class="row header-toolbar">
 					<nav>
-						<a href="/"><Icon icon="arrow_back_ios" />Back to Phrase List</a>
+						<a href="/"><Icon icon="arrow_back_ios" />Back To Phrase List</a>
 					</nav>
 					<button
 						id="export-button"

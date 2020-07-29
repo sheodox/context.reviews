@@ -92,9 +92,9 @@
 			<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="arrow_back_ios" />Back</button>
 			<button on:click={done} class="done" class:primary={!selection && $currentPhraseCardCount}>
 				{#if $currentPhraseCardCount}
-					Next phrase
+					Next Phrase
 				{:else}
-					Skip this phrase
+					Skip This Phrase
 				{/if}
 				<Icon icon="arrow_forward_ios" />
 			</button>
