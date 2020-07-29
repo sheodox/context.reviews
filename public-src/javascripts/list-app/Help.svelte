@@ -1,13 +1,3 @@
-<script>
-	import ExternalLink from "../ExternalLink.svelte";
-	const jishoSearchBookmarklet = `javascript:(function() {
-			const selection = window.getSelection().toString();
-			if (selection) {
-				window.open('https://jisho.org/search/' + encodeURIComponent(selection))
-			}
-		}())
-		`
-</script>
 <style>
 	dt {
 		font-weight: bold;
@@ -29,34 +19,37 @@
 	h2 {
 		margin: 0;
 	}
+	* + h2 {
+		margin-top: 1rem;
+	}
+	ol {
+		margin: 0;
+	}
 </style>
 
 <div class="panel">
 	<h2>Setup</h2>
+	<p>
+		Install the browser extension which will automatically keep track of all of the <ExternalLink href="https://jisho.org">Jisho.org</ExternalLink> searches you make for Japanese words and phrases.
+		<ExternalLink href="https://addons.mozilla.org/en-US/firefox/addon/context-reviews/">Install for Firefox</ExternalLink>
+		-
+		<ExternalLink href="https://chrome.google.com/webstore/detail/contextreviews/epfpaalbjmjbplcegbkjiekehecfjjjp">Install for Chrome</ExternalLink>
+	</p>
+    <h2>Usage</h2>
 	<ol>
-		<li>
-			<ExternalLink href="https://www.tampermonkey.net/">Install the Tampermonkey browser extension.</ExternalLink>
-		</li>
-		<li>
-			<!-- not using ExternalLink because it'd leave you with a blank tab as Tampermonkey takes over -->
-			<a href="javascripts/jisho-phrase-stasher.user.js">Click here then click the "install" button on the Tampermonkey page that shows up.</a>
-			This will automatically make a note of all of the searches you make for Japanese words and phrases.
-		</li>
 		<li>
 			Look up sentences containing unknown words as you read some Japanese.
 			<br>
 			<p class="hint">
+				<Icon icon="info" />
 				<strong>Hint!</strong> Drag this link to your bookmark bar: <a href={jishoSearchBookmarklet}>Jisho Search</a>.
 				When you are reading a web page you can select some Japanese text then click that bookmark to quickly open a Jisho search!
 			</p>
 		</li>
 		<li>
-			The first time you make a search on Jisho Tampermonkey will show a warning screen that a userscript is trying to access a cross origin resource.
-			This is expected, it's the script automatically saving your search here so you can review. Just click "Always allow domain".
-		</li>
-		<li>
 			Return here to review and export to an Anki deck!
 			<p class="hint">
+				<Icon icon="info" />
 				<strong>Hint!</strong>
 				If you had searched for full sentences you'll see it included as
 				a context sentence on the back of the Anki cards.
@@ -88,3 +81,14 @@
 		<dd>Clear the search field</dd>
 	</dl>
 </div>
+<script>
+	import ExternalLink from "../ExternalLink.svelte";
+	import Icon from '../Icon.svelte';
+	const jishoSearchBookmarklet = `javascript:(function() {
+			const selection = window.getSelection().toString();
+			if (selection) {
+				window.open('https://jisho.org/search/' + encodeURIComponent(selection))
+			}
+		}())
+		`
+</script>

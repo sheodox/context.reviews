@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Context.Reviews Phrase Stasher
 // @namespace    http://context.reviews/
-// @version      1.2.1
+// @version      2.0.0
 // @description  Stores looked up phrases for later review
 // @author       sheodox
 // @match        https://jisho.org/search*
@@ -108,44 +108,6 @@
     document.head.appendChild(style);
     document.body.appendChild(mount);
 
-    Vue.component('toast-phrase', {
-        props: ['phrase'],
-        data: function () {
-            return {
-                deleted: false
-            }
-        },
-		template: `
-            <li class="context-toast-phrase">
-                <span :class="{deleted: deleted}">
-                    {{phrase.phrase}}
-                </span>
-                <button @click="removePhrase(phrase.phrase_id)" :disabled="deleted">
-                    削除
-                </button>
-            </li>
-		`,
-        methods: {
-            removePhrase(id) {
-                const url = `{{--server--}}/phrases/remove/${this.phrase.phrase_id}`;
-                GM_xmlhttpRequest({
-                    method: 'GET',
-                    url,
-                    onload: (res) => {
-                    	this.deleted = true;
-                    },
-                    onerror: res => {
-                        createToast({
-                            type: 'error',
-                            ttl: 5000,
-                            text: `Couldn't connect to Context.Reviews. Is the site down?`
-                        })
-                    }
-                });
-            }
-        },
-    })
-
     Vue.component('toast', {
         props: ['toast', 'frozen'],
         data: function() {
@@ -164,8 +126,8 @@
                 </div>
                 
                 <div class="context-toast-main">
-                    <img src="{{--server--}}/favicon.png" alt="Context.Reviews logo"/>
-                    <a href="{{--server--}}" target="_blank" rel="noreferrer noopener">{{toast.text}}</a>
+                    <img src="https://context.reviews/favicon.png" alt="Context.Reviews logo"/>
+                    <a href="https://context.reviews" target="_blank" rel="noreferrer noopener">{{toast.text}}</a>
                 </div>
                 
                 <ul v-if="toast.phrases" class="context-toast-phrase-list">
@@ -230,87 +192,10 @@
         }
     });
 
-    function setup() {
-        //if the first result ever changes (like when clicking through parts of a sentence), run a callback
-        let lastKnownFirstResult = '';
-        setInterval(() => {
-            const firstResultText = $('.concept_light .concept_light-representation .text').eq(0).text().trim()
-
-            if (firstResultText !== lastKnownFirstResult) {
-                lastKnownFirstResult = firstResultText;
-                onResultsChange();
-            }
-        }, 20);
-    }
-    
-    function record(word) {
-        const phrase = word || document.querySelector('#keyword').value,
-            url = `{{--server--}}/phrases/add/${encodeURIComponent(phrase)}?diff=true`;
-        GM_xmlhttpRequest({
-            method: 'GET',
-            url,
-            onload: (res) => {
-                if (res.status === 200) {
-                    const phrases = JSON.parse(res.responseText);
-                    //if nothing was actually added, don't show any toasts
-                    if (phrases.length) {
-                        createToast({
-                            type: 'success',
-                            ttl: 5000,
-                            text: `Phrases added.`,
-                            phrases
-                        })
-                    }
-                    return;
-                }
-
-                const error = {
-                    0: `Couldn't connect to Context.Reviews. Is the site down?`,
-                    401: `You aren't signed in!`
-                }[res.status]
-                createToast({
-                    type: 'error',
-                    text: error || `Error: status code ${res.status}`
-                })
-            },
-            onerror: res => {
-                createToast({
-                    type: 'error',
-                    text: `Couldn't connect to Context.Reviews. Is the site down?`
-                })
-            }
-        });
-    }
-
-    //anything that needs to happen whenever the list of search results change
-    function onResultsChange() {
-        //.concept_light-wrapper is the column that contains the reading for the word, as well as the links
-        $('.concept_light').each(function() {
-            const $wrapper = $(this),
-                word = $wrapper.find('.concept_light-representation .text').text().trim(),
-                $addReview = $('<a />')
-                    .text(`Add ${word} to review list`)
-                    .attr({
-                        href: '#',
-                        class: 'concept_light-status_link'
-                    })
-                    .on('click', (e) => {
-                        record(word)
-                        //prevent scrolling to the top
-                        e.preventDefault();
-                    })
-
-            //.concept_light-status is the direct container of the badges and links beneath the word
-            $wrapper
-                //it's easy to accidentally open the "links" dropdown when moving your cursor down the list
-                //of links, so put the add button right before it so that remains on the bottom
-                .find('.concept_light-status a[data-dropdown]')
-                .before($addReview);
-
-        })
-    }
-
-    setup();
-    record();
+    createToast({
+        type: 'error',
+		ttl: 60000,
+        text: `Context.Reviews no longer uses a Tampermonkey script, please visit the "Help" menu on Context.Reviews to find links to the new Firefox and Chrome browser extensions. You can disable or remove this script, if you don't otherwise use Tampermonkey you can uninstall that as well.`
+    })
 })();
 

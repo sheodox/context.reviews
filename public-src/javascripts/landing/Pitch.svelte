@@ -72,6 +72,9 @@
 					on <ExternalLink href="https://jisho.org">Jisho.org</ExternalLink>, then come back here to quickly create
 					a beautiful <ExternalLink href="https://apps.ankiweb.net/">Anki</ExternalLink> deck out of everything you just learned!
 				</p>
+				<p>
+					Search terms are automatically sent to Context.Reviews using a browser extension.
+				</p>
 			</div>
 		</div>
 
