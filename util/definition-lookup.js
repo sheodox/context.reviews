@@ -38,7 +38,7 @@ class Cache {
 const cache = new Cache();
 
 class JishoSearch {
-	static schemaVersion = 6;
+	static schemaVersion = 9;
     static async search(searchText) {
         const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
@@ -75,10 +75,12 @@ class JishoSearch {
                         }
                     }),
                     reading,
-                    meanings: res.senses.map(({english_definitions, parts_of_speech=[], tags=[], info=[], restrictions=[]}) => {
+                    meanings: res.senses.map(({english_definitions, parts_of_speech=[], tags=[], info=[], restrictions=[], see_also=[], links=[]}) => {
                         return {
                         	preInfo: parts_of_speech.join(', '),
                             definition: english_definitions.join(', '),
+                            seeAlso: see_also,
+                            links: links,
                             info: [
                                 ...tags, ...info,
                                 ...restrictions.map(restriction => `Only applies to ${restriction}`)

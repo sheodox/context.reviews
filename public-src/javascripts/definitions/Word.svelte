@@ -96,7 +96,14 @@
 						<br>
 					{/if}
 					{meaning.definition}
-					<small class="info">{meaning.info || ''}</small></li>
+					<small class="info">{meaning.info || ''}</small>
+					{#if meaning.seeAlso.length > 0}
+						<br>
+						{#each meaning.seeAlso as also}
+							<button class="small" on:click={() => searchTerm = also}>See also {also}</button>
+						{/each}
+					{/if}
+				</li>
 			{/each}
 		</ol>
 		{#if definition.alternateForms && definition.alternateForms.length > 0}

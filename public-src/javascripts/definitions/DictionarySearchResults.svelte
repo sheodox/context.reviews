@@ -31,7 +31,7 @@
 							source={source}
 							definition={definition}
 							mode={mode}
-							searchTerm={term}
+							bind:searchTerm={term}
 							on:editDefinition
 						/>
 					{/each}
