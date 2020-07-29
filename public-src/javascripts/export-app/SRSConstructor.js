@@ -45,7 +45,10 @@ function createTemplates() {
 					color: gray;
 				}
 				a {
-					color: #00b7ff;
+					color: #4bcbff;
+				}
+				a:not(:hover) {
+					text-decoration: none;
 				}
 				li {
 					text-align: left;
@@ -134,7 +137,7 @@ function createTemplates() {
 				{{/if}}
 			</div>
 			{{#if context}}
-				<p class="context">Context: 「{{context}}」</p>
+				<p class="context">Context:<a href="https://jisho.org/search/{{contextEncoded}}">「{{context}}」</a></p>
 			{{/if}}
 			{{#if definition.href}}
 				<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
@@ -165,6 +168,9 @@ export function compileAnkiCard(c) {
 	//if this word is the same as the context sentence, then they just directly added just this word,
 	//there's no point in showing a context sentence that just mirrors the front of the card
 	card.context = card.context === card.word ? null : card.context;
+	if (card.context) {
+		card.contextEncoded = encodeURIComponent(card.context);
+	}
 	//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
 	//in smaller font below the reading they chose.
 	card.showOriginal = card.word !== card.definition.word || card.reading !== card.definition.reading;
