@@ -55,6 +55,7 @@ function createTemplates() {
 				}
 				.context {
 					font-size: 1.5rem;
+					margin: 0.3rem;
 				}
 				.source {
 					text-transform: capitalize;
@@ -137,7 +138,9 @@ function createTemplates() {
 				{{/if}}
 			</div>
 			{{#if context}}
-				<p class="context">Context:<a href="https://jisho.org/search/{{contextEncoded}}">「{{context}}」</a></p>
+				<p class="context">
+					<a href="https://jisho.org/search/{{contextEncoded}}">「{{context}}」</a>
+				</p>
 			{{/if}}
 			{{#if definition.href}}
 				<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
