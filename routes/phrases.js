@@ -5,14 +5,21 @@ const router = require('express').Router(),
 
 router.use(requireAuth);
 
-const defaultResponse = async (req, res) => {
-	res.send();
-	const userId = getUserId(req);
-	broadcastToUser(userId, 'list', await tracker.list(userId))
-}
+//send an updated phrase list to user's connected client(s) over websocket if the list changes
+const sendListToUser = async req => {
+		const userId = getUserId(req);
+		broadcastToUser(userId, 'list', await tracker.list(userId))
+	},
+	//send nothing in response, but broadcast the list to the user, used when the response isn't
+	//important, but the phrase list for the user has changed
+	defaultResponse = async (req, res) => {
+		res.send();
+		sendListToUser(req);
+	}
 
 router.get('/add/:search', async (req, res) => {
 	const addedPhrases = await tracker.add(getUserId(req), req.params.search);
+	sendListToUser(req);
 
 	//return only the phrases that were added for the userscript. it will show
 	//them individually and show delete buttons for each phrase to undo adding
@@ -30,7 +37,7 @@ router.get('/add/:search', async (req, res) => {
 		})
 	}
 	else {
-		defaultResponse(req, res);
+		res.send();
 	}
 });
 
