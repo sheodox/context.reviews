@@ -1,16 +1,15 @@
 require('dotenv').config();
 const express = require('express'),
-    http = require('http'),
-    createError = require('http-errors'),
     path = require('path'),
+    http = require('http'),
+    logger = require('morgan'),
+    app = express(),
+    server = http.createServer(app),
+    wss = new (require('ws')).Server({server}),
+    createError = require('http-errors'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    logger = require('morgan'),
-    indexRouter = require('./routes/index'),
-    app = express(),
     passport = require('passport'),
-    server = http.createServer(app),
-    io = require('socket.io')(server),
     {redisClient} = require('./util/redis'),
     session = require('express-session'),
     RedisStore = require('connect-redis')(session);
@@ -39,8 +38,9 @@ app.use(express.static(path.join(__dirname, 'public'), {
 }));
 app.use(bodyParser.json());
 
+const sessionStore = new RedisStore({client: redisClient});
 app.use(session({
-    store: new RedisStore({client: redisClient}),
+    store: sessionStore,
     secret: process.env.SESSION_SECRET,
     httpOnly: true,
     resave: false,
@@ -48,8 +48,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/', indexRouter(io));
-app.use('/auth', require('./routes/auth'))
+app.use('/', require('./routes/index'));
+app.use('/auth', require('./routes/auth'));
+require('./util/server-socket').initialize(wss, sessionStore);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

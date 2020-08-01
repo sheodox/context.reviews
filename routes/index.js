@@ -40,8 +40,4 @@ router.get('/privacy', (req, res) => {
 router.use('/lookup', require('./lookup'));
 router.use('/phrases', require('./phrases'));
 
-module.exports = (sio) => {
-    io = sio;
-
-    return router;
-};
+module.exports = router;

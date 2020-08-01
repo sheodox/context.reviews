@@ -1,25 +1,20 @@
 import {writable} from 'svelte/store';
+import {connectSocket} from './client-socket';
 
 const phraseStore = writable(null);
 
 async function action(url) {
-	const phrases = await fetch(`/phrases/${url}`)
-		.then(res => res.json());
-
-	phraseStore.set(phrases);
+	await fetch(`/phrases/${url}`)
 }
 
 async function remove(ids) {
-	const phrases = await fetch(`/phrases/remove`, {
+	await fetch(`/phrases/remove`, {
 		method: 'POST',
 		body: JSON.stringify(ids),
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	})
-		.then(res => res.json())
-
-	phraseStore.set(phrases);
 }
 
 export default {
@@ -28,7 +23,12 @@ export default {
 	remove
 }
 
-setInterval(() => {
-	action('list');
-}, 10 * 1000);
-action('list');
+connectSocket(({send, on}) => {
+	on('list', phrases => {
+		phraseStore.set(phrases);
+	})
+
+	//request the list, necessary initially, and possibly necessary
+	//if the internet was interrupted for a while and the list changed
+	send('list');
+})

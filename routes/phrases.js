@@ -1,11 +1,14 @@
 const router = require('express').Router(),
 	tracker = require('../util/tracker'),
-	{getUserId, requireAuth} = require('./routeHelpers');
+	{getUserId, requireAuth} = require('./routeHelpers'),
+	{broadcastToUser} = require('../util/server-socket');
 
 router.use(requireAuth);
 
 const defaultResponse = async (req, res) => {
-	res.json(await tracker.list(getUserId(req)));
+	res.send();
+	const userId = getUserId(req);
+	broadcastToUser(userId, 'list', await tracker.list(userId))
 }
 
 router.get('/add/:search', async (req, res) => {
