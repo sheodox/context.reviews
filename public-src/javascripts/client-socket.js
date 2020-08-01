@@ -2,7 +2,8 @@ const RECONNECT_DELAY_MS = 1000,
 	PING_INTERVAL_MS = 30 * 1000;
 
 export function connectSocket(onConnected) {
-	const ws = new WebSocket(`ws://${location.hostname}`);
+	const protocol = location.protocol === 'https:' ? 'wss' : 'ws',
+		ws = new WebSocket(`${protocol}://${location.hostname}`);
 	ws.addEventListener('message', (msg) => {
 		if (msg.data === 'pong') { return; }
 
