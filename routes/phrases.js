@@ -13,7 +13,7 @@ const sendListToUser = async req => {
 	//send nothing in response, but broadcast the list to the user, used when the response isn't
 	//important, but the phrase list for the user has changed
 	defaultResponse = async (req, res) => {
-		res.send();
+		res.json({});
 		sendListToUser(req);
 	}
 
