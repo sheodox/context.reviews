@@ -57,21 +57,25 @@
             {/if}
 		</Header>
 
-		<div class="row" id="card-workspace">
-			{#if showExport}
-				<Exporter
-					on:back={() => showExport = false}
-					on:restart={startOver}
-				/>
-            {:else if $phraseStore}
-				<CardList cards={cards} on:goToPhrase={goToPhrase}/>
-                <!-- using a keyed each for one element so it always rebuilds -->
-                {#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
-                    <CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
-                {/each}
-			{/if}
+		{#if $phraseStore && $phraseStore.length === 0}
+			<NoPhrases />
+		{:else}
+			<div class="row" id="card-workspace">
+				{#if showExport}
+					<Exporter
+							on:back={() => showExport = false}
+							on:restart={startOver}
+					/>
+				{:else if $phraseStore}
+					<CardList cards={cards} on:goToPhrase={goToPhrase}/>
+					<!-- using a keyed each for one element so it always rebuilds -->
+					{#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
+						<CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
+					{/each}
+				{/if}
 
-		</div>
+			</div>
+		{/if}
 
 		<Footer />
 	</div>
@@ -91,14 +95,15 @@
 	import {get} from 'svelte/store';
 	import {
 		setPhrases,
-        cardsByPhrase,
-        cards,
-        currentPhraseIndex,
-        cardCount,
-        usedPhrases,
+		cardsByPhrase,
+		cards,
+		currentPhraseIndex,
+		cardCount,
+		usedPhrases,
 		reset as resetCardsStores,
 		downloadedDeck
-    } from './cardsStore';
+	} from './cardsStore';
+	import NoPhrases from "./NoPhrases.svelte";
 
 	phraseStore.subscribe(setPhrases);
 	let showExport = false;
@@ -120,19 +125,19 @@
 	}
 
 	function goToPhrase(e) {
-        currentPhraseIndex.set(e.detail);
-    }
+		currentPhraseIndex.set(e.detail);
+	}
 
 	function beforeUnload(e) {
 		//try to prevent them from navigating away if they haven't downloaded the deck yet but have made cards
 		//otherwise they will have to remake the whole thing if they misclicked
 		if (get(cardCount) > 0 && !get(downloadedDeck)) {
 			e.preventDefault();
-            e.returnValue = '';
-        }
-    }
+			e.returnValue = '';
+		}
+	}
 
-    function startOver() {
+	function startOver() {
 		resetCardsStores()
 		showExport = false;
 	}

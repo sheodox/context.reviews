@@ -12,9 +12,6 @@
     footer * + * {
         margin-left: 1rem;
     }
-    a:not(:hover) {
-        text-decoration: none;
-    }
 </style>
 
 <footer>
