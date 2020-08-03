@@ -25,6 +25,13 @@
 	ol {
 		margin: 0;
 	}
+	kbd {
+		border: 1px solid gray;
+		border-bottom-width: 3px;
+		border-radius: 2px;
+		padding: 0 0.3rem;
+		background: var(--panel-header-bg);
+	}
 </style>
 
 <div class="panel">
@@ -62,19 +69,19 @@
 	</h2>
 
 	<dl>
-		<dt>S (when not in the search field)</dt>
+		<dt><kbd>s</kbd> (when not in a text input field)</dt>
 		<dd>Focus the search input.</dd>
 
-		<dt>Ctrl+Z (when not in the search field)</dt>
+		<dt><kbd>Ctrl</kbd> + <kbd>z</kbd> (when not in the search field)</dt>
 		<dd>Undo the last phrase deletion.</dd>
 
-		<dt>Ctrl+Enter</dt>
+		<dt><kbd>Ctrl</kbd> + <kbd>Enter</kbd></dt>
 		<dd>Add the first Jisho search result to the phrase list.</dd>
 
-		<dt>Hover words in the definition search</dt>
-		<dd>Hover over a word with furigana for a bit and the word and furigana will get bigger so it's easier to read.</dd>
+		<dt>Hover Japanese words in the definition search</dt>
+		<dd>Hover over a word with furigana for a moment and the word and furigana will get bigger so it's easier to read.</dd>
 
-		<dt>Esc + Esc</dt>
+		<dt><kbd>Esc</kbd> + <kbd>Esc</kbd></dt>
 		<dd>Clear the search field</dd>
 	</dl>
 </div>
