@@ -14,8 +14,8 @@
     .toast {
         margin: 0.5rem;
         align-self: center;
-        background: #3db4f2;
-        color: black;
+        background: var(--panel-bg);
+        border: 1px solid var(--accent-purple);
 		padding: 0.2rem 1rem;
         text-align: center;
 	}
@@ -26,7 +26,7 @@
 
 <div class="toast-container">
     {#each toasts as toast (toast.text + toast.subtext)}
-        <div class="toast" transition:fly={{y: 200}} animate:flip >
+        <div class="toast">
             <p>{toast.text}</p>
             {#if toast.subtext}
                 <small>{toast.subtext}</small>
@@ -36,8 +36,6 @@
 </div>
 
 <script>
-    import {fly} from 'svelte/transition';
-    import {flip} from 'svelte/animate';
     import phraseStore from '../phraseStore';
     const TOAST_VISIBLE_TIME = 4 * 1000;
     let toasts = [];
