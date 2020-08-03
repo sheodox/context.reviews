@@ -7,9 +7,17 @@ services:
       - type: bind
         source: .
         target: /usr/src/app
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
   nginx:
     volumes:
       - type: bind
         source: ./config/nginx/nginx.conf
         target: /etc/nginx/nginx.conf
         read_only: true
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
