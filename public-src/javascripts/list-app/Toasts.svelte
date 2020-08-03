@@ -40,9 +40,18 @@
     const TOAST_VISIBLE_TIME = 4 * 1000;
     let toasts = [];
 
-    let lastPhrases = null;
-    phraseStore.subscribe(phrases => {
-    	//haven't requested phrases yet, wait
+    function addToast(toast) {
+		toasts = [...toasts, toast];
+
+		setTimeout(() => {
+			toasts.splice(toasts.indexOf(toast), 1)
+			toasts = toasts;
+		}, TOAST_VISIBLE_TIME);
+	}
+
+	let lastPhrases = null;
+	phraseStore.subscribe(phrases => {
+		//haven't requested phrases yet, wait
     	if (phrases === null) {
     		return;
         }
@@ -59,18 +68,18 @@
             })
         })
 
-        if (newPhrases.length) {
+        if (newPhrases.length > 3) {
+            addToast({
+                text: 'Added Phrases',
+                subtext: `${newPhrases.length} phrases were added.`
+            })
+        }
+        else if (newPhrases.length) {
             newPhrases.forEach(phrase => {
-                const toast = {
-                    text: `Added phrase`,
+                addToast({
+                    text: `Added Phrase`,
                     subtext: phrase.phrase
-                };
-                toasts = [...toasts, toast];
-
-                setTimeout(() => {
-                    toasts.splice(toasts.indexOf(toast), 1)
-                    toasts = toasts;
-                }, TOAST_VISIBLE_TIME);
+                });
 			});
         }
 
