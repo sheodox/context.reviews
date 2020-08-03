@@ -10,7 +10,10 @@ class Tracker {
      * @returns {*|string[]}
      */
     static split(phrase) {
-        const delimiter = '__splitter__';
+    	phrase = phrase.replace(/\r/g, '');
+    	//insert newlines after sentences, and split on those. this can be also used
+        //to intentionally split text when bulk adding phrases
+        const delimiter = '\n';
         ['。', '！', '？'].forEach(punctuation => {
             phrase = phrase.replace(new RegExp(punctuation, 'g'), `${punctuation}${delimiter}`);
         });
