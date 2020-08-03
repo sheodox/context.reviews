@@ -17,8 +17,10 @@ const sendListToUser = async req => {
 		sendListToUser(req);
 	}
 
-router.get('/add/:search', async (req, res) => {
-	const addedPhrases = await tracker.add(getUserId(req), req.params.search);
+async function addHandler(req, res) {
+	const phraseText = req.params.phrases || (typeof req.body === 'object' ? req.body.phraseText : ''),
+		addedPhrases = await tracker.add(getUserId(req), phraseText);
+
 	sendListToUser(req);
 
 	//return only the phrases that were added for the userscript. it will show
@@ -26,7 +28,7 @@ router.get('/add/:search', async (req, res) => {
 	if (req.query.diff === 'true') {
 		res.json(addedPhrases);
 	}
-	//allow versioning by extension if incompatible responses are expected
+		//allow versioning by extension if incompatible responses are expected
 	// in the future this number can be incremented
 	else if (req.query.extension) {
 		res.json({
@@ -39,7 +41,9 @@ router.get('/add/:search', async (req, res) => {
 	else {
 		res.send();
 	}
-});
+}
+router.get('/add/:phrases', addHandler);
+router.post('/add/', addHandler);
 
 router.get('/list', async (req, res) => {
 	res.json(await tracker.list(getUserId(req)));

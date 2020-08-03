@@ -66,7 +66,8 @@
 		<div class="panel" id="toolbar">
 			<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
 			<button on:click={stop} disabled={!speaking}><Icon icon="stop" />Stop Voice</button>
-			<button on:click={e => showHelp = true}>Help</button>
+			<button on:click={() => showAdd = true}><Icon icon="add" />Add Phrases</button>
+			<button on:click={e => showHelp = true}><Icon icon="help" />Help</button>
 		</div>
 		{#if initiallyLoading}
 			<!-- show nothing when doing the initial list load, because if
@@ -95,6 +96,12 @@
 				<Help />
 			</Modal>
 		{/if}
+
+		{#if showAdd}
+			<Modal title="Add Phrases" bind:visible={showAdd}>
+				<AddPhrases bind:showAddDialog={showAdd} />
+			</Modal>
+		{/if}
 	</main>
 
 	<Footer />
@@ -119,9 +126,11 @@
 	import Footer from '../Footer.svelte';
 	import Header from '../Header.svelte';
 	import Modal from '../Modal.svelte';
+	import AddPhrases from './AddPhrases.svelte';
 
 	let selection = '',
 		initiallyLoading = true,
+		showAdd = false,
 		showHelp = false,
 		phrases = [],
 		speaking = false;
@@ -150,10 +159,6 @@
 
 	function stop() {
 		speechSynthesis.cancel();
-	}
-
-	function phraseEventHandler(event) {
-		console.log('event', event);
 	}
 
 	function keydown(e) {
