@@ -61,7 +61,7 @@
 	}
 
 	function keydown(e) {
-		if (e.key === 's' && e.target.tagName !== 'INPUT') {
+		if (e.key === 's' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
 			e.preventDefault();
 			searchField.focus();
 			searchField.select();
