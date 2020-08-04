@@ -1,25 +1,3 @@
-<script>
-	import {say} from '../speech';
-	import phraseStore from '../phraseStore';
-	import SelectableText from "../SelectableText.svelte";
-
-	export let phrase = '';
-
-	let visible = true;
-
-	async function deletePhrase() {
-		await phraseStore.action(`remove/${phrase.phrase_id}`);
-	}
-
-	function define() {
-		window.open(`https://jisho.org/search/${encodeURIComponent(phrase.phrase)}`);
-	}
-
-	function read() {
-		say(phrase.phrase);
-	}
-</script>
-
 <style>
 	.delete {
 		color: red;
@@ -55,3 +33,26 @@
 		<SelectableText text={phrase.phrase} on:text-select />
 	</td>
 </tr>
+
+<script>
+	import {say} from '../speech';
+	import phraseStore from '../phraseStore';
+	import SelectableText from "../SelectableText.svelte";
+	import Icon from '../Icon.svelte';
+
+	export let phrase = '';
+
+	let visible = true;
+
+	async function deletePhrase() {
+		await phraseStore.action(`remove/${phrase.phrase_id}`);
+	}
+
+	function define() {
+		window.open(`https://jisho.org/search/${encodeURIComponent(phrase.phrase)}`);
+	}
+
+	function read() {
+		say(phrase.phrase);
+	}
+</script>

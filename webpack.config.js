@@ -43,6 +43,7 @@ module.exports = env => {
 			},
 				{from: '**/*.user.js', context: './public-src'},
 				{from: '**/*.mp4', context: './public-src'},
+				{from: '**/*.png', context: './public-src'},
 			]),
 			new ManifestPlugin()
 		]

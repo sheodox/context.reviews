@@ -3,9 +3,18 @@
         display: flex;
         justify-content: center;
     }
+    .demo {
+        height: 38rem;
+		display: flex;
+        flex-direction: column;
+        background: var(--bg);
+    }
+    .demo .card-preview {
+        flex: 1;
+    }
 </style>
 
-<div>
+<div class:demo={demoMode}>
 	<div class="card-preview" bind:this={previewElement} use:mountPreview={card}></div>
     {#if demoMode && !revealed}
         <div class="demo-reveal">

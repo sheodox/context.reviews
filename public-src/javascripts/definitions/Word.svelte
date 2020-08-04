@@ -68,7 +68,7 @@
 		<p class="selected-definition-message">Selected Definition</p>
 
 		{#if mode === 'list'}
-			<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to reviews</button>
+			<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to phrases</button>
 		{:else}
 			<button
 				class="small primary"

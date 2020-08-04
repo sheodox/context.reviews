@@ -12,7 +12,6 @@
 
 <main>
     <Pitch />
-	<GetStarted />
 </main>
 
 <Footer signedIn={false} />
