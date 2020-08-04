@@ -5,6 +5,7 @@
 	.panel {
         padding: 1rem;
         margin: 1rem;
+		max-width: 30rem;
     }
 </style>
 
