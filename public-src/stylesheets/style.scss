@@ -12,7 +12,9 @@
     --accent-primary: var(--accent-blue);
     --accent-secondary: var(--accent-red);
     --accent-pink: #df61ff;
-    --accent-gradient: linear-gradient(to right, #08ffff, #e55eff) fixed;
+    --gradient-start: #8000ff;
+    --gradient-end: #3be8f0;
+    --accent-gradient: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
     --accent-gradient-faint: linear-gradient(to right, rgba(8, 255, 255, 0.15), rgba(229, 94, 255, 0.15));
 
     --bg: #0b0f15;
@@ -119,4 +121,11 @@ h1, h2, h3, h4, h5, h6 {
 
 a:not(:hover) {
     text-decoration: none;
+}
+
+//a bar of color on places like the bottom of the header and top of the footer, used because you can't have gradients as borders
+.spacer-bar {
+    height: 0.3rem;
+    background: var(--accent-gradient) fixed;
+    width: 100%;
 }

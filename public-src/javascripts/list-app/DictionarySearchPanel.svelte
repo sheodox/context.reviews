@@ -8,13 +8,6 @@
 		width: 100%;
 		margin: 0.5rem;
 	}
-    hr {
-		width: 100%;
-		border:	none;
-		background: var(--accent-gradient);
-		background-attachment: local;
-		height: 0.2rem;
-	}
 </style>
 
 <form on:submit|preventDefault>
@@ -22,7 +15,7 @@
 </form>
 
 <DictionarySearchResults {term} source="jisho" isPrimary={true} on:first-word={e => firstWord = e.detail}/>
-<hr>
+<div class="spacer-bar"></div>
 <OtherDictionaryLinks term={firstWord} />
 
 <svelte:window on:keydown={keydown} />

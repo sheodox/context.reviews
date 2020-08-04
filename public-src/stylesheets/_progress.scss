@@ -8,10 +8,8 @@ progress {
     }
     &::-moz-progress-bar {
         background: var(--accent-gradient);
-        background-attachment: local;
     }
     &::-webkit-progress-value {
         background: var(--accent-gradient);
-        background-attachment: local;
     }
 }

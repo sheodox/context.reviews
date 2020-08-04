@@ -9,7 +9,6 @@
 	}
 	.progress-border {
 		background: var(--accent-gradient);
-		background-attachment: local;
 		padding: 0.15rem;
 		border-radius: 0.2rem;
 		flex: 1;

@@ -22,7 +22,6 @@
 	}
 	.selected {
 		background: var(--accent-gradient);
-		background-attachment: local;
 		border-radius: 0.2rem;
 	}
 	.word-container.selectable {
