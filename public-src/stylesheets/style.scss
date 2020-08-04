@@ -123,9 +123,8 @@ a:not(:hover) {
     text-decoration: none;
 }
 
-//a bar of color on places like the bottom of the header and top of the footer, used because you can't have gradients as borders
 .spacer-bar {
-    height: 0.3rem;
-    background: var(--accent-gradient) fixed;
+    height: 1px;
+    background: var(--accent-purple) fixed;
     width: 100%;
 }
