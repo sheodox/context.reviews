@@ -5,10 +5,11 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		background: transparent;
     }
 	h1 {
 		text-align: center;
-		font-size: 3rem;
+		font-size: 2.75rem;
 		margin: 0;
 	}
     h2 {
@@ -82,11 +83,11 @@
 	</div>
 
 	<h2>
-		Make Anki Cards
+		Effortlessly Create Anki Cards
 	</h2>
 	<p>
 		You can create <ExternalLink href="https://apps.ankiweb.net/">Anki flashcards</ExternalLink> just by selecting the unknown words in each context sentence you looked up.
-		Making good Anki cards takes time, this wizard should help make it a lot easier.
+		Making good Anki cards usually takes time, but this makes it quick and easy!
 	</p>
 	<p>
 		Definitions are automatically pulled from Jisho, and your context sentence is always included on the card to make understanding the definition in context easier and more memorable!
