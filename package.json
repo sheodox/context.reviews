@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/app",
     "dev": "nodemon ./bin/www --ignore data/",
-    "build": "npm run build-server:prod && npm run build-web:prod",
+    "build": "npm run build-web:prod && npm run build-server:prod",
     "build-server:dev": "tsc --watch",
     "build-server:prod": "tsc",
     "build-web:dev": "webpack --mode development --watch --env.SITE_TARGET=dev --config-name website",
