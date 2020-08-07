@@ -25,7 +25,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public'), {
+app.use(express.static(path.join(__dirname, '..', 'public'), {
     setHeaders: (res, path, stat) => {
         if (
             //don't cache the userscript path, it doesn't use manifest generated content paths
@@ -52,8 +52,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/', require('./routes/index'));
-app.use('/auth', require('./routes/auth'));
+import indexRouter from './routes/index';
+import authRouter from './routes/auth';
+app.use('/', indexRouter);
+app.use('/auth', authRouter);
 require('./util/server-socket').initialize(wss, sessionStore);
 
 // catch 404 and forward to error handler

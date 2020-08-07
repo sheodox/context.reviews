@@ -1,8 +1,8 @@
 import {Router} from 'express';
+import serialize from 'serialize-javascript';
 
 const router = Router(),
-	manifest = require('../public/manifest.json'),
-	serialize = require('serialize-javascript'),
+	manifest = require('../../public/manifest.json'),
     baseLocals = {
         title: 'Context.Reviews',
 		site: 'Context.Reviews',
@@ -38,7 +38,9 @@ router.get('/privacy', (req, res) => {
 	})
 })
 
-router.use('/lookup', require('./lookup'));
-router.use('/phrases', require('./phrases'));
+import lookupRouter from './lookup';
+import phrasesRouter from './phrases';
+router.use('/lookup', lookupRouter);
+router.use('/phrases', phrasesRouter);
 
 export default router;

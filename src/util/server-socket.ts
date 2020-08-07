@@ -63,7 +63,7 @@ async function getUserIdFromReq(req: Request, sessionStore: Store): Promise<stri
 			})
 		}
 		else {
-		    //no session id present, so there's no user. the socket will get terminated
+			//no session id present, so there's no user. the socket will get terminated
 			resolve('');
 		}
 	})
@@ -82,43 +82,40 @@ async function handleChannelMessage(
 	}
 }
 
-module.exports = {
-	broadcastToUser,
-	initialize: (wss: Server, sessionStore: Store) => {
-		wss.on('connection', async (ws: WebSocket, req: Request) => {
-			try {
-				const userId = await getUserIdFromReq(req, sessionStore);
-				if (!userId) {
-					ws.terminate();
+export const initialize = (wss: Server, sessionStore: Store) => {
+	wss.on('connection', async (ws: WebSocket, req: Request) => {
+		try {
+			const userId = await getUserIdFromReq(req, sessionStore);
+			if (!userId) {
+				ws.terminate();
+				return;
+			}
+			addUserSession(userId, ws);
+
+			function send(channel: string, data: any = null) {
+				ws.send(
+					JSON.stringify([channel, data])
+				);
+			}
+
+			ws.on('close', () => {
+				removeUserSession(userId, ws);
+			});
+
+			ws.on('message', (msg: string) => {
+				if (msg === 'ping') {
+					ws.send('pong');
 					return;
 				}
-				addUserSession(userId, ws);
-
-				function send(channel: string, data: any = null) {
-					ws.send(
-						JSON.stringify([channel, data])
-					);
+				try {
+					const [channel, data] = JSON.parse(msg);
+					handleChannelMessage(userId, send, channel, data);
+				} catch (e) {
+					console.error(`Error parsing or processing websocket message: ${msg}`, e);
 				}
-
-				ws.on('close', () => {
-					removeUserSession(userId, ws);
-				});
-
-				ws.on('message', (msg: string) => {
-					if (msg === 'ping') {
-						ws.send('pong');
-						return;
-					}
-					try {
-						const [channel, data] = JSON.parse(msg);
-						handleChannelMessage(userId, send, channel, data);
-					} catch (e) {
-						console.error(`Error parsing or processing websocket message: ${msg}`, e);
-					}
-				});
-			} catch (e) {
-				ws.terminate();
-			}
-		})
-	}
+			});
+		} catch (e) {
+			ws.terminate();
+		}
+	})
 }

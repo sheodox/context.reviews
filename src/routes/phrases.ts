@@ -76,4 +76,4 @@ router.get('/show-all', async (req: Request, res: Response) => {
 	defaultResponse(req, res);
 })
 
-module.exports = router;
+export default router;
