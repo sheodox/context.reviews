@@ -1,10 +1,13 @@
-const cookie = require('cookie'),
-	tracker = require('./tracker'),
-	cookieParser = require('cookie-parser')
-	//userSessions is a map of user ID to an array of socket objects
-	userSessions = new Map();
+import cookie from 'cookie';
+import {tracker} from './tracker';
+import cookieParser from 'cookie-parser';
+import {Request} from "../routes/routeHelpers";
+import {Server} from "ws";
 
-function broadcastToUser(userId, channel, data) {
+//userSessions is a map of user ID to an array of socket objects
+const userSessions = new Map();
+
+export function broadcastToUser(userId: string, channel: string, data: any) {
 	const sockets = userSessions.get(userId);
 	if (sockets) {
 		for (const socket of sockets) {
@@ -15,7 +18,7 @@ function broadcastToUser(userId, channel, data) {
 
 //add/removeUserSession methods maintain a map of user IDs to socket connections, so we can efficiently
 //send messages to all of a user's connected clients
-function addUserSession(userId, ws) {
+function addUserSession(userId: string, ws: WebSocket) {
 	if (!userId) {
 		return;
 	}
@@ -28,7 +31,7 @@ function addUserSession(userId, ws) {
 	}
 }
 
-function removeUserSession(userId, ws) {
+function removeUserSession(userId: string, ws: WebSocket) {
 	if (!userId) {
 		return;
 	}
@@ -48,7 +51,7 @@ function removeUserSession(userId, ws) {
 	}
 }
 
-async function getUserIdFromReq(req, sessionStore) {
+async function getUserIdFromReq(req: Request, sessionStore) {
 	return new Promise((resolve, reject) => {
 		const cookieHeader = req.headers.cookie,
 			sid = cookieParser.signedCookie(cookie.parse(cookieHeader)['connect.sid'], process.env.SESSION_SECRET);
@@ -69,7 +72,7 @@ async function handleChannelMessage(userId, send, channel, data) {
 
 module.exports = {
 	broadcastToUser,
-	initialize: (wss, sessionStore) => {
+	initialize: (wss: Server, sessionStore) => {
 		wss.on('connection', async (ws, req) => {
 			try {
 				const userId = await getUserIdFromReq(req, sessionStore);

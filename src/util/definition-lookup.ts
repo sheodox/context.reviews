@@ -1,16 +1,38 @@
-const fs = require('fs'),
-    fetch = require('./fetch'),
-    cheerio = require('cheerio'),
-    {redis} = require('./redis');
+import fetch from './fetch';
+import {redis} from './redis-utils';
 
 const LOOKUP_TTL = 60 * 60 * 24 * 90; // about three months in seconds
 
-class Cache {
+interface Definition extends JapaneseForm {
+    // string for the 'word' page for this specific result
+    href: string,
+    tags: string[],
+    alternateForms: JapaneseForm[],
+    meanings: {
+        preInfo: string,
+        definition: string,
+        seeAlso: string[],
+        links: JishoExternalLink[],
+        info: string
+    }[]
+}
+
+interface JapaneseForm {
+    word: string,
+    reading: string
+}
+
+interface SearchResults {
+    href: string,
+    definitions: Definition[]
+}
+
+class DefinitionCache {
     constructor() {}
-    cacheKey(source, word) {
+    cacheKey(source: string, word: string) {
         return `dictionary-${source}-${word}`;
     }
-    async get(source, word, newestSchemaVersion) {
+    async get(source: string, word: string, newestSchemaVersion: number) {
         const key = this.cacheKey(source, word),
             cached = await redis.get(key);
         if (!cached) {
@@ -24,32 +46,77 @@ class Cache {
             return data;
         }
     }
-    async set(source, word, data, schemaVersion) {
+    async set(source: string, word: string, data: SearchResults, schemaVersion: number) {
         const key = this.cacheKey(source, word);
         await redis.set(key, JSON.stringify({
             schemaVersion, data
         }));
         this.refreshTTL(key);
     }
-    async refreshTTL(key) {
+    async refreshTTL(key: string) {
         await redis.expire(key, LOOKUP_TTL);
     }
 }
-const cache = new Cache();
+const cache = new DefinitionCache();
 
-class JishoSearch {
+interface JishoResponse {
+    meta: {
+        //HTTP status code
+        status: number
+    },
+    data: JishoDefinition[]
+}
+
+interface JishoExternalLink {
+    text: string,
+    url: string
+}
+
+interface JishoDefinition {
+    //unique URL slug for this word. multiple words can have the same spelling, the slug differentiates duplicates
+    slug: string,
+    is_common: boolean,
+    //things like 'wanikani22'
+    tags: string[],
+    //strings like "jlpt-n3", "jlpt-n1"
+    jlpt: string[],
+    japanese: JapaneseForm[],
+    senses: {
+        english_definitions: string[],
+        //things like "Noun", "Expression"
+        parts_of_speech:[],
+        //things like "Usually written using kana alone", "Archaism", "Proverb", "Slang"
+        tags: string[],
+        //forms that this sense only applies to (like "to die" applies only to the 逝く form of 行く)
+        restrictions: string[],
+        //unsure what exactly comes here
+        info: string[],
+        //an array of other searches related to this result, like 吝か has see_also: ["吝かでない"]
+        see_also: string[],
+        links: JishoExternalLink[],
+        antonyms: unknown[],
+        source: unknown[],
+    }[],
+    attribution: {
+        jmdict: boolean,
+        jmnedict: boolean,
+        dbpedia: boolean
+    }
+}
+
+export class JishoSearch {
 	static schemaVersion = 9;
-    static async search(searchText) {
+    static async search(searchText: string): Promise<SearchResults> {
         const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
             return cached;
         }
-        const searchResultsUrl = word => `https://jisho.org/search/${encodeURIComponent(word)}`,
-            wordUrl = slug => `https://jisho.org/word/${encodeURIComponent(slug)}`,
-            result = JSON.parse(await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(searchText)}`));
+        const searchResultsUrl = (word: string) => `https://jisho.org/search/${encodeURIComponent(word)}`,
+            wordUrl = (slug: string) => `https://jisho.org/word/${encodeURIComponent(slug)}`,
+            result: JishoResponse = JSON.parse(await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(searchText)}`));
 
         if (result.meta.status === 200) { //success
-            const definitions = result.data.map(res => {
+            const definitions = result.data.map((res) : Definition => {
                 const reading = res.japanese[0].reading,
                     word = res.japanese[0].word;
                 let tags = [];
@@ -87,9 +154,9 @@ class JishoSearch {
                             ].join(', ')
                         }
                     })
-                }
+                };
             });
-            const searchResults = {
+            const searchResults: SearchResults = {
                 href: searchResultsUrl(searchText),
                 definitions,
             };
@@ -98,7 +165,3 @@ class JishoSearch {
         }
     }
 }
-
-module.exports = {
-    jisho: JishoSearch,
-};

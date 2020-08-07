@@ -1,5 +1,5 @@
-module.exports = phrase => {
-    const remove = regex => {
+export const trim = (phrase: string) => {
+    const remove = (regex: RegExp) => {
         phrase = phrase.replace(regex, '').trim();
     };
     phrase = phrase.trim();

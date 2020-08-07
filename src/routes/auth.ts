@@ -1,11 +1,13 @@
-const passport = require('passport'),
-	router = require('express').Router(),
-	User = require('../util/user'),
-	OAuth2Strategy = require('passport-google-oauth').OAuth2Strategy;
+import passport from 'passport';
+import {Router} from 'express';
+import {User} from '../util/user';
+import {OAuth2Strategy} from 'passport-google-oauth';
+const router = Router();
 
 passport.use(new OAuth2Strategy({
 		clientID: process.env.GOOGLE_CLIENT_ID,
-		clientSecret: process.env.GOOGLE_CLIENT_SECRET
+		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+		callbackURL: process.env.GOOGLE_CALLBACK,
 	},
 	async (accessToken, refreshToken, profile, done) => {
 		const user = new User(profile);
@@ -24,13 +26,11 @@ passport.deserializeUser(function(user, done) {
 
 router.get('/google', (req, res, next) => {
 	passport.authenticate('google', {
-		callbackURL: process.env.GOOGLE_CALLBACK,
 		scope: ['https://www.googleapis.com/auth/plus.login']
 	})(req, res, next);
 });
 router.get('/google/callback', (req, res, next) => {
 	passport.authenticate('google', {
-		callbackURL: process.env.GOOGLE_CALLBACK,
 		successRedirect: '/',
 		failureRedirect: '/'
 	})(req, res, next);

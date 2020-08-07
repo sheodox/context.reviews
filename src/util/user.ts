@@ -1,7 +1,19 @@
-const db = require('./db');
+import db from './db';
+import {Profile} from "passport-google-oauth";
 
-module.exports = class User {
-	constructor(profile) {
+export interface UserProfile {
+	display_name: string,
+	profile_image: string,
+	oauth_provider: string,
+	oauth_id: string,
+	raw: string
+}
+
+export class User {
+    user_id: string;
+    profile: UserProfile
+
+	constructor(profile: Profile) {
 		this.profile = {
 			display_name: profile.displayName,
 			profile_image: profile.photos[0].value,
@@ -12,7 +24,7 @@ module.exports = class User {
 		}
 	}
 	async save() {
-		const columns = [
+		const columns: (keyof UserProfile)[] = [
 			'oauth_id',
 			'display_name',
 			'profile_image',

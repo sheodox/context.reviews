@@ -1,8 +1,8 @@
-const http = require('http'),
-    {URL} = require('url'),
-    https = require('https');
+import http from 'http';
+import https from 'https';
+import {URL} from 'url';
 
-function fetch(url) {
+export default function fetch(url: string): any {
     return new Promise((resolve, reject) => {
         const isHttps = /^https/.test(url),
             u = new URL(url);
@@ -32,5 +32,3 @@ function fetch(url) {
         req.end();
     });
 }
-
-module.exports = fetch;

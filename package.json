@@ -1,9 +1,9 @@
 {
-  "name": "japanese-review-sentences",
+  "name": "context.reviews",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app",
+    "start": "node src/app",
     "dev": "nodemon ./bin/www --ignore data/",
     "build": "webpack --mode production --env.SITE_TARGET=prod --config-name website",
     "build:dev": "webpack --mode development --watch --env.SITE_TARGET=dev --config-name website",
@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "cheerio": "^1.0.0-rc.2",
     "connect-redis": "^4.0.4",
     "cookie": "^0.4.1",
     "cookie-parser": "~1.4.3",
@@ -40,6 +39,7 @@
     "style-loader": "^1.1.3",
     "svelte": "^3.22.3",
     "svelte-loader": "^2.13.6",
+    "typescript": "^3.9.7",
     "vue": "^2.6.11",
     "web-ext": "^4.3.0",
     "webpack": "^4.41.5",
@@ -48,6 +48,18 @@
     "ws": "^7.3.1"
   },
   "devDependencies": {
+    "@types/cookie": "^0.4.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.7",
+    "@types/express-session": "^1.17.0",
+    "@types/http-errors": "^1.8.0",
+    "@types/morgan": "^1.9.1",
+    "@types/node": "^14.0.27",
+    "@types/passport": "^1.0.4",
+    "@types/passport-google-oauth": "^1.0.41",
+    "@types/pg": "^7.14.4",
+    "@types/redis": "^2.8.25",
+    "@types/ws": "^7.2.6",
     "nodemon": "^2.0.4"
   }
 }

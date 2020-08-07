@@ -1,5 +1,6 @@
-const express = require('express'),
-    router = express.Router(),
+import {Router} from 'express';
+
+const router = Router(),
 	manifest = require('../public/manifest.json'),
 	serialize = require('serialize-javascript'),
     baseLocals = {
@@ -40,4 +41,4 @@ router.get('/privacy', (req, res) => {
 router.use('/lookup', require('./lookup'));
 router.use('/phrases', require('./phrases'));
 
-module.exports = router;
+export default router;
