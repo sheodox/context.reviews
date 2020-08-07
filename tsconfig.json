@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "module": "system",
+    "target": "ES6",
     "noImplicitAny": true,
     "removeComments": false,
-    "preserveConstEnums": true
+    "preserveConstEnums": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

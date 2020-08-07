@@ -4,3 +4,4 @@ public
 extension
 .env
 web-ext-artifacts
+src/**/*.js

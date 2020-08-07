@@ -1,4 +1,4 @@
-import db from './db';
+import {query} from './db';
 import {Profile} from "passport-google-oauth";
 
 export interface UserProfile {
@@ -32,7 +32,7 @@ export class User {
 			'raw'
 		];
 		//insert or update the user (so we always have fresh information each log in), then get the user_id
-		const [{user_id}] = (await db.query(
+		const [{user_id}] = (await query(
 			`INSERT INTO users(${columns.join(', ')}) VALUES (${columns.map((c, i) => `$${i + 1}`).join(', ')})
 			ON CONFLICT (oauth_id) DO UPDATE
 				SET ${columns.map(c => `${c} = EXCLUDED.${c}`).join(', ')} RETURNING user_id`,

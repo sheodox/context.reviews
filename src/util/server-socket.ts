@@ -1,8 +1,10 @@
 import cookie from 'cookie';
 import {tracker} from './tracker';
 import cookieParser from 'cookie-parser';
-import {Request} from "../routes/routeHelpers";
-import {Server} from "ws";
+import {Request} from '../routes/routeHelpers';
+import {Server} from 'ws';
+import {Store} from 'express-session';
+import WebSocket = require('ws');
 
 //userSessions is a map of user ID to an array of socket objects
 const userSessions = new Map();
@@ -51,18 +53,28 @@ function removeUserSession(userId: string, ws: WebSocket) {
 	}
 }
 
-async function getUserIdFromReq(req: Request, sessionStore) {
+async function getUserIdFromReq(req: Request, sessionStore: Store): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const cookieHeader = req.headers.cookie,
 			sid = cookieParser.signedCookie(cookie.parse(cookieHeader)['connect.sid'], process.env.SESSION_SECRET);
-
-		sessionStore.get(sid, (err, session) => {
-			err ? reject(err) : resolve(session.passport.user.user_id);
-		})
+		if (typeof sid === 'string') {
+			sessionStore.get(sid, (err, session) => {
+				err ? reject(err) : resolve(session.passport.user.user_id);
+			})
+		}
+		else {
+		    //no session id present, so there's no user. the socket will get terminated
+			resolve('');
+		}
 	})
 }
 
-async function handleChannelMessage(userId, send, channel, data) {
+async function handleChannelMessage(
+	userId: string,
+	send: (channel: string, data: any) => any,
+	channel: string,
+	data: any
+) {
 	switch (channel) {
 		case 'list':
 			send('list', await tracker.list(userId))
@@ -72,8 +84,8 @@ async function handleChannelMessage(userId, send, channel, data) {
 
 module.exports = {
 	broadcastToUser,
-	initialize: (wss: Server, sessionStore) => {
-		wss.on('connection', async (ws, req) => {
+	initialize: (wss: Server, sessionStore: Store) => {
+		wss.on('connection', async (ws: WebSocket, req: Request) => {
 			try {
 				const userId = await getUserIdFromReq(req, sessionStore);
 				if (!userId) {
@@ -82,7 +94,7 @@ module.exports = {
 				}
 				addUserSession(userId, ws);
 
-				function send(channel, data = null) {
+				function send(channel: string, data: any = null) {
 					ws.send(
 						JSON.stringify([channel, data])
 					);
@@ -92,7 +104,7 @@ module.exports = {
 					removeUserSession(userId, ws);
 				});
 
-				ws.on('message', msg => {
+				ws.on('message', (msg: string) => {
 					if (msg === 'ping') {
 						ws.send('pong');
 						return;
