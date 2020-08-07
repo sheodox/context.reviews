@@ -89,7 +89,7 @@ interface JishoDefinition {
         tags: string[],
         //forms that this sense only applies to (like "to die" applies only to the 逝く form of 行く)
         restrictions: string[],
-        //unsure what exactly comes here
+        //additional notes about this sense, e.g. on 暁 this is ["usu. as ~の暁に"]
         info: string[],
         //an array of other searches related to this result, like 吝か has see_also: ["吝かでない"]
         see_also: string[],
