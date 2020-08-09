@@ -1,6 +1,6 @@
 import {Router, Response} from 'express';
 import {tracker} from '../util/tracker';
-import {getUserId, requireAuth, Request} from "./routeHelpers";
+import {getUserId, requireAuth, Request} from "./route-helpers";
 import {broadcastToUser} from '../util/server-socket';
 
 const router = Router();
@@ -65,15 +65,5 @@ router.get('/undo', async (req: Request, res: Response) => {
 	await tracker.undo(getUserId(req));
 	defaultResponse(req, res);
 });
-
-router.get('/hide/:id', async (req: Request, res: Response) => {
-	await tracker.hide(getUserId(req), req.params.id);
-	defaultResponse(req, res);
-})
-
-router.get('/show-all', async (req: Request, res: Response) => {
-	await tracker.showAll(getUserId(req));
-	defaultResponse(req, res);
-})
 
 export default router;

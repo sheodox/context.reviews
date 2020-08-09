@@ -1,7 +1,7 @@
 import cookie from 'cookie';
 import {tracker} from './tracker';
 import cookieParser from 'cookie-parser';
-import {Request} from '../routes/routeHelpers';
+import {Request} from '../routes/route-helpers';
 import {Server} from 'ws';
 import {Store} from 'express-session';
 import WebSocket = require('ws');
@@ -59,7 +59,8 @@ async function getUserIdFromReq(req: Request, sessionStore: Store): Promise<stri
 			sid = cookieParser.signedCookie(cookie.parse(cookieHeader)['connect.sid'], process.env.SESSION_SECRET);
 		if (typeof sid === 'string') {
 			sessionStore.get(sid, (err, session) => {
-				err ? reject(err) : resolve(session.passport.user.user_id);
+			    //session.passport.user is the userId that's serialized in auth.ts
+				err ? reject(err) : resolve(session.passport.user);
 			})
 		}
 		else {

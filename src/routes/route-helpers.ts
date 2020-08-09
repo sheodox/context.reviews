@@ -1,5 +1,5 @@
 import {NextFunction, Request as ExpressRequest, Response} from 'express';
-import {User} from '../util/user';
+import {User} from '../entity/User';
 
 
 export interface Request extends ExpressRequest {
@@ -7,7 +7,7 @@ export interface Request extends ExpressRequest {
 }
 
 export const getUserId = (req: Request) => {
-	return req.user ? req.user.user_id : null;
+	return req.user ? req.user.id : null;
 };
 export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
 	//all endpoints must be auth'd

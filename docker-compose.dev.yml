@@ -21,3 +21,7 @@ services:
       options:
         max-size: "1m"
         max-file: "1"
+  postgres:
+    # expose postgres in development so TypeORM migrations can be generated from outside the container
+    ports:
+      - 50432:5432

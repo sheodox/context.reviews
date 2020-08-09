@@ -1,6 +1,6 @@
 import {Response, Router} from 'express';
 import {JishoSearch} from '../util/definition-lookup';
-import {requireAuth} from './routeHelpers';
+import {requireAuth} from './route-helpers';
 
 const router = Router();
 router.use(requireAuth);

@@ -1,21 +1,15 @@
-import {query} from './db';
 import {trim} from './trim';
-
-interface Phrase {
-    //the user's UUID who looked up this phrase
-    user_id: string,
-    //auto-generated UUID for this phrase
-    phrase_id: string,
-    //the actual text they're studying
-    phrase: string,
-    created_at: Date,
-    deleted: boolean,
-    deleted_at: null | Date,
-    visible: boolean
-}
+import {Repository} from "typeorm/index";
+import {Phrase} from '../entity/Phrase';
+import {connection} from "../entity";
 
 class Tracker {
-    constructor() {}
+    phraseRepository: Promise<Repository<Phrase>>;
+    constructor() {
+        this.phraseRepository = connection.then(connection => {
+            return connection.getRepository(Phrase);
+        })
+    }
 
     /**
      * Split a long search phrase into sentences.
@@ -33,42 +27,39 @@ class Tracker {
 
     /**
      * add a new phrase
-     * @param user_id - user's UUID
+     * @param userId - user's UUID
      * @param phrases - a string of phrases, will be broken apart and stored individually
      */
-    async add(user_id: string, phrases: string) {
-        const newPhrases = [];
+    async add(userId: string, phrases: string) {
         if (!phrases) {
             return;
         }
+
+        const phraseRepository = await this.phraseRepository,
+            newPhrases = [];
+
         //add each sentence individually
         for (let phrase of Tracker.split(phrases)) {
             phrase = trim(phrase);
             if (phrase) {
-                const existing = (await query(
-                        `SELECT *
-                         FROM phrases
-                         WHERE user_id = $1
-                           AND phrase = $2`,
-                    [user_id, phrase]
-                )).rows[0];
+                const existing = await phraseRepository.findOne({
+                    userId, phrase
+                });
                 //try to guarantee no duplicate phrases (per user)
                 if (!existing) {
-                    const {rows} = await query(
-                            `INSERT INTO phrases(user_id, phrase)
-                             VALUES ($1, $2) RETURNING phrase, phrase_id`,
-                        [user_id, phrase]
-                    );
-                    newPhrases.push(rows[0]);
+                    const newPhrase = new Phrase();
+                    newPhrase.userId = userId;
+                    newPhrase.phrase = phrase;
+
+                    await phraseRepository.save(newPhrase);
+                    newPhrases.push(newPhrase);
                 }
                 //if the phrase is a duplicate, but the other one was deleted, un-delete it
                 else if (existing.deleted) {
-                    const {rows} = await query(
-                        `UPDATE phrases SET deleted=false, deleted_at=null WHERE phrase_id=$1
-                         RETURNING phrase, phrase_id`,
-                        [existing.phrase_id]
-                    );
-                    newPhrases.push(rows[0]);
+                    existing.deletedAt = null;
+                    existing.deleted = false;
+                    await phraseRepository.save(existing);
+                    newPhrases.push(existing);
                 }
             }
         }
@@ -77,62 +68,66 @@ class Tracker {
 
     /**
      * remove a phrase by its id (or ids if an array is passed)
-     * @param user_id
+     * @param userId
      * @param id - a phrase's ID (uuid)
      */
-    async remove(user_id: string, id: string) {
-        const ids = Array.isArray(id) ? id : [id];
+    async remove(userId: string, id: string) {
+        const phraseRepository = await this.phraseRepository,
+            ids = Array.isArray(id) ? id : [id];
+
         for (const id of ids) {
+            const phrase = await phraseRepository.findOne({
+                id
+            });
+
             //would probably be good enough to just delete by phrase ID, but also make sure the user_id matches
             //for extra protection
-            await query(
-                    `UPDATE phrases
-                     SET deleted= true,
-                         deleted_at=timezone('utc', now())
-                     WHERE user_id = $1
-                       AND phrase_id = $2`,
-                [user_id, id]
-            )
+            if (phrase.userId === userId) {
+                phrase.deleted = true;
+                phrase.deletedAt = new Date();
+                await phraseRepository.save(phrase);
+            }
         }
     }
 
     /**
      * Undelete the last thing from the history
      */
-    async undo(user_id: string) {
-        await query(
-            `UPDATE phrases
-            SET deleted=false, deleted_at=null
-            WHERE phrase_id=(
-                SELECT phrase_id FROM phrases
-                WHERE user_id=$1 AND deleted=true ORDER BY deleted_at DESC LIMIT 1
-            )
-            `, [user_id]
-        )
+    async undo(userId: string) {
+        const phraseRepository = await this.phraseRepository,
+            mostRecentDeletedPhrase = await phraseRepository
+                .findOne({
+                    where: {
+                        userId,
+                        deleted: true
+                    },
+                    order: {
+                        deletedAt: 'DESC'
+                    }
+                });
+
+        if (mostRecentDeletedPhrase) {
+            mostRecentDeletedPhrase.deletedAt = null;
+            mostRecentDeletedPhrase.deleted = false;
+            await phraseRepository.save(mostRecentDeletedPhrase);
+        }
     }
 
     /**
      * get all phrases
-     * @returns {any}
+     * @returns {Phrase[]}
      */
-    async list(user_id: string) : Promise<Phrase[]> {
-        return (
-            await query(`SELECT phrase_id, phrase, visible FROM phrases WHERE user_id=$1 AND deleted=false ORDER BY created_at ASC;`, [user_id])
-        ).rows;
-    }
-
-    async hide(user_id: string, id: string ) {
-        await query(
-            `UPDATE phrases SET visible=false WHERE user_id=$1 AND phrase_id=$2`,
-            [user_id, id]
-        );
-    }
-
-    async showAll(user_id: string) {
-        await query(
-            `UPDATE phrases SET visible=true WHERE user_id=$1`,
-            [user_id]
-        )
+    async list(userId: string) : Promise<Phrase[]> {
+        return await (await this.phraseRepository)
+            .find({
+                select: ['id', 'phrase'],
+                where:{
+                    userId, deleted: false
+                },
+                order: {
+                    createdAt: 'ASC'
+                }
+            })
     }
 }
 

@@ -45,7 +45,7 @@
 	let visible = true;
 
 	async function deletePhrase() {
-		await phraseStore.action(`remove/${phrase.phrase_id}`);
+		await phraseStore.action(`remove/${phrase.id}`);
 	}
 
 	function define() {
