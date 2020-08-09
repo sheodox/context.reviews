@@ -167,17 +167,21 @@ export function compileAnkiCard(c) {
 	//some processing beforehand to make the template easier to write
 
 	card.definition.tags = analyzeTags(card.definition.tags || []);
+
 	//if this word is the same as the context sentence, then they just directly added just this word,
 	//there's no point in showing a context sentence that just mirrors the front of the card
 	card.context = card.context === card.word ? null : card.context;
 	if (card.context) {
 		card.contextEncoded = encodeURIComponent(card.context);
 	}
+
 	//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
-	//in smaller font below the reading they chose.
-	card.showOriginal = card.word !== card.definition.word || card.reading !== card.definition.reading;
+	//in smaller font below the reading they chose.  also make sure the word actually exists (they might have deleted
+	//it in customization) otherwise there will just be a bunch of blank space.
+	card.showOriginal = card.definition.word && (card.word !== card.definition.word || card.reading !== card.definition.reading);
 	//don't want to repeat ourselves for only-kana words
 	card.showReading = card.word !== card.reading;
+
 	//don't show furigana in the dictionary definition if it's the same as the word itself
 	if (card.definition.reading === card.definition.word) {
 		card.definition.reading = '';
