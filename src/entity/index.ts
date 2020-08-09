@@ -24,7 +24,7 @@ export const connection: Promise<Connection> = new Promise((resolve, reject) => 
         console.log('Database connection established');
         resolve(connection);
     }).catch(error => {
-        console.log(error)
+        console.log('Error connecting to database!', error);
         reject(error);
     });
 });

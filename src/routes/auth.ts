@@ -21,8 +21,6 @@ passport.use(new OAuth2Strategy({
 				oauthId
 			})) || new User();
 
-		console.log('logged in user: ', user);
-
 		//always update the user when they log in, just in case we end up using their name/profile picture
 		//and they changed it on their account, we don't want to show an old name or picture.
 		user.displayName = profile.displayName;
