@@ -1,6 +1,5 @@
 <style>
-	#left {
-		width: 75%;
+	#list {
 		height: 100%;
 		display: flex;
 		flex-direction: column;
@@ -19,32 +18,36 @@
 	}
 	table {
 		width: fit-content;
-		margin: 1rem;
+		margin: 1rem 0;
 	}
 	main {
-		margin: 1rem;
 		flex: 1;
+		display: flex;
+		flex-direction: row;
 	}
 	.panel {
 		border-radius: 0.2rem;
 	}
 
+	#list-container {
+		margin: 0.5rem;
+		flex: 4;
+	}
 	aside {
-		flex: 0;
+		flex: 1;
+		margin: 0.5rem;
+		min-width: 20rem;
+		height: 85vh;
 	}
 
 	#definitions {
 		background-color: var(--panel-bg);
-		position: fixed;
 		width: 25%;
-		right: 0;
-		top: 0;
-		bottom: 0;
 		display: flex;
 		flex-direction: column;
 	}
 	@media (max-width: 650px) {
-		#left {
+		#list {
 			width: 100%;
 			height: auto;
 		}
@@ -53,63 +56,67 @@
 			width: 100%;
 			height: auto;
 		}
+		main {
+			flex-direction: column;
+		}
 	}
 </style>
 
-<div id="left">
+<div id="list">
 	<Header>
         <nav>
 			<a href="export"><Icon icon="note_add" />Anki Export</a>
 		</nav>
 	</Header>
 	<main>
-		<div class="panel" id="toolbar">
-			<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
-			<button on:click={stop} disabled={!speaking}><Icon icon="stop" />Stop Voice</button>
-			<button on:click={() => showAdd = true}><Icon icon="add" />Add Phrases</button>
-			<button on:click={e => showHelp = true}><Icon icon="help" />Help</button>
-		</div>
-		{#if initiallyLoading}
+		<div id="list-container">
+			<div class="panel" id="toolbar">
+				<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
+				<button on:click={stop} disabled={!speaking}><Icon icon="stop" />Stop Voice</button>
+				<button on:click={() => showAdd = true}><Icon icon="add" />Add Phrases</button>
+				<button on:click={e => showHelp = true}><Icon icon="help" />Help</button>
+			</div>
+			{#if initiallyLoading}
 			<!-- show nothing when doing the initial list load, because if
 			a loading indicator is shown for a super short time it'll be kind of jarring -->
-		{:else if phrases.length === 0}
-			<Help />
-		{:else if phrases.length > 0}
-			<table class="panel">
-				<thead>
+			{:else if phrases.length === 0}
+				<Help />
+			{:else if phrases.length > 0}
+				<table class="panel">
+					<thead>
 					<tr>
 						<th>Actions</th>
 						<th>Phrases ({phrases.length})</th>
 					</tr>
-				</thead>
+					</thead>
 
-				<tbody>
+					<tbody>
 					{#each phrases as phrase}
 						<Phrase phrase={phrase} on:text-select={selected} />
 					{/each}
-				</tbody>
-			</table>
-		{/if}
+					</tbody>
+				</table>
+			{/if}
 
-		{#if showHelp}
-			<Modal title="Help" bind:visible={showHelp}>
-				<Help />
-			</Modal>
-		{/if}
+			{#if showHelp}
+				<Modal title="Help" bind:visible={showHelp}>
+					<Help />
+				</Modal>
+			{/if}
 
-		{#if showAdd}
-			<Modal title="Add Phrases" bind:visible={showAdd}>
-				<AddPhrases bind:showAddDialog={showAdd} />
-			</Modal>
-		{/if}
+			{#if showAdd}
+				<Modal title="Add Phrases" bind:visible={showAdd}>
+					<AddPhrases bind:showAddDialog={showAdd} />
+				</Modal>
+			{/if}
+		</div>
+		<aside id="definitions" class="panel">
+			<Definitions term={selection} />
+		</aside>
 	</main>
 
 	<Footer />
 </div>
-
-<aside id="definitions" class="panel">
-	<Definitions term={selection} />
-</aside>
 
 <Toasts />
 
