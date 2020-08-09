@@ -142,12 +142,15 @@ function createTemplates() {
 					<a href="https://jisho.org/search/{{contextEncoded}}">「{{context}}」</a>
 				</p>
 			{{/if}}
-			{{#if definition.href}}
-				<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
+			
+			{{#if source}}
+				{{#if definition.href}}
+					<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
+				{{/if}}
+				{{#unless definition.href}}
+					<p class="source">Definition source: {{source}}</p>
+				{{/unless}}
 			{{/if}}
-			{{#unless definition.href}}
-				<p class="source">Definition source: {{source}}</p>
-			{{/unless}}
 		`);
 
 	return [
