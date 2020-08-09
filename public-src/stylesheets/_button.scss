@@ -72,3 +72,7 @@ button.danger:not(:disabled) {
         background: var(--accent-red-bright);
     }
 }
+
+button.small {
+    padding: 0.3rem;
+}

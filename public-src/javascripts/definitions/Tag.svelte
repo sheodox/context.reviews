@@ -7,16 +7,16 @@
 <span class="tag" style={styles}>{text}</span>
 
 <script>
-	import {analyzeTag} from './processTag';
-	export let tag = '';
-	const MAX_WK_LEVEL = 60;
+	import {analyzeTags} from "./processTag";
 
-	let text = '',
-		styles = '';
+	export let text = '';
+	export let styles = '';
+	// tag can be specified optionally, this is used on the custom definition "About Tags"
+	// modal. since it doesn't go through analyzeTags in bulk it can't be de-duped so this
+	// should only be used in demonstrations
+	export let tag;
 
-	$: {
-		const processed = analyzeTag(tag);
-		text = processed.text;
-		styles = processed.styles;
+	$: if (tag) {
+		[{text, styles}] = analyzeTags([tag]);
 	}
 </script>

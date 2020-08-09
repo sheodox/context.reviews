@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import {analyzeTag} from "../definitions/processTag";
+import {analyzeTags} from "../definitions/processTag";
 const cloneObject = obj => JSON.parse(JSON.stringify(obj));
 
 export default class SRSConstructor {
@@ -163,11 +163,10 @@ export function compileAnkiCard(c) {
 	] = createTemplates();
 	//don't leak changes if things weren't cloned elsewhere
 	const card = cloneObject(c);
+
 	//some processing beforehand to make the template easier to write
-	card.definition.tags = (card.definition.tags || [])
-		.map(tag => {
-			return analyzeTag(tag);
-		})
+
+	card.definition.tags = analyzeTags(card.definition.tags || []);
 	//if this word is the same as the context sentence, then they just directly added just this word,
 	//there's no point in showing a context sentence that just mirrors the front of the card
 	card.context = card.context === card.word ? null : card.context;

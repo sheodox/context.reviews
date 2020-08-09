@@ -61,8 +61,8 @@
 					<JapaneseWord word={definition.word} reading={definition.reading} />
 				</ExternalLink>
 			</h2>
-			{#each (definition.tags || []) as tag}
-				<Tag tag={tag} />
+			{#each (analyzeTags(definition.tags || [])) as {text, styles}}
+				<Tag text={text} styles={styles} />
 			{/each}
 		</div>
 		<p class="selected-definition-message">Selected Definition</p>
@@ -142,6 +142,7 @@
 		selectDefinition,
         card,
 	} from '../export-app/currentCardStore';
+	import {analyzeTags} from './processTag';
 
 	//the dictionary site this came from
 	export let source = '';

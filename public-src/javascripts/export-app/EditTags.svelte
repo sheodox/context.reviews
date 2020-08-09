@@ -15,6 +15,9 @@
     .help-modal {
         margin: 1rem;
         max-width: 30rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .help-modal ul {
         list-style: none;
@@ -26,6 +29,11 @@
     .help-modal li {
         padding: 0.3rem;
     }
+    table {
+        text-align: center;
+        background: var(--bg);
+        border-radius: 0.2rem;
+    }
 </style>
 
 <div class="tags-editor">
@@ -34,7 +42,7 @@
 		<br>
         <input value={tagsText} on:keyup={updateTags} />
     </label>
-    <button on:click={() => showHelp = true}>
+    <button on:click={() => showHelp = true} class="small">
         <Icon icon="help" />
         About Tags
     </button>
@@ -47,24 +55,43 @@
 				Tags are used to describe things about the word other than its meaning or usage, like a JLPT level.
                 You can enter any tag you want, but there are some special tags that automatically get special styling.
 			</p>
-            <ul>
-                <li>
-					common:
-					<Tag tag="common" />
-                </li>
-                <li>
-					jlpt-n3:
-					<Tag tag="jlpt-n3" />
-                </li>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tag Text</th>
+                        <th>Special Styling</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+							common
+						</td>
+                        <td>
+							<Tag tag="common" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+							jlpt-n3
+						</td>
+                        <td>
+							<Tag tag="jlpt-n3" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+							wanikani32
+						</td>
+                        <td>
+							<Tag tag="wanikani32" />
+                        </td>
+                    </tr>
+				</tbody>
+			</table>
 
-                <li>
-					wanikani32:
-					<Tag tag="wanikani32" />
-                </li>
-			</ul>
-
-            <p>
-                You can give any tags you want, separated by commas.
+			<p>
+				You can give any tags you want, separated by commas.
             </p>
 		</div>
 	</Modal>
