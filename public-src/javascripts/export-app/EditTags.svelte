@@ -19,16 +19,6 @@
         flex-direction: column;
         align-items: center;
     }
-    .help-modal ul {
-        list-style: none;
-        padding: 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-    }
-    .help-modal li {
-        padding: 0.3rem;
-    }
     table {
         text-align: center;
         background: var(--bg);

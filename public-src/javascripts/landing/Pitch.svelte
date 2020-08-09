@@ -20,12 +20,6 @@
 	* + h2, * + h1 {
 		margin-top: 2rem;
 	}
-    .panel-body {
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
     video, img {
         max-width: 100%;
     }
