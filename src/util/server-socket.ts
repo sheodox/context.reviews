@@ -60,12 +60,14 @@ async function getUserIdFromReq(req: Request, sessionStore: Store): Promise<stri
 		if (typeof sid === 'string') {
 			sessionStore.get(sid, (err, session) => {
 			    //session.passport.user is the userId that's serialized in auth.ts
-				err ? reject(err) : resolve(session.passport.user);
+				(err || !(session && session.passport && session.passport.user))
+					? reject(null)
+					: resolve(session.passport.user);
 			})
 		}
 		else {
 			//no session id present, so there's no user. the socket will get terminated
-			resolve('');
+			resolve(null);
 		}
 	})
 }
