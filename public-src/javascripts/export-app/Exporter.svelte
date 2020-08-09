@@ -129,7 +129,7 @@
 				return phrase === contextSentence
 			})
 			if (phrase) {
-				return phrase.phrase_id;
+				return phrase.id;
 			}
 		});
 		deleting = phraseStore.remove(ids);

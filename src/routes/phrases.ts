@@ -33,7 +33,14 @@ async function addHandler(req: Request, res: Response) {
 	// in the future this number can be incremented
 	else if (req.query.extension) {
 		res.json({
-			addedPhrases,
+			addedPhrases: addedPhrases.map(({phrase, id}) => {
+				//the extension expects 'phrase_id' (old db table implementation), and it's easier
+				//to give it that than publish a new version of the extension
+				return {
+					phrase,
+					phrase_id: id
+				}
+			}),
 			stats: {
 				totalPhrases: (await tracker.list(getUserId(req))).length
 			}
