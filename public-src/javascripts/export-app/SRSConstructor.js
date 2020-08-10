@@ -118,6 +118,9 @@ function createTemplates() {
 							{{#if this.info}}
 								<small> {{this.info}}</small>
 							{{/if}}
+							{{#each this.seeAlso}}
+								<small> <a href="{{this.href}}">See also {{this.word}}</a></small>
+							{{/each}}
 						</li>
 					{{/each}}
 				</ol>
@@ -139,7 +142,7 @@ function createTemplates() {
 			</div>
 			{{#if context}}
 				<p class="context">
-					<a href="https://jisho.org/search/{{contextEncoded}}">「{{context}}」</a>
+					<a href="{{contextHref}}">「{{context}}」</a>
 				</p>
 			{{/if}}
 			
@@ -161,11 +164,12 @@ function createTemplates() {
 
 export function compileAnkiCard(c) {
 	const [
-		ankiFrontTemplate,
-		ankiBackTemplate
-	] = createTemplates();
-	//don't leak changes if things weren't cloned elsewhere
-	const card = cloneObject(c);
+			ankiFrontTemplate,
+			ankiBackTemplate
+		] = createTemplates(),
+		//don't leak changes if things weren't cloned elsewhere
+		card = cloneObject(c),
+		jishoSearchUrl = word => `https://jisho.org/search/${encodeURIComponent(word)}`;
 
 	//some processing beforehand to make the template easier to write
 
@@ -175,7 +179,7 @@ export function compileAnkiCard(c) {
 	//there's no point in showing a context sentence that just mirrors the front of the card
 	card.context = card.context === card.word ? null : card.context;
 	if (card.context) {
-		card.contextEncoded = encodeURIComponent(card.context);
+		card.contextHref = jishoSearchUrl(card.context);
 	}
 
 	//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
@@ -194,6 +198,16 @@ export function compileAnkiCard(c) {
 		if (form.word === form.reading) {
 			form.reading = '';
 		}
+	})
+
+	//enrich the 'see also' words with links so they can be clicked on the card
+	card.definition.meanings.forEach(meaning => {
+		meaning.seeAlso = meaning.seeAlso.map(word => {
+			return {
+				word,
+				href: jishoSearchUrl(word)
+			};
+		})
 	})
 
 	return [
