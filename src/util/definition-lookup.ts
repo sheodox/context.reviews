@@ -80,6 +80,7 @@ interface JishoDefinition {
     tags: string[],
     //strings like "jlpt-n3", "jlpt-n1"
     jlpt: string[],
+    //the first form in this array is the "main" form shown in big letters, the rest are alternate forms
     japanese: JapaneseForm[],
     senses: {
         english_definitions: string[],
@@ -95,7 +96,12 @@ interface JishoDefinition {
         see_also: string[],
         links: JishoExternalLink[],
         antonyms: unknown[],
-        source: unknown[],
+        //if the word is based on a different word another language this defines that
+        source: {
+            //examples are for オーダメイド
+            language: string, //e.g. English
+            word: string //e.g. "order made" (with quotes)
+        }[],
     }[],
     attribution: {
         jmdict: boolean,
@@ -105,7 +111,7 @@ interface JishoDefinition {
 }
 
 export class JishoSearch {
-	static schemaVersion = 9;
+	static schemaVersion = 10;
     static async search(searchText: string): Promise<SearchResults> {
         const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
@@ -129,20 +135,28 @@ export class JishoSearch {
                 ])
 
                 return {
-                    word: res.japanese[0].word || reading,
+                    word: word || reading,
                     href: wordUrl(res.slug),
                     tags,
                     alternateForms: res.japanese.slice(1).map(({word, reading}) => {
-                    	//since goo searches never have readings, it's easier to show words
-                        //that are only kana as if that's the word, and it has no extra reading
-                        //that way the UI only needs to conditionally render readings, and not both
                         return {
                             reading,
                             word: word || reading,
                         }
                     }),
                     reading,
-                    meanings: res.senses.map(({english_definitions, parts_of_speech=[], tags=[], info=[], restrictions=[], see_also=[], links=[]}) => {
+                    meanings: res.senses.map((
+                        {
+                            english_definitions,
+                            parts_of_speech=[],
+                            tags=[],
+                            info=[],
+                            restrictions=[],
+                            see_also=[],
+                            links=[],
+                            source=[]
+                        }
+                    ) => {
                         return {
                         	preInfo: parts_of_speech.join(', '),
                             definition: english_definitions.join(', '),
@@ -150,7 +164,10 @@ export class JishoSearch {
                             links: links,
                             info: [
                                 ...tags, ...info,
-                                ...restrictions.map(restriction => `Only applies to ${restriction}`)
+                                ...restrictions.map(restriction => `Only applies to ${restriction}`),
+                                // trim because sometimes we don't have a source.word, like for ファンファーレ, it's just {language: "German", word: ""}
+                                // the trim just removes the trailing space
+                                ...source.map(source => `From ${source.language} ${source.word}`.trim())
                             ].join(', ')
                         }
                     })
