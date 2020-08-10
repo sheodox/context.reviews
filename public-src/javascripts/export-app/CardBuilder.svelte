@@ -152,13 +152,13 @@
 			{:else}
 				<div class="definition-area">
 					<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
-					<!-- using a keyed each for one element so it always rebuilds -->
+					<!-- using a keyed each for one element so it always rebuilds (and shows transitions between different words) -->
 					{#each [selection] as sel (sel) }
 						<div class="definitions" in:fly={{y: 50}} >
 							<DictionarySearchResults
 									source="jisho"
 									isPrimary={true}
-									term={sel}
+									bind:term={selection}
 									mode="export"
 									on:editDefinition={() => showMeaningEditor = true}
 							/>
@@ -218,6 +218,9 @@
 			searchTerm = selected;
 		}
 	}
+
+	// this lets 'see also' buttons change the search results and the search field text
+	$: searchTerm = selection;
 
 	let searchTypingDebounce;
 

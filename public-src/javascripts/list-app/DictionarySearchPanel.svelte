@@ -14,7 +14,7 @@
 	<input type="text" placeholder="なにかを入力する..." autocomplete="off" on:keyup={onSearchType} bind:value={searchFieldValue} bind:this={searchField} aria-label="definition search"/>
 </form>
 
-<DictionarySearchResults {term} source="jisho" isPrimary={true} on:first-word={e => firstWord = e.detail}/>
+<DictionarySearchResults bind:term={term} source="jisho" isPrimary={true} on:first-word={e => firstWord = e.detail}/>
 <div class="spacer-bar"></div>
 <OtherDictionaryLinks term={firstWord} />
 
