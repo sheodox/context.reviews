@@ -31,7 +31,7 @@
 
 	#list-container {
 		margin: 0.5rem;
-		flex: 4;
+		flex: 3;
 	}
 	aside {
 		flex: 1;
