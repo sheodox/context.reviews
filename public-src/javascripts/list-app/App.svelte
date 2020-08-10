@@ -45,6 +45,8 @@
 		width: 25%;
 		display: flex;
 		flex-direction: column;
+		position: sticky;
+		top: 0.5rem;
 	}
 	@media (max-width: 650px) {
 		#list {
