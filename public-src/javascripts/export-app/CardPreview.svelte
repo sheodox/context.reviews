@@ -7,13 +7,13 @@
 		flex: 1;
 	}
     .demo {
-        height: 38rem;
 		display: flex;
         flex-direction: column;
         background: var(--bg);
     }
     .demo .card-preview {
-        flex: 1;
+        height: 35rem;
+        overflow: auto;
     }
 </style>
 
