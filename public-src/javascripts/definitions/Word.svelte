@@ -94,12 +94,21 @@
 						<small class="info">{meaning.preInfo}</small>
 						<br>
 					{/if}
+
 					{meaning.definition}
 					<small class="info">{meaning.info || ''}</small>
+
 					{#if meaning.seeAlso.length > 0}
 						<br>
 						{#each meaning.seeAlso as also}
 							<button class="small" on:click={() => searchTerm = also}>See also {also}</button>
+						{/each}
+					{/if}
+
+					{#if meaning.links.length > 0}
+						{#each meaning.links as {text, url}}
+							<br />
+							<ExternalLink href={url}>{text}</ExternalLink>
 						{/each}
 					{/if}
 				</li>

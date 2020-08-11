@@ -126,8 +126,9 @@ function createTemplates() {
 							{{/each}}
 							
 							{{#each this.links}}
+								<br>
 								<small>
-									<a href="{{this.url}}">{{this.text}}.</a>
+									<a href="{{this.url}}">{{this.text}}</a>
 								</small>
 							{{/each}}
 						</li>
