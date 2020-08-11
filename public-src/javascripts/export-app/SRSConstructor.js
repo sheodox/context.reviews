@@ -114,12 +114,21 @@ function createTemplates() {
 								<small>{{this.preInfo}}</small>
 								<br>
 							{{/if}}
+							
 							{{this.definition}}
+							
 							{{#if this.info}}
 								<small> {{this.info}}</small>
 							{{/if}}
+							
 							{{#each this.seeAlso}}
 								<small> <a href="{{this.href}}">See also {{this.word}}</a></small>
+							{{/each}}
+							
+							{{#each this.links}}
+								<small>
+									<a href="{{this.url}}">{{this.text}}.</a>
+								</small>
 							{{/each}}
 						</li>
 					{{/each}}
@@ -207,7 +216,7 @@ export function compileAnkiCard(c) {
 				word,
 				href: jishoSearchUrl(word)
 			};
-		})
+		});
 	})
 
 	return [

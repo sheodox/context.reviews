@@ -3,6 +3,9 @@
         display: flex;
         justify-content: center;
     }
+	.demo-reveal button {
+		flex: 1;
+	}
     .demo {
         height: 38rem;
 		display: flex;
