@@ -90,8 +90,14 @@ label {
     border-radius: 0.2rem;
 }
 .header, header {
-    background: var(--panel-header-bg);
     @include base-button(#4a556054);
+
+    h1, h2 {
+        font-size: 1.8rem;
+    }
+}
+h1.header, h2.header {
+    font-size: 1.8rem;
 }
 
 nav a {

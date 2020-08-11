@@ -38,6 +38,9 @@
     h1 {
         margin: 0;
     }
+    .header {
+        background: var(--panel-header-bg);
+    }
 </style>
 
 <div class="overlay" on:click={() => visible = false}>
