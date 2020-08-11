@@ -41,6 +41,12 @@ services:
     depends_on:
       - app
     restart: unless-stopped
+    volumes:
+      # static error pages, give to nginx to show nice error pages even when the server is down
+      - type: bind
+        source: ./config/nginx-static
+        target: /var/www/static
+        read_only: true
 volumes:
   postgres:
   redis:
