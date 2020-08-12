@@ -1,10 +1,10 @@
 require('dotenv').config();
-import express, {Request, Response, NextFunction} from 'express';
+import express from 'express';
 import path from 'path';
 import http from 'http';
 import logger from 'morgan';
 import {Server} from 'ws';
-import createError, {HttpError} from 'http-errors';
+import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import {redisClient} from './util/redis-utils';
@@ -25,19 +25,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '..', 'public'), {
-    setHeaders: (res, path, stat) => {
-        if (
-            //don't cache the userscript path, it doesn't use manifest generated content paths
-            !path.includes('.user.js') &&
-            //don't give the base favicon image a long cache time, because it's not easily cache busted for the userscript.
-            //instead we'll just depend on the default etag behavior
-            !path.includes('favicon.png')
-        ) {
-            res.set('Cache-Control', 'max-age=3153600');
-        }
-    }
-}));
 app.use(bodyParser.json());
 
 const sessionStore = new RedisStore({client: redisClient});
@@ -52,6 +39,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 import indexRouter from './routes/index';
 import authRouter from './routes/auth';
 app.use('/', indexRouter);

@@ -99,7 +99,7 @@
 		Phrases you look up on Jisho will automatically get recorded to Context.Reviews with a browser extension.
 		As you're reading you can look up unknown words without having to write anything down to study later.
 	</p>
-	<img src="/images/extension-demo.png" alt="demo screenshot of the browser extension on Jisho.org"/>
+	<img src="/images/extension-demo.webp" alt="demo screenshot of the browser extension on Jisho.org"/>
 
 	<h2>
 		Look Back At Your Searches
@@ -111,7 +111,7 @@
 	<p>
 		Just like the Anki Export wizard selected text will pull definitions from Jisho, and gives you quick links to some other popular dictionary and search websites.
 	</p>
-	<img src="/images/list-demo.png" alt="demo screenshot of the phrase list">
+	<img src="/images/list-demo.webp" alt="demo screenshot of the phrase list">
 
 	<h2>
 		Add Phrases In Bulk
@@ -120,7 +120,7 @@
 		If you don't want to use the browser extension, or want to import a bunch of phrases at once, you can also add phrases manually in bulk!
 	</p>
 
-	<img src="/images/bulk-add-phrase-demo.png" alt="demo screenshot of the bulk phrase addition dialog">
+	<img src="/images/bulk-add-phrase-demo.webp" alt="demo screenshot of the bulk phrase addition dialog">
 
 	<h1>
 		Start Studying With Your Own Decks

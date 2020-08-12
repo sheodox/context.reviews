@@ -44,7 +44,7 @@ services:
     volumes:
       # static error pages, give to nginx to show nice error pages even when the server is down
       - type: bind
-        source: ./config/nginx-static
+        source: ./public
         target: /var/www/static
         read_only: true
 volumes:

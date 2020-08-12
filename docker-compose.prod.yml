@@ -3,6 +3,10 @@ services:
   app:
     build:
       target: prod
+    volume:
+      - type: bind
+        source: ./public
+        target: /usr/src/app/public
     restart: always
   nginx:
     restart: always

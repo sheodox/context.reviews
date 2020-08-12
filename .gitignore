@@ -1,7 +1,8 @@
 .idea
 node_modules
-public
+public/*
+!public/.keep
 extension
 .env
-web-ext-artifacts
+web-ext-artifacts/
 src/**/*.js
