@@ -3,7 +3,7 @@ services:
   app:
     build:
       target: prod
-    volume:
+    volumes:
       - type: bind
         source: ./public
         target: /usr/src/app/public
