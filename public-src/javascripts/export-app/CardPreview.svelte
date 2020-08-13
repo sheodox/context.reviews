@@ -84,7 +84,10 @@
         shadow.appendChild(cardContainer);
         //can't set target=_blank in the template or Anki won't open it,
         //but we don't want someone to accidentally open it and lose progress (there is a confirm, but don't want to risk it)
-		cardContainer.querySelectorAll('a').forEach(anchor => anchor.setAttribute('target', '_blank'));
+		cardContainer.querySelectorAll('a').forEach(anchor => {
+			anchor.setAttribute('target', '_blank');
+			anchor.setAttribute('rel', 'noreferrer noopener');
+		});
 
 		return {
             update() {
