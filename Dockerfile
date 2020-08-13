@@ -1,14 +1,14 @@
-FROM node:12 AS setup
+FROM node:12 AS dev
 WORKDIR /usr/src/app
-COPY package*.json ./
 RUN npm i -g typeorm
-RUN npm install
+USER node
 
-FROM setup as dev
 ENV NODE_ENV=development
 CMD typeorm migration:run && npx nodemon src/app.js
 
-FROM setup AS prod
+FROM dev AS prod
+COPY package*.json ./
+RUN npm install
 ENV NODE_ENV=production
 COPY . .
 RUN npm run build
