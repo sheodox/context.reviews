@@ -87,7 +87,7 @@
 		Definitions are automatically pulled from Jisho, and your context sentence is always included on the card to make understanding the definition in context easier and more memorable!
 		You're also able to customize everything about the cards so you're not limited to Jisho definitions!
 	</p>
-	<video muted autoplay loop controls src="/videos/anki-export-demo.mp4" />
+	<video muted autoplay loop controls src={asset('videos/anki-export-demo.mp4')} />
 
 	<h1>How Does It Work?</h1>
 
@@ -99,7 +99,7 @@
 		Phrases you look up on Jisho will automatically get recorded to Context.Reviews with a browser extension.
 		As you're reading you can look up unknown words without having to write anything down to study later.
 	</p>
-	<img src="/images/extension-demo.webp" alt="demo screenshot of the browser extension on Jisho.org"/>
+	<img src={asset('images/extension-demo.webp')} alt="demo screenshot of the browser extension on Jisho.org"/>
 
 	<h2>
 		Look Back At Your Searches
@@ -111,7 +111,7 @@
 	<p>
 		Just like the Anki Export wizard selected text will pull definitions from Jisho, and gives you quick links to some other popular dictionary and search websites.
 	</p>
-	<img src="/images/list-demo.webp" alt="demo screenshot of the phrase list">
+	<img src={asset('images/list-demo.webp')} alt="demo screenshot of the phrase list">
 
 	<h2>
 		Add Phrases In Bulk
@@ -120,7 +120,7 @@
 		If you don't want to use the browser extension, or want to import a bunch of phrases at once, you can also add phrases manually in bulk!
 	</p>
 
-	<img src="/images/bulk-add-phrase-demo.webp" alt="demo screenshot of the bulk phrase addition dialog">
+	<img src={asset('images/bulk-add-phrase-demo.webp')} alt="demo screenshot of the bulk phrase addition dialog">
 
 	<h1>
 		Start Studying With Your Own Decks
@@ -132,4 +132,5 @@
 	import ExternalLink from "../ExternalLink.svelte";
 	import DemoCard from './DemoCard.svelte';
 	import GetStarted from "./GetStarted.svelte";
+	import {asset} from '../assets';
 </script>

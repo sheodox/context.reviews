@@ -1,6 +1,7 @@
 const path = require('path'),
 	CopyPlugin = require('copy-webpack-plugin'),
 	ManifestPlugin = require('webpack-manifest-plugin'),
+	extras = require('./extra-build'),
 	isProd = process.argv.includes('production');
 
 module.exports = env => {
@@ -45,6 +46,13 @@ module.exports = env => {
 				{from: '**/*.mp4', context: './public-src'},
 				{from: '**/*.png', context: './public-src'},
 			]),
+			{
+				apply: compiler => {
+					compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {
+						extras(isProd);
+					})
+				}
+			},
 			new ManifestPlugin()
 		]
 	}, {
@@ -76,7 +84,7 @@ module.exports = env => {
 			{
 				apply: compiler => {
 					compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {
-						require('./extension-src/build')(env.SITE_TARGET === 'prod');
+						require('./extension-src/build')();
 					})
 				}
 			},

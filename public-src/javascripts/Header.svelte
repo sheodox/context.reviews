@@ -37,7 +37,7 @@
 
 <header class="row">
 	<div class="branding row">
-		<img src="/favicon.webp" alt="logo" class="logo">
+		<img src={asset('favicon.webp')} alt="logo" class="logo">
 		<h1>{pageName ? `${pageName} -` : ''} Context.Reviews</h1>
 	</div>
 	<div class="toolbar">
@@ -46,5 +46,6 @@
 </header>
 
 <script>
+	import {asset} from './assets';
 	export let pageName;
 </script>
