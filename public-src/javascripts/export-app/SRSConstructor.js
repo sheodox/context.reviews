@@ -85,10 +85,10 @@ function createTemplates() {
 					display: flex;
 					flex-direction: row;
 					justify-content: space-between;
-					align-items: end;
-				}
-				.other-links small {
 					font-size: 0.7rem;
+				}
+				.other-links a + a {
+					margin-left: 0.3rem;
 				}
 				hr {
 					border-color: ${getCSSVar('accent-purple')};
@@ -184,7 +184,7 @@ function createTemplates() {
 			<hr>
 			<div class="other-links">
 				{{#each otherLinks}}
-					<small><a href="{{this.href}}">{{this.siteName}}</a></small>
+					<a href="{{this.href}}">{{this.siteName}}</a>
 				{{/each}}
 			</div>
 		`);
