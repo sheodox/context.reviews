@@ -85,6 +85,7 @@ function createTemplates() {
 					display: flex;
 					flex-direction: row;
 					justify-content: space-between;
+					align-items: end;
 				}
 				.other-links small {
 					font-size: 0.7rem;
