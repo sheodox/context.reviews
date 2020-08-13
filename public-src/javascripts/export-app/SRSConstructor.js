@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars';
 import {analyzeTags} from "../definitions/processTag";
+import {createLinks} from "../definitions/otherDictionaryLinks";
 const cloneObject = obj => JSON.parse(JSON.stringify(obj));
 
 export default class SRSConstructor {
@@ -60,6 +61,7 @@ function createTemplates() {
 				.source {
 					text-transform: capitalize;
 					font-size: 0.7rem;
+					margin: 0;
 				}
 				.tag:not(:last-of-type) {
 					margin-right: 0.3rem;
@@ -78,6 +80,17 @@ function createTemplates() {
 				.dictionary-form {
 					font-size: 1.3rem;
 					margin: 0;
+				}
+				.other-links {
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+				}
+				.other-links small {
+					font-size: 0.7rem;
+				}
+				hr {
+					border-color: ${getCSSVar('accent-purple')};
 				}
 			</style>
 		`,
@@ -149,6 +162,17 @@ function createTemplates() {
 						{{/each}}
 					</small>
 				{{/if}}
+					
+				{{#if source}}
+					<p class="source">
+						{{#if definition.href}}
+							<a href="{{definition.href}}">Definition source: {{source}}</a>
+						{{/if}}
+						{{#unless definition.href}}
+							Definition source: {{source}}
+						{{/unless}}
+					</p>
+				{{/if}}
 			</div>
 			{{#if context}}
 				<p class="context">
@@ -156,14 +180,12 @@ function createTemplates() {
 				</p>
 			{{/if}}
 			
-			{{#if source}}
-				{{#if definition.href}}
-					<a href="{{definition.href}}" class="source">Definition source: {{source}}</a>
-				{{/if}}
-				{{#unless definition.href}}
-					<p class="source">Definition source: {{source}}</p>
-				{{/unless}}
-			{{/if}}
+			<hr>
+			<div class="other-links">
+				{{#each otherLinks}}
+					<small><a href="{{this.href}}">{{this.siteName}}</a></small>
+				{{/each}}
+			</div>
 		`);
 
 	return [
@@ -219,6 +241,9 @@ export function compileAnkiCard(c) {
 			};
 		});
 	})
+
+	//add links to other dictionaries
+	card.otherLinks = createLinks(card.word);
 
 	return [
 		ankiFrontTemplate(card),
