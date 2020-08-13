@@ -10,6 +10,5 @@ docker-compose*
 README.md
 LICENSE
 .vscode
-public/
 extension-src
 extension
