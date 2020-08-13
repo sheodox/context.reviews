@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node src/app",
-    "dev": "nodemon ./bin/www --ignore data/ -w public/manifest.json",
+    "dev": "nodemon ./bin/www --ignore data/",
     "build": "npm run build-web:prod && npm run build-server:prod",
     "build-server:dev": "tsc --watch",
     "build-server:prod": "tsc",

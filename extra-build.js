@@ -39,7 +39,7 @@ module.exports = async function build(isProd) {
 	//the webpack build generates js files with content hashes so they can be cached indefinitely,
 	//this just mimics that so we can use the same strategy for media files
 	const manifestPath = './public/manifest.json',
-		manifest = require(manifestPath);
+		manifest = JSON.parse(fs.readFileSync(manifestPath).toString());
 
 	//we need to search in public-src, otherwise we'll keep re-hashing old files and get increasingly long names.
 	//also search for png files, but know that the file we're actually hashing will be a webp already in public/
