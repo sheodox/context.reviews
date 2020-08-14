@@ -68,6 +68,7 @@ export function analyzeTags(tags=[]) {
 			else if (tag.includes('wanikani')) {
 				const wkLevel = parseInt(tag.replace(/\D*/, ''), 10),
 					fillColor = '#82216f',
+					//right at the end of the gradient, get brighter for effect
 					barEndColor = '#d243ba',
 					wkCompletionPercent = (wkLevel / MAX_WK_LEVEL) * 100;
 
@@ -75,7 +76,7 @@ export function analyzeTags(tags=[]) {
 				styleOverrides = {
 					'color': 'white',
 					'border-color': fillColor,
-					'background': `linear-gradient(
+					'background': wkLevel === MAX_WK_LEVEL ? fillColor : `linear-gradient(
 						to right,
 						${fillColor},
 						${fillColor} ${wkCompletionPercent - 10}%,
