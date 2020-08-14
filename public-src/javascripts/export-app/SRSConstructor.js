@@ -58,11 +58,6 @@ function createTemplates() {
 					font-size: 1.5rem;
 					margin: 0.3rem;
 				}
-				.source {
-					text-transform: capitalize;
-					font-size: 0.7rem;
-					margin: 0;
-				}
 				.tag:not(:last-of-type) {
 					margin-right: 0.3rem;
 				}
@@ -81,17 +76,51 @@ function createTemplates() {
 					font-size: 1.3rem;
 					margin: 0;
 				}
-				.other-links {
-					display: flex;
-					flex-direction: row;
-					justify-content: space-between;
+				#definition-links {
+					text-align: center;
+				}
+				.source {
+					text-transform: capitalize;
 					font-size: 0.7rem;
+					margin: 0 0.2rem;
+					display: inline;
 				}
-				.other-links a + a {
-					margin-left: 0.3rem;
+				#links-trigger:not(:checked) ~ .other-links {
+					display: none;
 				}
-				hr {
-					border-color: ${getCSSVar('accent-purple')};
+				#links-trigger {
+					display: none;
+				}
+				#links-trigger + label {
+					font-size: 0.7rem;
+					cursor: pointer;
+					margin: 0 0.2rem;
+				}
+				#links-trigger + label:hover {
+					text-decoration: underline;
+				}
+				#links-trigger:checked + label::after {
+					content: '⮝';
+				}
+				#links-trigger + label::after {
+					content: '⮟';
+				}
+				.other-links {
+					white-space: nowrap;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					position: absolute;
+					left: 50%;
+					transform: translate(-50%, calc(-100% - 1.5rem));
+					background: ${getCSSVar('bg')};
+					border-radius: 3px;
+					border: 1px solid coral;
+					padding: 0.3rem;
+					font-size: 0.9rem;
+				}
+				.other-links-container {
+					position: relative;
 				}
 			</style>
 		`,
@@ -163,7 +192,14 @@ function createTemplates() {
 						{{/each}}
 					</small>
 				{{/if}}
-					
+			</div>
+			{{#if context}}
+				<p class="context">
+					<a href="{{contextHref}}">「{{context}}」</a>
+				</p>
+			{{/if}}
+
+			<div id="definition-links">
 				{{#if source}}
 					<p class="source">
 						{{#if definition.href}}
@@ -174,18 +210,19 @@ function createTemplates() {
 						{{/unless}}
 					</p>
 				{{/if}}
-			</div>
-			{{#if context}}
-				<p class="context">
-					<a href="{{contextHref}}">「{{context}}」</a>
-				</p>
-			{{/if}}
-			
-			<hr>
-			<div class="other-links">
-				{{#each otherLinks}}
-					<a href="{{this.href}}">{{this.siteName}}</a>
-				{{/each}}
+				
+				<span class="other-links-container">
+					<input type="checkbox" id="links-trigger">
+					<label for="links-trigger">
+						Other Links
+					</label>
+					
+					<div class="other-links">
+						{{#each otherLinks}}
+							<a href="{{this.href}}">{{this.siteName}}</a>
+						{{/each}}
+					</div>
+				</span>
 			</div>
 		`);
 
