@@ -100,10 +100,10 @@ function createTemplates() {
 					text-decoration: underline;
 				}
 				#links-trigger:checked + label::after {
-					content: '⮝';
+					content: '▲';
 				}
 				#links-trigger + label::after {
-					content: '⮟';
+					content: '▼';
 				}
 				.other-links {
 					white-space: nowrap;
