@@ -1,5 +1,6 @@
 import fetch from './fetch';
 import {redis} from './redis-utils';
+import {URL} from 'url';
 
 const LOOKUP_TTL = 60 * 60 * 24 * 90; // about three months in seconds
 
@@ -110,8 +111,27 @@ interface JishoDefinition {
     }
 }
 
+//Jisho gives wikipedia links with an 'oldid' parameter (a pinned revision basically) so the page is outdated, this removes that
+function cleanLinks(links: JishoExternalLink[]) {
+    return links.map(link => {
+        const url = new URL(link.url);
+
+        //includes instead of equality, because there could be 'en' or 'ja' at the beginning
+        if (url.host.includes('wikipedia.org')) {
+            url.searchParams.delete('oldid');
+        }
+
+        return {
+            url: url.toString(),
+            text: link.text
+        }
+    });
+}
+
 export class JishoSearch {
-	static schemaVersion = 10;
+    //schemaVersion is incremented any time the definition response from this class
+    //is changed to cache bust definitions cached in redis
+	static schemaVersion = 11;
     static async search(searchText: string): Promise<SearchResults> {
         const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
@@ -161,7 +181,7 @@ export class JishoSearch {
                         	preInfo: parts_of_speech.join(', '),
                             definition: english_definitions.join(', '),
                             seeAlso: see_also,
-                            links: links,
+                            links: cleanLinks(links),
                             info: [
                                 ...tags, ...info,
                                 ...restrictions.map(restriction => `Only applies to ${restriction}`),
