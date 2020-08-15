@@ -15,6 +15,8 @@
 		flex-direction: row;
         align-items: center;
 		justify-content: center;
+		position: sticky;
+		top: 0;
 	}
 	table {
 		width: fit-content;
