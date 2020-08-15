@@ -29,7 +29,9 @@
 		const sel = window.getSelection(),
 			selectionText = sel.toString();
 
-		if (sel.containsNode(textElement, true) && selectionText) {
+		//need to make sure textElement exists, when lots of clicking is done (lots of deleting phrases on the list,
+        //or clicking 'next phrase' in the export app quickly) textElement can be nulled out
+		if (textElement && sel.containsNode(textElement, true) && selectionText) {
 			dispatch('text-select', selectionText.trim());
 		}
 	}
