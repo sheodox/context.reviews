@@ -34,7 +34,7 @@ function createTemplates() {
 					color: white;
 					max-width: 500px;
 					margin: 0 auto;
-					font-family: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+					font-family: ${getCSSVar('jp-fonts')};
 				}
 				.word {
 					font-size: 3rem;

@@ -101,7 +101,7 @@
 					{#if meaning.seeAlso.length > 0}
 						<br>
 						{#each meaning.seeAlso as also}
-							<button class="small" on:click={() => searchTerm = also}>See also {also}</button>
+							<button class="small" on:click={() => searchTerm = also}>See also <span class="jp">{also}</span></button>
 						{/each}
 					{/if}
 

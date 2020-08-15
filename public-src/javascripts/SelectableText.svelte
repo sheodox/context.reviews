@@ -1,5 +1,5 @@
 <!-- use mouseup to short circuit the selectionchange debounce -->
-<span bind:this={textElement} on:mouseup={onSelection}>
+<span bind:this={textElement} on:mouseup={onSelection} class="jp">
     {text}
 </span>
 

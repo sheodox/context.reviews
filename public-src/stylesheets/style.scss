@@ -27,11 +27,23 @@
     //a text color indicating an export option is recommended, like highlighting "use kana" if
     //one of the meanings for the selected definition is usually kana
     --suggestion: #ff44d9;
+
+    --en-fonts: Arial, Noto Sans, sans-serif;
+    --jp-fonts: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+}
+
+/*
+Use a better font stack for places Japanese text is likely to be. Otherwise you'll get either ugly fonts or
+incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki/Han_unification
+ */
+.jp, ruby, input, textarea {
+    font-family: var(--jp-fonts);
 }
 
 body, #app-root {
     font-size: 14px;
-    font-family: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+    line-height: 1.4;
+    font-family: var(--en-fonts);
     background-color: var(--bg);
     color: white;
     margin: 0;

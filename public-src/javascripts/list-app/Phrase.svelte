@@ -23,7 +23,7 @@
 	}
 </style>
 
-<tr>
+<tr class="jp">
 	<td class="buttons">
 		<button on:click={deletePhrase} class="delete">削除</button>
 		<button on:click={define} class="search">辞書</button>

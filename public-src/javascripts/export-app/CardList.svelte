@@ -53,7 +53,7 @@
         display: flex;
         flex-direction: column;
     }
-	@media (max-width: 1400px) {
+	@media (max-width: 1200px) {
 		.preview-container {
             position: static;
             align-self: center;
@@ -69,7 +69,7 @@
 		<div class="phrase-select">
 			<label>
 				Skip To Phrase
-				<select bind:value={$currentPhraseIndex}>
+				<select bind:value={$currentPhraseIndex} class="jp">
                     {#each Array.from($cardsByPhrase) as [phrase], index}
 						<option value={index}>{phrase}</option>
                     {/each}

@@ -7,7 +7,6 @@
         font-size: 1rem;
         display: flex;
         flex-direction: column;
-        font-weight: bold;
         border-radius: 3px;
     }
 
@@ -22,14 +21,17 @@
     p {
         margin: 0.2rem;
     }
+    .text {
+        font-weight: bold;
+    }
 </style>
 
 <div class="toast-container">
     {#each toasts as toast (toast.text + toast.subtext)}
         <div class="toast">
-            <p>{toast.text}</p>
+            <p class="text">{toast.text}</p>
             {#if toast.subtext}
-                <small>{toast.subtext}</small>
+                <small class="jp">{toast.subtext}</small>
             {/if}
         </div>
     {/each}

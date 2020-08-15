@@ -18,7 +18,7 @@
     {#if term}
         {#each [term] as term (term)}
             <div in:fly={{y: 50}}>
-                <p>View results for "{term}" in other dictionaries</p>
+				<p>View results for <span class="jp">"{term}"</span> in other dictionaries</p>
 
                 <ul>
 					{#each links as {siteName, href}}
