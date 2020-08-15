@@ -82,6 +82,15 @@
 		font-size: 0.9rem;
 		margin: 0;
 	}
+	@media (max-width: 850px) {
+		.tweaks .card-fields {
+			flex-direction: column;
+			align-items: start;
+		}
+		.title-bar {
+			flex-direction: column;
+		}
+	}
 </style>
 
 <div class="builder panel" in:fly={{y:50, duration: 100}}>

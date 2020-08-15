@@ -24,12 +24,18 @@
 		justify-content: center;
 		align-items: start;
 	}
-	@media (max-width: 1400px) {
+
+
+	@media (max-width: 1200px) {
 		#card-workspace {
 			flex-direction: column;
-			align-items: center;
+			align-items: normal;
 		}
-
+	}
+	@media (min-width: 1200px) {
+		#card-workspace :global(aside) {
+            max-width: 20rem;
+        }
 	}
 	.max-height {
 		height: 100%;
@@ -67,11 +73,11 @@
 							on:restart={startOver}
 					/>
 				{:else if $phraseStore}
-					<CardList cards={cards} on:goToPhrase={goToPhrase}/>
 					<!-- using a keyed each for one element so it always rebuilds -->
 					{#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
 						<CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
 					{/each}
+					<CardList cards={cards} on:goToPhrase={goToPhrase}/>
 				{/if}
 
 			</div>
