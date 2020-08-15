@@ -82,6 +82,9 @@
 		font-size: 0.9rem;
 		margin: 0;
 	}
+	.suggested {
+		color: var(--suggestion);
+	}
 	@media (max-width: 850px) {
 		.tweaks .card-fields {
 			flex-direction: column;
@@ -127,7 +130,8 @@
 								<input id="tweak-word" bind:value={$word} />
 								<button
 										on:click={() => word.set(get(reading))}
-										title="Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead."
+										title={$useKanaTooltip}
+										class:suggested={$suggestUseKana}
 										disabled={$word === $reading}
 								>
 									Use Kana
@@ -185,7 +189,7 @@
 <script>
 	import {fly} from 'svelte/transition';
 	import {flip} from 'svelte/animate';
-	import {get} from 'svelte/store';
+	import {get, derived} from 'svelte/store';
 	import {createEventDispatcher} from 'svelte';
 	import DictionarySearchResults from '../definitions/DictionarySearchResults.svelte';
 	import {
@@ -213,6 +217,14 @@
 	export let phrase = '';
 
 	$: context.set(phrase.phrase);
+
+	const suggestUseKana = derived([definition], ([definition]) => {
+			return definition && definition.meanings.some(({info}) => info === 'Usually written using kana alone');
+		}),
+		useKanaTooltip = derived([suggestUseKana], ([suggested]) => {
+			const base = 'Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead.';
+			return base + (suggested ? `\n\nOne of the meanings for this definition says it's usually spelled with only kana.` : '')
+		});
 
 	const DEBOUNCE_TIMEOUT = 500,
 		dispatch = createEventDispatcher();
