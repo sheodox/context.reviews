@@ -10,6 +10,9 @@
         margin: 0;
         text-align: center;
     }
+	.hint-text {
+		text-align: center;
+	}
 </style>
 
 <div>
@@ -30,7 +33,7 @@
 			</div>
         {/each}
     {:else}
-		<p>Search for something to see links to definitions in other dictionaries.</p>
+		<p class="hint-text">Search for something to see links to definitions in other dictionaries.</p>
     {/if}
 </div>
 

@@ -12,12 +12,18 @@
 		overflow: auto;
 		padding: 0 0.5rem 0.5rem 0.5rem;
 	}
+	.capitalize {
+		text-transform: capitalize;
+	}
+	.hint-text {
+		text-align: center;
+	}
 </style>
 
 <div class="definition">
 	{#if !lookup}
 		<h1>{source}</h1>
-        <p>Search to see {source} definitions here!</p>
+		<p class="hint-text">Search to see <span class="capitalize">{source}</span> definitions here!</p>
 	{:else}
 		{#await lookup }
 			<h1>{source}</h1>
