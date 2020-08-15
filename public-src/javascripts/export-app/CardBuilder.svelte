@@ -82,7 +82,7 @@
 		font-size: 0.9rem;
 		margin: 0;
 	}
-	.suggested {
+	.suggested:enabled {
 		color: var(--suggestion);
 	}
 	@media (max-width: 850px) {
