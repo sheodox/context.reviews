@@ -50,7 +50,7 @@
 		display: block;
 	}
 	.exact-match {
-        border: 1px solid var(--accent-purple);
+        border: 1px solid var(--suggestion);
 	}
 </style>
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
