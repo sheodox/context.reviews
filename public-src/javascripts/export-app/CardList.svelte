@@ -38,8 +38,9 @@
     .preview-container {
         position: absolute;
         z-index: 10000; /* show this over the top of the definitions */
-        left: 100%;
+		left: 0;
         top: 0;
+		transform: translate(-100%);
         width: 30rem;
         border-radius: 5px;
         border: 1px solid var(--accent-purple);
@@ -56,6 +57,7 @@
 		.preview-container {
             position: static;
             align-self: center;
+            transform: translate(0%);
 		}
 	}
 </style>
