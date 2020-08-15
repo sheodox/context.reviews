@@ -90,6 +90,9 @@
 		.title-bar {
 			flex-direction: column;
 		}
+		.definitions {
+			flex-direction: column;
+		}
 	}
 </style>
 
