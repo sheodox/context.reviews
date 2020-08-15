@@ -15,9 +15,13 @@
         height: 35rem;
         overflow: auto;
     }
+	.normal-preview {
+		max-height: 30rem;
+		overflow: auto;
+	}
 </style>
 
-<div class:demo={demoMode}>
+<div class:demo={demoMode} class:normal-preview={!demoMode}>
 	<div class="card-preview" bind:this={previewElement} use:mountPreview={card}></div>
     {#if demoMode && !revealed}
         <div class="demo-reveal">
