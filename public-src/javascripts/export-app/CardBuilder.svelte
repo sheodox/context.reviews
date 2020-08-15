@@ -219,7 +219,7 @@
 	$: context.set(phrase.phrase);
 
 	const suggestUseKana = derived([definition], ([definition]) => {
-			return definition && definition.meanings.some(({info}) => info === 'Usually written using kana alone');
+			return definition && definition.meanings.some(({info}) => info.includes('Usually written using kana alone'));
 		}),
 		useKanaTooltip = derived([suggestUseKana], ([suggested]) => {
 			const base = 'Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead.';
