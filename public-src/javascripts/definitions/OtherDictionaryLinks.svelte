@@ -33,7 +33,7 @@
 			</div>
         {/each}
     {:else}
-		<p class="hint-text">Search for something to see links to definitions in other dictionaries.</p>
+		<p class="hint-text">Search to see links to definitions in other dictionaries.</p>
     {/if}
 </div>
 
