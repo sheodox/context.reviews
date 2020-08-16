@@ -153,6 +153,7 @@
 									on:click={addCard}
 									disabled={!$word || !$wordIsUnique}
 							>
+								<Icon icon="add" />
 								Add Card
 							</button>
 						</div>

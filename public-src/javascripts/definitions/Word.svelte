@@ -49,9 +49,6 @@
 	.selected .selected-definition-message {
 		display: block;
 	}
-	.exact-match {
-        border: 1px solid var(--suggestion);
-	}
 </style>
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
 	<div class="search-result">
@@ -71,12 +68,15 @@
 			<button class="small primary" on:click={() => addToReviews(definition.word)}>+ Add to phrases</button>
 		{:else}
 			<button
-				class="small primary"
-				class:exact-match={definition.word === searchTerm}
+				class="small"
+				class:primary={definition.word === searchTerm}
 				on:click={() => selectForExport()}
 				disabled={isFormSelected($card, definition.word, definition.reading)}
 				title={definition.word === searchTerm ? exactMatchExplanation : ''}
 			>
+				{#if definition.word === searchTerm}
+					<Icon noPadding={true} icon="assistant" />
+				{/if}
 				Select
 			</button>
 		{/if}
@@ -121,11 +121,14 @@
 					{#if mode === 'export'}
 						<button
 							class="small"
-							class:exact-match={alt.word === searchTerm}
+							class:primary={alt.word === searchTerm}
                             title={alt.word === searchTerm ? exactMatchExplanation : ''}
 							on:click={() => selectForExport(alt)}
 							disabled={isFormSelected($card, alt.word, alt.reading)}
 						>
+							{#if alt.word === searchTerm}
+								<Icon noPadding={true} icon="assistant" />
+							{/if}
 							<JapaneseWord word={alt.word} reading={alt.reading} />
 						</button>
 					{:else}
@@ -151,6 +154,7 @@
 		selectDefinition,
         card,
 	} from '../export-app/currentCardStore';
+	import Icon from '../Icon.svelte';
 	import {analyzeTags} from './processTag';
 
 	//the dictionary site this came from

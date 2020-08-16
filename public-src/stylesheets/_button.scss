@@ -23,15 +23,14 @@ button, input[type=submit], .button {
 }
 
 button.primary, .button.primary {
-    color: white;
-    background: var(--accent-gradient);
+    color: var(--suggestion);
 
     &:hover:not(:disabled) {
-        background: var(--accent-gradient-light);
+        color: var(--suggestion-light);
     }
 }
 button:disabled, button.primary:disabled {
-    color: black;
+    color: #2b394a;
     background: none;
     cursor: auto;
 }
