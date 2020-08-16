@@ -20,7 +20,7 @@
 	}
 	table {
 		width: fit-content;
-		margin: 1rem 0;
+		margin: 0.5rem 0;
 	}
 	main {
 		flex: 1;
@@ -37,7 +37,7 @@
 	}
 	aside {
 		flex: 1;
-		margin: 0.5rem;
+		margin: 0.5rem 0;
 		min-width: 20rem;
 		height: 85vh;
 	}

@@ -20,10 +20,10 @@
     --accent-gradient-light: linear-gradient(to right, var(--gradient-start-light), var(--gradient-end-light));
 
     //--bg: #0b060f;
-    --bg: #0f0918;
+    --bg: #08050d;
     --panel-bg: #15141e;
     --sub-panel-bg: #1b1d26;
-    --panel-header-bg: #272533;
+    --panel-header-bg: var(--panel-bg);
     --panel-footer-bg: #111118;
     --input-bg: rgba(53, 54, 64, 0.6);
     --input-focus-color: #3584e4;
