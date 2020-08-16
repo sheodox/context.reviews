@@ -120,7 +120,7 @@ h1.header, h2.header {
     font-size: 1.8rem;
 }
 
-nav a {
+nav a[href] {
     color: white;
     font-weight: bold;
     text-decoration: none;
