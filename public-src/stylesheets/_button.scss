@@ -35,6 +35,15 @@ button:disabled, button.primary:disabled {
     cursor: auto;
 }
 
+button.galaxy, .button.galaxy {
+    background: var(--accent-gradient);
+    color: white;
+
+    &:hover:not(:disabled) {
+        background: var(--accent-gradient-light);
+    }
+}
+
 button.danger:not(:disabled) {
     background: var(--accent-red);
     color: black;
