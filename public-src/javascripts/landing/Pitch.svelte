@@ -48,8 +48,12 @@
 		}
 	}
     p {
+		font-size: 1rem;
 		line-height: 1.7;
 		text-align: center;
+	}
+	.lead {
+		font-size: 1.2rem;
 	}
 </style>
 
@@ -58,9 +62,12 @@
 		<div>
 			<h1>Study Japanese Using Anything</h1>
 			<div>
+				<p class="lead">
+					Context.Reviews makes learning Japanese more interesting by helping you learn the vocabulary
+					you encounter!
+				</p>
 				<p>
-					Context.Reviews aims to make studying Japanese more interesting by helping you learn the vocabulary
-					you encounter. Words you encounter in native material are more memorable than drilling pre-made
+					Words you encounter in native material are more memorable than drilling pre-made
 					decks, not to mention more fun!
 				</p>
 				<p>

@@ -70,7 +70,6 @@ function createTemplates() {
 				.dictionary-details {
 					padding: 0.5rem;
 					border-radius: 3px;
-					background: ${getCSSVar('panel-bg')};
 				}
 				.dictionary-form {
 					font-size: 1.3rem;

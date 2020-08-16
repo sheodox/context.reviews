@@ -15,6 +15,7 @@
 	}
 	progress {
 		width: 100%;
+        border-radius: 0.2rem;
 	}
 	progress::-moz-progress-bar {
 		background-size: var(--progress-bg-size) 100%;

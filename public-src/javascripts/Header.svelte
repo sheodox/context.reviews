@@ -2,13 +2,7 @@
 	header {
 		background: var(--panel-header-bg);
 		width: 100%;
-        justify-content: space-between;
-		border-bottom: 1px solid var(--accent-purple);
-	}
-
-	h1 {
-		border-left: 0.2rem solid var(--accent-purple);
-		padding-left: 1rem;
+        justify-content: space-around;
 	}
 
 	img.logo {

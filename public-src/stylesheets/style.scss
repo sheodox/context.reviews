@@ -3,30 +3,33 @@
 @import 'input';
 
 :root {
-    --accent-blue: #06acfd;
+    --accent-blue: #0cacff;
     --accent-red: #e83450;
     --accent-red-bright: #ff0e32;
-    --accent-purple: #9400ff;
+    $purple: #7700ff;
+    $pink: #bb24e2;
+    --accent-purple: #{$purple};
     --accent-purple-dark: #7804cd;
     --accent-purple-bright: #b300ff;
-    --accent-primary: var(--accent-blue);
-    --accent-secondary: var(--accent-red);
-    --accent-pink: #df61ff;
-    --gradient-start: #8000ff;
-    --gradient-end: #3be8f0;
+    --accent-pink: #{$pink};
+    --gradient-start: var(--accent-pink);
+    --gradient-end: var(--accent-purple-dark);
+    --gradient-start-light: #{lighten($pink, 5%)};
+    --gradient-end-light: #{lighten($purple, 5%)};
     --accent-gradient: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
-    --accent-gradient-faint: linear-gradient(to right, rgba(8, 255, 255, 0.15), rgba(229, 94, 255, 0.15));
+    --accent-gradient-light: linear-gradient(to right, var(--gradient-start-light), var(--gradient-end-light));
 
-    --bg: #0b0f15;
-    --panel-bg: #14171e;
+    //--bg: #0b060f;
+    --bg: #0f0918;
+    --panel-bg: #15141e;
     --sub-panel-bg: #1b1d26;
-    --panel-header-bg: #252833;
+    --panel-header-bg: #272533;
     --panel-footer-bg: #111118;
     --input-bg: rgba(53, 54, 64, 0.6);
     --input-focus-color: #3584e4;
     //a text color indicating an export option is recommended, like highlighting "use kana" if
     //one of the meanings for the selected definition is usually kana
-    --suggestion: #ff44d9;
+    --suggestion: #00ff2b;
 
     --en-fonts: Arial, Noto Sans, sans-serif;
     --jp-fonts: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
@@ -70,7 +73,7 @@ label {
 }
 
 @mixin base-button($bg) {
-    button:not(.primary):not(.galaxy):not(.danger):enabled {
+    button:not(.primary):not(.danger):enabled {
         background: none;
 
         &:hover:not(:disabled) {
@@ -136,7 +139,7 @@ nav a {
 
 h1, h2, h3, h4, h5, h6 {
     &:not(.japanese) {
-        font-family: 'Raleway', sans-serif;
+        font-family: 'Kanit', sans-serif;
     }
 }
 

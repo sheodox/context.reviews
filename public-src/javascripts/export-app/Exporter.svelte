@@ -46,7 +46,7 @@
 				You created {numCards} {numCards === 1 ? 'card' : 'cards'} from {numPhrases} {numPhrases === 1 ? 'phrase' : 'phrases'}.
 			</p>
 			<a
-					class="button galaxy"
+					class="button primary"
 					href={exported.href}
 					on:click={enableDelete}
 					on:contextmenu={() => enableDelete(2000)}

@@ -4,7 +4,7 @@
 	}
 </style>
 
-<a href="/auth/google" class="galaxy button">
+<a href="/auth/google" class="primary button">
 	<Icon icon="login"/>
 	Log in with Google
 </a>

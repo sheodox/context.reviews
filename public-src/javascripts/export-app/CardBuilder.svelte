@@ -134,6 +134,9 @@
 										class:suggested={$suggestUseKana}
 										disabled={$word === $reading}
 								>
+									{#if $suggestUseKana}
+										<Icon icon="assistant" />
+									{/if}
 									Use Kana
 								</button>
 							</div>
