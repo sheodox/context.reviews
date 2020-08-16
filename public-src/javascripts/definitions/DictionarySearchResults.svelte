@@ -42,7 +42,7 @@
 						/>
 					{/each}
 				{:else}
-					<p>No results found for "{term}"</p>
+					<p class="hint-text">No results found for "{term}"</p>
 				{/if}
 			</div>
 		{/await}
