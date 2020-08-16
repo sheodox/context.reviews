@@ -62,7 +62,7 @@ body, #app-root {
     box-sizing: border-box;
 }
 
-a {
+a[href] {
     color: #00B7FF;
 }
 
