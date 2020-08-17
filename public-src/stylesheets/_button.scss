@@ -28,8 +28,11 @@ button.primary, .button.primary {
     &:hover:not(:disabled) {
         color: var(--suggestion-light);
     }
+    &:disabled {
+        color: var(--suggestion-dark);
+    }
 }
-button:disabled, button.primary:disabled {
+button:disabled {
     color: #2b394a;
     background: none;
     cursor: auto;
