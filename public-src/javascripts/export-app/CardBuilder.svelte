@@ -129,10 +129,10 @@
 							<div class="input-group">
 								<input id="tweak-word" bind:value={$word} />
 								<button
-										on:click={() => word.set(get(reading))}
-										title={$useKanaTooltip}
-										class:suggested={$suggestUseKana}
-										disabled={$word === $reading}
+									on:click={() => word.set(get(reading))}
+									title={$useKanaTooltip}
+									class:suggested={$suggestUseKana}
+									disabled={$word === $reading}
 								>
 									{#if $suggestUseKana}
 										<Icon icon="assistant" />
@@ -149,9 +149,8 @@
 
 						<div class="column">
 							<button
-									class="primary"
-									on:click={addCard}
-									disabled={!$word || !$wordIsUnique}
+								on:click={addCard}
+								disabled={!$word || !$wordIsUnique}
 							>
 								<Icon icon="add" />
 								Add Card
@@ -176,11 +175,11 @@
 					{#each [selection] as sel (sel) }
 						<div class="definitions" in:fly={{y: 50}} >
 							<DictionarySearchResults
-									source="jisho"
-									isPrimary={true}
-									bind:term={selection}
-									mode="export"
-									on:editDefinition={() => showMeaningEditor = true}
+								source="jisho"
+								isPrimary={true}
+								bind:term={selection}
+								mode="export"
+								on:editDefinition={() => showMeaningEditor = true}
 							/>
 							<OtherDictionaryLinks term={$word} />
 						</div>
