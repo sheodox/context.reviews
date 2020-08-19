@@ -98,8 +98,6 @@
 	</p>
 	<video muted autoplay loop controls src={asset('videos/anki-export-demo.mp4')} />
 
-	<h1>How Does It Work?</h1>
-
 	<h2>
 		Automatically Record Searches
 	</h2>
