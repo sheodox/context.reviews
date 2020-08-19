@@ -43,8 +43,10 @@ app.use(passport.session());
 
 import indexRouter from './routes/index';
 import authRouter from './routes/auth';
+import statsRouter from './routes/stats';
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/stats', statsRouter);
 require('./util/server-socket').initialize(wss, sessionStore);
 
 // catch 404 and forward to error handler
