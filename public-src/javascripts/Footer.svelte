@@ -12,6 +12,15 @@
     footer * + * {
         margin-left: 1rem;
     }
+	@media (max-width: 650px) {
+		footer {
+			flex-direction: column;
+			align-items: center;
+		}
+		footer > * {
+			margin: 0;
+		}
+	}
 </style>
 
 <footer>
