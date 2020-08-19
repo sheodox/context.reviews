@@ -32,7 +32,8 @@
 	}
 	.row > * {
 		flex: 1;
-		margin: 0.5rem;
+        max-width: 40rem;
+		margin: 1rem 2.5rem;
 	}
 	@media (max-width: 800px) {
 		.row {
@@ -48,9 +49,13 @@
 		}
 	}
     p {
-		font-size: 1rem;
+		max-width: 50rem;
+		font-size: 1.1rem;
 		line-height: 1.7;
 		text-align: center;
+	}
+	aside#demo-cards {
+		max-width: 32rem;
 	}
 </style>
 
@@ -72,7 +77,7 @@
 			</div>
 		</div>
 
-		<aside class="outlined">
+		<aside id="demo-cards" class="outlined">
 			<DemoCard />
 		</aside>
 	</div>
@@ -81,7 +86,7 @@
 		Effortlessly Create Anki Cards
 	</h2>
 	<p>
-		You can create <ExternalLink href="https://apps.ankiweb.net/">Anki flashcards</ExternalLink> just by selecting the unknown words in each context sentence you looked up.
+		Context.Reviews help you create <ExternalLink href="https://apps.ankiweb.net/">Anki flashcards</ExternalLink> just by selecting the unknown words in each context sentence you looked up.
 		Making good Anki cards usually takes time, but this makes it quick and easy!
 	</p>
 	<p>

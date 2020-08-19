@@ -57,6 +57,8 @@ body, #app-root {
     height: 100vh;
     width: 100%;
     opacity: 1;
+    text-rendering: optimizeLegibility;
+    font-weight: 400;
 }
 
 * {
@@ -139,7 +141,6 @@ nav a[href] {
     height: 1px;
     overflow: hidden;
 }
-
 h1, h2, h3, h4, h5, h6 {
     &:not(.japanese) {
         font-family: 'Kanit', sans-serif;

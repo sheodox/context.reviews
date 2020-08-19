@@ -11,8 +11,12 @@ body {
 }
 
 main {
-    max-width: 70rem;
+    max-width: 90rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+header {
+    background: none !important;
 }
