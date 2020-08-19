@@ -47,6 +47,9 @@
         .panel {
 			padding: 1rem;
 		}
+		aside#demo-cards {
+			width: auto;
+		}
 	}
     p {
 		max-width: 50rem;
@@ -55,7 +58,7 @@
 		text-align: center;
 	}
 	aside#demo-cards {
-		max-width: 32rem;
+		width: 25rem;
 	}
 </style>
 
