@@ -14,6 +14,9 @@ button, input[type=submit], .button {
     font-weight: bold;
     font-size: 0.9rem;
     transition: color 0.15s, background 0.15s;
+    //buttons don't inherit the body's font stack
+    font-family: var(--en-fonts);
+
     &:hover:enabled {
         background: lighten($buttonBG, $hoverLightenPercent);
     }
