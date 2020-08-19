@@ -25,6 +25,10 @@ button, input[type=submit], .button {
     }
 }
 
+button .jp {
+    font-weight: normal;
+}
+
 button.primary, .button.primary {
     color: var(--suggestion);
 
