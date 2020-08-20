@@ -14,7 +14,7 @@
     .panel {
 		max-width: 50rem;
 		padding: 1rem;
-		margin: 1rem;
+		margin: 0.5rem 0;
 	}
 	h2 {
 		margin: 0;
