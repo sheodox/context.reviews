@@ -101,9 +101,11 @@ function createTemplates() {
 				}
 				#links-trigger:checked + label::after {
 					content: '▲';
+					font-size: 0.4rem;
 				}
 				#links-trigger + label::after {
 					content: '▼';
+					font-size: 0.4rem;
 				}
 				.other-links {
 					white-space: nowrap;
@@ -117,7 +119,7 @@ function createTemplates() {
 					border-radius: 3px;
 					border: 1px solid coral;
 					padding: 0.3rem;
-					font-size: 0.9rem;
+					font-size: 1rem;
 				}
 				.other-links-container {
 					position: relative;
