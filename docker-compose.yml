@@ -11,7 +11,7 @@ services:
       # export location for data and usage stats
       - type: bind
         source: ./stats
-        target: /usr/app/src/stats
+        target: /usr/src/app/stats
   postgres:
     image: postgres:13-alpine
     environment:

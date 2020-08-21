@@ -13,3 +13,4 @@ LICENSE
 extension-src
 extension
 stats/
+node_modules/
