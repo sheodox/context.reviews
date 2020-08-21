@@ -4,6 +4,7 @@ import {Router} from 'express';
 import {connection as getConnection} from "../entity";
 import {Phrase} from '../entity/Phrase';
 import {User} from '../entity/User';
+import {Between} from "typeorm/index";
 
 const router = Router(),
     mkdir = promisify(fs.mkdir),
@@ -12,13 +13,29 @@ const router = Router(),
 async function getUsageStats() {
     const connection = await getConnection,
         phraseRepository = connection.getRepository(Phrase),
-        userRepository = connection.getRepository(User)
+        userRepository = connection.getRepository(User),
+        yesterday = new Date(Date.now() - DAY_MS),
+        yesterdayStart = new Date(yesterday.getTime()),
+        yesterdayEnd = new Date(yesterday.getTime());
+
+    yesterdayStart.setHours(0);
+    yesterdayStart.setMinutes(0);
+    yesterdayStart.setSeconds(0);
+    yesterdayStart.setMilliseconds(0);
+
+    yesterdayEnd.setHours(23);
+    yesterdayEnd.setMinutes(59);
+    yesterdayEnd.setSeconds(59);
+    yesterdayEnd.setMilliseconds(999);
 
     return {
         time: Date.now(),
         phrases: {
             total: await phraseRepository.count(),
-            active: await phraseRepository.count({deleted: false})
+            active: await phraseRepository.count({deleted: false}),
+            yesterday: await phraseRepository.count({
+                createdAt: Between(yesterdayStart, yesterdayEnd)
+            })
         },
         users: {
             total: await userRepository.count()
