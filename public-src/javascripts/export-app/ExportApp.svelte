@@ -30,6 +30,7 @@
 		#card-workspace {
 			flex-direction: column;
 			align-items: normal;
+			justify-content: start;
 		}
 	}
 	@media (min-width: 1200px) {
@@ -39,6 +40,9 @@
 	}
 	.max-height {
 		height: 100%;
+	}
+	.full-page-contents {
+		flex: 1;
 	}
 </style>
 
@@ -63,26 +67,26 @@
             {/if}
 		</Header>
 
-		{#if $phraseStore && $phraseStore.length === 0}
-			<NoPhrases />
-		{:else}
-			<div class="row" id="card-workspace">
+		<div class="full-page-contents">
+			{#if $phraseStore && $phraseStore.length === 0}
+				<NoPhrases />
+			{:else}
 				{#if showExport}
 					<Exporter
-							on:back={() => showExport = false}
-							on:restart={startOver}
+						on:back={() => showExport = false}
+						on:restart={startOver}
 					/>
 				{:else if $phraseStore}
-					<!-- using a keyed each for one element so it always rebuilds -->
-					{#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
-						<CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
-					{/each}
-					<CardList cards={cards} on:goToPhrase={goToPhrase}/>
+					<div class="row" id="card-workspace">
+						<!-- using a keyed each for one element so it always rebuilds -->
+						{#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
+							<CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
+						{/each}
+						<CardList cards={cards} on:goToPhrase={goToPhrase}/>
+					</div>
 				{/if}
-
-			</div>
-		{/if}
-
+			{/if}
+		</div>
 		<Footer />
 	</div>
 </div>

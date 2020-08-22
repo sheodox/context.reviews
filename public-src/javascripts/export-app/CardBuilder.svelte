@@ -1,6 +1,5 @@
 <style>
     .builder {
-		background: var(--panel-bg);
 		margin: 1rem;
 		flex: 3;
 		display: flex;
@@ -45,7 +44,7 @@
 	}
 	.tweaks {
 		margin: 1rem;
-		background: var(--sub-panel-bg);
+		background: var(--panel-bg);
 		border-radius: 5px;
 		align-self: center;
 	}
@@ -99,7 +98,7 @@
 	}
 </style>
 
-<div class="builder panel" in:fly={{y:50, duration: 100}}>
+<div class="builder">
 	<div class="row spaced-out title-bar header">
 		<h2>Card Builder</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
@@ -122,7 +121,7 @@
 		</p>
 		{#if selection}
 			{#if $definition}
-				<div class="centered tweaks" in:fly={{y: 50}}>
+				<div class="centered tweaks">
 					<div class="row card-fields">
 						<div class="column">
 							<label for="tweak-word">Word</label>

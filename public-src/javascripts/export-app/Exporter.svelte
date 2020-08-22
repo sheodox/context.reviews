@@ -19,13 +19,15 @@
 	button, a[download] {
 		align-self: center;
 	}
-	.panel {
+	.container {
 		align-self: start;
+		width: 30rem;
+		max-width: 95vw;
 		margin: 1rem;
 	}
 </style>
 
-<div class="panel">
+<div class="container">
 	<div class="header">
 		<h1>Export</h1>
 		{#if phrasesDeleted}

@@ -28,7 +28,7 @@
 		padding: 0.2rem;
 	}
 	.selected .search-result {
-		background: var(--panel-bg);
+		background: var(--bg);
 	}
 	.search-result {
 		padding: 0.3rem;
