@@ -11,7 +11,7 @@
 	p.hint {
 		margin-left: 2rem;
 	}
-    .panel {
+    .container {
 		max-width: 50rem;
 		padding: 1rem;
 		margin: 0.5rem 0;
@@ -34,7 +34,7 @@
 	}
 </style>
 
-<div class="panel">
+<div class="container">
 	<h2>Setup</h2>
 	<p>
 		Install the browser extension which will automatically keep track of all of the <ExternalLink href="https://jisho.org">Jisho.org</ExternalLink> searches you make for Japanese words and phrases.
