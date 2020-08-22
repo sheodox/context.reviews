@@ -19,29 +19,26 @@
 		top: 0;
 		/* keep the toolbar above the 'v' more buttons when the action buttons are collapsed */
 		z-index: 11;
+		border-bottom: var(--panel-border);
 	}
 	table {
 		width: fit-content;
 		margin: 0.5rem 0;
 	}
 	main {
+		overflow: auto;
 		flex: 1;
 		display: flex;
 		flex-direction: row;
 	}
-	.panel {
-		border-radius: 0.2rem;
-	}
 
 	#list-container {
-		margin: 0.5rem;
 		flex: 3;
 	}
 	aside {
 		flex: 1;
-		margin: 0.5rem 0;
 		min-width: 20rem;
-		height: 85vh;
+		border-left: var(--panel-border);
 	}
 
 	#definitions {
@@ -50,7 +47,7 @@
 		display: flex;
 		flex-direction: column;
 		position: sticky;
-		top: 0.5rem;
+		top: 0;
 	}
 	@media (max-width: 650px) {
 		#list {
@@ -61,6 +58,8 @@
 			position: relative;
 			width: 100%;
 			height: auto;
+			border-left: none;
+            border-top: var(--panel-border);
 		}
 		main {
 			flex-direction: column;

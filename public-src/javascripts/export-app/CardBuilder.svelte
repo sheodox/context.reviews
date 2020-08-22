@@ -1,9 +1,11 @@
 <style>
     .builder {
-		margin: 1rem;
 		flex: 3;
 		display: flex;
 		flex-direction: column;
+		max-width: 80rem;
+		margin: 1rem auto;
+		padding: 1rem;
 	}
 	.title-bar {
 		align-items: center;

@@ -2,7 +2,6 @@
     .row {
         display: flex;
         flex-direction: row;
-        align-items: center;
     }
 	.container {
         display: flex;
@@ -10,6 +9,10 @@
         align-items: center;
 		width: 100%;
     }
+	.header-toolbar {
+		display: flex;
+		align-items: center;
+	}
 	.header-toolbar > * {
 		margin: 0 1rem;
         align-content: baseline;
@@ -19,17 +22,12 @@
 	#card-workspace {
 		flex: 1;
 		display: flex;
-		width: 95vw;
-		max-width: 90rem;
 		justify-content: center;
-		align-items: start;
 	}
-
 
 	@media (max-width: 1200px) {
 		#card-workspace {
 			flex-direction: column;
-			align-items: normal;
 			justify-content: start;
 		}
 	}
@@ -43,6 +41,8 @@
 	}
 	.full-page-contents {
 		flex: 1;
+		display: flex;
+		width: 100%;
 	}
 </style>
 
@@ -50,7 +50,7 @@
     <div class="container max-height">
         <Header pageName="Anki Export">
             {#if $phraseStore}
-				<div class="row header-toolbar">
+				<div class="header-toolbar">
 					<nav>
 						<a href="/"><Icon icon="arrow_back_ios" />Back To Phrase List</a>
 					</nav>

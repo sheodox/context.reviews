@@ -1,6 +1,5 @@
 <style>
     aside {
-        margin: 1rem;
         flex: 1;
         position: relative;
     }
@@ -62,7 +61,7 @@
 	}
 </style>
 
-<aside in:fly={{y: 50, duration: 100}} on:mouseleave={() => previewCard = null} class="panel">
+<aside on:mouseleave={() => previewCard = null} class="panel">
     <h2 class="header">Created Cards</h2>
     <div class="panel-body">
 		<CardProgress processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />

@@ -19,11 +19,14 @@
     --accent-gradient: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
     --accent-gradient-light: linear-gradient(to right, var(--gradient-start-light), var(--gradient-end-light));
 
-    //--bg: #0b060f;
-    --bg: #08050d;
-    --panel-bg: #15141e;
-    --sub-panel-bg: #1b1d26;
-    --panel-header-bg: var(--panel-bg);
+    //to preserve the blueish tint, some of these are auto-generated, some are manually adjusted, otherwise the saturation is all over the place.
+    $base: #08080b;
+    --bg: #{$base};
+    --panel-bg: #12121a;
+    --sub-panel-bg: #{lighten($base, 6%)};
+    --panel-border-color: transparent;
+    --panel-border: 1px solid var(--panel-border-color);
+    --panel-header-bg: #{lighten($base, 8%)};
     --panel-footer-bg: #111118;
     --input-bg: rgba(53, 54, 64, 0.6);
     --input-focus-color: #3584e4;
@@ -91,7 +94,6 @@ label {
     @include base-button(#4a556054);
     padding: 0;
     margin: 0;
-    border-radius: 0.2rem;
 
     > {
         header, .header {
@@ -121,6 +123,9 @@ label {
 }
 h1.header, h2.header {
     font-size: 1.8rem;
+}
+header {
+    border-bottom: var(--panel-border);
 }
 
 nav a[href] {
@@ -155,6 +160,6 @@ a:not(:hover) {
 
 .spacer-bar {
     height: 1px;
-    background: var(--accent-purple) fixed;
+    border-bottom: var(--panel-border);
     width: 100%;
 }
