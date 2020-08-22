@@ -86,16 +86,16 @@
 			{:else if phrases.length === 0}
 				<Help />
 			{:else if phrases.length > 0}
-				<table class="panel">
+				<table>
 					<thead>
 					<tr>
-						<th>Actions</th>
+						<th><span class="sr-only">Actions</span></th>
 						<th>Phrases ({phrases.length})</th>
 					</tr>
 					</thead>
 
 					<tbody>
-					{#each phrases as phrase}
+					{#each phrases as phrase (phrase.id)}
 						<Phrase phrase={phrase} on:text-select={selected} />
 					{/each}
 					</tbody>

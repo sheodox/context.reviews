@@ -16,20 +16,28 @@
 	button {
 		white-space: nowrap;
 		padding: 0.4rem;
-		font-weight: normal;
 	}
 	.phrase {
 		font-size: 1.3rem;
 	}
+	@media (max-width: 950px) {
+		.buttons {
+			flex-direction: column;
+		}
+	}
 </style>
 
-<tr class="jp">
+<tr>
 	<td class="buttons">
-		<button on:click={deletePhrase} class="delete">削除</button>
-		<button on:click={define} class="search">辞書</button>
-		<button on:click={read} class="read">音声</button>
+		<CollapsingButtons collapseBreakpoint={950}>
+			<button on:click={deletePhrase} class="delete">
+				Delete
+			</button>
+			<button on:click={define} class="search">Jisho</button>
+			<button on:click={read} class="read">Say</button>
+		</CollapsingButtons>
 	</td>
-	<td class="phrase">
+	<td class="phrase jp">
 		<SelectableText text={phrase.phrase} on:text-select />
 	</td>
 </tr>
@@ -38,6 +46,7 @@
 	import {say} from '../speech';
 	import phraseStore from '../phraseStore';
 	import SelectableText from "../SelectableText.svelte";
+	import CollapsingButtons from '../CollapsingButtons.svelte';
 	import Icon from '../Icon.svelte';
 
 	export let phrase = '';
