@@ -23,7 +23,7 @@
 		align-self: start;
 		width: 30rem;
 		max-width: 95vw;
-		margin: 1rem;
+		margin: 1rem auto;
 	}
 </style>
 
