@@ -89,9 +89,7 @@
 			{#if $cards.length}
 				<p>
 					You created cards for:
-					{#each $cards as card, index}
-						<span class="jp">{card.word}{index !== $cards.length - 1 ? ', ' : '.'}</span>
-					{/each}
+					<span class="jp">{getWordsFromCards($cards)}</span>
 				</p>
 			{/if}
 		{:else}
@@ -125,6 +123,10 @@
 		numPhrases = consumedPhrases.length;
 	srs.addCards(get(cards));
 	const exported = srs.export();
+
+	function getWordsFromCards(cards) {
+		return cards.map(({word}) => word).join(', ') + '.';
+	}
 
 	function enableDelete(delay=0) {
 		//to prevent the user from deleting the phrases they used and forgetting to download the deck, we don't enable
