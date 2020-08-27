@@ -1,3 +1,9 @@
+export const quoteCharacters = [
+    ['「', '」'],
+    ['『', '』'],
+    ['【', '】'],
+];
+
 export const trim = (phrase: string) => {
     const remove = (regex: RegExp) => {
         phrase = phrase.replace(regex, '').trim();
@@ -15,10 +21,7 @@ export const trim = (phrase: string) => {
 
     //remove messy copying (extra punctuation for other sentences), and remove quotes when they're not necessary for the quote.
     //we don't want to remove quotes if it's something like "「うるさいだまれ」って言った" because it changes the meaning.
-    [   ['「', '」'],
-        ['『', '』'],
-        ['【', '】'],
-    ].forEach(([open, close]) => {
+    quoteCharacters.forEach(([open, close]) => {
         const leadingOpen = new RegExp('^' + open),
             leadingClose = new RegExp('^' + close),
             trailingClose = new RegExp(close + '$'),

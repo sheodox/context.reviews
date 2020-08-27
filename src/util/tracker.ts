@@ -1,4 +1,4 @@
-import {trim} from './trim';
+import {trim, quoteCharacters} from './trim';
 import {Repository} from "typeorm/index";
 import {Phrase} from '../entity/Phrase';
 import {connection} from "../entity";
@@ -21,6 +21,10 @@ class Tracker {
         const delimiter = '\n';
         ['。', '！', '？'].forEach(punctuation => {
             phrase = phrase.replace(new RegExp(punctuation, 'g'), `${punctuation}${delimiter}`);
+        });
+        //split between quotes that are right next to each other, like "something」「something else"
+        quoteCharacters.map(([open, close]) => {
+            phrase = phrase.replace(new RegExp(`${close}\s*${open}`, 'g'), `${close}\n${open}`)
         });
         return phrase.split(delimiter);
     }
