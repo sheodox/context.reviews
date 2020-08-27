@@ -75,14 +75,25 @@
 					<p>An error occurred deleting phrases!</p>
 				{/await}
 			{/if}
-			<h2>
-				How to import
-			</h2>
-			<ol>
-				<li>Select a deck in Anki, then hit "File" → "Import..."</li>
-				<li>Ensure "Allow HTML in Fields" is checked, and "Fields separated by" is set to semicolon.</li>
-				<li>Field mapping should be <strong>Field 1: Front, Field 2: Back.</strong> This will probably be the default.</li>
-			</ol>
+			<div class="panel">
+				<h2>
+					How to import
+				</h2>
+				<ol>
+					<li>Select a deck in Anki, then hit "File" → "Import..."</li>
+					<li>Ensure "Allow HTML in Fields" is checked, and "Fields separated by" is set to semicolon.</li>
+					<li>Field mapping should be <strong>Field 1: Front, Field 2: Back.</strong> This will probably be the default.</li>
+				</ol>
+			</div>
+
+			{#if $cards.length}
+				<p>
+					You created cards for:
+					{#each $cards as card, index}
+						<span class="jp">{card.word}{index !== $cards.length - 1 ? ', ' : '.'}</span>
+					{/each}
+				</p>
+			{/if}
 		{:else}
 			<p>You didn't create any cards!</p>
 			<button on:click={() => dispatch('restart')}>Start Over</button>
