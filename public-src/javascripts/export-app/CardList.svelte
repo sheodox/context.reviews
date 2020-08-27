@@ -95,12 +95,19 @@
 				</div>
             {/each}
         {/if}
+		<button
+			id="export-button"
+			on:click={() => showExport = true}
+			disabled={cards.length === 0}
+		>
+			Export
+			({$cardCount} {$cardCount === 1 ? 'card' : 'cards'})
+		</button>
 	</div>
 </aside>
 
 <script>
-    import {fade, fly} from 'svelte/transition';
-    import {flip} from 'svelte/animate';
+    import {fade} from 'svelte/transition';
     import JapaneseWord from '../definitions/JapaneseWord.svelte';
     import CardPreview from './CardPreview.svelte';
     import CardProgress from './CardProgress.svelte';
@@ -108,12 +115,15 @@
     import {get} from 'svelte/store';
     import phraseStore from '../phraseStore';
     import {
+    	cards,
     	cardsByPhrase,
         currentPhrase,
         currentPhraseIndex,
         cardCount,
         removeCard
     } from './cardsStore';
+
+    export let showExport;
 
     const dispatch = createEventDispatcher();
     let groupedCards = [],

@@ -54,15 +54,6 @@
 					<nav>
 						<a href="/"><Icon icon="arrow_back_ios" />Back To Phrase List</a>
 					</nav>
-					<button
-						id="export-button"
-						on:click={() => showExport = true}
-						disabled={cards.length === 0}
-					>
-						Export
-						<br>
-						({$cardCount} {$cardCount === 1 ? 'card' : 'cards'})
-					</button>
 				</div>
             {/if}
 		</Header>
@@ -82,7 +73,7 @@
 						{#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase) }
 							<CardBuilder phrase={phrase} on:done={nextPhrase} on:back={prevPhrase} />
 						{/each}
-						<CardList cards={cards} on:goToPhrase={goToPhrase}/>
+						<CardList cards={cards} on:goToPhrase={goToPhrase} bind:showExport />
 					</div>
 				{/if}
 			{/if}
