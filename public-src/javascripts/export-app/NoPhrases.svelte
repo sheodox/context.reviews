@@ -2,7 +2,7 @@
     .container {
 		flex: 1;
         padding: 1rem;
-        margin: 1rem;
+        margin: 1rem auto;
 		max-width: 30rem;
     }
 </style>
