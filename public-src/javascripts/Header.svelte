@@ -5,7 +5,7 @@
         justify-content: space-around;
 	}
 
-	img.logo {
+	header :global(img) {
 		height: 4rem;
 		width: 4rem;
 		margin: 0 1rem;
@@ -31,7 +31,7 @@
 
 <header class="row">
 	<div class="branding row">
-		<img src={asset('favicon.webp')} alt="logo" class="logo">
+		<Image src="favicon" alt="logo" />
 		<h1>{pageName ? `${pageName} -` : ''} Context.Reviews</h1>
 	</div>
 	<div class="toolbar">
@@ -41,5 +41,7 @@
 
 <script>
 	import {asset} from './assets';
+	import Image from "./Image.svelte";
+
 	export let pageName;
 </script>

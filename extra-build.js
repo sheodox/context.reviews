@@ -42,15 +42,20 @@ module.exports = async function build(isProd) {
 		manifest = JSON.parse(fs.readFileSync(manifestPath).toString());
 
 	//we need to search in public-src, otherwise we'll keep re-hashing old files and get increasingly long names.
-	//also search for png files, but know that the file we're actually hashing will be a webp already in public/
-	const cacheableFiles = await glob('./public-src/**/*.{png,mp4}');
+	//also search for png files, but know that the file we're also hashing a webp already in public/
+	const images = await glob('./public-src/**/*.png'),
+		videos = await glob('./public-src/**/*.mp4'),
+		cacheableFiles = [
+			...videos,
+			...images,
+			...images.map(path => path.replace(/\.png$/, '.webp'))
+		];
+
 	for (const file of cacheableFiles) {
-		const matchingPublicFile = file
-				.replace('./public-src', './public')
-				.replace(/\.png$/, '.webp'),
+		const matchingPublicFile = file.replace('./public-src', './public'),
 			webPath = matchingPublicFile.replace('./public/', ''),
 			{dir, name, ext} = path.parse(webPath),
-			hash = await generateFileHash(file),
+			hash = await generateFileHash(matchingPublicFile),
 			hashedPath = path.join(dir, `${name}.${hash}${ext}`);
 
 		manifest[webPath] = hashedPath;
