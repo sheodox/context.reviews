@@ -31,9 +31,8 @@ module.exports = async function build(isProd) {
 	//for dev tint the icon red so it's obvious you're on a dev environment
 	if (!isProd) {
 		await sharp('./public-src/favicon.png')
-			.webp()
 			.tint('rgb(255, 0, 0)')
-			.toFile('./public/favicon.webp');
+			.toFile('./public/favicon.png');
 	}
 
 	//the webpack build generates js files with content hashes so they can be cached indefinitely,
