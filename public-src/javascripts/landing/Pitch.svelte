@@ -33,6 +33,7 @@
 	}
 	.row > * {
 		flex: 1;
+		flex-shrink: 0;
         max-width: 40rem;
 		margin: 1rem 2.5rem;
 	}
