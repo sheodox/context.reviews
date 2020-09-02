@@ -49,6 +49,9 @@ incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki
     font-family: var(--jp-fonts);
 }
 
+html {
+    height: 100%;
+}
 body, #app-root {
     font-size: 14px;
     line-height: 1.4;
@@ -58,7 +61,6 @@ body, #app-root {
     margin: 0;
     padding: 0;
     height: 100%;
-    min-height: 100vh;
     width: 100%;
     opacity: 1;
     text-rendering: optimizeLegibility;
