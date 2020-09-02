@@ -5,6 +5,7 @@
     }
     div {
         padding: 0.5rem;
+		overflow: hidden;
     }
     h1 {
         margin: 0;

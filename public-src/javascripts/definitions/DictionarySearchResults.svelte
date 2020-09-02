@@ -12,6 +12,11 @@
 		overflow: auto;
 		padding: 0 0.5rem 0.5rem 0.5rem;
 	}
+	.unbound-height {
+		/* when the search results don't have a max height (the export mode) hiding the overflow won't
+		prevent anything from showing, but it will prevent the fly transition from making a scrollbar briefly show */
+		overflow: hidden;
+	}
 	.capitalize {
 		text-transform: capitalize;
 	}
@@ -20,7 +25,7 @@
 	}
 </style>
 
-<div class="definition">
+<div class="definition" class:unbound-height={mode === 'export'}>
 	{#if !lookup}
 		<h1>{source}</h1>
 		<p class="hint-text">Search to see <span class="capitalize">{source}</span> definitions here!</p>
