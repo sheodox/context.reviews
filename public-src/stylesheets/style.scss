@@ -50,7 +50,7 @@ incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki
 }
 
 html {
-    height: 100%;
+    min-height: 100%;
     display: flex;
 }
 body, #app-root {
