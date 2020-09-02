@@ -51,6 +51,7 @@ incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki
 
 html {
     height: 100%;
+    display: flex;
 }
 body, #app-root {
     font-size: 14px;
@@ -60,12 +61,12 @@ body, #app-root {
     color: white;
     margin: 0;
     padding: 0;
-    height: 100%;
     width: 100%;
     opacity: 1;
     text-rendering: optimizeLegibility;
     font-weight: 400;
     display: flex;
+    flex: 1;
 }
 
 * {
