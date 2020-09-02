@@ -24,7 +24,7 @@
     --bg: #{$base};
     --panel-bg: #12121a;
     --sub-panel-bg: #{lighten($base, 6%)};
-    --panel-border-color: transparent;
+    --panel-border-color: black;
     --panel-border: 1px solid var(--panel-border-color);
     --panel-header-bg: #{lighten($base, 8%)};
     --panel-footer-bg: #111118;
@@ -35,7 +35,7 @@
     $suggestion: #00ffc3; //or maybe try #ff00ef (bright pink)
     --suggestion: #{$suggestion};
     --suggestion-light: #{lighten($suggestion, 5%)};
-    --suggestion-dark: #{darken($suggestion, 37%)};
+    --suggestion-dark: #{darken($suggestion, 34%)};
 
     --en-fonts: Arial, Noto Sans, sans-serif;
     --jp-fonts: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
