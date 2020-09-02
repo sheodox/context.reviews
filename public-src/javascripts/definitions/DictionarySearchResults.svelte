@@ -97,11 +97,18 @@
 			//cache definitions for easy usage in script
 			lookup.then(results => {
 				definitions = results.definitions;
+				if (!isPrimary) {
+					return;
+				}
 
 				// auto-select the first definition, depends on the consumer of this component to listen or not
-				if (results.definitions.length && isPrimary) {
+				if (results.definitions.length) {
 					selectDefinition(source, results.definitions[0])
 					dispatch('first-word', results.definitions[0].word)
+				}
+				else {
+					//when nothing matches, provide the search term, so it can be easily searched in alternate dictionaries
+					dispatch('first-word', term);
 				}
 			})
 		}
