@@ -223,7 +223,13 @@
 	$: context.set(phrase.phrase);
 
 	const suggestUseKana = derived([definition], ([definition]) => {
-			return definition && definition.meanings.some(({info}) => info.includes('Usually written using kana alone'));
+			return definition &&
+				definition.meanings.some(({info}) => info.includes('Usually written using kana alone')) &&
+				//don't suggest to use the kana spelling if the main definition is what you searched for, in that case you likely
+				//searched for it because you found it somewhere and if a resource is using the non-kana spelling it
+				//is probably more useful for you to learn the dictionary form to better understand what you're reading.
+				//それ is usually kana only, but if you read a book that uses 其れ it'll probably spell it that way again so learn it!
+				selection !== definition.word;
 		}),
 		useKanaTooltip = derived([suggestUseKana], ([suggested]) => {
 			const base = 'Some words are usually spelled with kana only, if you want to study the kana only version of this word click this button to study the reading instead.';
