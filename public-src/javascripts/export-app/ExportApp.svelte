@@ -2,6 +2,7 @@
     .row {
         display: flex;
         flex-direction: row;
+		flex: 1;
     }
 	.container {
         display: flex;
@@ -36,9 +37,6 @@
             max-width: 20rem;
         }
 	}
-	.max-height {
-		height: 100%;
-	}
 	.full-page-contents {
 		flex: 1;
 		display: flex;
@@ -46,8 +44,8 @@
 	}
 </style>
 
-<div class="row max-height">
-    <div class="container max-height">
+<div class="row">
+    <div class="container">
         <Header pageName="Anki Export">
             {#if $phraseStore}
 				<div class="header-toolbar">

@@ -30,6 +30,7 @@
 	.row {
 		display: flex;
 		align-items: start;
+		flex-shrink: 0;
 	}
 	.row > * {
 		flex: 1;
