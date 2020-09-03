@@ -68,6 +68,10 @@
 		width: 25rem;
 		max-width: 95vw;
 	}
+	#try-me {
+		margin: 0;
+		background: var(--accent-gradient);
+	}
 </style>
 
 <div class="panel">
@@ -90,6 +94,11 @@
 
 		<aside id="demo-cards" class="outlined">
 			<DemoCard />
+			<p id="try-me">
+				<Icon icon="arrow_upward" />
+				Try me
+				<Icon icon="arrow_upward" />
+			</p>
 		</aside>
 	</div>
 
@@ -148,5 +157,6 @@
 	import DemoCard from './DemoCard.svelte';
 	import GetStarted from "./GetStarted.svelte";
 	import Image from '../Image.svelte';
+	import Icon from '../Icon.svelte';
 	import {asset} from '../assets';
 </script>
