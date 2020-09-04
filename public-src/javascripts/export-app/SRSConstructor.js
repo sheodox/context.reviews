@@ -29,6 +29,7 @@ function createTemplates() {
 		getCSSVar = varName => docStyles.getPropertyValue(`--${varName}`),
 		ankiCommonStyles = `
 			<style>
+				.night_mode { }
 				.card {
 					background: ${getCSSVar('bg')} !important;
 					color: white;
