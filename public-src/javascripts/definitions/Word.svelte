@@ -49,11 +49,16 @@
 	.selected .selected-definition-message {
 		display: block;
 	}
+	.suggestion :global(a) {
+		color: var(--suggestion);
+	}
 </style>
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
 	<div class="search-result">
 		<div class="title">
-			<h2 class="japanese">
+			<h2 class="japanese" class:suggestion={definition.word === searchTerm}
+				title={definition.word === searchTerm ? exactMatchExplanation : ''}
+			>
 				<ExternalLink href={definition.href}>
 					<JapaneseWord word={definition.word} reading={definition.reading} />
 				</ExternalLink>
