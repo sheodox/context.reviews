@@ -1,14 +1,23 @@
 <style>
 	header {
-		background: var(--panel-header-bg);
 		width: 100%;
         justify-content: space-around;
 	}
-
+	header.slim {
+        background: var(--panel-header-bg);
+        justify-content: space-between;
+	}
 	header :global(img) {
 		height: 4rem;
 		width: 4rem;
 		margin: 0 1rem;
+	}
+	header.slim :global(img) {
+		height: 3rem;
+		width: 3rem;
+	}
+	header.slim h1 {
+		margin: 0.3rem 0;
 	}
 
 	.row {
@@ -29,7 +38,7 @@
 	}
 </style>
 
-<header class="row">
+<header class="row" class:slim={slim}>
 	<div class="branding row">
 		<Image src="favicon" alt="logo" />
 		<h1>{pageName ? `${pageName} -` : ''} Context.Reviews</h1>
@@ -44,4 +53,7 @@
 	import Image from "./Image.svelte";
 
 	export let pageName;
+	//slim=true is smaller and fits as part of the list/export apps
+	//slim=false is bigger with no background, used prominently on the landing page
+	export let slim = true;
 </script>

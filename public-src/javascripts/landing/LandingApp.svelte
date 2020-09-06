@@ -6,7 +6,7 @@
     }
 </style>
 
-<Header>
+<Header slim={false}>
     <LoginButton />
 </Header>
 

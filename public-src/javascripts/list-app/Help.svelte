@@ -32,6 +32,9 @@
 		padding: 0 0.3rem;
 		background: var(--panel-header-bg);
 	}
+	strong.nav-link-example {
+		border-bottom: 0.2rem solid var(--accent-purple);
+	}
 </style>
 
 <div class="container">
@@ -54,7 +57,7 @@
 			</p>
 		</li>
 		<li>
-			Return here to review and export to an Anki deck using the "Anki Export" link at the top of the page.
+			Return here to review and export to an Anki deck using the <strong class="nav-link-example"><Icon icon="note_add"/>Anki Export</strong> link at the top of the page.
 			<p class="hint">
 				<Icon icon="info" />
 				<strong>Hint!</strong>
