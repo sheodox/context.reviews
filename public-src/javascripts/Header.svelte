@@ -6,6 +6,7 @@
 	header.slim {
         background: var(--panel-header-bg);
         justify-content: space-between;
+        border-bottom: var(--panel-border);
 	}
 	header :global(img) {
 		height: 4rem;
