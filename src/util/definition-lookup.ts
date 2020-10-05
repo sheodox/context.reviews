@@ -131,7 +131,7 @@ function cleanLinks(links: JishoExternalLink[]) {
 export class JishoSearch {
     //schemaVersion is incremented any time the definition response from this class
     //is changed to cache bust definitions cached in redis
-	static schemaVersion = 11;
+	static schemaVersion = 12;
     static async search(searchText: string): Promise<SearchResults> {
         const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
@@ -197,7 +197,12 @@ export class JishoSearch {
                 href: searchResultsUrl(searchText),
                 definitions,
             };
-            await cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
+
+            // if Jisho is having a service degradation that's returning empty results occasionally, we don't want to cache that
+            // or we'll have cached bad data until it expires or the schema version is bumped, as is happening currently Oct 5, 2020
+            if (definitions.length) {
+                await cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
+            }
             return searchResults;
         }
     }
