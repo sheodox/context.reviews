@@ -136,7 +136,10 @@
 		return {
 			preInfo: '',
 			definition: '',
-			info: ''
+			info: '',
+			//not yet editable, but depended on by the preview
+			seeAlso: [],
+			links: [],
 		};
 	}
 
