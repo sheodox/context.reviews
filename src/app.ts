@@ -1,3 +1,5 @@
+import {notFoundServed} from "./metrics";
+
 require('dotenv').config();
 import express from 'express';
 import path from 'path';
@@ -10,6 +12,8 @@ import passport from 'passport';
 import {redisClient} from './util/redis-utils';
 import session from 'express-session';
 import bodyParser from 'body-parser';
+
+import './internal-server';
 
 const app = express(),
     server = http.createServer(app),
@@ -51,7 +55,9 @@ require('./util/server-socket').initialize(wss, sessionStore);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    next(createError(404));
+    notFoundServed.inc();
+    res.status(404);
+    res.send();
 });
 
 server.listen(4000, () => {

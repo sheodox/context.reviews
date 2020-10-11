@@ -3,10 +3,24 @@ import {Router} from 'express';
 import {User} from '../entity/User';
 import {OAuth2Strategy} from 'passport-google-oauth';
 import {connection} from '../entity';
+import {usersLoggedIn, usersNew} from "../metrics";
 const router = Router();
 
 async function getUserRepository() {
 	return (await connection).getRepository(User);
+}
+
+async function getUser(oauthId: string) {
+	const userRepository = await getUserRepository(),
+		existingUser = (await userRepository.findOne({
+			oauthId
+		}));
+
+	if (!existingUser) {
+		usersNew.inc();
+		return new User();
+	}
+	return existingUser;
 }
 
 passport.use(new OAuth2Strategy({
@@ -17,9 +31,7 @@ passport.use(new OAuth2Strategy({
 	async (accessToken, refreshToken, profile, done) => {
 		const userRepository = await getUserRepository();
 		const oauthId = `google-${profile.id}`,
-			user = (await userRepository.findOne({
-				oauthId
-			})) || new User();
+			user = await getUser(oauthId);
 
 		//always update the user when they log in, just in case we end up using their name/profile picture
 		//and they changed it on their account, we don't want to show an old name or picture.
@@ -51,6 +63,7 @@ router.get('/google', (req, res, next) => {
 	})(req, res, next);
 });
 router.get('/google/callback', (req, res, next) => {
+	usersLoggedIn.inc();
 	passport.authenticate('google', {
 		successRedirect: '/',
 		failureRedirect: '/'

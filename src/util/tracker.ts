@@ -2,6 +2,15 @@ import {trim, quoteCharacters} from './trim';
 import {Repository} from "typeorm/index";
 import {Phrase} from '../entity/Phrase';
 import {connection} from "../entity";
+import {
+    phrasesListTime,
+    phrasesAdded,
+    phrasesRemoved,
+    phrasesUndone,
+    phrasesAddTime,
+    phrasesRemoveTime,
+    phrasesUndoTime
+} from "../metrics";
 
 class Tracker {
     phraseRepository: Promise<Repository<Phrase>>;
@@ -46,9 +55,12 @@ class Tracker {
         for (let phrase of Tracker.split(phrases)) {
             phrase = trim(phrase);
             if (phrase) {
-                const existing = await phraseRepository.findOne({
-                    userId, phrase
-                });
+                phrasesAdded.inc();
+                const addTimeEnd = phrasesAddTime.startTimer(),
+                    existing = await phraseRepository.findOne({
+                        userId, phrase
+                    });
+
                 //try to guarantee no duplicate phrases (per user)
                 if (!existing) {
                     const newPhrase = new Phrase();
@@ -65,6 +77,7 @@ class Tracker {
                     await phraseRepository.save(existing);
                     newPhrases.push(existing);
                 }
+                addTimeEnd();
             }
         }
         return newPhrases;
@@ -80,17 +93,20 @@ class Tracker {
             ids = Array.isArray(id) ? id : [id];
 
         for (const id of ids) {
-            const phrase = await phraseRepository.findOne({
-                id
-            });
+            const removeTimeEnd = phrasesRemoveTime.startTimer(),
+                phrase = await phraseRepository.findOne({
+                    id
+                });
 
             //would probably be good enough to just delete by phrase ID, but also make sure the user_id matches
             //for extra protection
             if (phrase.userId === userId) {
+                phrasesRemoved.inc();
                 phrase.deleted = true;
                 phrase.deletedAt = new Date();
                 await phraseRepository.save(phrase);
             }
+            removeTimeEnd();
         }
     }
 
@@ -99,6 +115,7 @@ class Tracker {
      */
     async undo(userId: string) {
         const phraseRepository = await this.phraseRepository,
+            undoTimeEnd = phrasesUndoTime.startTimer(),
             mostRecentDeletedPhrase = await phraseRepository
                 .findOne({
                     where: {
@@ -111,10 +128,12 @@ class Tracker {
                 });
 
         if (mostRecentDeletedPhrase) {
+            phrasesUndone.inc();
             mostRecentDeletedPhrase.deletedAt = null;
             mostRecentDeletedPhrase.deleted = false;
             await phraseRepository.save(mostRecentDeletedPhrase);
         }
+        undoTimeEnd();
     }
 
     /**
@@ -122,16 +141,20 @@ class Tracker {
      * @returns {Phrase[]}
      */
     async list(userId: string) : Promise<Phrase[]> {
-        return await (await this.phraseRepository)
-            .find({
-                select: ['id', 'phrase'],
-                where:{
-                    userId, deleted: false
-                },
-                order: {
-                    createdAt: 'ASC'
-                }
-            })
+        const listTimeEnd = phrasesListTime.startTimer(),
+            list = await (await this.phraseRepository)
+                .find({
+                    select: ['id', 'phrase'],
+                    where:{
+                        userId, deleted: false
+                    },
+                    order: {
+                        createdAt: 'ASC'
+                    }
+                });
+
+        listTimeEnd();
+        return list;
     }
 }
 

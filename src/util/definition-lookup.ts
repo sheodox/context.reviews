@@ -1,6 +1,7 @@
 import fetch from './fetch';
 import {redis} from './redis-utils';
 import {URL} from 'url';
+import {lookupsCacheHit, lookups, lookupsNoResults} from "../metrics";
 
 const LOOKUP_TTL = 60 * 60 * 24 * 90; // about three months in seconds
 
@@ -133,8 +134,11 @@ export class JishoSearch {
     //is changed to cache bust definitions cached in redis
 	static schemaVersion = 12;
     static async search(searchText: string): Promise<SearchResults> {
+        lookups.inc();
+
         const cached = await cache.get('jisho', searchText, JishoSearch.schemaVersion);
         if (cached) {
+            lookupsCacheHit.inc();
             return cached;
         }
         const searchResultsUrl = (word: string) => `https://jisho.org/search/${encodeURIComponent(word)}`,
@@ -202,6 +206,9 @@ export class JishoSearch {
             // or we'll have cached bad data until it expires or the schema version is bumped, as is happening currently Oct 5, 2020
             if (definitions.length) {
                 await cache.set('jisho', searchText, searchResults, JishoSearch.schemaVersion);
+            }
+            else {
+                lookupsNoResults.inc();
             }
             return searchResults;
         }
