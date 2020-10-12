@@ -9,7 +9,8 @@ import {
     phrasesUndone,
     phrasesAddTime,
     phrasesRemoveTime,
-    phrasesUndoTime
+    phrasesUndoTime,
+    phrasesTotal
 } from "../metrics";
 
 class Tracker {
@@ -56,6 +57,7 @@ class Tracker {
             phrase = trim(phrase);
             if (phrase) {
                 phrasesAdded.inc();
+                phrasesTotal.inc();
                 const addTimeEnd = phrasesAddTime.startTimer(),
                     existing = await phraseRepository.findOne({
                         userId, phrase

@@ -2,6 +2,7 @@ import "reflect-metadata";
 import {Connection, createConnection} from "typeorm/index";
 import {User} from "./User";
 import {Phrase} from "./Phrase";
+import {phrasesTotal, usersTotal} from "../metrics";
 
 const entities = [
     User,
@@ -22,6 +23,13 @@ export const connection: Promise<Connection> = new Promise((resolve, reject) => 
         entities
     }).then(async connection => {
         console.log('Database connection established');
+        const userRepository = connection.getRepository(User),
+            phraseRepository = connection.getRepository(Phrase);
+
+        //seed some metrics with database counts
+        usersTotal.inc(await userRepository.count());
+        phrasesTotal.inc(await phraseRepository.count());
+
         resolve(connection);
     }).catch(error => {
         console.log('Error connecting to database!', error);

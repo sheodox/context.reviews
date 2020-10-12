@@ -10,6 +10,11 @@ export const register = new Registry();
 const name = (name: string) => `contextreviews_${name}`;
 
 //phrases
+export const phrasesTotal = new Counter({
+    name: name('phrases_total'),
+    help: 'Total number of phrases that have been added'
+});
+
 export const phrasesAdded = new Counter({
     name: name('phrases_added'),
     help: 'Number of phrases added'
@@ -67,6 +72,11 @@ export const lookupTime = new Histogram({
 });
 
 //users
+export const usersTotal = new Counter({
+    name: name('users_total'),
+    help: 'Total number of users that exist'
+});
+
 export const usersLoggedIn = new Counter({
     name: name('users_logged_in'),
     help: "Number of users who logged in"
@@ -107,6 +117,7 @@ register.registerMetric(phrasesListTime);
 register.registerMetric(phrasesAddTime);
 register.registerMetric(phrasesRemoveTime);
 register.registerMetric(phrasesUndoTime);
+register.registerMetric(phrasesTotal);
 
 register.registerMetric(lookups);
 register.registerMetric(lookupsCacheHit);
@@ -115,6 +126,7 @@ register.registerMetric(lookupTime);
 
 register.registerMetric(usersLoggedIn);
 register.registerMetric(usersNew);
+register.registerMetric(usersTotal);
 
 register.registerMetric(landingServed);
 register.registerMetric(listServed);

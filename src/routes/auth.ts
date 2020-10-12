@@ -3,7 +3,7 @@ import {Router} from 'express';
 import {User} from '../entity/User';
 import {OAuth2Strategy} from 'passport-google-oauth';
 import {connection} from '../entity';
-import {usersLoggedIn, usersNew} from "../metrics";
+import {usersLoggedIn, usersNew, usersTotal} from "../metrics";
 const router = Router();
 
 async function getUserRepository() {
@@ -18,6 +18,7 @@ async function getUser(oauthId: string) {
 
 	if (!existingUser) {
 		usersNew.inc();
+		usersTotal.inc();
 		return new User();
 	}
 	return existingUser;
