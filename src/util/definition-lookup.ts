@@ -1,7 +1,7 @@
 import fetch from './fetch';
 import {redis} from './redis-utils';
 import {URL} from 'url';
-import {lookupsCacheHit, lookups, lookupsNoResults} from "../metrics";
+import {lookupsCacheHit, lookups, lookupsNoResults, lookupTime} from "../metrics";
 
 const LOOKUP_TTL = 60 * 60 * 24 * 90; // about three months in seconds
 
@@ -143,7 +143,9 @@ export class JishoSearch {
         }
         const searchResultsUrl = (word: string) => `https://jisho.org/search/${encodeURIComponent(word)}`,
             wordUrl = (slug: string) => `https://jisho.org/word/${encodeURIComponent(slug)}`,
+            lookupEnd = lookupTime.startTimer(),
             result: JishoResponse = JSON.parse(await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(searchText)}`));
+        lookupEnd();
 
         if (result.meta.status === 200) { //success
             const definitions = result.data.map((res) : Definition => {

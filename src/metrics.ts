@@ -61,6 +61,11 @@ export const lookupsNoResults = new Counter({
     help: 'Number of Jisho lookups that had no results'
 });
 
+export const lookupTime = new Histogram({
+    name: name('lookups_time'),
+    help: 'Time to perform a Jisho API call lookup'
+});
+
 //users
 export const usersLoggedIn = new Counter({
     name: name('users_logged_in'),
@@ -106,6 +111,7 @@ register.registerMetric(phrasesUndoTime);
 register.registerMetric(lookups);
 register.registerMetric(lookupsCacheHit);
 register.registerMetric(lookupsNoResults);
+register.registerMetric(lookupTime);
 
 register.registerMetric(usersLoggedIn);
 register.registerMetric(usersNew);
