@@ -5,7 +5,7 @@ import express from 'express';
 import path from 'path';
 import http from 'http';
 import morgan from 'morgan';
-import {appLogger, httpLogger} from './util/logger';
+import {appLogger, logHttpError} from './util/logger';
 import {Server} from 'ws';
 import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
@@ -56,9 +56,9 @@ require('./util/server-socket').initialize(wss, sessionStore);
 
 app.use(function(req, res, next) {
     notFoundServed.inc();
-    httpLogger.warn(`Not Found: "${req.url}"`, {
+    logHttpError({
         status: 404,
-        path: req.url
+        req
     });
 
     res.status(404);

@@ -1,6 +1,7 @@
 import winston from 'winston';
 import Transport from 'winston-transport';
 import {logsCollected} from "../metrics";
+import {Request} from "express";
 
 /*
 Logging is collected and served behind the firewall and JWT
@@ -71,3 +72,22 @@ export const httpLogger = createConcernLogger('http');
 export const lookupLogger = createConcernLogger('lookup');
 export const phraseLogger = createConcernLogger('phrase');
 export const databaseLogger = createConcernLogger('database');
+
+const httpStatusDescriptions = new Map([
+    [400, 'Bad Request'],
+    [401, 'Not Authorized'],
+    [403, 'Forbidden'],
+    [404, 'Not Found']
+]);
+
+export function logHttpError({
+    status, req, internal=false
+}: {status: number, req: Request, internal?: boolean}) {
+    const message = httpStatusDescriptions.get(status) ?? `HTTP Status ${status}`
+    httpLogger.info(message, {
+        status,
+        internal,
+        path: req.url,
+        userAgent: req.get('User-Agent')
+    });
+}

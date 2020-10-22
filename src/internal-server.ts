@@ -6,7 +6,7 @@ This can be used to expose things like metrics to prometheus.
 import express from 'express';
 import {register} from './metrics';
 import jwt from 'jsonwebtoken';
-import {httpLogger, remoteTransport} from './util/logger';
+import {logHttpError, remoteTransport} from './util/logger';
 
 const app = express();
 
@@ -25,11 +25,11 @@ app.use((req, res, next) => {
         next();
     }
     catch(e) {
-        httpLogger.warn(`Not Authorized`, {
+        logHttpError({
             status: 401,
             internal: true,
-            path: req.url
-        });
+            req
+        })
         res.status(401);
         res.send('Not Authorized');
     }
@@ -42,6 +42,11 @@ app.get('/logs', (req, res) => {
 });
 
 app.use((req, res) => {
+    logHttpError({
+        status: 400,
+        internal: true,
+        req
+    })
     res.status(404);
     res.send('Not Found');
 })
