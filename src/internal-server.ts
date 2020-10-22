@@ -25,10 +25,10 @@ app.use((req, res, next) => {
         next();
     }
     catch(e) {
-        httpLogger.warn(`Not Authorized: ${req.url}`, {
+        httpLogger.warn(`Not Authorized`, {
             status: 401,
             internal: true,
-            url: req.url
+            path: req.url
         });
         res.status(401);
         res.send('Not Authorized');

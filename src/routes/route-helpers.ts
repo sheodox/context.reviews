@@ -17,7 +17,7 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
 		res.send(null);
 		httpLogger.info('Not Authorized', {
 			status: 401,
-			url: req.url
+			path: req.url
 		})
 	}
 	else {
