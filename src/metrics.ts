@@ -109,6 +109,11 @@ export const notFoundServed = new Counter({
     help: `Number of times a 404 error was encountered`
 });
 
+export const logsCollected = new Counter({
+    name: name('logs_collected'),
+    help: `Number of messages that have been logged and collected by remote log aggregation tools.`
+})
+
 
 register.registerMetric(phrasesAdded);
 register.registerMetric(phrasesRemoved);
@@ -133,4 +138,7 @@ register.registerMetric(listServed);
 register.registerMetric(exportServed);
 register.registerMetric(privacyServed);
 register.registerMetric(notFoundServed);
+
+register.registerMetric(logsCollected);
+
 collectDefaultMetrics({register})

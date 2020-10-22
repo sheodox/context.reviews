@@ -30,6 +30,7 @@
     "glob": "^7.1.6",
     "handlebars": "^4.7.6",
     "http-errors": "~1.6.2",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.0",
     "node-sass": "^4.14.1",
     "passport": "^0.4.1",
@@ -52,6 +53,7 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-manifest-plugin": "^2.2.0",
+    "winston": "^3.3.3",
     "ws": "^7.3.1"
   },
   "devDependencies": {
@@ -60,6 +62,7 @@
     "@types/express": "^4.17.7",
     "@types/express-session": "^1.17.0",
     "@types/http-errors": "^1.8.0",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.0.27",
     "@types/passport": "^1.0.4",

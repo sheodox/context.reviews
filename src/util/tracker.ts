@@ -12,6 +12,7 @@ import {
     phrasesUndoTime,
     phrasesTotal
 } from "../metrics";
+import {phraseLogger} from "./logger";
 
 class Tracker {
     phraseRepository: Promise<Repository<Phrase>>;

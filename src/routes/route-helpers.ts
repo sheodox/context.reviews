@@ -1,5 +1,6 @@
 import {NextFunction, Request as ExpressRequest, Response} from 'express';
 import {User} from '../entity/User';
+import {httpLogger} from "../util/logger";
 
 
 export interface Request extends ExpressRequest {
@@ -14,6 +15,10 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
 	if (!req.isAuthenticated()) {
 		res.status(401);
 		res.send(null);
+		httpLogger.info('Not Authorized', {
+			status: 401,
+			url: req.url
+		})
 	}
 	else {
 		next();

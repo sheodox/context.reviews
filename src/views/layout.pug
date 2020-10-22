@@ -1,7 +1,9 @@
 doctype html
 html(lang="en")
     head
+        meta(charset="utf-8")
         title= title
+        link(rel='icon', href=manifest['favicon.png'])
         meta(name="viewport", content="width=device-width, initial-scale=1")
         meta(property='og:site_name', content=site)
         meta(property='og:image', content=manifest['favicon.png'])
@@ -14,7 +16,6 @@ html(lang="en")
                 background: #0b0f15;
                 opacity: 0;
             }
-        link(rel='icon', href=manifest['favicon.png'])
         link(href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap", rel="stylesheet")
         link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
         if manifestSerialized

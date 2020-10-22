@@ -3,6 +3,7 @@ import {Connection, createConnection} from "typeorm/index";
 import {User} from "./User";
 import {Phrase} from "./Phrase";
 import {phrasesTotal, usersTotal} from "../metrics";
+import {databaseLogger} from "../util/logger";
 
 const entities = [
     User,
@@ -22,7 +23,7 @@ export const connection: Promise<Connection> = new Promise((resolve, reject) => 
             ['query', 'error'] : ['error'],
         entities
     }).then(async connection => {
-        console.log('Database connection established');
+        databaseLogger.info('Database connection established');
         const userRepository = connection.getRepository(User),
             phraseRepository = connection.getRepository(Phrase);
 
@@ -32,7 +33,9 @@ export const connection: Promise<Connection> = new Promise((resolve, reject) => 
 
         resolve(connection);
     }).catch(error => {
-        console.log('Error connecting to database!', error);
+        databaseLogger.error('Error connecting to database!', {
+            error
+        });
         reject(error);
     });
 });

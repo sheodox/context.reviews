@@ -43,6 +43,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 4001:4001
     depends_on:
       - app
     restart: unless-stopped

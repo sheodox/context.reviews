@@ -4,13 +4,14 @@ import {User} from '../entity/User';
 import {OAuth2Strategy} from 'passport-google-oauth';
 import {connection} from '../entity';
 import {usersLoggedIn, usersNew, usersTotal} from "../metrics";
+import {authLogger} from "../util/logger";
 const router = Router();
 
 async function getUserRepository() {
 	return (await connection).getRepository(User);
 }
 
-async function getUser(oauthId: string) {
+async function getUser(oauthId: string, displayName: string) {
 	const userRepository = await getUserRepository(),
 		existingUser = (await userRepository.findOne({
 			oauthId
@@ -19,6 +20,7 @@ async function getUser(oauthId: string) {
 	if (!existingUser) {
 		usersNew.inc();
 		usersTotal.inc();
+		authLogger.info(`New user "${displayName}"`);
 		return new User();
 	}
 	return existingUser;
@@ -32,7 +34,7 @@ passport.use(new OAuth2Strategy({
 	async (accessToken, refreshToken, profile, done) => {
 		const userRepository = await getUserRepository();
 		const oauthId = `google-${profile.id}`,
-			user = await getUser(oauthId);
+			user = await getUser(oauthId, profile.displayName);
 
 		//always update the user when they log in, just in case we end up using their name/profile picture
 		//and they changed it on their account, we don't want to show an old name or picture.
@@ -43,6 +45,7 @@ passport.use(new OAuth2Strategy({
 		user.oauthId = oauthId;
 		user.raw = JSON.stringify(profile)
 
+		authLogger.info(`User logged in "${user.displayName}"`);
 		await userRepository.save(user);
 		done(null, user);
 	}
