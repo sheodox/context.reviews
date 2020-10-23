@@ -20,13 +20,15 @@ export const getHttpStatusDescription = (statusCode: number) => {
 
 export const errorHandler = (internal: boolean) => (error: Error | HttpError, req: AppRequest, res: Response, next: NextFunction) => {
     const status = (error instanceof Error ? 500 : error.status) ?? 500,
-        message = getHttpStatusDescription(status);
+        message = getHttpStatusDescription(status),
+        level = (internal || status === 500) ? 'error' : 'info';
 
-    httpLogger[internal ? 'error' : 'info'](`${message}: "${req.url}"`, {
+    httpLogger[level](`${message}: "${req.url}"`, {
         status,
         error: error instanceof Error ? error : undefined,
         internal,
         path: req.url,
+        userId: req.user?.id,
         requestId: req.requestId,
         userAgent: req.get('User-Agent')
     });
