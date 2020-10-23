@@ -1,25 +1,33 @@
-import {notFoundServed} from "./metrics";
-
 require('dotenv').config();
-import express from 'express';
+import {notFoundServed} from "./metrics";
+import express, {Request} from 'express';
 import path from 'path';
 import http from 'http';
 import morgan from 'morgan';
-import {appLogger, logHttpError} from './util/logger';
+import {appLogger} from './util/logger';
 import {Server} from 'ws';
-import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import {redisClient} from './util/redis-utils';
 import session from 'express-session';
+import {errorHandler} from "./middleware/error-handler";
 import bodyParser from 'body-parser';
+import {requestId} from "./middleware/request-id";
+import {User} from "./entity/User";
 
 import './internal-server';
+
+export interface AppRequest extends Request {
+    requestId: string
+    user: User
+}
 
 const app = express(),
     server = http.createServer(app),
     wss = new Server({server}),
     RedisStore = require('connect-redis')(session);
+
+app.use(requestId);
 
 app.disable('x-powered-by');
 // view engine setup
@@ -56,14 +64,13 @@ require('./util/server-socket').initialize(wss, sessionStore);
 
 app.use(function(req, res, next) {
     notFoundServed.inc();
-    logHttpError({
-        status: 404,
-        req
-    });
 
-    res.status(404);
-    res.send();
+    next({
+        status: 404
+    });
 });
+
+app.use(errorHandler(false));
 
 server.listen(4000, () => {
     appLogger.info(`Context.Reviews server started!`);

@@ -1,24 +1,26 @@
 import {Router, Response} from 'express';
 import {tracker} from '../util/tracker';
-import {getUserId, requireAuth, Request} from "./route-helpers";
+import {getUserId, requireAuth} from "../middleware/route-helpers";
 import {broadcastToUser} from '../util/server-socket';
+import {safeAsyncRoute} from "../middleware/error-handler";
+import {AppRequest} from "../app";
 
 const router = Router();
 router.use(requireAuth);
 
 //send an updated phrase list to user's connected client(s) over websocket if the list changes
-const sendListToUser = async (req: Request) => {
+const sendListToUser = async (req: AppRequest) => {
 		const userId = getUserId(req);
 		broadcastToUser(userId, 'list', await tracker.list(userId))
 	},
 	//send nothing in response, but broadcast the list to the user, used when the response isn't
 	//important, but the phrase list for the user has changed
-	defaultResponse = async (req: Request, res: Response) => {
+	defaultResponse = async (req: AppRequest, res: Response) => {
 		res.json({});
 		sendListToUser(req);
 	}
 
-async function addHandler(req: Request, res: Response) {
+const addHandler = safeAsyncRoute(async function(req: AppRequest, res: Response) {
 	const phraseText = req.params.phrases || (typeof req.body === 'object' ? req.body.phraseText : ''),
 		addedPhrases = await tracker.add(getUserId(req), phraseText);
 
@@ -49,28 +51,29 @@ async function addHandler(req: Request, res: Response) {
 	else {
 		res.send();
 	}
-}
+});
+
 router.get('/add/:phrases', addHandler);
 router.post('/add/', addHandler);
 
-router.get('/list', async (req: Request, res: Response) => {
+router.get('/list', safeAsyncRoute(async (req: AppRequest, res: Response) => {
 	res.json(await tracker.list(getUserId(req)));
-});
+}));
 
-router.get('/remove/:id', async (req: Request, res: Response) => {
+router.get('/remove/:id', safeAsyncRoute(async (req: AppRequest, res: Response) => {
 	await tracker.remove(getUserId(req), req.params.id);
 	defaultResponse(req, res);
-});
+}));
 
 // remove as a POST is a batch operation, it expects an array of phrase IDs to be sent as the body
-router.post('/remove', async (req: Request, res: Response) => {
+router.post('/remove', safeAsyncRoute(async (req: AppRequest, res: Response) => {
 	await tracker.remove(getUserId(req), req.body);
 	defaultResponse(req, res);
-});
+}));
 
-router.get('/undo', async (req: Request, res: Response) => {
+router.get('/undo', safeAsyncRoute(async (req: AppRequest, res: Response) => {
 	await tracker.undo(getUserId(req));
 	defaultResponse(req, res);
-});
+}));
 
 export default router;

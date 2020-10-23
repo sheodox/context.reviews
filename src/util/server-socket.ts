@@ -1,10 +1,10 @@
 import cookie from 'cookie';
 import {tracker} from './tracker';
 import cookieParser from 'cookie-parser';
-import {Request} from '../routes/route-helpers';
 import {Server} from 'ws';
 import {Store} from 'express-session';
 import WebSocket = require('ws');
+import {AppRequest} from "../app";
 
 //userSessions is a map of user ID to an array of socket objects
 const userSessions = new Map();
@@ -53,7 +53,7 @@ function removeUserSession(userId: string, ws: WebSocket) {
 	}
 }
 
-async function getUserIdFromReq(req: Request, sessionStore: Store): Promise<string> {
+async function getUserIdFromReq(req: AppRequest, sessionStore: Store): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const cookieHeader = req.headers.cookie,
 			sid = cookieParser.signedCookie(cookie.parse(cookieHeader)['connect.sid'], process.env.SESSION_SECRET);
@@ -86,7 +86,7 @@ async function handleChannelMessage(
 }
 
 export const initialize = (wss: Server, sessionStore: Store) => {
-	wss.on('connection', async (ws: WebSocket, req: Request) => {
+	wss.on('connection', async (ws: WebSocket, req: AppRequest) => {
 		try {
 			const userId = await getUserIdFromReq(req, sessionStore);
 			if (!userId) {

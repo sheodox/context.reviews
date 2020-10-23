@@ -1,7 +1,9 @@
 import {Response, Router} from 'express';
 import {JishoSearch} from '../util/definition-lookup';
-import {requireAuth} from './route-helpers';
+import {requireAuth} from '../middleware/route-helpers';
 import {lookupLogger} from "../util/logger";
+import {safeAsyncRoute} from "../middleware/error-handler";
+import {AppRequest} from "../app";
 
 const router = Router();
 router.use(requireAuth);
@@ -12,7 +14,7 @@ function sendNoResults(res: Response, source: string, word: string) {
 	})
 }
 
-router.get('/jisho/:word', async (req, res) => {
+router.get('/jisho/:word', safeAsyncRoute(async (req: AppRequest, res: Response) => {
 	const word = req.params.word,
 		jishoResults = await JishoSearch.search(word);
 
@@ -27,7 +29,7 @@ router.get('/jisho/:word', async (req, res) => {
 	    lookupLogger.debug(`No results for lookup "${word}"`);
 		sendNoResults(res, 'Jisho', word);
 	}
-});
+}));
 
 
 export default router;

@@ -6,9 +6,12 @@ This can be used to expose things like metrics to prometheus.
 import express from 'express';
 import {register} from './metrics';
 import jwt from 'jsonwebtoken';
-import {logHttpError, remoteTransport} from './util/logger';
+import {remoteTransport} from './util/logger';
+import {errorHandler} from "./middleware/error-handler";
+import {requestId} from "./middleware/request-id";
 
 const app = express();
+app.use(requestId);
 
 //serve metrics to prometheus
 app.get('/metrics', async (req, res) => {
@@ -25,13 +28,7 @@ app.use((req, res, next) => {
         next();
     }
     catch(e) {
-        logHttpError({
-            status: 401,
-            internal: true,
-            req
-        })
-        res.status(401);
-        res.send('Not Authorized');
+        next({status: 401});
     }
 });
 
@@ -41,14 +38,9 @@ app.get('/logs', (req, res) => {
     );
 });
 
-app.use((req, res) => {
-    logHttpError({
-        status: 400,
-        internal: true,
-        req
-    })
-    res.status(404);
-    res.send('Not Found');
+app.use((req, res, next) => {
+    next({status: 404});
 })
+app.use(errorHandler(true));
 
 app.listen(4001);
