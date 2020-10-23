@@ -84,7 +84,8 @@ export function logHttpError({
     status, req, internal=false
 }: {status: number, req: Request, internal?: boolean}) {
     const message = httpStatusDescriptions.get(status) ?? `HTTP Status ${status}`
-    httpLogger.info(`${message}: "${req.url}"`, {
+
+    httpLogger[internal ? 'error' : 'info'](`${message}: "${req.url}"`, {
         status,
         internal,
         path: req.url,
