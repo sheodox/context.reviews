@@ -52,7 +52,9 @@
 			</div>
 		{:catch error}
 			<h1>{source}</h1>
-			<p class="hint-text">{error.message}</p>
+			<div in:fly={{y: 50}}>
+				<p class="hint-text">{error.message}</p>
+			</div>
 		{/await}
 	{/if}
 </div>
