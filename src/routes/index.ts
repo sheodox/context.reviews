@@ -3,6 +3,10 @@ import serialize from 'serialize-javascript';
 import lookupRouter from './lookup';
 import phrasesRouter from './phrases';
 import {exportServed, landingServed, listServed, privacyServed} from "../metrics";
+import {User} from "../entity/User";
+import {AppRequest} from "../app";
+import {connection} from "../entity";
+import {Phrase} from "../entity/Phrase";
 
 const router = Router(),
 	manifest = require('../../public/manifest.json'),
@@ -14,18 +18,49 @@ const router = Router(),
 		manifestSerialized: serialize(manifest)
 	};
 
-router.get('/', function(req, res, next) {
+const phraseRepository = connection.then(connection => {
+	return connection.getRepository(Phrase);
+});
+
+async function getUserLocals(user: User) {
+	// do a query to see if they've added at least one phrase as a basic
+	// check to see if they've used the site before
+	const maybeAPhrase = await (await phraseRepository)
+		.find({
+			where: {
+				userId: user.id
+			},
+			take: 1
+		});
+
+	return {
+	    userMetadata: serialize({
+			user: {
+				displayName: user.displayName,
+				profileImage: user.profileImage,
+			},
+			usage: {
+				hasAddedPhrases: maybeAPhrase.length > 0
+			}
+		}),
+	};
+}
+
+router.get('/', async (req: AppRequest, res, next) => {
 	if (!req.user) {
 		landingServed.inc();
 		res.render('landing', baseLocals);
 	}
 	else {
 	    listServed.inc();
-		res.render('index', baseLocals);
+		res.render('index', {
+			...baseLocals,
+			...(await getUserLocals(req.user))
+		});
 	}
 });
 
-router.get('/export', function(req, res, next) {
+router.get('/export', async (req: AppRequest, res, next) => {
 	if (!req.user) {
 		res.redirect('/');
 	}
@@ -33,6 +68,7 @@ router.get('/export', function(req, res, next) {
 		exportServed.inc();
 		res.render('export', {
 			...baseLocals,
+			...(await getUserLocals(req.user)),
 			title: 'Anki Export - Context.Reviews'
 		});
 	}

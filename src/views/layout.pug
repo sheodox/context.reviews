@@ -21,5 +21,8 @@ html(lang="en")
         if manifestSerialized
             script.
                 window.assetManifest = !{manifestSerialized};
+        if userMetadata
+            script.
+                window.userMetadata = !{userMetadata};
     body
         block content

@@ -1,5 +1,6 @@
 import {writable} from 'svelte/store';
 import {connectSocket} from './client-socket';
+import {hasAddedPhrases} from "./metadataStore";
 
 const phraseStore = writable(null);
 
@@ -26,6 +27,12 @@ export default {
 connectSocket(({send, on}) => {
 	on('list', phrases => {
 		phraseStore.set(phrases);
+		if (phrases.length) {
+			//if this is their first time using the site and have added phrases
+			//we don't want to show them the first time Help on the list after
+			//exporting or deleting them. consider them a regular user now
+			hasAddedPhrases.set(true);
+		}
 	})
 
 	//request the list, necessary initially, and possibly necessary

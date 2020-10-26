@@ -46,7 +46,7 @@ Use a better font stack for places Japanese text is likely to be. Otherwise you'
 incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki/Han_unification
  */
 .jp, ruby, input, textarea {
-    font-family: var(--jp-fonts);
+    font-family: var(--jp-fonts) !important;
 }
 
 html {

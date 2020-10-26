@@ -90,8 +90,12 @@
 			<!-- show nothing when doing the initial list load, because if
 			a loading indicator is shown for a super short time it'll be kind of jarring -->
 			{:else if phrases.length === 0}
-				<div id="help-inline">
-					<Help />
+				<div class="centered-">
+					{#if $hasAddedPhrases}
+						<NoMorePhrases />
+					{:else}
+						<Help />
+					{/if}
 				</div>
 			{:else if phrases.length > 0}
 				<table>
@@ -145,7 +149,9 @@
 	import Footer from '../Footer.svelte';
 	import Header from '../Header.svelte';
 	import Modal from '../Modal.svelte';
+	import NoMorePhrases from './NoMorePhrases.svelte';
 	import AddPhrases from './AddPhrases.svelte';
+	import {hasAddedPhrases} from "../metadataStore";
 
 	let selection = '',
 		initiallyLoading = true,
