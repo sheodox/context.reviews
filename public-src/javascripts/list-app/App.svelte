@@ -48,6 +48,12 @@
 		position: sticky;
 		top: 0;
 	}
+
+	#help-inline {
+		display: flex;
+		justify-content: center;
+	}
+
 	@media (max-width: 650px) {
 		#list {
 			width: 100%;
@@ -84,7 +90,9 @@
 			<!-- show nothing when doing the initial list load, because if
 			a loading indicator is shown for a super short time it'll be kind of jarring -->
 			{:else if phrases.length === 0}
-				<Help />
+				<div id="help-inline">
+					<Help />
+				</div>
 			{:else if phrases.length > 0}
 				<table>
 					<thead>
