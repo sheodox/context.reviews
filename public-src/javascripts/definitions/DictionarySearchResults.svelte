@@ -50,6 +50,9 @@
 					<p class="hint-text">No results found for "{term}"</p>
 				{/if}
 			</div>
+		{:catch error}
+			<h1>{source}</h1>
+			<p class="hint-text">{error.message}</p>
 		{/await}
 	{/if}
 </div>
@@ -78,9 +81,15 @@
 				return;
 			}
 
-			return Promise.resolve()
-				.then(() => fetch(`lookup/${source}/${encodeURIComponent(phrase)}/`)
-				.then(res => res.json()));
+			return fetch(`lookup/${source}/${encodeURIComponent(phrase)}/`)
+				.then(async res => {
+					const result = await res.json();
+					if (res.ok) {
+						return result;
+					}
+
+					throw new Error(result.message);
+				});
 		};
 
 	function addToReviews(word) {
