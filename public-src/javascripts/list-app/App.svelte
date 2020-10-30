@@ -49,11 +49,6 @@
 		top: 0;
 	}
 
-	#help-inline {
-		display: flex;
-		justify-content: center;
-	}
-
 	@media (max-width: 650px) {
 		#list {
 			width: 100%;
