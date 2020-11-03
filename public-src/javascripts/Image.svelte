@@ -1,4 +1,4 @@
-<picture>
+<picture class={pictureClasses}>
 	<source srcset={asset(`${src}.webp`)} type="image/webp" />
 	<img src={asset(`${src}.png`)} {alt} />
 </picture>
@@ -6,4 +6,5 @@
 	import {asset} from './assets';
 	export let src;
 	export let alt;
+	export let pictureClasses = ''
 </script>

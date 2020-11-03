@@ -1,5 +1,5 @@
 <Header appName="Context.Reviews" {pageName} {slim}>
-	<div slot="logo"><Image src="favicon" /></div>
+	<div slot="logo"><Image src="favicon" pictureClasses="f-row align-items-center"/></div>
 	<slot slot="nav" />
 </Header>
 <script>
