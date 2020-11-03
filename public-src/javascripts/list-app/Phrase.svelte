@@ -47,7 +47,7 @@
 	import phraseStore from '../phraseStore';
 	import SelectableText from "../SelectableText.svelte";
 	import CollapsingButtons from '../CollapsingButtons.svelte';
-	import Icon from '../Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 
 	export let phrase = '';
 

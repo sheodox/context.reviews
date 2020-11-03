@@ -88,8 +88,7 @@
 {/if}
 
 <script>
-    import Modal from '../Modal.svelte';
-    import Icon from '../Icon.svelte';
+    import {Modal, Icon} from 'sheodox-ui';
     import Tag from '../definitions/Tag.svelte';
 
     export let tags = [];

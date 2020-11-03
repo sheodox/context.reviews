@@ -39,7 +39,7 @@
 <svelte:window on:resize={() => active = false} />
 
 <script>
-	import Icon from './Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	export let collapseBreakpoint;
 	let active = false;
 </script>

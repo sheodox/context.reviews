@@ -50,7 +50,7 @@
 		display: block;
 	}
 	.suggestion :global(a) {
-		color: var(--suggestion);
+		color: var(--primary);
 	}
 </style>
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
@@ -159,7 +159,7 @@
 		selectDefinition,
         card,
 	} from '../export-app/currentCardStore';
-	import Icon from '../Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	import {analyzeTags} from './processTag';
 
 	//the dictionary site this came from

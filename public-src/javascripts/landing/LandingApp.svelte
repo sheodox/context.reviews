@@ -1,16 +1,11 @@
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 </style>
 
 <Header slim={false}>
     <LoginButton />
 </Header>
 
-<main>
+<main class="f-column align-items-center">
     <Pitch />
 </main>
 
@@ -18,7 +13,6 @@
 
 <script>
 	import Header from '../Header.svelte';
-	import GetStarted from './GetStarted.svelte';
 	import Pitch from './Pitch.svelte';
 	import LoginButton from "./LoginButton.svelte";
 	import Footer from '../Footer.svelte';

@@ -138,12 +138,11 @@
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import Toasts from './Toasts.svelte';
-	import Icon from '../Icon.svelte';
+	import {Icon, Modal} from 'sheodox-ui';
 	import {say} from '../speech'
 	import phraseStore from '../phraseStore';
 	import Footer from '../Footer.svelte';
 	import Header from '../Header.svelte';
-	import Modal from '../Modal.svelte';
 	import NoMorePhrases from './NoMorePhrases.svelte';
 	import AddPhrases from './AddPhrases.svelte';
 	import {hasAddedPhrases} from "../metadataStore";

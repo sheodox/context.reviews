@@ -111,7 +111,7 @@
 		downloadedDeck
 	} from './cardsStore';
 	import Loading from "../Loading.svelte";
-	import Icon from '../Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	import SRSConstructor from './SRSConstructor';
 
 	let phrasesDeleted = false,

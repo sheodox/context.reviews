@@ -121,7 +121,7 @@
 </div>
 
 <script>
-	import Icon from '../Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	import CardPreview from './CardPreview.svelte';
 	import EditTags from './EditTags.svelte';
 	import {

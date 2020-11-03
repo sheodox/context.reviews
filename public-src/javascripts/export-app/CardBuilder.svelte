@@ -84,7 +84,7 @@
 		margin: 0;
 	}
 	.suggested:enabled {
-		color: var(--suggestion);
+		color: var(--primary);
 	}
 	@media (max-width: 850px) {
 		.tweaks .card-fields {
@@ -212,7 +212,7 @@
 		addCard as addCardToStore
 	} from './cardsStore';
 	import SelectableText from "../SelectableText.svelte";
-	import Icon from '../Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	import MeaningEditor from './MeaningEditor.svelte';
 	import OtherDictionaryLinks from "../definitions/OtherDictionaryLinks.svelte";
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added

@@ -157,6 +157,6 @@
 	import DemoCard from './DemoCard.svelte';
 	import GetStarted from "./GetStarted.svelte";
 	import Image from '../Image.svelte';
-	import Icon from '../Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	import {asset} from '../assets';
 </script>

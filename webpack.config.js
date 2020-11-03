@@ -28,7 +28,6 @@ module.exports = env => {
 			rules: [
 				{
 					test: /\.(html|svelte)$/,
-					exclude: /node_modules/,
 					use: 'svelte-loader'
 				},
 				{

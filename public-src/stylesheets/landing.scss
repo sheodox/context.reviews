@@ -1,14 +1,4 @@
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#app-root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+@import "node_modules/sheodox-ui/style";
 
 main {
     width: 90rem;

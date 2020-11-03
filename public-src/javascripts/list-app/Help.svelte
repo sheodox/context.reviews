@@ -90,7 +90,7 @@
 </div>
 <script>
 	import ExternalLink from "../ExternalLink.svelte";
-	import Icon from '../Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	const jishoSearchBookmarklet = `javascript:(function() {
 			const selection = window.getSelection().toString();
 			if (selection) {

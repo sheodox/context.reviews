@@ -1,7 +1,5 @@
 <style>
 	.panel {
-		display: flex;
-		align-items: center;
 		padding: 1rem;
 		margin: 1rem;
 	}
@@ -11,7 +9,7 @@
 
 </style>
 
-<div class="panel">
+<div class="panel f-row align-items-center">
 	<h2>
 		Get Started!
 	</h2>

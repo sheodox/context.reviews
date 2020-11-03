@@ -10,15 +10,6 @@
         align-items: center;
 		width: 100%;
     }
-	.header-toolbar {
-		display: flex;
-		align-items: center;
-	}
-	.header-toolbar > * {
-		margin: 0 1rem;
-        align-content: baseline;
-		align-items: end;
-	}
 
 	#card-workspace {
 		flex: 1;
@@ -47,13 +38,13 @@
 <div class="row">
     <div class="container">
         <Header pageName="Anki Export">
-            {#if $phraseStore}
-				<div class="header-toolbar">
-					<nav>
+			<nav>
+				<ul>
+					<li>
 						<a href="/"><Icon icon="arrow_back_ios" />Back To Phrase List</a>
-					</nav>
-				</div>
-            {/if}
+					</li>
+				</ul>
+			</nav>
 		</Header>
 
 		<div class="full-page-contents">
@@ -86,9 +77,8 @@
 	import phraseStore from '../phraseStore';
 	import CardBuilder from './CardBuilder.svelte';
 	import Header from '../Header.svelte';
-	import Icon from '../Icon.svelte';
 	import Exporter from "./Exporter.svelte";
-	import Modal from '../Modal.svelte';
+	import {Icon, Modal} from 'sheodox-ui';
 	import CardList from './CardList.svelte';
 	import Footer from '../Footer.svelte';
 	import {get} from 'svelte/store';

@@ -1,43 +1,10 @@
+@import "node_modules/sheodox-ui/style";
+
 @import 'button';
 @import 'progress';
 @import 'input';
 
 :root {
-    --accent-blue: #0cacff;
-    --accent-red: #e83450;
-    --accent-red-bright: #ff0e32;
-    $purple: #7700ff;
-    $pink: #bb24e2;
-    --accent-purple: #{$purple};
-    --accent-purple-dark: #7804cd;
-    --accent-purple-bright: #b300ff;
-    --accent-pink: #{$pink};
-    --gradient-start: var(--accent-purple-dark);
-    --gradient-end: var(--accent-pink);
-    --gradient-start-light: #{lighten($purple, 5%)};
-    --gradient-end-light: #{lighten($pink, 5%)};
-    --accent-gradient: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
-    --accent-gradient-light: linear-gradient(to right, var(--gradient-start-light), var(--gradient-end-light));
-
-    //to preserve the blueish tint, some of these are auto-generated, some are manually adjusted, otherwise the saturation is all over the place.
-    $base: #08080b;
-    --bg: #{$base};
-    --panel-bg: #12121a;
-    --sub-panel-bg: #{lighten($base, 6%)};
-    --panel-border-color: black;
-    --panel-border: 1px solid var(--panel-border-color);
-    --panel-header-bg: #{lighten($base, 8%)};
-    --panel-footer-bg: #111118;
-    --input-bg: rgba(53, 54, 64, 0.6);
-    --input-focus-color: #3584e4;
-    //a text color indicating an export option is recommended, like highlighting "use kana" if
-    //one of the meanings for the selected definition is usually kana
-    $suggestion: #00ffc3; //or maybe try #ff00ef (bright pink)
-    --suggestion: #{$suggestion};
-    --suggestion-light: #{lighten($suggestion, 5%)};
-    --suggestion-dark: #{darken($suggestion, 34%)};
-
-    --en-fonts: Arial, Noto Sans, sans-serif;
     --jp-fonts: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
 }
 
@@ -49,115 +16,12 @@ incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki
     font-family: var(--jp-fonts) !important;
 }
 
-html {
-    min-height: 100%;
-    display: flex;
-}
-body, #app-root {
-    font-size: 14px;
-    line-height: 1.4;
-    font-family: var(--en-fonts);
-    background-color: var(--bg);
-    color: white;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    opacity: 1;
-    text-rendering: optimizeLegibility;
-    font-weight: 400;
-    display: flex;
-    flex: 1;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-a[href] {
-    color: #00B7FF;
-}
-
-hr {
-    color: white;
-}
-
-label {
-    font-weight: bold;
-}
-
-@mixin base-button($bg) {
-    button:not(.primary):not(.danger):enabled {
-        background: none;
-
-        &:hover:not(:disabled) {
-            background: lighten($bg, $hoverLightenPercent);
-        }
-    }
-}
-.panel {
-    background: var(--panel-bg);
-    @include base-button(#4a556054);
-    padding: 0;
-    margin: 0;
-
-    > {
-        header, .header {
-            &:first-child {
-                padding: 1rem;
-                border-radius: 0.2rem 0.2rem 0 0;
-            }
-        }
-
-    }
-    .panel-body {
-        padding: 1rem;
-    }
-}
-.sub-panel {
-    margin: 1rem 1rem 2rem;
-    background: var(--sub-panel-bg);
-    padding: 0.5rem;
-    border-radius: 0.2rem;
-}
-.header, header {
-    @include base-button(#4a556054);
-
-    h1, h2 {
-        font-size: 1.8rem;
-    }
-}
-h1.header, h2.header {
-    font-size: 1.8rem;
-}
-
-nav a[href] {
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    border-bottom: 0.2rem solid transparent;
-
-    &:hover {
-        border-bottom-color: var(--accent-purple);
-    }
-}
-.sr-only {
-    position: absolute;
-    left: -10000px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 
     &:not(.japanese) {
         font-family: 'Kanit', sans-serif;
     }
-}
-
-a:not(:hover) {
-    text-decoration: none;
 }
 
 .spacer-bar {

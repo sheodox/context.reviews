@@ -39,7 +39,7 @@
 </section>
 
 <script>
-    import Icon from '../Icon.svelte';
+    import {Icon} from 'sheodox-ui';
     export let showAddDialog = true;
 
     let phraseText = '',

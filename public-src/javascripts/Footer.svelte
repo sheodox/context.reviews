@@ -50,7 +50,7 @@
 </footer>
 
 <script>
-	import Icon from './Icon.svelte';
+	import {Icon} from 'sheodox-ui';
 	import ExternalLink from "./ExternalLink.svelte";
 
 	export let signedIn = true;
