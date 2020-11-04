@@ -64,7 +64,10 @@
 <aside on:mouseleave={() => previewCard = null} class="panel">
     <h2 class="header">Created Cards</h2>
     <div class="panel-body">
-		<CardProgress processedPhrases={$currentPhraseIndex} totalPhrases={$phraseStore.length} />
+		<label id="cards-processed">
+			Cards Processed ({$currentPhraseIndex}/{$phraseStore.length})
+		</label>
+		<Progress value={$currentPhraseIndex} max={$phraseStore.length} id="cards-processed"/>
 		<div class="phrase-select">
 			<label>
 				Skip To Phrase
@@ -110,7 +113,6 @@
     import {fade} from 'svelte/transition';
     import JapaneseWord from '../definitions/JapaneseWord.svelte';
     import CardPreview from './CardPreview.svelte';
-    import CardProgress from './CardProgress.svelte';
     import {createEventDispatcher} from 'svelte';
     import {get} from 'svelte/store';
     import phraseStore from '../phraseStore';
@@ -122,6 +124,7 @@
         cardCount,
         removeCard
     } from './cardsStore';
+    import {Progress} from 'sheodox-ui';
 
     export let showExport;
 
