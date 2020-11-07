@@ -53,7 +53,7 @@
 				<div class="meaning-header">
 					<h3>Meaning {index + 1}</h3>
 					<button on:click={() => removeMeaning(meaning)}>
-						<Icon icon="clear" />
+						<Icon icon="times" />
 						Remove
 					</button>
 				</div>
@@ -77,7 +77,7 @@
 			</div>
 		{/each}
 		<button on:click={addMeaning} class="add-meaning">
-			<Icon icon="add" />
+			<Icon icon="plus" />
 			Add meaning
 		</button>
 	</div>

@@ -57,9 +57,11 @@ app.use(passport.session());
 import indexRouter from './routes/index';
 import authRouter from './routes/auth';
 import statsRouter from './routes/stats';
+import userRouter from './routes/user';
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/stats', statsRouter);
+app.use('/user', userRouter);
 require('./util/server-socket').initialize(wss, sessionStore);
 
 app.use(function(req, res, next) {

@@ -95,9 +95,9 @@
 		<aside id="demo-cards" class="outlined">
 			<DemoCard />
 			<p id="try-me">
-				<Icon icon="arrow_upward" />
+				<Icon icon="arrow-up" />
 				Try me
-				<Icon icon="arrow_upward" />
+				<Icon icon="arrow-up" />
 			</p>
 		</aside>
 	</div>

@@ -33,11 +33,11 @@
 		{#if phrasesDeleted}
 			<button
 				on:click={() => dispatch('restart')}
-			><Icon icon="arrow_back_ios" />Start Over</button>
+			><Icon icon="angle-left" />Start Over</button>
 		{:else}
 			<button
 				on:click={() => dispatch('back')}
-			><Icon icon="arrow_back_ios" />Back</button>
+			><Icon icon="angle-left" />Back</button>
 		{/if}
 	</div>
 
@@ -54,7 +54,7 @@
 					on:contextmenu={() => enableDelete(2000)}
 					download={exported.fileName}
 			>
-				<Icon icon="get_app" />Download Deck
+				<Icon icon="download" />Download Deck
 			</a>
 			{#if !phrasesDeleted}
 				<br>
@@ -64,7 +64,7 @@
 						class="danger"
 						title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
 				>
-					<Icon icon="delete" />
+					<Icon icon="trash" />
 					Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
 				</button>
 			{/if}

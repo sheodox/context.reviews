@@ -3,7 +3,6 @@
 	<slot slot="nav" />
 </Header>
 <script>
-	import {asset} from './assets';
 	import Image from "./Image.svelte";
 	import {Header} from 'sheodox-ui';
 

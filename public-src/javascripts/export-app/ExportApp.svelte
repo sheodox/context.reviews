@@ -41,7 +41,10 @@
 			<nav>
 				<ul>
 					<li>
-						<a href="/"><Icon icon="arrow_back_ios" />Back To Phrase List</a>
+						<a href="/"><Icon icon="angle-left" />Back To Phrase List</a>
+					</li>
+					<li>
+						<UserMenu />
 					</li>
 				</ul>
 			</nav>
@@ -93,6 +96,7 @@
 		downloadedDeck
 	} from './cardsStore';
 	import NoPhrases from "./NoPhrases.svelte";
+	import UserMenu from "../UserMenu.svelte";
 
 	phraseStore.subscribe(setPhrases);
 	let showExport = false;

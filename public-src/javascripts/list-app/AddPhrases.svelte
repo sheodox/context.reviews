@@ -29,7 +29,7 @@
 		<br>
 		<textarea id="bulk-phrase-add-input" bind:value={phraseText}></textarea>
 		<br>
-		<button disabled={!phraseText || submitting}><Icon icon="add" />Add</button>
+		<button disabled={!phraseText || submitting}><Icon icon="plus" />Add</button>
 	</form>
 
 	<small>

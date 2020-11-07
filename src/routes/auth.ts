@@ -5,6 +5,7 @@ import {OAuth2Strategy} from 'passport-google-oauth';
 import {connection} from '../entity';
 import {usersLoggedIn, usersNew, usersTotal} from "../metrics";
 import {authLogger} from "../util/logger";
+import {getSettingsDefaults} from "../entity/Settings";
 const router = Router();
 
 async function getUserRepository() {
@@ -57,7 +58,15 @@ passport.serializeUser(function(user: User, done) {
 
 passport.deserializeUser(async function(id, done) {
 	const userRepository = await getUserRepository();
-	const user = await userRepository.findOne(id);
+	const user = await userRepository.findOne(id, {
+		relations: ['settings']
+	});
+
+	if (!user.settings) {
+		user.settings = getSettingsDefaults();
+		user.settings.user = user;
+	}
+
 	user ? done(null, user) : done(new Error('user not found'));
 });
 

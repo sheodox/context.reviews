@@ -22,6 +22,18 @@ const phraseRepository = connection.then(connection => {
 	return connection.getRepository(Phrase);
 });
 
+// no need to copy the user's UUID to them, so clone the object minus that property
+function copyAllButId(obj: any) {
+	const cleanedObject: any = {};
+
+	for (const [key, val] of Object.entries(obj)) {
+		if (key !== 'id') {
+			cleanedObject[key] = val;
+		}
+	}
+	return cleanedObject;
+}
+
 async function getUserLocals(user: User) {
 	// do a query to see if they've added at least one phrase as a basic
 	// check to see if they've used the site before
@@ -38,6 +50,7 @@ async function getUserLocals(user: User) {
 			user: {
 				displayName: user.displayName,
 				profileImage: user.profileImage,
+                settings: copyAllButId(user.settings)
 			},
 			usage: {
 				hasAddedPhrases: maybeAPhrase.length > 0

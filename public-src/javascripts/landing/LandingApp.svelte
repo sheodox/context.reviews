@@ -1,7 +1,7 @@
 <style>
 </style>
 
-<Header slim={false}>
+<Header slim={false} loggedIn={false}>
     <LoginButton />
 </Header>
 
@@ -9,7 +9,7 @@
     <Pitch />
 </main>
 
-<Footer signedIn={false} />
+<Footer />
 
 <script>
 	import Header from '../Header.svelte';

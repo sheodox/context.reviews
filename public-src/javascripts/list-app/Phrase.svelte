@@ -34,7 +34,9 @@
 				Delete
 			</button>
 			<button on:click={define} class="search">Jisho</button>
-			<button on:click={read} class="read">Say</button>
+			{#if $settings.speechSynthesis}
+				<button on:click={read} class="read">Say</button>
+			{/if}
 		</CollapsingButtons>
 	</td>
 	<td class="phrase jp">
@@ -47,6 +49,7 @@
 	import phraseStore from '../phraseStore';
 	import SelectableText from "../SelectableText.svelte";
 	import CollapsingButtons from '../CollapsingButtons.svelte';
+	import {settings} from "../metadataStore";
 	import {Icon} from 'sheodox-ui';
 
 	export let phrase = '';

@@ -1,4 +1,5 @@
-import {Entity, PrimaryColumn, Column, Unique} from "typeorm/index";
+import {Entity, PrimaryColumn, Column, Unique, OneToOne} from "typeorm/index";
+import {Settings} from "./Settings";
 
 @Unique(['oauthId'])
 @Entity({
@@ -36,4 +37,7 @@ export class User {
 
     @Column('text')
     raw: string;
+
+    @OneToOne(() => Settings, settings => settings.user)
+    settings: Settings
 }

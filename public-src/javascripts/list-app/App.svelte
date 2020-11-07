@@ -70,16 +70,23 @@
 <div id="list">
 	<Header>
         <nav>
-			<a href="export"><Icon icon="note_add" />Anki Export</a>
+			<ul>
+				<li>
+					<a href="export"><Icon icon="clone" />Anki Export</a>
+				</li>
+				<li>
+					<UserMenu />
+				</li>
+			</ul>
 		</nav>
 	</Header>
 	<main>
 		<div id="list-container">
 			<div class="panel" id="toolbar">
-				<button on:click={undo}><Icon icon="undo" />Undo Delete</button>
-				<button on:click={stop} disabled={!speaking}><Icon icon="stop" />Stop Voice</button>
-				<button on:click={() => showAdd = true}><Icon icon="add" />Add Phrases</button>
-				<button on:click={e => showHelp = true}><Icon icon="help" />Help</button>
+				<button on:click={undo}><Icon icon="undo" /> Undo Delete</button>
+				<button on:click={stop} disabled={!speaking}><Icon icon="stop" /> Stop Voice</button>
+				<button on:click={() => showAdd = true}><Icon icon="plus" /> Add Phrases</button>
+				<button on:click={e => showHelp = true}><Icon icon="info-circle" /> Help</button>
 			</div>
 			{#if initiallyLoading}
 			<!-- show nothing when doing the initial list load, because if
@@ -146,6 +153,8 @@
 	import NoMorePhrases from './NoMorePhrases.svelte';
 	import AddPhrases from './AddPhrases.svelte';
 	import {hasAddedPhrases} from "../metadataStore";
+	import UserMenu from "../UserMenu.svelte";
+	import {settings} from '../metadataStore';
 
 	let selection = '',
 		initiallyLoading = true,
@@ -168,7 +177,9 @@
 
 	function selected(e) {
 		const text = e.detail
-		say(text);
+		if ($settings.autoSpeechSynthesis) {
+			say(text);
+		}
 		selection = text;
 	}
 

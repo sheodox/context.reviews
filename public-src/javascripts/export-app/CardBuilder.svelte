@@ -105,14 +105,14 @@
 		<h2>Card Builder</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 		<div class="header-buttons">
-			<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="arrow_back_ios" />Back</button>
+			<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="angle-left" />Back</button>
 			<button on:click={done} class="done" class:primary={!selection && $currentPhraseCardCount}>
 				{#if $currentPhraseCardCount}
 					Next Phrase
 				{:else}
 					Skip This Phrase
 				{/if}
-				<Icon icon="arrow_forward_ios" />
+				<Icon icon="angle-right" />
 			</button>
 		</div>
 	</div>
@@ -136,7 +136,7 @@
 									disabled={$word === $reading}
 								>
 									{#if $suggestUseKana}
-										<Icon icon="assistant" />
+										<Icon icon="hat-wizard" />
 									{/if}
 									Use Kana
 								</button>
@@ -153,7 +153,7 @@
 								on:click={addCard}
 								disabled={!$word || !$wordIsUnique}
 							>
-								<Icon icon="add" />
+								<Icon icon="plus" />
 								Add Card
 							</button>
 						</div>
@@ -167,7 +167,7 @@
 			{/if}
 
 			{#if showMeaningEditor}
-				<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="clear" />Discard Customizations</button>
+				<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="times" />Discard Customizations</button>
 				<MeaningEditor bind:meanings={$definition.meanings} />
 			{:else}
 				<div class="definition-area">

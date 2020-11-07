@@ -4,10 +4,12 @@ import {User} from "./User";
 import {Phrase} from "./Phrase";
 import {phrasesTotal, usersTotal} from "../metrics";
 import {databaseLogger} from "../util/logger";
+import {Settings} from "./Settings";
 
 const entities = [
     User,
-    Phrase
+    Phrase,
+    Settings
 ];
 
 export const connection: Promise<Connection> = new Promise((resolve, reject) => {
@@ -39,3 +41,7 @@ export const connection: Promise<Connection> = new Promise((resolve, reject) => 
         reject(error);
     });
 });
+
+export const settingsRepository = connection.then(c => c.getRepository(Settings));
+export const phraseRepository = connection.then(c => c.getRepository(Phrase));
+export const userRepository = connection.then(c => c.getRepository(User));

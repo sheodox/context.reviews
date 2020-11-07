@@ -28,7 +28,7 @@
 
 <div class="collapsing-buttons" style="--collapse-breakpoint: {collapseBreakpoint}">
 	<button class="trigger small" on:click={() => active = !active}>
-		<Icon icon="expand_more" noPadding={true}/>
+		<Icon icon="angle-down" noPadding={true}/>
 		<span class="sr-only">More</span>
 	</button>
 	<div class="buttons" class:active={active}>

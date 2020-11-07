@@ -80,15 +80,19 @@
 				title={definition.word === searchTerm ? exactMatchExplanation : ''}
 			>
 				{#if definition.word === searchTerm}
-					<Icon noPadding={true} icon="assistant" />
+					<Icon noPadding={true} icon="hat-wizard" />
 				{/if}
 				Select
 			</button>
 		{/if}
-		<button on:click={() => say(definition.word)} class="small">Say word</button>
-		{#if definition.reading}
-			<button on:click={() => say(definition.reading)} class="small">Say reading</button>
+
+		{#if $settings.speechSynthesis}
+			<button on:click={() => say(definition.word)} class="small">Say word</button>
+			{#if definition.reading}
+				<button on:click={() => say(definition.reading)} class="small">Say reading</button>
+			{/if}
 		{/if}
+
 		{#if mode === 'export' && isWordSelected($card.id)}
 			<button on:click={() => dispatch('editDefinition')} class="small">Customize Card</button>
 		{/if}
@@ -132,7 +136,7 @@
 							disabled={isFormSelected($card, alt.word, alt.reading)}
 						>
 							{#if alt.word === searchTerm}
-								<Icon noPadding={true} icon="assistant" />
+								<Icon noPadding={true} icon="hat-wizard" />
 							{/if}
 							<JapaneseWord word={alt.word} reading={alt.reading} />
 						</button>
@@ -155,6 +159,7 @@
 	import ExternalLink from "../ExternalLink.svelte";
 	import JapaneseWord from './JapaneseWord.svelte';
 	import phraseStore from '../phraseStore';
+	import {settings} from '../metadataStore';
 	import {
 		selectDefinition,
         card,

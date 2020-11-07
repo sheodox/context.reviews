@@ -64,7 +64,7 @@
 <aside on:mouseleave={() => previewCard = null} class="panel">
     <h2 class="header">Created Cards</h2>
     <div class="panel-body">
-		<label id="cards-processed">
+		<label for="cards-processed">
 			Cards Processed ({$currentPhraseIndex}/{$phraseStore.length})
 		</label>
 		<Progress value={$currentPhraseIndex} max={$phraseStore.length} id="cards-processed"/>

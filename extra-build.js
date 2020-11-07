@@ -10,6 +10,14 @@ const fs = require('fs'),
 	glob = promisify(require('glob')),
 	sharp = require('sharp');
 
+async function createFolders(paths) {
+	for (const folder of paths) {
+		try {
+			fs.mkdirSync(folder);
+		} catch(e) {}
+	}
+}
+
 async function generateFileHash(filePath) {
 	const hash = crypto.createHash('md4'),
 		fileContents = fs.readFileSync(filePath).toString();
@@ -91,6 +99,21 @@ module.exports = async function build(isProd) {
 			},
 			error));
 		fs.writeFileSync(`./public/${error.status}.html`, html);
+	}
+
+	//copy fontawesome files to a static directory. they're not loaded with a bundler
+	//and to avoid having to serve them with express.static() they should be copied to
+	//the static files directory so nginx can handle serving them
+	createFolders([
+		'./public/fontawesome',
+		'./public/fontawesome/css',
+		'./public/fontawesome/webfonts',
+	])
+	const faPath = './node_modules/@fortawesome/fontawesome-free/',
+		faFiles = await glob(`${faPath}{css,webfonts}/*`);
+	for (const file of faFiles) {
+		const newPath = file.replace(faPath, './public/fontawesome/');
+		fs.copyFileSync(file, newPath);
 	}
 
 	console.log('extra-build done');

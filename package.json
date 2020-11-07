@@ -16,6 +16,8 @@
     "deploy": "npm stop && git pull && npm i && npm run build && npm start"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "ajv": "^6.12.6",
     "body-parser": "^1.19.0",
     "connect-redis": "^4.0.4",
     "cookie": "^0.4.1",
@@ -43,7 +45,7 @@
     "sass-loader": "^8.0.2",
     "serialize-javascript": "^3.1.0",
     "sharp": "^0.25.4",
-    "sheodox-ui": "0.0.6",
+    "sheodox-ui": "0.0.8",
     "style-loader": "^1.1.3",
     "svelte": "^3.29.4",
     "svelte-loader": "^2.13.6",

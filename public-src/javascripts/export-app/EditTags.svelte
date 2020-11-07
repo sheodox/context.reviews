@@ -33,7 +33,7 @@
         <input value={tagsText} on:keyup={updateTags} />
     </label>
     <button on:click={() => showHelp = true} class="small">
-        <Icon icon="help" />
+        <Icon icon="info-circle" />
         About Tags
     </button>
 </div>
