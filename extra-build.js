@@ -89,6 +89,11 @@ module.exports = async function build(isProd) {
 		status: 502,
 		message: 'Site is down!',
 		description: `Context.Reviews is down, try again in a moment.`
+	}, {
+		//gateway timeout. usually happens when an error is thrown when trying to handle a request
+		status: 504,
+		message: "Site isn't responding",
+		description: `Context.Reviews isn't responding for some reason. If this keeps happening please contact support at the link below.`
 	}];
 
 	const genErrorHtml = pug.compileFile('./src/views/error.pug')

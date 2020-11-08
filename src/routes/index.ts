@@ -23,11 +23,11 @@ const phraseRepository = connection.then(connection => {
 });
 
 // no need to copy the user's UUID to them, so clone the object minus that property
-function copyAllButId(obj: any) {
+function cloneExcept(obj: any, skipProperties: string[]) {
 	const cleanedObject: any = {};
 
 	for (const [key, val] of Object.entries(obj)) {
-		if (key !== 'id') {
+		if (!skipProperties.includes(key)) {
 			cleanedObject[key] = val;
 		}
 	}
@@ -50,7 +50,7 @@ async function getUserLocals(user: User) {
 			user: {
 				displayName: user.displayName,
 				profileImage: user.profileImage,
-                settings: copyAllButId(user.settings)
+                settings: cloneExcept(user.settings, ['id', 'user'])
 			},
 			usage: {
 				hasAddedPhrases: maybeAPhrase.length > 0
