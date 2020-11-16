@@ -3,10 +3,10 @@
 		flex: 0;
 		display: flex;
 		flex-direction: row;
+        padding: 0.5rem;
 	}
 	form input[type=text] {
 		width: 100%;
-		margin: 0.5rem;
 	}
 </style>
 
