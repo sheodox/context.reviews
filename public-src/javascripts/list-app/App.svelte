@@ -136,7 +136,7 @@
 	<Footer />
 </div>
 
-<Toasts />
+<Toasts dockedAt="bottom-center" />
 
 <svelte:window on:keydown={keydown} />
 
@@ -144,8 +144,7 @@
 	import Definitions from './DictionarySearchPanel.svelte';
 	import Help from "./Help.svelte";
 	import Phrase from './Phrase.svelte';
-	import Toasts from './Toasts.svelte';
-	import {Icon, Modal} from 'sheodox-ui';
+	import {Icon, Modal, Toasts} from 'sheodox-ui';
 	import {say} from '../speech'
 	import phraseStore from '../phraseStore';
 	import Footer from '../Footer.svelte';
