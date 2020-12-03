@@ -2,7 +2,7 @@ import "reflect-metadata";
 import {Connection, createConnection} from "typeorm/index";
 import {User} from "./User";
 import {Phrase} from "./Phrase";
-import {phrasesTotal, usersTotal} from "../metrics";
+import {phrasesActive, phrasesTotal, usersTotal} from "../metrics";
 import {databaseLogger} from "../util/logger";
 import {Settings} from "./Settings";
 
@@ -32,6 +32,9 @@ export const connection: Promise<Connection> = new Promise((resolve, reject) => 
         //seed some metrics with database counts
         usersTotal.inc(await userRepository.count());
         phrasesTotal.inc(await phraseRepository.count());
+        phrasesActive.set(await phraseRepository.count({
+            deleted: false
+        }));
 
         resolve(connection);
     }).catch(error => {

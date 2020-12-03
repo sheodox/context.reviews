@@ -1,6 +1,7 @@
 import {
     collectDefaultMetrics,
     Counter,
+    Gauge,
     Histogram,
     Registry
 } from 'prom-client';
@@ -14,6 +15,11 @@ export const phrasesTotal = new Counter({
     name: name('phrases_total'),
     help: 'Total number of phrases that have been added'
 });
+
+export const phrasesActive = new Gauge({
+    name: name('phrases_active'),
+    help: `Total number of phrases that have been added and aren't active`
+})
 
 export const phrasesAdded = new Counter({
     name: name('phrases_added'),
@@ -116,6 +122,7 @@ export const logsCollected = new Counter({
 
 
 register.registerMetric(phrasesAdded);
+register.registerMetric(phrasesActive);
 register.registerMetric(phrasesRemoved);
 register.registerMetric(phrasesUndone);
 register.registerMetric(phrasesListTime);

@@ -10,7 +10,7 @@ import {
     phrasesAddTime,
     phrasesRemoveTime,
     phrasesUndoTime,
-    phrasesTotal
+    phrasesTotal, phrasesActive
 } from "../metrics";
 import {phraseLogger} from "./logger";
 
@@ -58,6 +58,7 @@ class Tracker {
             phrase = trim(phrase);
             if (phrase) {
                 phrasesAdded.inc();
+                phrasesActive.inc();
                 phrasesTotal.inc();
                 const addTimeEnd = phrasesAddTime.startTimer(),
                     existing = await phraseRepository.findOne({
@@ -105,6 +106,7 @@ class Tracker {
             //for extra protection
             if (phrase.userId === userId) {
                 phrasesRemoved.inc();
+                phrasesActive.dec();
                 phrase.deleted = true;
                 phrase.deletedAt = new Date();
                 await phraseRepository.save(phrase);
@@ -132,6 +134,7 @@ class Tracker {
 
         if (mostRecentDeletedPhrase) {
             phrasesUndone.inc();
+            phrasesActive.inc();
             mostRecentDeletedPhrase.deletedAt = null;
             mostRecentDeletedPhrase.deleted = false;
             await phraseRepository.save(mostRecentDeletedPhrase);
