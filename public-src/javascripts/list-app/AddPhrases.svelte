@@ -40,6 +40,7 @@
 
 <script>
     import {Icon} from 'sheodox-ui';
+	import {createHttpErrorToast} from "../http-error-toasts";
     export let showAddDialog = true;
 
     let phraseText = '',
@@ -48,14 +49,20 @@
     async function addPhrases() {
     	submitting = true;
 		// use a POST, because a GET might make an overly long URL
-        await fetch(`/phrases/add`, {
+        const response = await fetch(`/phrases/add`, {
         	method: 'POST',
             headers: {
         		'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({phraseText})
 		});
-        submitting = false;
-		showAddDialog = false;
+
+		submitting = false;
+		if (response.ok) {
+			showAddDialog = false;
+		}
+		else {
+			await createHttpErrorToast('An error occurred adding phrases.', response);
+		}
 	}
 </script>
