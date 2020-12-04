@@ -16,6 +16,13 @@
     form button {
 		align-self: end;
 	}
+	.check {
+		padding: 0.5rem;
+	}
+	.recommended {
+		text-align: center;
+		color: var(--primary);
+	}
 </style>
 
 <section>
@@ -28,6 +35,17 @@
 		</label>
 		<br>
 		<textarea id="bulk-phrase-add-input" bind:value={phraseText}></textarea>
+		<br>
+		<label class="check">
+			<input type="checkbox" bind:checked={splitOnSpaces}>
+			Add space separated text as individual phrases <span class="muted">(use this if you have a bunch of vocab separated only by spaces)</span>
+		</label>
+		{#if recommendSplitting && !splitOnSpaces}
+			<p class="recommended">
+				<Icon icon="hat-wizard" />
+				This is a really long phrase, you might want to check the above option or it'll be unwieldy when exporting.
+			</p>
+		{/if}
 		<br>
 		<button disabled={!phraseText || submitting}><Icon icon="plus" />Add</button>
 	</form>
@@ -44,18 +62,24 @@
     export let showAddDialog = true;
 
     let phraseText = '',
+		splitOnSpaces = false,
 		submitting = false;
+
+    $: recommendSplitting = phraseText.length > 100 && !/[。！？\n]/.test(phraseText);
 
     async function addPhrases() {
     	submitting = true;
-		// use a POST, because a GET might make an overly long URL
-        const response = await fetch(`/phrases/add`, {
-        	method: 'POST',
-            headers: {
-        		'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({phraseText})
-		});
+
+		//by turning spaces into newlines the backend will treat them as individual spaces
+		const phrases = !splitOnSpaces ? phraseText : phraseText.replace(/\s+/g, '\n'),
+			// use a POST, because a GET might make an overly long URL
+			response = await fetch(`/phrases/add`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({phraseText: phrases})
+			});
 
 		submitting = false;
 		if (response.ok) {
