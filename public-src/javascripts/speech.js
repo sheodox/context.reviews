@@ -18,9 +18,12 @@ export const say = (text) => {
         return;
     }
     voiceReady.then(() => {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.voice = jpVoice;
-            speechSynthesis.speak(utterance);
-        }
-    )
+		//immediately try and say this word, if they wanted to keep listening
+        //to something they shouldn't have selected something else
+        speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = jpVoice;
+        speechSynthesis.speak(utterance);
+    })
 };

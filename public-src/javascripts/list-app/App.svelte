@@ -85,7 +85,9 @@
 		<div id="list-container">
 			<div class="panel" id="toolbar">
 				<button on:click={undo}><Icon icon="undo" /> Undo Delete</button>
-				<button on:click={stop} disabled={!speaking}><Icon icon="stop" /> Stop Voice</button>
+				{#if $settings.autoSpeechSynthesis || $settings.speechSynthesis}
+					<button on:click={stop} disabled={!speaking}><Icon icon="stop" /> Stop Voice</button>
+				{/if}
 				<button on:click={() => showAdd = true}><Icon icon="plus" /> Add Phrases</button>
 				<button on:click={e => showHelp = true}><Icon icon="info-circle" /> Help</button>
 			</div>
