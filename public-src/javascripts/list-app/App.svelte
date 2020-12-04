@@ -3,6 +3,7 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+		max-height: 100vh;
 	}
 	th {
 		font-size: 1.1rem;
@@ -52,7 +53,7 @@
 	@media (max-width: 650px) {
 		#list {
 			width: 100%;
-			height: auto;
+			max-height: none;
 		}
         #definitions {
 			position: relative;
