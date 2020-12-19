@@ -5,6 +5,7 @@ import {Server} from 'ws';
 import {Store} from 'express-session';
 import WebSocket = require('ws');
 import {AppRequest} from "../app";
+import {connectedWebsockets} from "../metrics";
 
 //userSessions is a map of user ID to an array of socket objects
 const userSessions = new Map();
@@ -24,6 +25,7 @@ function addUserSession(userId: string, ws: WebSocket) {
 	if (!userId) {
 		return;
 	}
+	connectedWebsockets.inc();
 
 	if (userSessions.has(userId)) {
 		userSessions.get(userId).push(ws);
@@ -37,6 +39,7 @@ function removeUserSession(userId: string, ws: WebSocket) {
 	if (!userId) {
 		return;
 	}
+	connectedWebsockets.dec();
 
 	// if there was never a session somehow, ignore it
 	if (userSessions.has(userId)) {

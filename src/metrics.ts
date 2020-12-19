@@ -115,37 +115,45 @@ export const notFoundServed = new Counter({
     help: `Number of times a 404 error was encountered`
 });
 
+//misc
 export const logsCollected = new Counter({
     name: name('logs_collected'),
     help: `Number of messages that have been logged and collected by remote log aggregation tools.`
-})
+});
 
+export const connectedWebsockets = new Gauge({
+    name: name('connected_websockets'),
+    help: 'The number of currently connected websockets.'
+});
 
-register.registerMetric(phrasesAdded);
-register.registerMetric(phrasesActive);
-register.registerMetric(phrasesRemoved);
-register.registerMetric(phrasesUndone);
-register.registerMetric(phrasesListTime);
-register.registerMetric(phrasesAddTime);
-register.registerMetric(phrasesRemoveTime);
-register.registerMetric(phrasesUndoTime);
-register.registerMetric(phrasesTotal);
+[
+    phrasesAdded,
+    phrasesActive,
+    phrasesRemoved,
+    phrasesUndone,
+    phrasesListTime,
+    phrasesAddTime,
+    phrasesRemoveTime,
+    phrasesUndoTime,
+    phrasesTotal,
 
-register.registerMetric(lookups);
-register.registerMetric(lookupsCacheHit);
-register.registerMetric(lookupsNoResults);
-register.registerMetric(lookupTime);
+    lookups,
+    lookupsCacheHit,
+    lookupsNoResults,
+    lookupTime,
 
-register.registerMetric(usersLoggedIn);
-register.registerMetric(usersNew);
-register.registerMetric(usersTotal);
+    usersLoggedIn,
+    usersNew,
+    usersTotal,
 
-register.registerMetric(landingServed);
-register.registerMetric(listServed);
-register.registerMetric(exportServed);
-register.registerMetric(privacyServed);
-register.registerMetric(notFoundServed);
+    landingServed,
+    listServed,
+    exportServed,
+    privacyServed,
+    notFoundServed,
 
-register.registerMetric(logsCollected);
+    logsCollected,
+    connectedWebsockets,
+].forEach(metric => register.registerMetric(metric));
 
 collectDefaultMetrics({register})
