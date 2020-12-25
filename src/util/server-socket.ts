@@ -5,7 +5,7 @@ import {Server} from 'ws';
 import {Store} from 'express-session';
 import WebSocket = require('ws');
 import {AppRequest} from "../app";
-import {connectedWebsockets} from "../metrics";
+import {connectedUsers, connectedWebsockets} from "../metrics";
 
 //userSessions is a map of user ID to an array of socket objects
 const userSessions = new Map();
@@ -31,6 +31,7 @@ function addUserSession(userId: string, ws: WebSocket) {
 		userSessions.get(userId).push(ws);
 	}
 	else {
+		connectedUsers.inc();
 		userSessions.set(userId, [ws]);
 	}
 }
@@ -52,6 +53,7 @@ function removeUserSession(userId: string, ws: WebSocket) {
 		//clear this user's array of sessions if that was the last connection
 		if (!sessions.length) {
 			userSessions.delete(userId);
+			connectedUsers.dec();
 		}
 	}
 }

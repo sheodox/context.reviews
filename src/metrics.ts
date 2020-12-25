@@ -126,6 +126,11 @@ export const connectedWebsockets = new Gauge({
     help: 'The number of currently connected websockets.'
 });
 
+export const connectedUsers = new Gauge({
+    name: name('connected_users'),
+    help: 'The number of users who currently have connected websockets.'
+});
+
 [
     phrasesAdded,
     phrasesActive,
@@ -154,6 +159,7 @@ export const connectedWebsockets = new Gauge({
 
     logsCollected,
     connectedWebsockets,
+    connectedUsers,
 ].forEach(metric => register.registerMetric(metric));
 
 collectDefaultMetrics({register})
