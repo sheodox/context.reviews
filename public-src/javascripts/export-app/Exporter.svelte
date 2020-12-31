@@ -58,16 +58,32 @@
 			</a>
 			{#if !phrasesDeleted}
 				<br>
-				<button
+                <div class="f-row">
+					<button
 						on:click={deleteConsumed}
 						disabled={!$downloadedDeck}
 						class="danger"
 						title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
-				>
-					<Icon icon="trash" />
-					Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
-				</button>
+					>
+						<Icon icon="trash" />
+						Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
+					</button>
+
+					{#if $unusedPhrases.length > 0}
+						<button
+							on:click={() => showDeleteAll = true}
+							disabled={!$downloadedDeck}
+							class="danger"
+							title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
+						>
+							<Icon icon="trash" />
+							Delete all {$phraseStore.length} context {$phraseStore.length === 1 ? 'sentence' : 'sentences'}
+						</button>
+
+					{/if}
+				</div>
 			{/if}
+
 			{#if deleting}
 				{#await deleting}
 					<Loading />
@@ -99,6 +115,12 @@
 	</div>
 </div>
 
+{#if showDeleteAll}
+	<Modal bind:visible={showDeleteAll} title="Delete All Phrases?">
+		<DeleteAllModal bind:visible={showDeleteAll} on:delete-all={deleteAll} />
+	</Modal>
+{/if}
+
 <script>
 	import {createEventDispatcher} from 'svelte';
 	import {get} from 'svelte/store';
@@ -107,14 +129,17 @@
 		cardCount,
 		usedPhrases,
 		currentPhraseIndex,
+		unusedPhrases,
 		cards,
 		downloadedDeck
 	} from './cardsStore';
 	import Loading from "../Loading.svelte";
-	import {Icon} from 'sheodox-ui';
+	import {Icon, Modal} from 'sheodox-ui';
 	import SRSConstructor from './SRSConstructor';
+	import DeleteAllModal from "./DeleteAllModal.svelte";
 
 	let phrasesDeleted = false,
+		showDeleteAll = false,
 		deleting;
 	const dispatch = createEventDispatcher(),
 		srs = new SRSConstructor(),
@@ -128,7 +153,7 @@
 		return cards.map(({word}) => word).join(', ') + '.';
 	}
 
-	function enableDelete(delay=0) {
+	function enableDelete(delay = 0) {
 		//to prevent the user from deleting the phrases they used and forgetting to download the deck, we don't enable
 		//the button until they've interacted with the download link. this is called from a timer on right click because it's
 		//assumed they're trying to hit "Save Link As..." and that just takes a bit longer
@@ -152,5 +177,13 @@
 		deleting.then(() => {
 			phrasesDeleted = true;
 		});
+	}
+
+	async function deleteAll() {
+		showDeleteAll = false;
+		deleting = phraseStore.remove(get(phraseStore).map(p => p.id));
+		deleting.then(() => {
+			phrasesDeleted = true;
+		})
 	}
 </script>

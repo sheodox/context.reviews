@@ -81,6 +81,15 @@ export const usedPhrases = derived(cards, cards => {
 	return Array.from(phraseSet);
 })
 
+export const unusedPhrases = derived([usedPhrases, phraseStore], ([used, phrases]) => {
+	return (phrases || []).filter(phrase => {
+		return !used.includes(phrase.phrase);
+	})
+})
+unusedPhrases.subscribe(unused => {
+	console.log(unused);
+})
+
 export function reset() {
 	//re-prime cardsByPhrase with the current list
 	cardsByPhrase.set(primeMap(new Map(), get(phraseStore)));
