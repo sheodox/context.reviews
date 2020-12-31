@@ -9,7 +9,7 @@
 
 <div class="modal-body">
     <p>
-        Are you sure you want to delete every context sentence? You haven't made cards for {$unusedPhrases.length} {$unusedPhrases.length === 0 ? 'phrase' : 'phrases'}:
+        Are you sure you want to delete every context sentence? You haven't made cards for {$unusedPhrases.length} {$unusedPhrases.length === 1 ? 'phrase' : 'phrases'}:
     </p>
     <ul>
         {#each $unusedPhrases as phrase}
