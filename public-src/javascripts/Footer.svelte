@@ -25,7 +25,7 @@
 				</a>
 			</li>
 			<li>
-				<ExternalLink href="https://github.com/sheodox"><Icon icon="copyright" /> 2020 sheodox</ExternalLink>
+				<ExternalLink href="https://github.com/sheodox">&copy;2021 sheodox</ExternalLink>
 			</li>
 		</ul>
 	</nav>
