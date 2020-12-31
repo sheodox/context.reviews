@@ -7,8 +7,8 @@ import WebSocket = require('ws');
 import {AppRequest} from "../app";
 import {connectedUsers, connectedWebsockets} from "../metrics";
 
-//userSessions is a map of user ID to an array of socket objects
-const userSessions = new Map();
+//userSessions is a map of user ID to an array of sockets belonging to that user
+const userSessions = new Map<string, WebSocket[]>();
 
 export function broadcastToUser(userId: string, channel: string, data: any) {
 	const sockets = userSessions.get(userId);

@@ -58,7 +58,7 @@
 			</a>
 			{#if !phrasesDeleted}
 				<br>
-                <div class="f-row">
+                <div class="f-row justify-content-center">
 					<button
 						on:click={deleteConsumed}
 						disabled={!$downloadedDeck}

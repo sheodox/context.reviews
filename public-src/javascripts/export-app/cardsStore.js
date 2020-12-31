@@ -86,9 +86,6 @@ export const unusedPhrases = derived([usedPhrases, phraseStore], ([used, phrases
 		return !used.includes(phrase.phrase);
 	})
 })
-unusedPhrases.subscribe(unused => {
-	console.log(unused);
-})
 
 export function reset() {
 	//re-prime cardsByPhrase with the current list
