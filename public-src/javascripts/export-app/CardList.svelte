@@ -4,7 +4,7 @@
         position: relative;
     }
     h2 {
-        padding: 1rem;
+        padding: 0.5rem;
         margin: 0;
     }
 
@@ -27,6 +27,7 @@
     li {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
     }
     li .word {
         flex: 1;
@@ -62,12 +63,11 @@
 </style>
 
 <aside on:mouseleave={() => previewCard = null} class="panel">
-    <h2 class="header">Created Cards</h2>
     <div class="panel-body">
-		<label for="cards-processed">
-			Cards Processed ({$currentPhraseIndex}/{$phraseStore.length})
+		<label for="phrases-processed">
+			Phrases Processed ({$currentPhraseIndex}/{$phraseStore.length})
 		</label>
-		<Progress value={$currentPhraseIndex} max={$phraseStore.length} id="cards-processed"/>
+		<Progress value={$currentPhraseIndex} max={$phraseStore.length} id="phrases-processed"/>
 		<div class="phrase-select">
 			<label>
 				Skip To Phrase
@@ -78,12 +78,13 @@
 				</select>
 			</label>
 		</div>
+		<h2 class="header">Created Cards</h2>
 		<ul>
             {#each cardSlice($cardsByPhrase, $currentPhrase) as card}
 				<li in:fade={{duration: 100}} on:mouseenter={() => previewCard = card} >
-                <span class="word">
-                    <JapaneseWord word={card.word} reading={card.reading}/>
-                </span>
+					<span class="word">
+						<JapaneseWord word={card.word} reading={card.reading}/>
+					</span>
 					<button on:click={() => removeCard($currentPhrase, card)}>Remove</button>
 				</li>
             {:else}
