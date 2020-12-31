@@ -69,6 +69,7 @@
 	import Word from './Word.svelte';
 	import phraseStore from '../phraseStore';
 	import {selectDefinition} from '../export-app/currentCardStore';
+	import {createHttpErrorToast, getDefaultHttpErrorMessage} from "../http-error-toasts";
 	export let source = '';
 	export let term = '';
 	export let isPrimary = false;
@@ -90,7 +91,13 @@
 						return result;
 					}
 
-					throw new Error(result.message);
+					if (!result.message) {
+						//server error responses will generally just have an 'error' and 'requestId' property,
+						//lookup error responses have a 'message' property which we want to show in the definition
+						//panel and not make a big deal of, such as a 413 when they try searching for a really long string
+						await createHttpErrorToast(null, res, result)
+					}
+					throw new Error(result.message || getDefaultHttpErrorMessage(res));
 				});
 		};
 

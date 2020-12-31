@@ -2,11 +2,21 @@ import {writable} from 'svelte/store';
 import {connectSocket} from './client-socket';
 import {hasAddedPhrases} from "./metadataStore";
 import {createAutoExpireToast} from "sheodox-ui/components/toast";
+import {createHttpErrorToast, statusMessageMap} from "./http-error-toasts";
 
 const phraseStore = writable(null);
+async function handleActionResponse(res) {
+	if (res.ok) {
+		return;
+	}
+
+	const {message, showTechnicalDetails} = statusMessageMap.get(res.status) || {message: 'An unknown error occurred.'};
+	await createHttpErrorToast(message, res, showTechnicalDetails)
+}
 
 async function action(url) {
 	await fetch(`/phrases/${url}`)
+		.then(handleActionResponse)
 }
 
 async function remove(ids) {
@@ -17,6 +27,7 @@ async function remove(ids) {
 			'Content-Type': 'application/json'
 		}
 	})
+		.then(handleActionResponse)
 }
 
 export default {

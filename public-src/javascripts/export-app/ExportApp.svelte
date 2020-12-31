@@ -73,6 +73,7 @@
 		<Footer />
 	</div>
 </div>
+<Toasts dockedAt="bottom-center" />
 
 <svelte:window on:beforeunload={beforeUnload} />
 <script>
@@ -81,7 +82,7 @@
 	import CardBuilder from './CardBuilder.svelte';
 	import Header from '../Header.svelte';
 	import Exporter from "./Exporter.svelte";
-	import {Icon, Modal} from 'sheodox-ui';
+	import {Icon, Modal, Toasts} from 'sheodox-ui';
 	import CardList from './CardList.svelte';
 	import Footer from '../Footer.svelte';
 	import {get} from 'svelte/store';
