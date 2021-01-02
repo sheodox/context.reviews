@@ -57,7 +57,7 @@
 			</p>
 		</li>
 		<li>
-			Return here to review and export to an Anki deck using the <strong class="nav-link-example"><Icon icon="note_add"/>Anki Export</strong> link at the top of the page.
+			Return here to review and export to an Anki deck using the <strong class="nav-link-example"><Icon icon="clone"/>Anki Export</strong> link at the top of the page.
 			<p class="hint">
 				<Icon icon="info" />
 				<strong>Hint!</strong>
