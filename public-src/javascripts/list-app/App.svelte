@@ -8,6 +8,7 @@
 	th {
 		font-size: 1.1rem;
 		white-space: nowrap;
+		background: none;
 	}
 
 	#toolbar {
