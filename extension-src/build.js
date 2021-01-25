@@ -12,7 +12,7 @@ module.exports = isProd => {
 	});
 
 	//create some resized logos
-	[16, 32, 48, 96].forEach(px => {
+	[16, 32, 48, 96, 128].forEach(px => {
 		sharp('./public-src/favicon.png')
 			.resize(px)
 			.toFile(`./extension/icons/context-reviews-${px}.png`)
