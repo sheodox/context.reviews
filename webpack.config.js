@@ -62,6 +62,7 @@ module.exports = env => {
 		devtool: 'hidden-source-map',
 		entry: {
 			'phrase-stasher': './extension-src/phrase-stasher.js',
+			'settings': './extension-src/settings/settings.js',
 		},
 		output: {
 			filename: '[name].js',
@@ -69,11 +70,17 @@ module.exports = env => {
 		},
 		resolve: {
 			alias: {
-				'vue$': 'vue/dist/vue.esm.js'
-			}
+				svelte: path.resolve('node_modules', 'svelte')
+			},
+			extensions: ['.mjs', '.js', '.svelte'],
+			mainFields: ['svelte', 'browser', 'module', 'main'],
 		},
 		module: {
 			rules: [
+				{
+					test: /\.(html|svelte)$/,
+					use: 'svelte-loader'
+				},
 				{
 					test: /\.scss$/,
 					use: ['style-loader', 'css-loader', 'sass-loader']
@@ -84,7 +91,7 @@ module.exports = env => {
 			{
 				apply: compiler => {
 					compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {
-						require('./extension-src/build')();
+						require('./extension-src/build')(env.SITE_TARGET === 'prod');
 					})
 				}
 			},

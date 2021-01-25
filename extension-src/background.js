@@ -19,14 +19,16 @@ extensionNamespace.runtime.onMessage.addListener((message, sender, cb) => {
 });
 
 function addPhrase(phrase) {
+	console.log(`adding phrase`, phrase);
 	return request(
-		`{{--server--}}/phrases/add/${encodeURIComponent(phrase)}?extension=1`
+		`--server--/phrases/add/${encodeURIComponent(phrase)}?extension=1`
 	)
 }
 
 function removePhrase(phrase) {
+	console.log(`removing phrase`, phrase);
 	return request(
-		`{{--server--}}/phrases/remove/${encodeURIComponent(phrase)}`
+		`--server--/phrases/remove/${encodeURIComponent(phrase)}?extension=1`
 	)
 }
 

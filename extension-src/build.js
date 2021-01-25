@@ -4,7 +4,7 @@ const fs = require('fs'),
 
 module.exports = isProd => {
 	//ensure all the directories we need exist
-	['./extension', './extension/icons'].forEach(p => {
+	['./extension', './extension/icons', './extension/settings'].forEach(p => {
 		try {
 			fs.mkdirSync(p)
 			//ignore errors where th path already exists
@@ -12,14 +12,14 @@ module.exports = isProd => {
 	});
 
 	//create some resized logos
-	[48, 96].forEach(px => {
+	[16, 32, 48, 96].forEach(px => {
 		sharp('./public-src/favicon.png')
 			.resize(px)
 			.toFile(`./extension/icons/context-reviews-${px}.png`)
 	});
 
 	//copy files that need no changes
-	['manifest.json', 'background.js']
+	['manifest.json', 'background.js', 'settings/settings.html']
 		.forEach(file => {
 			fs.copyFileSync(
 				path.join('./extension-src', file),
@@ -33,12 +33,11 @@ module.exports = isProd => {
 			script = fs
 				.readFileSync(filePath)
 				.toString()
-				.replace(/{{--server--}}/g, isProd ?
+				.replace(/--server--/g, isProd ?
 					'https://context.reviews' : 'http://dev.context.reviews'
 				);
 		fs.writeFileSync(filePath, script);
-
 	})
 
-	console.log('extension built');
+	console.log(`extension built (prod? ${isProd})`);
 }
