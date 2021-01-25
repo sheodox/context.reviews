@@ -51,7 +51,8 @@ class Tracker {
         }
 
         const phraseRepository = await this.phraseRepository,
-            newPhrases = [];
+            addedPhrases = [],
+            existingPhrases = [];
 
         //add each sentence individually
         for (let phrase of Tracker.split(phrases)) {
@@ -72,19 +73,22 @@ class Tracker {
                     newPhrase.phrase = phrase;
 
                     await phraseRepository.save(newPhrase);
-                    newPhrases.push(newPhrase);
+                    addedPhrases.push(newPhrase);
                 }
                 //if the phrase is a duplicate, but the other one was deleted, un-delete it
                 else if (existing.deleted) {
                     existing.deletedAt = null;
                     existing.deleted = false;
                     await phraseRepository.save(existing);
-                    newPhrases.push(existing);
+                    addedPhrases.push(existing);
+                }
+                else {
+                    existingPhrases.push(existing);
                 }
                 addTimeEnd();
             }
         }
-        return newPhrases;
+        return {addedPhrases, existingPhrases};
     }
 
     /**
@@ -161,6 +165,12 @@ class Tracker {
 
         listTimeEnd();
         return list;
+    }
+    async countActive(userId: string): Promise<number> {
+        return (await this.phraseRepository)
+            .count({
+                userId, deleted: false
+            });
     }
 }
 
