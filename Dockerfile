@@ -10,6 +10,7 @@ COPY package*.json ./
 RUN npm install
 ENV NODE_ENV=production
 COPY . .
+RUN npx prisma generate
 
 # need to build in the CMD, because assets are bind mounted and served by nginx instead
-CMD npm run build && typeorm migration:run && node src/app.js
+CMD npm run build && node src/app.js
