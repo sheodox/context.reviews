@@ -1,6 +1,5 @@
 FROM node:12 AS dev
 WORKDIR /usr/src/app
-RUN npm i -g typeorm
 
 ENV NODE_ENV=development
 CMD npm run dev
