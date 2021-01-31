@@ -1,7 +1,5 @@
 import {trim, quoteCharacters} from './trim';
-import {Repository} from "typeorm/index";
-import {Phrase} from '../entity/Phrase';
-import {connection} from "../entity";
+import {prisma} from "./prisma";
 import {
     phrasesListTime,
     phrasesAdded,
@@ -10,18 +8,13 @@ import {
     phrasesAddTime,
     phrasesRemoveTime,
     phrasesUndoTime,
-    phrasesTotal, phrasesActive
+    phrasesTotal,
+    phrasesActive
 } from "../metrics";
 import {phraseLogger} from "./logger";
+import { Phrase } from '@prisma/client';
 
 class Tracker {
-    phraseRepository: Promise<Repository<Phrase>>;
-    constructor() {
-        this.phraseRepository = connection.then(connection => {
-            return connection.getRepository(Phrase);
-        })
-    }
-
     /**
      * Split a long search phrase into sentences.
      */
@@ -50,8 +43,7 @@ class Tracker {
             return;
         }
 
-        const phraseRepository = await this.phraseRepository,
-            addedPhrases = [],
+        const addedPhrases = [],
             existingPhrases = [];
 
         //add each sentence individually
@@ -62,24 +54,34 @@ class Tracker {
                 phrasesActive.inc();
                 phrasesTotal.inc();
                 const addTimeEnd = phrasesAddTime.startTimer(),
-                    existing = await phraseRepository.findOne({
-                        userId, phrase
+                    existing = await prisma.phrase.findFirst({
+                        where: {
+                            userId, phrase
+                        }
                     });
 
                 //try to guarantee no duplicate phrases (per user)
                 if (!existing) {
-                    const newPhrase = new Phrase();
-                    newPhrase.userId = userId;
-                    newPhrase.phrase = phrase;
+                    const newPhrase = await prisma.phrase.create({
+                        data: {
+                            userId,
+                            phrase
+                        }
+                    })
 
-                    await phraseRepository.save(newPhrase);
                     addedPhrases.push(newPhrase);
                 }
                 //if the phrase is a duplicate, but the other one was deleted, un-delete it
                 else if (existing.deleted) {
-                    existing.deletedAt = null;
-                    existing.deleted = false;
-                    await phraseRepository.save(existing);
+                    await prisma.phrase.update({
+                        where: {
+                            id: existing.id
+                        },
+                        data: {
+                            deleted: false,
+                            deletedAt: null
+                        }
+                    });
                     addedPhrases.push(existing);
                 }
                 else {
@@ -97,23 +99,31 @@ class Tracker {
      * @param id - a phrase's ID (uuid)
      */
     async remove(userId: string, id: string) {
-        const phraseRepository = await this.phraseRepository,
-            ids = Array.isArray(id) ? id : [id];
+        const ids = Array.isArray(id) ? id : [id];
 
         for (const id of ids) {
             const removeTimeEnd = phrasesRemoveTime.startTimer(),
-                phrase = await phraseRepository.findOne({
-                    id
+                phrase = await prisma.phrase.findFirst({
+                    where: {
+                        id,
+                        userId
+                    }
                 });
 
             //would probably be good enough to just delete by phrase ID, but also make sure the user_id matches
             //for extra protection
-            if (phrase.userId === userId) {
+            if (phrase) {
                 phrasesRemoved.inc();
                 phrasesActive.dec();
-                phrase.deleted = true;
-                phrase.deletedAt = new Date();
-                await phraseRepository.save(phrase);
+                await prisma.phrase.update({
+                    where: {
+                        id: phrase.id
+                    },
+                    data: {
+                        deleted: true,
+                        deletedAt: new Date()
+                    }
+                });
             }
             removeTimeEnd();
         }
@@ -123,25 +133,30 @@ class Tracker {
      * Undelete the last thing from the history
      */
     async undo(userId: string) {
-        const phraseRepository = await this.phraseRepository,
-            undoTimeEnd = phrasesUndoTime.startTimer(),
-            mostRecentDeletedPhrase = await phraseRepository
-                .findOne({
+        const undoTimeEnd = phrasesUndoTime.startTimer(),
+            mostRecentDeletedPhrase = await prisma.phrase
+                .findFirst({
                     where: {
                         userId,
                         deleted: true
                     },
-                    order: {
-                        deletedAt: 'DESC'
+                    orderBy: {
+                        deletedAt: 'desc'
                     }
                 });
 
         if (mostRecentDeletedPhrase) {
             phrasesUndone.inc();
             phrasesActive.inc();
-            mostRecentDeletedPhrase.deletedAt = null;
-            mostRecentDeletedPhrase.deleted = false;
-            await phraseRepository.save(mostRecentDeletedPhrase);
+            await prisma.phrase.update({
+                where: {
+                    id: mostRecentDeletedPhrase.id
+                },
+                data: {
+                    deletedAt: null,
+                    deleted: false
+                }
+            })
         }
         undoTimeEnd();
     }
@@ -150,16 +165,17 @@ class Tracker {
      * get all phrases
      * @returns {Phrase[]}
      */
-    async list(userId: string) : Promise<Phrase[]> {
+    async list(userId: string) {
         const listTimeEnd = phrasesListTime.startTimer(),
-            list = await (await this.phraseRepository)
-                .find({
-                    select: ['id', 'phrase'],
+            list = await prisma.phrase.findMany({
+                    select: {
+                        id: true, phrase: true
+                    },
                     where:{
                         userId, deleted: false
                     },
-                    order: {
-                        createdAt: 'ASC'
+                    orderBy: {
+                        createdAt: 'asc'
                     }
                 });
 
@@ -167,10 +183,11 @@ class Tracker {
         return list;
     }
     async countActive(userId: string): Promise<number> {
-        return (await this.phraseRepository)
-            .count({
+        return await prisma.phrase.count({
+            where: {
                 userId, deleted: false
-            });
+            }
+        });
     }
 }
 

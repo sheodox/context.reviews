@@ -13,13 +13,20 @@ import session from 'express-session';
 import {errorHandler} from "./middleware/error-handler";
 import bodyParser from 'body-parser';
 import {requestId} from "./middleware/request-id";
-import {User} from "./entity/User";
+import {Prisma} from '@prisma/client';
+import {prisma} from "./util/prisma";
 
 import './internal-server';
 
+export type UserWithSettings = Prisma.UserGetPayload<{
+    include: {
+        settings: true
+    }
+}>
+
 export interface AppRequest extends Request {
     requestId: string
-    user: User
+    user: UserWithSettings
 }
 
 const app = express(),
@@ -56,11 +63,9 @@ app.use(passport.session());
 
 import indexRouter from './routes/index';
 import authRouter from './routes/auth';
-import statsRouter from './routes/stats';
 import userRouter from './routes/user';
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-app.use('/stats', statsRouter);
 app.use('/user', userRouter);
 require('./util/server-socket').initialize(wss, sessionStore);
 
@@ -83,3 +88,10 @@ process.on('unhandledRejection', (error) => {
         error
     });
 });
+
+process.on('uncaughtException', async error => {
+    console.error('Unhandled Exception!', error);
+    await prisma.$disconnect();
+
+    process.exit(1);
+})

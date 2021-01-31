@@ -3,10 +3,9 @@ import serialize from 'serialize-javascript';
 import lookupRouter from './lookup';
 import phrasesRouter from './phrases';
 import {exportServed, landingServed, listServed, privacyServed} from "../metrics";
-import {User} from "../entity/User";
-import {AppRequest} from "../app";
-import {connection} from "../entity";
-import {Phrase} from "../entity/Phrase";
+import {AppRequest, UserWithSettings} from "../app";
+import {User, Settings} from '@prisma/client';
+import {prisma} from "../util/prisma";
 
 const router = Router(),
 	manifest = require('../../public/manifest.json'),
@@ -17,10 +16,6 @@ const router = Router(),
 		manifest,
 		manifestSerialized: serialize(manifest)
 	};
-
-const phraseRepository = connection.then(connection => {
-	return connection.getRepository(Phrase);
-});
 
 // no need to copy the user's UUID to them, so clone the object minus that property
 function cloneExcept(obj: any, skipProperties: string[]) {
@@ -34,15 +29,13 @@ function cloneExcept(obj: any, skipProperties: string[]) {
 	return cleanedObject;
 }
 
-async function getUserLocals(user: User) {
+async function getUserLocals(user: UserWithSettings) {
 	// do a query to see if they've added at least one phrase as a basic
 	// check to see if they've used the site before
-	const maybeAPhrase = await (await phraseRepository)
-		.find({
+	const maybeAPhrase = await prisma.phrase.findFirst({
 			where: {
 				userId: user.id
-			},
-			take: 1
+			}
 		});
 
 	return {
@@ -50,10 +43,10 @@ async function getUserLocals(user: User) {
 			user: {
 				displayName: user.displayName,
 				profileImage: user.profileImage,
-                settings: cloneExcept(user.settings, ['id', 'user'])
+                settings: cloneExcept(user.settings, ['id', 'userId'])
 			},
 			usage: {
-				hasAddedPhrases: maybeAPhrase.length > 0
+				hasAddedPhrases: !!maybeAPhrase
 			}
 		}),
 	};

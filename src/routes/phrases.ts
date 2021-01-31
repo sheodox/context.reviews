@@ -4,7 +4,7 @@ import {getUserId, requireAuth} from "../middleware/route-helpers";
 import {broadcastToUser} from '../util/server-socket';
 import {safeAsyncRoute} from "../middleware/error-handler";
 import {AppRequest} from "../app";
-import {Phrase} from "../entity/Phrase";
+import {Phrase} from '@prisma/client';
 
 const router = Router();
 router.use(requireAuth);
