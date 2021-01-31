@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 RUN npm i -g typeorm
 
 ENV NODE_ENV=development
-CMD typeorm migration:run && npm run dev
+CMD npm run dev
 
 FROM dev AS prod
 COPY package*.json ./
