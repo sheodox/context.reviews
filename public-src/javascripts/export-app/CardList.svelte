@@ -2,6 +2,7 @@
     aside {
         flex: 1;
         position: relative;
+		border-left: var(--panel-border);
     }
     h2 {
         padding: 0.5rem;
@@ -58,6 +59,10 @@
             position: static;
             align-self: center;
             transform: translate(0%);
+		}
+		aside {
+			border-left: none;
+			border-top: var(--panel-border);
 		}
 	}
 </style>
