@@ -18,8 +18,8 @@ module.exports = isProd => {
 			.toFile(`./extension/icons/context-reviews-${px}.png`)
 	});
 
-	//copy files that need no changes
-	['manifest.json', 'background.js', 'settings/settings.html']
+	//copy files that have no webpack build
+	['manifest.json', 'settings/settings.html']
 		.forEach(file => {
 			fs.copyFileSync(
 				path.join('./extension-src', file),
@@ -35,6 +35,9 @@ module.exports = isProd => {
 				.toString()
 				.replace(/--server--/g, isProd ?
 					'https://context.reviews' : 'http://dev.context.reviews'
+				)
+				.replace(/--server-websocket--/g, isProd ?
+					'wss://context.reviews' : 'ws://dev.context.reviews'
 				);
 		fs.writeFileSync(filePath, script);
 	})

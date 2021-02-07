@@ -63,6 +63,7 @@ module.exports = env => {
 		entry: {
 			'phrase-stasher': './extension-src/phrase-stasher.js',
 			'settings': './extension-src/settings/settings.js',
+			'background': './extension-src/background.js',
 		},
 		output: {
 			filename: '[name].js',
