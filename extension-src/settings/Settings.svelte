@@ -35,7 +35,7 @@
 <header>
     <LogoImage />
     <h1>
-        <a href="https://context.reviews">Context.Reviews</a>
+        <a target="_blank" href="https://context.reviews">Context.Reviews</a>
     </h1>
 </header>
 

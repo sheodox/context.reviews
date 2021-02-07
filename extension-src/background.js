@@ -53,10 +53,10 @@ async function request(url) {
 }
 
 function setBadge(text, color='#05070b') {
-	browser.browserAction.setBadgeText({
+	extensionNamespace.browserAction.setBadgeText({
 		text: '' + text
 	});
-	browser.browserAction.setBadgeBackgroundColor({
+	extensionNamespace.browserAction.setBadgeBackgroundColor({
 		color
 	});
 }
