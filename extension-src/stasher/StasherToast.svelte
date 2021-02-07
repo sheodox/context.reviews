@@ -28,28 +28,29 @@
     }
 </style>
 
-{#if !toast.hidden}
-    <div class="toast {toast.type}">
+<!-- using .hidden instead of {#if} so StasherToastPhrase can maintain local state for if it's deleted -->
+<div class="toast {toast.type}" class:hidden={toast.hidden}>
+    {#if toastAnimations}
         <div class="ttl-track">
             <div class="ttl-bar" style={ttlStyle}></div>
         </div>
-        <div class="title-bar">
-            <LogoImage />
-            <a href="--server--" target="_blank" rel="noreferrer noopener">{toast.text}</a>
-            <button on:click={() => hideToast(toast.id)}>
-                &Cross;
-                <span class="sr-only">Close notification</span>
-            </button>
-        </div>
-        {#if toast.phrases}
-            <ul>
-                {#each toast.phrases as phrase (phrase.phrase_id)}
-                    <StasherToastPhrase {phrase} />
-                {/each}
-            </ul>
-        {/if}
+    {/if}
+    <div class="title-bar">
+        <LogoImage />
+        <a href="--server--" target="_blank" rel="noreferrer noopener">{toast.text}</a>
+        <button on:click={() => hideToast(toast.id)}>
+            &Cross;
+            <span class="sr-only">Close notification</span>
+        </button>
     </div>
-{/if}
+    {#if toast.phrases}
+        <ul>
+            {#each toast.phrases as phrase (phrase.phrase_id)}
+                <StasherToastPhrase {phrase} />
+            {/each}
+        </ul>
+    {/if}
+</div>
 
 <script>
     import LogoImage from "./LogoImage.svelte";
@@ -57,6 +58,7 @@
     import {hideToast} from "./toast-stores";
 
     export let toast;
+    export let toastAnimations;
 
     $: ttlStyle = `width: ${100 * (toast.ttl / toast.duration)}%`;
 </script>

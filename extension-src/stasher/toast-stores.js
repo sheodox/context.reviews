@@ -1,4 +1,5 @@
 import {writable, derived} from 'svelte/store';
+import {getSetting, settingNames} from "../extension-utils";
 
 export const toasts = writable([]);
 let expirationPaused = false;
@@ -78,10 +79,12 @@ interface Toast {
 }
  */
 let toastId = 0;
-export function addToast(toast) {
+export async function addToast(toast) {
+    const initiallyHidden = await getSetting(settingNames.initiallyHideToasts);
+
     toast.id = toastId++;
     toast.duration = 5000;
-    toast.ttl = toast.duration;
+    toast.ttl = initiallyHidden ? 0 : toast.duration;
     toast.hidden = false;
 
     toasts.update(toasts => {

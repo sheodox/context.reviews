@@ -16,7 +16,7 @@
     {/if}
 
     {#each $toasts as toast}
-        <StasherToast toast={toast} />
+        <StasherToast toast={toast} {toastAnimations} />
     {/each}
 
     {#if showPrompt}
@@ -35,14 +35,16 @@
         resumeExpiration,
         replayToasts
     } from "./toast-stores";
-    import {getSetting, record} from "../extension-utils";
+    import {getSetting, record, settingNames} from "../extension-utils";
     import StashPrompt from "./StashPrompt.svelte";
 
-    let showPrompt = false;
+    let showPrompt = false,
+        toastAnimations;
 
     onMount(async () => {
-        const recordingMode = await getSetting('recordingMode'),
-            toastPosition = await getSetting('toastPosition');
+        const recordingMode = await getSetting(settingNames.recordingMode),
+            toastPosition = await getSetting(settingNames.toastPosition);
+        toastAnimations = await getSetting(settingNames.toastAnimations);
 
         document.getElementById('context-reviews-root')
             .classList

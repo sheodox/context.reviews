@@ -26,9 +26,26 @@ export function addCouldntConnectToast() {
     });
 }
 
+// for IDE auto-complete and less magic strings when accessing settings!
+export const settingNames = {
+    recordingMode: 'recordingMode',
+    toastPosition: 'toastPosition',
+    initiallyHideToasts: 'initiallyHideToasts',
+    toastAnimations: 'toastAnimations',
+    showActivePhrasesBadge: 'showActivePhraseBadge'
+}
+
 const settingDefaults = {
-    recordingMode: 'always',
-    toastPosition: 'right'
+    // if/when phrases should be saved to context.reviews
+    [settingNames.recordingMode]: 'always',
+    // the side of the screen that the toasts should be mounted on
+    [settingNames.toastPosition]: 'right',
+    // if toasts should be hidden as if expired when they're added
+    [settingNames.initiallyHideToasts]: false,
+    // if toasts show the animated purple bar for how much time until they're hidden
+    [settingNames.toastAnimations]: true,
+    // show the number of active phrases on the extension badge
+    [settingNames.showActivePhrasesBadge]: true,
 }
 
 export async function getSetting(key) {
@@ -40,7 +57,7 @@ export async function getSetting(key) {
             resolve(val);
         }) || new Promise(() => {})).then(resolve);
     })
-    return setting[key] || settingDefaults[key];
+    return typeof setting[key] === 'undefined' ? settingDefaults[key] : setting[key];
 }
 
 export function setSetting(key, value) {
