@@ -28,10 +28,25 @@ router.post(`/settings`, safeAsyncRoute(async (req: AppRequest, res: Response, n
     res.send();
 }));
 
+//used by the extension to show the active phrase count on the browser action button badge
 router.get('/stats', safeAsyncRoute(async (req: AppRequest, res: Response, next: NextFunction) =>  {
     res.json({
         activePhrases: await tracker.countActive(getUserId(req))
     });
 }));
+
+//used by the Stats modal to show interesting statistics
+router.get('/full-stats', safeAsyncRoute(async (req: AppRequest, res: Response, next: NextFunction) => {
+    const userId = getUserId(req),
+        user = await prisma.user.findFirst({where: {id: userId}}),
+        activePhrases = await tracker.countActive(userId),
+        totalPhrases = await tracker.countTotal(userId);
+    res.json({
+        activePhrases,
+        totalPhrases,
+        deletedPhrases: totalPhrases - activePhrases,
+        userCreatedAt: user.createdAt
+    });
+}))
 
 export default router;

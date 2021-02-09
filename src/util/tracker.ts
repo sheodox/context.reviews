@@ -189,6 +189,13 @@ class Tracker {
             }
         });
     }
+    async countTotal(userId: string): Promise<number> {
+        return await prisma.phrase.count({
+            where: {
+                userId
+            }
+        });
+    }
 }
 
 export const tracker = new Tracker();

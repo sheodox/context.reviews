@@ -70,18 +70,9 @@
 </style>
 
 <div id="list">
-	<Header>
-        <nav>
-			<ul>
-				<li>
-					<a href="export"><Icon icon="clone" />Anki Export</a>
-				</li>
-				<li>
-					<UserMenu />
-				</li>
-			</ul>
-		</nav>
-	</Header>
+	<AppHeader>
+		<a href="/export"><Icon icon="clone" />Anki Export</a>
+	</AppHeader>
 	<main>
 		<div id="list-container">
 			<div class="panel" id="toolbar">
@@ -90,7 +81,6 @@
 					<button on:click={stop} disabled={!speaking}><Icon icon="stop" /> Stop Voice</button>
 				{/if}
 				<button on:click={() => showAdd = true}><Icon icon="plus" /> Add Phrases</button>
-				<button on:click={e => showHelp = true}><Icon icon="info-circle" /> Help</button>
 			</div>
 			{#if initiallyLoading}
 			<!-- show nothing when doing the initial list load, because if
@@ -120,12 +110,6 @@
 				</table>
 			{/if}
 
-			{#if showHelp}
-				<Modal title="Help" bind:visible={showHelp}>
-					<Help />
-				</Modal>
-			{/if}
-
 			{#if showAdd}
 				<Modal title="Add Phrases" bind:visible={showAdd}>
 					<AddPhrases bind:showAddDialog={showAdd} />
@@ -146,23 +130,21 @@
 
 <script>
 	import Definitions from './DictionarySearchPanel.svelte';
-	import Help from "./Help.svelte";
+	import Help from "../Help.svelte";
 	import Phrase from './Phrase.svelte';
 	import {Icon, Modal, Toasts} from 'sheodox-ui';
 	import {say} from '../speech'
 	import phraseStore from '../phraseStore';
 	import Footer from '../Footer.svelte';
-	import Header from '../Header.svelte';
+	import AppHeader from '../AppHeader.svelte';
 	import NoMorePhrases from './NoMorePhrases.svelte';
 	import AddPhrases from './AddPhrases.svelte';
 	import {hasAddedPhrases} from "../metadataStore";
-	import UserMenu from "../UserMenu.svelte";
 	import {settings} from '../metadataStore';
 
 	let selection = '',
 		initiallyLoading = true,
 		showAdd = false,
-		showHelp = false,
 		phrases = [],
 		speaking = false;
 

@@ -68,7 +68,7 @@
 	</ol>
 
 	<h2>
-		Some shortcuts of note!
+		Phrase List Page Shortcuts
 	</h2>
 
 	<dl>
@@ -89,7 +89,7 @@
 	</dl>
 </div>
 <script>
-	import ExternalLink from "../ExternalLink.svelte";
+	import ExternalLink from "./ExternalLink.svelte";
 	import {Icon} from 'sheodox-ui';
 	const jishoSearchBookmarklet = `javascript:(function() {
 			const selection = window.getSelection().toString();

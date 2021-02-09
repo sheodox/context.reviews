@@ -38,16 +38,7 @@
 <div class="row">
     <div class="container">
         <Header pageName="Anki Export">
-			<nav>
-				<ul>
-					<li>
-						<a href="/"><Icon icon="angle-left" />Back To Phrase List</a>
-					</li>
-					<li>
-						<UserMenu />
-					</li>
-				</ul>
-			</nav>
+			<a href="/"><Icon icon="angle-left" />Back To Phrase List</a>
 		</Header>
 
 		<div class="full-page-contents">
@@ -80,7 +71,7 @@
 	import {derived} from 'svelte/store';
 	import phraseStore from '../phraseStore';
 	import CardBuilder from './CardBuilder.svelte';
-	import Header from '../Header.svelte';
+	import Header from '../AppHeader.svelte';
 	import Exporter from "./Exporter.svelte";
 	import {Icon, Modal, Toasts} from 'sheodox-ui';
 	import CardList from './CardList.svelte';

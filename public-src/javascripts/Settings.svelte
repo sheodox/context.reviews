@@ -24,27 +24,9 @@
 		<input type="checkbox" bind:checked={$settings.autoSpeechSynthesis}>
 		Automatically read selected words
 	</label>
-
-
-	{#if $phraseStore.length > 0}
-		<hr>
-
-		<h2>Destructive</h2>
-		<button on:click={deleteAllPhrases}>
-			Delete all phrases
-		</button>
-	{/if}
 </div>
 
 <script>
 	import {settings} from './metadataStore';
 	import phraseStore from "./phraseStore";
-
-	async function deleteAllPhrases() {
-		if (!confirm(`Are you sure you want to delete all ${$phraseStore.length} phrases?`)) {
-			return;
-		}
-
-		await phraseStore.remove($phraseStore.map(({id}) => id))
-	}
 </script>

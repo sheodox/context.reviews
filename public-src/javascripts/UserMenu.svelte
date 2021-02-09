@@ -17,21 +17,28 @@
 			</button>
 		</li>
 		<li>
+			<button class="a" on:click={() => showHelp = true}>
+				<Icon icon="info-circle"/> Help
+			</button>
+		</li>
+		<li>
+			<button class="a" on:click={() => showStats = true}>
+				<Icon icon="stream" /> Stats
+			</button>
+		</li>
+		<li>
 			<a href="/auth/logout"><Icon icon="sign-in-alt" /> Logout</a>
 		</li>
 	</ul>
 </NavDropdown>
 
-{#if showSettings}
-	<Modal title="Settings" bind:visible={showSettings}>
-		<Settings />
-	</Modal>
-{/if}
-
 <script>
-	import {Icon, Modal, NavDropdown} from 'sheodox-ui';
-	import Settings from "./Settings.svelte";
+	import {Icon, NavDropdown} from 'sheodox-ui';
 
 	const user = window.userMetadata.user;
-	let showSettings = false;
+	//modals are handled by AppHeader so they can be mounted as a descendent of the app root instead of being
+	//nested within the header/nav which would cause modals to inherit styles we don't want them to
+	export let showSettings;
+	export let showHelp;
+	export let showStats;
 </script>
