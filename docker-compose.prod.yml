@@ -22,6 +22,10 @@ services:
     restart: always
   redis:
     restart: always
+  prometheus:
+    restart: always
+  grafana:
+    restart: always
   certbot:
     image: certbot/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
