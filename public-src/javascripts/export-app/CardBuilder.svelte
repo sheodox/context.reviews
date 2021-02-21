@@ -64,6 +64,11 @@
 		position: relative;
 		left: 50%;
 		transform: translateX(-50%);
+		display: inline-block;
+		margin: 1rem;
+	}
+	#definition-search label {
+		padding: 0.5rem;
 	}
 	.sentence-select-hint {
 		text-align: center;
@@ -117,63 +122,66 @@
 		</div>
 	</div>
 	<div class="panel-body">
-		<p class="sentence-select-hint">Please select a word from this context sentence you didn't know.</p>
 		<p class="context-sentence">
 			<SelectableText text={phrase.phrase} on:text-select={setSelection}/>
 		</p>
-		{#if selection}
-			{#if $definition}
-				<div class="centered tweaks">
-					<div class="row card-fields">
-						<div class="column">
-							<label for="tweak-word">Word</label>
-							<div class="input-group">
-								<input id="tweak-word" bind:value={$word} />
-								<button
-									on:click={() => word.set(get(reading))}
-									title={$useKanaTooltip}
-									class:suggested={$suggestUseKana}
-									disabled={$word === $reading}
-								>
-									{#if $suggestUseKana}
-										<Icon icon="hat-wizard" />
-									{/if}
-									Use Kana
-								</button>
-							</div>
-						</div>
-
-						<div class="column">
-							<label for="tweak-reading">Reading</label>
-							<input id="tweak-reading" bind:value={$reading} />
-						</div>
-
-						<div class="column">
+		{#if $definition}
+			<div class="centered tweaks">
+				<div class="row card-fields">
+					<div class="column">
+						<label for="tweak-word">Word</label>
+						<div class="input-group">
+							<input id="tweak-word" bind:value={$word} />
 							<button
-								on:click={addCard}
-								disabled={!$word || !$wordIsUnique}
+								on:click={() => word.set(get(reading))}
+								title={$useKanaTooltip}
+								class:suggested={$suggestUseKana}
+								disabled={$word === $reading}
 							>
-								<Icon icon="plus" />
-								Add Card
+								{#if $suggestUseKana}
+									<Icon icon="hat-wizard" />
+								{/if}
+								Use Kana
 							</button>
 						</div>
 					</div>
-					<div class="row card-errors">
-						{#if !$wordIsUnique}
-							<p>A card has already been created for this word.</p>
-						{/if}
+
+					<div class="column">
+						<label for="tweak-reading">Reading</label>
+						<input id="tweak-reading" bind:value={$reading} />
+					</div>
+
+					<div class="column">
+						<button
+							on:click={addCard}
+							disabled={!$word || !$wordIsUnique}
+						>
+							<Icon icon="plus" />
+							Add Card
+						</button>
 					</div>
 				</div>
-			{/if}
+				<div class="row card-errors">
+					{#if !$wordIsUnique}
+						<p>A card has already been created for this word.</p>
+					{/if}
+				</div>
+			</div>
+		{/if}
 
-			{#if showMeaningEditor}
-				<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="times" />Discard Customizations</button>
-				<MeaningEditor bind:meanings={$definition.meanings} />
-			{:else}
-				<div class="definition-area">
-					<input id="definition-search" bind:value={searchTerm} aria-label="definition search" placeholder="なにかを入力する..." on:keyup={onSearchType}/>
-					<!-- using a keyed each for one element so it always rebuilds (and shows transitions between different words) -->
-					{#each [selection] as sel (sel) }
+		{#if showMeaningEditor}
+			<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="times" />Discard Customizations</button>
+			<MeaningEditor bind:meanings={$definition.meanings} />
+		{:else}
+			<div class="definition-area" in:fly={{y: 25}}>
+				<div id="definition-search" class="input-group">
+					<label for="definition-search-input">Definition search</label>
+					<input id="definition-search-input" bind:value={searchTerm} placeholder="なにかを入力する..." on:keyup={onSearchType}/>
+				</div>
+
+				{#if searchTerm}
+					<!-- using a key so it always rebuilds and shows transitions between different searches -->
+					{#key selection}
 						<div class="definitions" in:fly={{y: 50}} >
 							<DictionarySearchResults
 								source="jisho"
@@ -184,9 +192,15 @@
 							/>
 							<OtherDictionaryLinks term={$word} />
 						</div>
-					{/each}
-				</div>
-			{/if}
+					{/key}
+				{/if}
+			</div>
+		{/if}
+
+		{#if !selection}
+			<div in:fly={{y: 25}}>
+				<p class="sentence-select-hint">Please select a word from the context sentence you didn't know or search for something.</p>
+			</div>
 		{/if}
 	</div>
 </div>
