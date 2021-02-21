@@ -49,18 +49,18 @@
 	.selected .selected-definition-message {
 		display: block;
 	}
-	.suggestion :global(a) {
-		color: var(--primary);
-	}
 </style>
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
 	<div class="search-result">
 		<div class="title">
-			<h2 class="japanese" class:suggestion={definition.word === searchTerm}
-				title={definition.word === searchTerm ? exactMatchExplanation : ''}
-			>
+			<h2 class="japanese">
 				<ExternalLink href={definition.href}>
-					<JapaneseWord word={definition.word} reading={definition.reading} />
+					<JapaneseWord
+						word={definition.word}
+						reading={definition.reading}
+						wordComparison={searchTerm}
+						readingComparison={searchTerm}
+					/>
 				</ExternalLink>
 			</h2>
 			{#each (analyzeTags(definition.tags || [])) as {text, styles}}
@@ -77,7 +77,6 @@
 				class:primary={definition.word === searchTerm}
 				on:click={() => selectForExport()}
 				disabled={isFormSelected($card, definition.word, definition.reading)}
-				title={definition.word === searchTerm ? exactMatchExplanation : ''}
 			>
 				{#if definition.word === searchTerm}
 					<Icon noPadding={true} icon="hat-wizard" />
@@ -130,15 +129,15 @@
 					{#if mode === 'export'}
 						<button
 							class="small"
-							class:primary={alt.word === searchTerm}
-                            title={alt.word === searchTerm ? exactMatchExplanation : ''}
 							on:click={() => selectForExport(alt)}
 							disabled={isFormSelected($card, alt.word, alt.reading)}
 						>
-							{#if alt.word === searchTerm}
-								<Icon noPadding={true} icon="hat-wizard" />
-							{/if}
-							<JapaneseWord word={alt.word} reading={alt.reading} />
+							<JapaneseWord
+								word={alt.word}
+								reading={alt.reading}
+								wordComparison={searchTerm}
+								readingComparison={definition.reading}
+							/>
 						</button>
 					{:else}
 						<JapaneseWord word={alt.word} reading={alt.reading} />
@@ -177,8 +176,7 @@
 	//to make it easier to find an alternate form that matches the kanji
 	export let searchTerm = '';
 
-	const exactMatchExplanation = `This word's spelling is an exact match to your search term.`,
-		dispatch = createEventDispatcher(),
+	const dispatch = createEventDispatcher(),
 		cloneObject = obj => JSON.parse(JSON.stringify(obj));
 
 	function selectForExport(alternate) {

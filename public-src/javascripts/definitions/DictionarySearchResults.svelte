@@ -66,7 +66,7 @@
 	import {createEventDispatcher} from 'svelte';
 	import Loading from "../Loading.svelte";
 	import ExternalLink from "../ExternalLink.svelte";
-	import Word from './Word.svelte';
+	import Word from './DictionaryEntry.svelte';
 	import phraseStore from '../phraseStore';
 	import {selectDefinition} from '../export-app/currentCardStore';
 	import {createHttpErrorToast, getDefaultHttpErrorMessage} from "../http-error-toasts";
