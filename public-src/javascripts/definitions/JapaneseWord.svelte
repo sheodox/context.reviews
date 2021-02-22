@@ -62,6 +62,6 @@
             text.substr(highlightCharacters)
         ];
     }
-    const [wordHighlighted, wordNormal] = highlightSplit(word, wordComparison),
-        [readingHighlighted, readingNormal] = highlightSplit(reading, readingComparison);
+    $: [wordHighlighted, wordNormal] = highlightSplit(word, wordComparison);
+    $: [readingHighlighted, readingNormal] = highlightSplit(reading, readingComparison);
 </script>
