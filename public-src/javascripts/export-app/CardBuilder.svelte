@@ -170,8 +170,10 @@
 		{/if}
 
 		{#if showMeaningEditor}
-			<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="times" />Discard Customizations</button>
-			<MeaningEditor bind:meanings={$definition.meanings} />
+			{#if $definition}
+				<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="times" />Discard Customizations</button>
+				<MeaningEditor bind:meanings={$definition.meanings} />
+			{/if}
 		{:else}
 			<div class="definition-area" in:fly={{y: 25}}>
 				<div id="definition-search" class="input-group">
@@ -285,6 +287,7 @@
 	function addCard() {
 		addCardToStore(get(card));
 		resetCard();
+		showMeaningEditor = false;
 		selection = '';
 	}
 
