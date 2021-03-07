@@ -53,18 +53,15 @@
 
 	@media (max-width: 650px) {
 		#list {
-			width: 100%;
-			max-height: none;
+			max-height: unset;
 		}
-        #definitions {
-			position: relative;
-			width: 100%;
-			height: auto;
-			border-left: none;
-            border-top: var(--panel-border);
+		#list-container, #definitions {
+            scroll-snap-align: start;
+			flex-shrink: 0;
+			flex-basis: 90%;
 		}
 		main {
-			flex-direction: column;
+			scroll-snap-type: x mandatory;
 		}
 	}
 </style>
