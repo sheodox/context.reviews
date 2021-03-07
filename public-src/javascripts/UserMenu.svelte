@@ -23,7 +23,7 @@
 		</li>
 		<li>
 			<button class="a" on:click={() => showStats = true}>
-				<Icon icon="stream" /> Stats
+				<Icon icon="id-card" /> Stats
 			</button>
 		</li>
 		<li>
