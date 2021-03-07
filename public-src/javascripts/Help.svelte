@@ -6,7 +6,7 @@
 		text-decoration: none;
 	}
     p {
-		margin: 0;
+		margin: 0.4rem;
 	}
 	p.hint {
 		margin: 0 2rem;
@@ -76,6 +76,12 @@
 	</Tab>
 
     <Tab tabId="help-list" {selectedTab}>
+		<h2>Usage</h2>
+		<p>
+			The phrase list is the first page you land on when you log in. From here you can view and manage all of your saved phrases.
+			If you highlight some text in a phrase the Jisho definition search results will automatically show up in the side bar on the right!
+		</p>
+
 		<h2>
 			Hotkeys
 		</h2>
@@ -99,6 +105,22 @@
 	</Tab>
 
 	<Tab tabId="help-export" {selectedTab}>
+		<h2>Usage</h2>
+		<p>
+			Here is where the magic happens! You'll be shown phrases one-by-one, just highlight the word in the phrase that you want
+			to study and choose the definition that's most applicable from the definitions that show then click "Add Card".
+		</p>
+
+		<p>
+			The primary spelling from the Jisho result is used automatically used, but if you prefer an alternate spelling you can
+			click on one of the alternates shown below the definition or you can manually type whatever spelling and reading you want.
+		</p>
+
+		<p>
+			Finally, many things on the card can be customized to your liking including the meanings, tags, parts of speech, etc.
+			By clicking "Customize Card" next to your chosen definition you can change whatever you want.
+		</p>
+
 		<h2>Definition Suggestions</h2>
 		<p>
 			When searching for a definition parts of relevant definitions will be highlighted based on a few different scenarios
