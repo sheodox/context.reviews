@@ -54,11 +54,10 @@
         display: flex;
         flex-direction: column;
     }
-	@media (max-width: 1200px) {
+	@media (max-width: 900px) {
+		/* on-hover previews not available on small resolutions, need to use the modal */
 		.preview-container {
-            position: static;
-            align-self: center;
-            transform: translate(0%);
+            display: none;
 		}
 		aside {
 			border-left: none;
@@ -98,11 +97,11 @@
 		</ul>
 
         {#if previewCard}
-            {#each [previewCard] as preview (preview)}
+			{#key previewCard}
 				<div class="preview-container">
-					<CardPreview card={preview} />
+					<CardPreview card={previewCard} />
 				</div>
-            {/each}
+            {/key}
         {/if}
 		<button
 			id="export-button"
@@ -115,6 +114,11 @@
 	</div>
 </aside>
 
+{#if showPreviewModal}
+	<Modal title="Card Preview" bind:visible={showPreviewModal}>
+		<CardPreview card={previewCard} />
+	</Modal>
+{/if}
 <script>
     import {fade} from 'svelte/transition';
     import JapaneseWord from '../definitions/JapaneseWord.svelte';
@@ -130,13 +134,14 @@
         cardCount,
         removeCard
     } from './cardsStore';
-    import {Progress} from 'sheodox-ui';
+    import {Progress, Modal} from 'sheodox-ui';
 
     export let showExport;
 
     const dispatch = createEventDispatcher();
     let groupedCards = [],
-        previewCard = null;
+        previewCard = null,
+		showPreviewModal = false;
 
     function cardSlice(cardsByPhrase, phrase) {
         return cardsByPhrase.get(phrase);

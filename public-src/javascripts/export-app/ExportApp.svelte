@@ -14,13 +14,21 @@
 	#card-workspace {
 		flex: 1;
 		display: flex;
-		justify-content: center;
 	}
 
-	@media (max-width: 1200px) {
+	@media (max-width: 900px) {
 		#card-workspace {
-			flex-direction: column;
-			justify-content: start;
+            scroll-snap-type: x mandatory;
+			overflow: auto;
+		}
+		#card-workspace > :global(div.builder) {
+			flex: 1 0 90%;
+			width: 90%;
+			scroll-snap-align: start;
+		}
+		#card-workspace > :global(aside) {
+			flex: 0 0 20rem;
+			scroll-snap-align: start;
 		}
 	}
 	@media (min-width: 1200px) {

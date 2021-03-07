@@ -54,6 +54,9 @@
 		font-size: 1.8rem;
         width: 15rem;
 	}
+	.tweaks button {
+		white-space: nowrap;
+	}
     .tweaks .card-fields {
 		align-items: end;
 	}
@@ -64,11 +67,16 @@
 		position: relative;
 		left: 50%;
 		transform: translateX(-50%);
-		display: inline-block;
 		margin: 1rem;
+		display: flex;
+		max-width: 20rem;
 	}
 	#definition-search label {
 		padding: 0.5rem;
+		white-space: nowrap;
+	}
+	#definition-search input {
+		width: 100%;
 	}
 	.sentence-select-hint {
 		text-align: center;
@@ -101,6 +109,9 @@
 		}
 		.definitions {
 			flex-direction: column;
+		}
+		.tweaks input {
+			font-size: 1.2rem;
 		}
 	}
 </style>
