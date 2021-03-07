@@ -34,6 +34,7 @@ const app = express(),
     wss = new Server({server}),
     RedisStore = require('connect-redis')(session);
 
+app.set('trust proxy', 1);
 app.use(requestId);
 
 app.disable('x-powered-by');
@@ -51,9 +52,12 @@ app.use(bodyParser.json());
 const sessionStore = new RedisStore({client: redisClient});
 app.use(session({
     store: sessionStore,
+    name: 'context.reviews-sid',
     secret: process.env.SESSION_SECRET,
     cookie: {
         httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 31, // 31 days
+        secure: process.env.NODE_ENV === 'production'
     },
     resave: false,
     saveUninitialized: false
