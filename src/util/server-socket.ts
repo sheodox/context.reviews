@@ -61,7 +61,7 @@ function removeUserSession(userId: string, ws: WebSocket) {
 async function getUserIdFromReq(req: AppRequest, sessionStore: Store): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const cookieHeader = req.headers.cookie,
-			sid = cookieParser.signedCookie(cookie.parse(cookieHeader)['connect.sid'], process.env.SESSION_SECRET);
+			sid = cookieParser.signedCookie(cookie.parse(cookieHeader)['context.reviews-sid'], process.env.SESSION_SECRET);
 		if (typeof sid === 'string') {
 			sessionStore.get(sid, (err, session) => {
 			    //session.passport.user is the userId that's serialized in auth.ts
