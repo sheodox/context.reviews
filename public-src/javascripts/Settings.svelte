@@ -3,9 +3,6 @@
 		max-width: 20rem;
 		margin: 0.4rem;
 	}
-	hr {
-		width: 100%;
-	}
 </style>
 
 <div class="panel-body f-column">
