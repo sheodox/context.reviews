@@ -1,6 +1,11 @@
+<style>
+	ul {
+		padding: 0;
+	}
+</style>
 <Footer>
 	<nav class="simple-footer-links">
-		<ul class="">
+		<ul>
 			<li>
 				{#if signedIn}
 					<a href="/auth/logout">
