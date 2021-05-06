@@ -46,13 +46,9 @@
 	}
 	.tweaks {
 		margin: 1rem;
-		background: var(--panel-bg);
+		background: var(--shdx-panel-bg);
 		border-radius: 5px;
 		align-self: center;
-	}
-	.tweaks input {
-		font-size: 1.8rem;
-        width: 15rem;
 	}
 	.tweaks button {
 		white-space: nowrap;
@@ -62,21 +58,6 @@
 	}
     .definition-area {
 		position: relative;
-	}
-	#definition-search {
-		position: relative;
-		left: 50%;
-		transform: translateX(-50%);
-		margin: 1rem;
-		display: flex;
-		max-width: 20rem;
-	}
-	#definition-search label {
-		padding: 0.5rem;
-		white-space: nowrap;
-	}
-	#definition-search input {
-		width: 100%;
 	}
 	.sentence-select-hint {
 		text-align: center;
@@ -97,7 +78,7 @@
 		margin: 0;
 	}
 	.suggested:enabled {
-		color: var(--primary);
+		color: var(--shdx-primary);
 	}
 	@media (max-width: 850px) {
 		.tweaks .card-fields {
@@ -140,10 +121,10 @@
 			<div class="centered tweaks">
 				<div class="row card-fields">
 					<div class="column">
-						<label for="tweak-word">Word</label>
-						<div class="input-group">
-							<input id="tweak-word" bind:value={$word} />
+						<TextInput id="tweak-word" bind:value={$word}>
+							Word
 							<button
+                                slot="append"
 								on:click={() => word.set(get(reading))}
 								title={$useKanaTooltip}
 								class:suggested={$suggestUseKana}
@@ -154,12 +135,13 @@
 								{/if}
 								Use Kana
 							</button>
-						</div>
+						</TextInput>
 					</div>
 
 					<div class="column">
-						<label for="tweak-reading">Reading</label>
-						<input id="tweak-reading" bind:value={$reading} />
+						<TextInput id="tweak-reading" bind:value={$reading}>
+							Reading
+						</TextInput>
 					</div>
 
 					<div class="column">
@@ -187,9 +169,10 @@
 			{/if}
 		{:else}
 			<div class="definition-area" in:fly={{y: 25}}>
-				<div id="definition-search" class="input-group">
-					<label for="definition-search-input">Definition search</label>
-					<input id="definition-search-input" bind:value={searchTerm} placeholder="なにかを入力する..." on:keyup={onSearchType}/>
+				<div class="f-row justify-content-center">
+					<TextInput id="definition-search" class="input-group" bind:value={searchTerm} on:keyup={onSearchType}>
+						Definition Search
+					</TextInput>
 				</div>
 
 				{#if searchTerm}
@@ -219,7 +202,6 @@
 </div>
 <script>
 	import {fly} from 'svelte/transition';
-	import {flip} from 'svelte/animate';
 	import {get, derived} from 'svelte/store';
 	import {createEventDispatcher} from 'svelte';
 	import DictionarySearchResults from '../definitions/DictionarySearchResults.svelte';
@@ -239,7 +221,7 @@
 		addCard as addCardToStore
 	} from './cardsStore';
 	import SelectableText from "../SelectableText.svelte";
-	import {Icon} from 'sheodox-ui';
+	import {Icon, TextInput} from 'sheodox-ui';
 	import MeaningEditor from './MeaningEditor.svelte';
 	import OtherDictionaryLinks from "../definitions/OtherDictionaryLinks.svelte";
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added

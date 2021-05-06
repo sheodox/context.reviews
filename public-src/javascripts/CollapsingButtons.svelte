@@ -18,7 +18,7 @@
 		}
         .active {
 			flex-direction: column;
-			background: var(--panel-bg);
+			background: var(--shdx-panel-bg);
 			position: absolute;
 			/* without this the expand icon for other rows shows above the buttons */
 			z-index: 10;

@@ -15,8 +15,8 @@
     header {
         display: flex;
         align-items: center;
-        background: var(--panel-header-bg);
-        border-bottom: var(--panel-border);
+        background: var(--shdx-panel-header-bg);
+        border-bottom: var(--shdx-panel-border);
         padding: 0.5rem;
     }
     fieldset {

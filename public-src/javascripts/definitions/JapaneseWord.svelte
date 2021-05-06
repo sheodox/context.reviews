@@ -3,14 +3,14 @@
         font-weight: normal;
     }
     .exact-match {
-        color: var(--primary-light);
+        color: var(--shdx-primary-light);
         font-weight: bold;
     }
     .partial-match {
-        color: var(--primary);
+        color: var(--shdx-primary);
     }
     :global(button:disabled) .exact-match, :global(button:disabled) .partial-match {
-        color: var(--muted);
+        color: var(--shdx-muted);
     }
     @keyframes furigana-grow-delayed {
         100% {

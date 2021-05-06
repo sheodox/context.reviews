@@ -9,7 +9,7 @@
     .demo {
 		display: flex;
         flex-direction: column;
-        background: var(--bg);
+        background: var(--shdx-bg);
     }
     .demo .card-preview {
         height: 35rem;

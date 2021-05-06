@@ -21,7 +21,7 @@
     }
     table {
         text-align: center;
-        background: var(--bg);
+        background: var(--shdx-bg);
         border-radius: 0.2rem;
     }
 </style>

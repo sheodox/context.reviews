@@ -2,13 +2,12 @@
 	img {
 		max-width: 1.5rem;
 		max-height: 1.5rem;
-		margin-right: 0.5rem;
+		border-radius: 50%;
 	}
 </style>
 
-<NavDropdown>
+<NavDropdown showOpenIcon={false}>
 	<img slot="button" src={user.profileImage} alt="{user.displayName} profile" />
-	<span slot="button">{user.displayName}</span>
 
 	<ul slot="menu">
 		<li>
@@ -27,7 +26,7 @@
 			</button>
 		</li>
 		<li>
-			<a href="/auth/logout"><Icon icon="sign-in-alt" /> Logout</a>
+			<a href="/auth/logout" class="button"><Icon icon="sign-in-alt" /> Logout</a>
 		</li>
 	</ul>
 </NavDropdown>

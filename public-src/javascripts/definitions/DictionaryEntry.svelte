@@ -21,14 +21,14 @@
 		margin-left: 0.5rem;
 	}
 	.selected {
-		background: var(--accent-gradient);
+		background: var(--shdx-accent-gradient);
 		border-radius: 0.2rem;
 	}
 	.word-container.selectable {
 		padding: 0.2rem;
 	}
 	.selected .search-result {
-		background: var(--bg);
+		background: var(--shdx-bg);
 	}
 	.search-result {
 		padding: 0.3rem;

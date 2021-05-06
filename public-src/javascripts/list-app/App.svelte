@@ -20,7 +20,7 @@
 		top: 0;
 		/* keep the toolbar above the 'v' more buttons when the action buttons are collapsed */
 		z-index: 11;
-		border-bottom: var(--panel-border);
+		border-bottom: var(--shdx-panel-border);
 	}
 	table {
 		width: fit-content;
@@ -39,11 +39,11 @@
 	aside {
 		flex: 1;
 		min-width: 20rem;
-		border-left: var(--panel-border);
+		border-left: var(--shdx-panel-border);
 	}
 
 	#definitions {
-		background-color: var(--panel-bg);
+		background-color: var(--shdx-panel-bg);
 		width: 25%;
 		display: flex;
 		flex-direction: column;

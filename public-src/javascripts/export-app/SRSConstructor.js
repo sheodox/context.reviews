@@ -26,7 +26,7 @@ export default class SRSConstructor {
 // if this runs as the file first runs the css won't have loaded and the background colors will be blank
 function createTemplates() {
 	const docStyles = getComputedStyle(document.documentElement),
-		getCSSVar = varName => docStyles.getPropertyValue(`--${varName}`),
+		getCSSVar = varName => docStyles.getPropertyValue(`--shdx-${varName}`),
 		ankiCommonStyles = `
 			<style>
 				.night_mode { }

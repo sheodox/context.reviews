@@ -30,14 +30,14 @@
 		border-bottom-width: 3px;
 		border-radius: 2px;
 		padding: 0 0.3rem;
-		background: var(--panel-header-bg);
+		background: var(--shdx-panel-header-bg);
 	}
 	strong.nav-link-example {
-		border-bottom: 0.2rem solid var(--accent-purple);
+		border-bottom: 0.2rem solid var(--shdx-accent-mint);
 	}
     .result {
         /* imitate the button text color */
-		color: var(--accent-blue);
+		color: var(--shdx-accent-blue);
 	}
 </style>
 

@@ -2,7 +2,7 @@
     aside {
         flex: 1;
         position: relative;
-		border-left: var(--panel-border);
+		border-left: var(--shdx-panel-border);
     }
     h2 {
         padding: 0.5rem;
@@ -44,7 +44,7 @@
 		transform: translate(-100%);
         width: 30rem;
         border-radius: 5px;
-        border: 1px solid var(--accent-purple);
+        border: 1px solid var(--shdx-accent-purple);
         overflow: hidden;
     }
     .phrase-select {
@@ -61,7 +61,7 @@
 		}
 		aside {
 			border-left: none;
-			border-top: var(--panel-border);
+			border-top: var(--shdx-panel-border);
 		}
 	}
 </style>

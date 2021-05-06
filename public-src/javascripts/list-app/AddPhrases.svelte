@@ -16,12 +16,9 @@
     form button {
 		align-self: end;
 	}
-	.check {
-		padding: 0.5rem;
-	}
 	.recommended {
 		text-align: center;
-		color: var(--primary);
+		color: var(--shdx-primary);
 	}
 </style>
 
@@ -36,10 +33,9 @@
 		<br>
 		<textarea id="bulk-phrase-add-input" bind:value={phraseText}></textarea>
 		<br>
-		<label class="check">
-			<input type="checkbox" bind:checked={splitOnSpaces}>
+		<Checkbox id="split-on-spaces" bind:checked={splitOnSpaces}>
 			Add space separated text as individual phrases <span class="muted">(use this if you have a bunch of vocab separated only by spaces)</span>
-		</label>
+		</Checkbox>
 		{#if recommendSplitting && !splitOnSpaces}
 			<p class="recommended">
 				<Icon icon="hat-wizard" />
@@ -57,7 +53,7 @@
 </section>
 
 <script>
-    import {Icon} from 'sheodox-ui';
+    import {Checkbox, Icon} from 'sheodox-ui';
 	import {createHttpErrorToast} from "../http-error-toasts";
     export let showAddDialog = true;
 

@@ -15,18 +15,17 @@
 		It's not always accurate so make sure to reference the word's reading.
 	</p>
 
-	<label>
-		<input type="checkbox" bind:checked={$settings.speechSynthesis}>
+	<Checkbox id="settings-speech-synthesis" bind:checked={$settings.speechSynthesis}>
 		Show speech synthesis buttons on definitions
-	</label>
+	</Checkbox>
 
-	<label>
-		<input type="checkbox" bind:checked={$settings.autoSpeechSynthesis}>
+	<Checkbox id="settings-auto-speech-synthesis" bind:checked={$settings.autoSpeechSynthesis}>
 		Automatically read selected words
-	</label>
+	</Checkbox>
 </div>
 
 <script>
+	import {Checkbox} from 'sheodox-ui';
 	import {settings} from './metadataStore';
 	import phraseStore from "./phraseStore";
 </script>

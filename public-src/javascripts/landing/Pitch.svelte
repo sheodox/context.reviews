@@ -22,10 +22,10 @@
 	}
     video, .panel :global(img) {
         max-width: 100%;
-        border: 1px solid var(--accent-purple);
+        border: 1px solid var(--shdx-accent-purple);
     }
     .outlined {
-        border: 1px solid var(--accent-purple);
+        border: 1px solid var(--shdx-accent-purple);
     }
 	.row {
 		display: flex;
@@ -70,7 +70,7 @@
 	}
 	#try-me {
 		margin: 0;
-		background: var(--accent-gradient);
+		background: var(--shdx-accent-gradient);
 	}
 </style>
 
