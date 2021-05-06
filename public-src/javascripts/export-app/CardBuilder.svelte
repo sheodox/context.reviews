@@ -91,9 +91,6 @@
 		.definitions {
 			flex-direction: column;
 		}
-		.tweaks input {
-			font-size: 1.2rem;
-		}
 	}
 </style>
 
