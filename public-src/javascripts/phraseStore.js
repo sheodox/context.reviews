@@ -65,9 +65,9 @@ phraseStore.subscribe(phrases => {
 		return;
 	}
 
-	const newPhrases = phrases.filter(({phrase}) => {
+	const newPhrases = phrases.filter(({id}) => {
 		return !lastPhrases.some(lastPhrase => {
-			return lastPhrase.phrase === phrase;
+			return lastPhrase.id === id;
 		})
 	})
 

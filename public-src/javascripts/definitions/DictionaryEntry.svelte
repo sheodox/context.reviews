@@ -10,6 +10,14 @@
 		padding: 0.2rem;
 	}
 
+	.see-also {
+		color: var(--shdx-blue-500);
+	}
+
+	.word {
+		color: var(--shdx-blue-500);
+	}
+
 	ol {
 		margin-top: 0.2rem;
 	}
@@ -28,7 +36,7 @@
 		padding: 0.2rem;
 	}
 	.selected .search-result {
-		background: var(--shdx-bg);
+		background: var(--shdx-gray-700);
 	}
 	.search-result {
 		padding: 0.3rem;
@@ -53,7 +61,7 @@
 <div class="word-container" class:selected={isWordSelected($card.id)} class:selectable={mode === 'export'}>
 	<div class="search-result">
 		<div class="title">
-			<h2 class="japanese">
+			<h2 class="japanese has-inline-links">
 				<ExternalLink href={definition.href}>
 					<JapaneseWord
 						word={definition.word}
@@ -97,7 +105,7 @@
 		{/if}
 		<ol>
 			{#each definition.meanings as meaning}
-				<li>
+				<li class="has-inline-links">
 					{#if meaning.preInfo}
 						<small class="info">{meaning.preInfo}</small>
 						<br>
@@ -109,7 +117,7 @@
 					{#if meaning.seeAlso.length > 0}
 						<br>
 						{#each meaning.seeAlso as also}
-							<button class="small" on:click={() => searchTerm = also}>See also <span class="jp">{also}</span></button>
+							<button class="small see-also" on:click={() => searchTerm = also}>See also <span class="jp">{also}</span></button>
 						{/each}
 					{/if}
 
@@ -128,7 +136,7 @@
 				{#each definition.alternateForms as alt, index}
 					{#if mode === 'export'}
 						<button
-							class="small"
+							class="small word"
 							on:click={() => selectForExport(alt)}
 							disabled={isFormSelected($card, alt.word, alt.reading)}
 						>

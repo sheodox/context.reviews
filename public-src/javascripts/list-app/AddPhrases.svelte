@@ -43,7 +43,7 @@
 			</p>
 		{/if}
 		<br>
-		<button disabled={!phraseText || submitting}><Icon icon="plus" />Add</button>
+		<button class="primary" disabled={!phraseText || submitting}><Icon icon="plus" />Add</button>
 	</form>
 
 	<small>

@@ -26,12 +26,12 @@ export default class SRSConstructor {
 // if this runs as the file first runs the css won't have loaded and the background colors will be blank
 function createTemplates() {
 	const docStyles = getComputedStyle(document.documentElement),
-		getCSSVar = varName => docStyles.getPropertyValue(`--shdx-${varName}`),
+		getCSSVar = varName => docStyles.getPropertyValue(`--${varName}`),
 		ankiCommonStyles = `
 			<style>
 				.night_mode { }
 				.card {
-					background: ${getCSSVar('bg')} !important;
+					background: ${getCSSVar('shdx-gray-700')} !important;
 					color: white;
 					max-width: 500px;
 					margin: 0 auto;
@@ -71,7 +71,8 @@ function createTemplates() {
 				.dictionary-details {
 					padding: 0.5rem;
 					border-radius: 3px;
-					background: ${getCSSVar('panel-bg')};
+					background: ${getCSSVar('shdx-gray-600')};
+					box-shadow: ${getCSSVar('shdx-shadow-5')};
 				}
 				.dictionary-form {
 					font-size: 1.3rem;
@@ -116,11 +117,11 @@ function createTemplates() {
 					position: absolute;
 					left: 50%;
 					transform: translate(-50%, calc(-100% - 1.5rem));
-					background: ${getCSSVar('bg')};
+					background: ${getCSSVar('shdx-gray-500')};
 					border-radius: 3px;
-					border: 1px solid coral;
+					box-shadow: ${getCSSVar('shdx-shadow-5')};
 					padding: 0.3rem;
-					font-size: 1rem;
+					font-size: 1.2rem;
 				}
 				.other-links-container {
 					position: relative;

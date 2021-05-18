@@ -72,6 +72,11 @@ router.post('/remove', safeAsyncRoute(async (req: AppRequest, res: Response) => 
 	defaultResponse(req, res);
 }));
 
+router.get('/edit/:phraseId/:phrase', safeAsyncRoute(async (req: AppRequest, res: Response) => {
+	await tracker.edit(getUserId(req), req.params.phraseId, req.params.phrase);
+	defaultResponse(req, res);
+}));
+
 router.get('/undo', safeAsyncRoute(async (req: AppRequest, res: Response) => {
 	await tracker.undo(getUserId(req));
 	defaultResponse(req, res);

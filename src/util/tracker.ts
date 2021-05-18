@@ -182,6 +182,17 @@ class Tracker {
         listTimeEnd();
         return list;
     }
+    async edit(userId: string, phraseId: string, newPhrase: string) {
+        newPhrase = trim(newPhrase);
+        await prisma.phrase.updateMany({
+            where: {
+                userId, id: phraseId
+            },
+            data: {
+                phrase: newPhrase
+            }
+        })
+    }
     async countActive(userId: string): Promise<number> {
         return await prisma.phrase.count({
             where: {

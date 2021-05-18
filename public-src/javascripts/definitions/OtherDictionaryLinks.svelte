@@ -24,7 +24,7 @@
             <div in:fly={{y: 50}}>
 				<p>View results for <span class="jp">"{term}"</span> in other dictionaries</p>
 
-                <ul>
+                <ul class="has-inline-links">
 					{#each links as {siteName, href}}
 						<li>
 							<ExternalLink href={href}>{siteName}</ExternalLink>

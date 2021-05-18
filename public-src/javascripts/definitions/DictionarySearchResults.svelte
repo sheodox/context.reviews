@@ -34,7 +34,7 @@
 			<h1>{source}</h1>
 			<Loading />
 		{:then result}
-			<h1><ExternalLink href="{result.href}">{source}</ExternalLink></h1>
+			<h1 class="has-inline-links"><ExternalLink href="{result.href}">{source}</ExternalLink></h1>
 			<div in:fly={{y: 50}}>
 				{#if result.definitions.length > 0}
 					{#each result.definitions as definition}

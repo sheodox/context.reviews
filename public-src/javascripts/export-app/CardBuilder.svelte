@@ -46,9 +46,10 @@
 	}
 	.tweaks {
 		margin: 1rem;
-		background: var(--shdx-panel-bg);
+		background: var(--shdx-gray-600);
 		border-radius: 5px;
 		align-self: center;
+		box-shadow: var(--shdx-shadow-5);
 	}
 	.tweaks button {
 		white-space: nowrap;
@@ -73,9 +74,8 @@
 		justify-content: center;
 	}
     .card-errors p {
-		color: #ff6363;
 		font-size: 0.9rem;
-		margin: 0;
+        border-radius: 3px;
 	}
 	.suggested:enabled {
 		color: var(--shdx-primary);
@@ -144,6 +144,7 @@
 					<div class="column">
 						<button
 							on:click={addCard}
+							class="primary"
 							disabled={!$word || !$wordIsUnique}
 						>
 							<Icon icon="plus" />
@@ -153,7 +154,7 @@
 				</div>
 				<div class="row card-errors">
 					{#if !$wordIsUnique}
-						<p>A card has already been created for this word.</p>
+						<p class="shdx-badge-red m-3 p-1"><Icon icon="exclamation-circle" />A card has already been created for this word.</p>
 					{/if}
 				</div>
 			</div>
