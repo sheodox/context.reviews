@@ -143,9 +143,9 @@
 
 					<div class="column">
 						<button
-							on:click={addCard}
+							on:click={() => showStyleChoice = true}
 							class="primary"
-							disabled={!$word || !$wordIsUnique}
+							disabled={!$word || !$wordIsUnique || showStyleChoice}
 						>
 							<Icon icon="plus" />
 							Add Card
@@ -165,6 +165,8 @@
 				<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="times" />Discard Customizations</button>
 				<MeaningEditor bind:meanings={$definition.meanings} />
 			{/if}
+		{:else if showStyleChoice}
+			<CardStyleChoice on:done={addCard} on:cancel={() => showStyleChoice = false}/>
 		{:else}
 			<div class="definition-area" in:fly={{y: 25}}>
 				<div class="f-row justify-content-center">
@@ -223,6 +225,7 @@
 	import {Icon, TextInput} from 'sheodox-ui';
 	import MeaningEditor from './MeaningEditor.svelte';
 	import OtherDictionaryLinks from "../definitions/OtherDictionaryLinks.svelte";
+	import CardStyleChoice from "./CardStyleChoice.svelte";
 	//resetting on mount will clear out previous words dirty fields if a card was in progress but not added
 	resetCard();
 
@@ -248,6 +251,7 @@
 		dispatch = createEventDispatcher();
 
 	let showMeaningEditor = false,
+		showStyleChoice = false,
 		selection = '', //what was selected from the phrase
 		searchTerm = '', //what we're searching dictionaries for
 		selectedDefinitionId = null; //an id matching a definition that was selected from the definition search
@@ -280,6 +284,7 @@
 	function addCard() {
 		addCardToStore(get(card));
 		resetCard();
+		showStyleChoice = false;
 		showMeaningEditor = false;
 		selection = '';
 	}

@@ -53,9 +53,7 @@
 			{#if $phraseStore && $phraseStore.length === 0}
 				<NoPhrases />
 			{:else}
-				{#if showStyleChoice}
-					<CardStyleChoice on:done={() => showStyleChoice = false} />
-				{:else if showExport}
+				{#if showExport}
 					<Exporter
 						on:back={() => showExport = false}
 						on:restart={startOver}
@@ -102,8 +100,7 @@
 	import CardStyleChoice from "./CardStyleChoice.svelte";
 
 	phraseStore.subscribe(setPhrases);
-	let showStyleChoice = true,
-		showExport = false;
+	let showExport = false;
 
 	function nextPhrase() {
 		const numPhrases = get(phraseStore).length;

@@ -18,6 +18,9 @@
         <StyleCard variant="context" />
     </button>
 
+    <div class="f-row justify-content-center">
+        <button on:click={() => dispatch('cancel')}>Cancel</button>
+    </div>
 </div>
 
 <script>
