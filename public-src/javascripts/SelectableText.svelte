@@ -60,12 +60,15 @@
 		clearTimeout(selectionDebounce);
 
 		const sel = window.getSelection(),
-			selectionText = sel.toString();
+			selectionText = sel.toString(),
+            ranges = [sel.focusOffset, sel.anchorOffset],
+            hasSelection = ranges[0] !== ranges[1];
 
 		//need to make sure textElement exists, when lots of clicking is done (lots of deleting phrases on the list,
-        //or clicking 'next phrase' in the export app quickly) textElement can be nulled out
-		if (textElement && [sel.anchorNode, sel.focusNode].every(node => textElement.contains(node)) && selectionText) {
-		    const ranges = [sel.focusOffset, sel.anchorOffset]
+        //or clicking 'next phrase' in the export app quickly) textElement can be nulled out. also need to make sure we're selecting
+        //something, and we know the range. sometimes when selecting text at the front of the phrase (like by double clicking
+        //the first word in a phrase) it'll give a (0, 0) range even though something is selected, ignore that or it'll clear good ranges
+		if (textElement && hasSelection && [sel.anchorNode, sel.focusNode].every(node => textElement.contains(node)) && selectionText) {
 			dispatch('text-select', {
 			    text: selectionText.trim(),
                 range: [Math.min(...ranges), Math.max(...ranges)]}
