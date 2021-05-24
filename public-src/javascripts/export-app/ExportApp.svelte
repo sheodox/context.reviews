@@ -45,7 +45,7 @@
 
 <div class="row">
     <div class="container">
-        <Header pageName="Anki Export">
+        <Header>
 			<a href="/"><Icon icon="angle-left" />Back To Phrase List</a>
 		</Header>
 
@@ -53,7 +53,9 @@
 			{#if $phraseStore && $phraseStore.length === 0}
 				<NoPhrases />
 			{:else}
-				{#if showExport}
+				{#if showStyleChoice}
+					<CardStyleChoice on:done={() => showStyleChoice = false} />
+				{:else if showExport}
 					<Exporter
 						on:back={() => showExport = false}
 						on:restart={startOver}
@@ -97,9 +99,11 @@
 	} from './cardsStore';
 	import NoPhrases from "./NoPhrases.svelte";
 	import UserMenu from "../UserMenu.svelte";
+	import CardStyleChoice from "./CardStyleChoice.svelte";
 
 	phraseStore.subscribe(setPhrases);
-	let showExport = false;
+	let showStyleChoice = true,
+		showExport = false;
 
 	function nextPhrase() {
 		const numPhrases = get(phraseStore).length;

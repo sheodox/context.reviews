@@ -96,7 +96,7 @@
 
 <div class="builder">
 	<div class="row spaced-out title-bar header">
-		<h2>Card Builder</h2>
+		<h2>Anki Export</h2>
 		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 		<div class="header-buttons">
 			<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="angle-left" />Back</button>
@@ -112,7 +112,7 @@
 	</div>
 	<div class="panel-body">
 		<p class="context-sentence">
-			<SelectableText text={phrase.phrase} on:text-select={setSelection}/>
+			<SelectableText text={phrase.phrase} on:text-select={setSelection} highlightRange={$wordHighlightRange} />
 		</p>
 		{#if $definition}
 			<div class="centered tweaks">
@@ -211,7 +211,8 @@
 		source,
 		definition,
 		context,
-		wordIsUnique
+		wordIsUnique,
+		wordHighlightRange
 	} from './currentCardStore';
 	import {
 		currentPhraseCardCount,
@@ -253,8 +254,9 @@
 
 	function setSelection(e) {
 		showMeaningEditor = false;
-		const selected = e.detail
+		const selected = e.detail.text
 		if (selected) {
+			$wordHighlightRange = e.detail.range;
 			selection = selected;
 			searchTerm = selected;
 		}

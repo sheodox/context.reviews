@@ -155,7 +155,7 @@
 	}
 
 	function selected(e) {
-		const text = e.detail
+		const text = e.detail.text
 		if ($settings.autoSpeechSynthesis) {
 			say(text);
 		}

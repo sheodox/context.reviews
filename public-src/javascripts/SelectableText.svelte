@@ -1,6 +1,14 @@
+<style>
+    mark, span::selection {
+        border-radius: 3px;
+        background: var(--shdx-cyan-200);
+        color: var(--shdx-cyan-800);
+    }
+</style>
+
 <!-- use mouseup to short circuit the selectionchange debounce -->
-<span bind:this={textElement} on:mouseup={onSelection} class="jp">
-    {text}
+<span bind:this={textElement} on:mouseup={onSelection} on:mousedown|capture={cancelPreviousHighlight} class="jp">
+    {textBeforeHighlight}<mark class="shdx-badge-cyan">{textHighlighted}</mark>{textAfterHighlight}
 </span>
 
 <script>
@@ -9,13 +17,38 @@
         onDestroy,
         createEventDispatcher
     } from 'svelte';
+    import {splitHighlightedTextByRange} from "./utils";
     export let text = '';
+    export let highlightRange;
 
-    let textElement;
-    const dispatch = createEventDispatcher();
+    $: computeHighlight(text, highlightRange);
 
-	let selectionDebounce;
-	const SELECTION_DEBOUNCE_TIMEOUT = 500;
+    const dispatch = createEventDispatcher(),
+        SELECTION_DEBOUNCE_TIMEOUT = 700;
+    let textElement,
+        selectionDebounce,
+        textBeforeHighlight = '',
+        textHighlighted = '',
+        textAfterHighlight = '';
+
+    function computeHighlight(text, highlightRange) {
+        if (highlightRange) {
+            const {after, highlight, before} = splitHighlightedTextByRange(text, highlightRange);
+            textBeforeHighlight = before;
+            textHighlighted = highlight;
+            textAfterHighlight = after;
+        }
+        else {
+            textBeforeHighlight = '';
+            textHighlighted = ''
+            textAfterHighlight = text;
+        }
+    }
+
+    function cancelPreviousHighlight() {
+        highlightRange = null;
+    }
+
     function debounceSelection(e) {
 		//debounce selections, this otherwise runs for every extra character selected
 		clearTimeout(selectionDebounce);
@@ -31,8 +64,12 @@
 
 		//need to make sure textElement exists, when lots of clicking is done (lots of deleting phrases on the list,
         //or clicking 'next phrase' in the export app quickly) textElement can be nulled out
-		if (textElement && sel.containsNode(textElement, true) && selectionText) {
-			dispatch('text-select', selectionText.trim());
+		if (textElement && [sel.anchorNode, sel.focusNode].every(node => textElement.contains(node)) && selectionText) {
+		    const ranges = [sel.focusOffset, sel.anchorOffset]
+			dispatch('text-select', {
+			    text: selectionText.trim(),
+                range: [Math.min(...ranges), Math.max(...ranges)]}
+            );
 		}
 	}
 

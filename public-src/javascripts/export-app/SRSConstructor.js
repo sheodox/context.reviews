@@ -1,6 +1,7 @@
 import Handlebars from 'handlebars';
 import {analyzeTags} from "../definitions/processTag";
 import {createLinks} from "../definitions/otherDictionaryLinks";
+import {splitHighlightedTextByRange} from "../utils";
 const cloneObject = obj => JSON.parse(JSON.stringify(obj));
 
 export default class SRSConstructor {
@@ -37,8 +38,16 @@ function createTemplates() {
 					margin: 0 auto;
 					font-family: ${getCSSVar('jp-fonts')};
 				}
+				mark {
+					background: ${getCSSVar('shdx-cyan-200')};
+					color: ${getCSSVar('shdx-cyan-800')};
+					border-radius: 3px;
+				}
 				.word {
 					font-size: 3rem;
+				}
+				.word.front-context {
+					font-size: 1.5rem;
 				}
 				.reading {
 					font-size: 2rem;
@@ -129,7 +138,16 @@ function createTemplates() {
 			</style>
 		`,
 		ankiFrontTemplate = Handlebars.compile(`
-			<p class="word">{{word}}</p>
+				{{#if isFrontContext}}
+					<p class="word front-context">
+					{{frontBeforeHighlight}}<mark>{{frontHighlight}}</mark>{{frontAfterHighlight}}
+					</p>
+				{{/if}}
+				{{#unless isFrontContext}}
+					<p class="word">
+						{{word}}
+					</p>
+				{{/unless}}
 			${ankiCommonStyles}
 		`),
 		ankiBackTemplate = Handlebars.compile(`
@@ -249,6 +267,13 @@ export function compileAnkiCard(c) {
 
 	card.definition.tags = analyzeTags(card.definition.tags || []);
 
+	card.isFrontContext = card.cardStyle === 'context';
+
+	const {before, highlight, after} = splitHighlightedTextByRange(card.context, card.wordHighlightRange);
+	card.frontBeforeHighlight = before;
+	card.frontHighlight = highlight;
+	card.frontAfterHighlight = after;
+
 	//if this word is the same as the context sentence, then they just directly added just this word,
 	//there's no point in showing a context sentence that just mirrors the front of the card
 	card.context = card.context === card.word ? null : card.context;
@@ -257,9 +282,9 @@ export function compileAnkiCard(c) {
 	}
 
 	//if the word or reading has been altered from its original dictionary result form, show the dictionary's version
-	//in smaller font below the reading they chose.  also make sure the word actually exists (they might have deleted
+	//in smaller font below the reading they chose. also make sure the word actually exists (they might have deleted
 	//it in customization) otherwise there will just be a bunch of blank space.
-	card.showOriginal = card.definition.word && (card.word !== card.definition.word || card.reading !== card.definition.reading);
+	card.showOriginal = card.isFrontContext || (card.definition.word && (card.word !== card.definition.word || card.reading !== card.definition.reading));
 	//don't want to repeat ourselves for only-kana words
 	card.showReading = card.word !== card.reading;
 

@@ -6,3 +6,14 @@ export function copyToClipboard(text) {
     document.execCommand('copy');
     el.remove();
 }
+
+export function splitHighlightedTextByRange(text, range) {
+    if (!range) {
+        return {before: text, highlight: '', after: ''};
+    }
+    return {
+        before: text.substring(0, range[0]),
+        highlight: text.substring(...range),
+        after: text.substring(range[1])
+    };
+}

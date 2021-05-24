@@ -2,6 +2,10 @@ import {get, writable, derived} from 'svelte/store';
 import phraseStore from "../phraseStore";
 import {card} from "./currentCardStore";
 
+//whether the context sentence is a part of the front of a card.
+//this allows users to be tested on words in context.
+export const cardStyle = writable(); // 'word' | 'context'
+
 //a Map of phrases and their respective arrays of card objects for each phrase
 export const cardsByPhrase = writable(new Map());
 
