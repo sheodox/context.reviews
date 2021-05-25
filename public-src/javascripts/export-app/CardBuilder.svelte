@@ -160,13 +160,13 @@
 			</div>
 		{/if}
 
-		{#if showMeaningEditor}
+		{#if showStyleChoice}
+			<CardStyleChoice on:done={addCard} on:cancel={() => showStyleChoice = false}/>
+		{:else if showMeaningEditor}
 			{#if $definition}
 				<button on:click={() => showMeaningEditor = false} class="edit-definition danger"><Icon icon="times" />Discard Customizations</button>
 				<MeaningEditor bind:meanings={$definition.meanings} />
 			{/if}
-		{:else if showStyleChoice}
-			<CardStyleChoice on:done={addCard} on:cancel={() => showStyleChoice = false}/>
 		{:else}
 			<div class="definition-area" in:fly={{y: 25}}>
 				<div class="f-row justify-content-center">
