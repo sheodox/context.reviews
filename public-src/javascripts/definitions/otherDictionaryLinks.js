@@ -9,6 +9,7 @@ export const createLinks = searchTerm => {
 		//So until that new version is available I'm leaving this here as a reminder!
 		// {siteName: 'Sanseido', href: `https://www.sanseido.biz/User/Dic/Index.aspx?DORDER=&DailyEJ=checkbox&DailyJE=checkbox&DailyJJ=checkbox&TWords=${encoded}&st=0`},
 		{siteName: 'Weblio', href: `https://www.weblio.jp/content/${encoded}`},
+		{siteName: 'Forvo', href: `https://forvo.com/word/${encoded}/#ja`},
 		{siteName: 'Google', href: `https://www.google.com/search?q=${encoded}`},
 		{siteName: 'Google Images', href: `https://www.google.com/search?q=${encoded}&tbm=isch`},
 	]
