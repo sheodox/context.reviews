@@ -1,6 +1,6 @@
 const path = require('path'),
 	CopyPlugin = require('copy-webpack-plugin'),
-	ManifestPlugin = require('webpack-manifest-plugin'),
+	{WebpackManifestPlugin} = require('webpack-manifest-plugin'),
 	extras = require('./extra-build'),
 	isProd = process.argv.includes('production');
 
@@ -15,11 +15,13 @@ module.exports = env => {
 		},
 		output: {
 			filename: '[name].[contenthash].js',
-			path: path.resolve(__dirname, './public')
+			path: path.resolve(__dirname, './public'),
+			publicPath: ''
 		},
 		resolve: {
 			alias: {
-				svelte: path.resolve('node_modules', 'svelte')
+				svelte: path.resolve('node_modules', 'svelte'),
+				handlebars: 'handlebars/dist/handlebars.min.js',
 			},
 			extensions: ['.mjs', '.js', '.svelte'],
 			mainFields: ['svelte', 'browser', 'module', 'main'],
@@ -37,15 +39,15 @@ module.exports = env => {
 			]
 		},
 		plugins: [
-			new CopyPlugin([{
-				from: '**.png',
-				context: './public-src',
-			},
-				{from: '**/*.user.js', context: './public-src'},
-				{from: '**/*.mp4', context: './public-src'},
-				{from: '**/*.png', context: './public-src'},
-				{from: '**/*.ico', context: './public-src'},
-			]),
+			new CopyPlugin({patterns: [{
+					from: '**.png',
+					context: './public-src',
+				},
+					{from: '**/*.user.js', context: './public-src'},
+					{from: '**/*.mp4', context: './public-src'},
+					{from: '**/*.png', context: './public-src'},
+					{from: '**/*.ico', context: './public-src'},
+				]}),
 			{
 				apply: compiler => {
 					compiler.hooks.afterEmit.tap('UserscriptTweaks', compilation => {
@@ -53,7 +55,7 @@ module.exports = env => {
 					})
 				}
 			},
-			new ManifestPlugin()
+			new WebpackManifestPlugin()
 		]
 	}, {
 		name: 'extension',
@@ -67,7 +69,8 @@ module.exports = env => {
 		},
 		output: {
 			filename: '[name].js',
-			path: path.resolve(__dirname, './extension')
+			path: path.resolve(__dirname, './extension'),
+			publicPath: ''
 		},
 		resolve: {
 			alias: {
@@ -96,7 +99,7 @@ module.exports = env => {
 					})
 				}
 			},
-			new ManifestPlugin()
+			new WebpackManifestPlugin()
 		]
 	}];
 }
