@@ -16,10 +16,6 @@
 		flex-direction: row;
         align-items: center;
 		justify-content: center;
-		position: sticky;
-		top: 0;
-		/* keep the toolbar above the 'v' more buttons when the action buttons are collapsed */
-		z-index: 11;
 	}
 	table {
 		width: fit-content;
