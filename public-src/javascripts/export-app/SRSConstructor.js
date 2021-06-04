@@ -42,6 +42,7 @@ function createTemplates() {
 					background: ${getCSSVar('shdx-cyan-200')};
 					color: ${getCSSVar('shdx-cyan-800')};
 					border-radius: 3px;
+					white-space: nowrap;
 				}
 				.word {
 					font-size: 3rem;

@@ -1,5 +1,5 @@
 <style>
-    mark, span::selection {
+    span::selection {
         border-radius: 3px;
         background: var(--shdx-cyan-200);
         color: var(--shdx-cyan-800);
@@ -7,8 +7,8 @@
 </style>
 
 <!-- use mouseup to short circuit the selectionchange debounce -->
-<span bind:this={textElement} on:mouseup={onSelection} on:mousedown|capture={cancelPreviousHighlight} class="jp">
-    {textBeforeHighlight}<mark class="shdx-badge-cyan">{textHighlighted}</mark>{textAfterHighlight}
+<span bind:this={textElement} on:mouseup={onSelection} class="jp">
+    {text}
 </span>
 
 <script>
@@ -19,35 +19,11 @@
     } from 'svelte';
     import {splitHighlightedTextByRange} from "./utils";
     export let text = '';
-    export let highlightRange;
-
-    $: computeHighlight(text, highlightRange);
 
     const dispatch = createEventDispatcher(),
         SELECTION_DEBOUNCE_TIMEOUT = 700;
     let textElement,
-        selectionDebounce,
-        textBeforeHighlight = '',
-        textHighlighted = '',
-        textAfterHighlight = '';
-
-    function computeHighlight(text, highlightRange) {
-        if (highlightRange) {
-            const {after, highlight, before} = splitHighlightedTextByRange(text, highlightRange);
-            textBeforeHighlight = before;
-            textHighlighted = highlight;
-            textAfterHighlight = after;
-        }
-        else {
-            textBeforeHighlight = '';
-            textHighlighted = ''
-            textAfterHighlight = text;
-        }
-    }
-
-    function cancelPreviousHighlight() {
-        highlightRange = null;
-    }
+        selectionDebounce;
 
     function debounceSelection(e) {
 		//debounce selections, this otherwise runs for every extra character selected
