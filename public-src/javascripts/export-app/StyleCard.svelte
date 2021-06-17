@@ -27,17 +27,23 @@
     .text-shape.highlight-text {
         background: var(--shdx-blue-300);
     }
+    .short, .medium, .long {
+        border-radius: 5px;
+        overflow: hidden;
+        margin-right: 1px;
+    }
     .line {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        align-self: start;
     }
 </style>
 
 <div class="card m-3 p-3">
     <div class="front f-row justify-content-center">
         {#if variant === 'word'}
-            <div class="text-shape highlight-text short"></div>
+            <div class="text-shape highlight-text line short"></div>
         {:else}
             <div class="line">
                 <div class="text-shape text medium"></div>

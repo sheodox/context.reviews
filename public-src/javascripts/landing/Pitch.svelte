@@ -1,53 +1,75 @@
 <style>
-    .panel {
-        margin: 1rem;
-		padding: 1rem;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		background: transparent;
-    }
 	h1 {
-		text-align: center;
-		font-size: 2.75rem;
+		font-size: var(--shdx-font-size-11);
 		margin: 0;
 	}
-    h2 {
-		font-size: 2.5rem;
-		text-align: center;
+	h2 {
+		font-size: var(--shdx-font-size-9);
 		margin: 0;
 	}
-	* + h2, * + h1 {
-		margin-top: 2rem;
+	video, .pitch :global(img) {
+		max-width: 100%;
 	}
-    video, .panel :global(img) {
-        max-width: 100%;
-        border: 1px solid var(--shdx-accent-purple);
-    }
-    .outlined {
-        border: 1px solid var(--shdx-accent-purple);
-    }
+	.outlined, video, .pitch :global(img) {
+		box-shadow: var(--shdx-shadow-5), var(--shdx-shadow-1);
+		border-radius: 15px;
+		overflow: hidden;
+	}
 	.row {
 		display: flex;
-		align-items: start;
+		flex-direction: row;
+		justify-content: center;
 		flex-shrink: 0;
 	}
 	.row > * {
 		flex: 1;
 		flex-shrink: 0;
-        max-width: 40rem;
+		max-width: 40rem;
 		margin: 1rem 2.5rem;
 	}
+	.sub-title {
+		font-size: var(--shdx-font-size-7);
+	}
+	p {
+		max-width: 50rem;
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+	p + :global(picture), p + video {
+		margin-top: var(--shdx-spacing-8);
+	}
+	section {
+		padding-top: var(--shdx-spacing-10);
+		padding-bottom: var(--shdx-spacing-10);
+		width: 100vw;
+        display: flex;
+        flex-direction: column;
+		align-items: center;
+	}
+	section:nth-child(even) {
+		background: var(--shdx-gray-800);
+	}
+
 	@media (max-width: 800px) {
+		h1 {
+			font-size: var(--shdx-font-size-8);
+		}
+		h2 {
+			font-size: var(--shdx-font-size-7);
+		}
+		.sub-title {
+			font-size: var(--shdx-font-size-6);
+		}
 		.row {
 			flex-direction: column;
 			align-items: center;
 			margin: 0;
+			padding-top: var(--shdx-spacing-3);
 		}
 		.row > * {
 			margin: 0;
 		}
-        .panel {
+		.pitch {
 			padding: 0;
 			margin: 0;
 		}
@@ -55,101 +77,103 @@
 			width: auto;
 		}
 		p {
+			max-width: 90vw;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		aside#demo-cards {
 			max-width: 95vw;
 		}
 	}
-    p {
-		max-width: 50rem;
-		font-size: 1.1rem;
-		line-height: 1.7;
-		text-align: center;
-	}
 	aside#demo-cards {
 		width: 25rem;
-		max-width: 95vw;
 	}
 	#try-me {
-		margin: 0;
 		background: var(--shdx-accent-gradient);
 	}
 </style>
 
-<div class="panel">
-	<div class="row">
+<div class="pitch has-inline-links">
+	<section class="row align-items-center">
 		<div>
 			<h1>Study Japanese Using Anything</h1>
 			<div>
-				<p>
-					Context.Reviews makes learning Japanese more interesting by helping you learn the vocabulary
-					you encounter! Words you encounter in native material are more memorable than drilling pre-made
-					decks, not to mention more fun!
-				</p>
-				<p>
-					As you're reading any Japanese material of your choosing, look up sentences containing words you don't yet know
-					on <ExternalLink href="https://jisho.org">Jisho.org</ExternalLink>, then come back here to quickly create
-					a beautiful <ExternalLink href="https://apps.ankiweb.net/">Anki flashcard deck</ExternalLink> out of everything you just learned!
+				<p class="sub-title">
+					Study the words you want from the native material you like to read.
 				</p>
 			</div>
 		</div>
 
 		<aside id="demo-cards" class="outlined">
 			<DemoCard />
-			<p id="try-me">
+			<p id="try-me" class="m-0 text-align-center">
 				<Icon icon="arrow-up" />
 				Try me
 				<Icon icon="arrow-up" />
 			</p>
 		</aside>
-	</div>
+	</section>
 
-	<h2>
-		Effortlessly Create Anki Cards
-	</h2>
-	<p>
-		Context.Reviews help you create <ExternalLink href="https://apps.ankiweb.net/">Anki flashcards</ExternalLink> just by selecting the unknown words in each context sentence you looked up.
-		Making good Anki cards usually takes time, but this makes it quick and easy!
-	</p>
-	<p>
-		Definitions are automatically pulled from Jisho, and your context sentence is always included on the card to make understanding the definition in context easier and more memorable!
-		You're also able to customize everything about the cards so you're not limited to Jisho definitions!
-	</p>
-	<video muted autoplay loop controls src={asset('videos/anki-export-demo.mp4')} />
+	<section>
+		<h2>
+			Effortlessly Create Anki Cards
+		</h2>
+		<p>
+			Read whatever Japanese material you like and look up sentences containing words you don't yet know
+			on <ExternalLink href="https://jisho.org">Jisho.org</ExternalLink> and the Context.Reviews browser extension will
+			keep track of what you searched. When you're ready come back here to create
+			a beautiful <ExternalLink href="https://apps.ankiweb.net/">Anki flashcard deck</ExternalLink> out of everything you just learned!
+		</p>
+		<p>
+			Create Anki cards just by selecting a word.
+			Definitions are pulled automatically from <ExternalLink href="https://jisho.org">Jisho</ExternalLink>, and you can customize it how you want.
+		</p>
 
-	<h2>
-		Automatically Record Searches
-	</h2>
+		<video muted autoplay loop controls src={asset('videos/anki-export-demo.mp4')} />
+	</section>
 
-	<p>
-		Phrases you look up on Jisho will automatically get recorded to Context.Reviews with a browser extension.
-		As you're reading you can look up unknown words without having to write anything down to study later.
-	</p>
-	<Image src="images/extension-demo" alt="demo screenshot of the browser extension on Jisho.org"/>
+	<section>
+		<h2>Study Words in Isolation or in Context</h2>
+		<div class="f-row f-wrap justify-content-center">
+			<div class="m-6">
+				<StyleCard variant="word" />
+			</div>
+			<div class="m-6">
+				<StyleCard variant="context" />
+			</div>
+		</div>
+	</section>
 
-	<h2>
-		Look Back At Your Searches
-	</h2>
+	<section>
+		<h2>
+			Automatically Record Searches
+		</h2>
 
-	<p>
-		After you're done reading, you can look back at everything you had searched and review before creating Anki cards.
-	</p>
-	<p>
-		Just like the Anki Export wizard selected text will pull definitions from Jisho, and gives you quick links to some other popular dictionary and search websites.
-	</p>
-	<Image src="images/list-demo" alt="demo screenshot of the phrase list" />
+		<p>
+			Phrases you look up on Jisho will automatically get saved with the Context.Reviews browser extension,
+			meaning you can just focus on reading until you're ready to create your Anki deck!
+		</p>
+		<Image src="images/extension-demo" alt="demo screenshot of the browser extension on Jisho.org"/>
+	</section>
 
-	<h2>
-		Add Phrases In Bulk
-	</h2>
-	<p>
-		If you don't want to use the browser extension, or want to import a bunch of phrases at once, you can also add phrases manually in bulk!
-	</p>
+	<section>
+		<h2>
+			Look Back At Your Searches
+		</h2>
 
-	<Image src="images/bulk-add-phrase-demo" alt="demo screenshot of the bulk phrase addition dialog" />
+		<p>
+			Manage your saved searches at any time.
+			Selecting text will show definitions from Jisho and give you quick links to some other popular dictionaries and websites.
+		</p>
+		<Image src="images/list-demo" alt="demo screenshot of the phrase list" />
+	</section>
 
-	<h1>
-		Start Studying With Your Own Decks
-	</h1>
-	<GetStarted />
+	<section>
+		<h1>
+			Start Studying With Your Own Decks
+		</h1>
+		<GetStarted />
+	</section>
 </div>
 
 <script>
@@ -159,4 +183,5 @@
 	import Image from '../Image.svelte';
 	import {Icon} from 'sheodox-ui';
 	import {asset} from '../assets';
+	import StyleCard from "../export-app/StyleCard.svelte";
 </script>
