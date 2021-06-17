@@ -53,6 +53,7 @@
 	@media (max-width: 800px) {
 		h1 {
 			font-size: var(--shdx-font-size-8);
+			text-align: center;
 		}
 		h2 {
 			font-size: var(--shdx-font-size-7);
