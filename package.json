@@ -5,15 +5,14 @@
   "scripts": {
     "start": "node src/app",
     "dev": "nodemon ./src/app --ignore stats/",
-    "build": "npm run build-web:prod && npm run build-server:prod",
+    "build": "npm run build-static:prod && npm run build-server:prod",
     "build-server:dev": "tsc --watch",
     "build-server:prod": "tsc",
-    "build-web:dev": "webpack --mode development --watch --env SITE_TARGET=dev --config-name website",
-    "build-web:prod": "webpack --mode production --env SITE_TARGET=prod --config-name website",
+    "build-static:dev": "webpack --mode development --watch --env SITE_TARGET=dev --config-name website",
+    "build-static:prod": "webpack --mode production --env SITE_TARGET=prod --config-name website",
     "build-extension:dev": "webpack --mode development --config-name extension --watch --env SITE_TARGET=dev",
     "build-extension:prod": "webpack --mode development --config-name extension --env SITE_TARGET=prod",
-    "extension:package": "npm run build-extension:prod && web-ext build --source-dir ./extension -o",
-    "deploy": "npm stop && git pull && npm i && npm run build && npm start"
+    "extension:package": "npm run build-extension:prod && web-ext build --source-dir ./extension -o"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
