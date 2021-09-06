@@ -6,6 +6,8 @@ import {exportServed, landingServed, listServed, privacyServed} from "../metrics
 import {AppRequest, UserWithSettings} from "../app";
 import {User, Settings} from '@prisma/client';
 import {prisma} from "../util/prisma";
+import { tracker } from '../util/tracker';
+import serializeJavascript from 'serialize-javascript';
 
 const router = Router(),
 	manifest = require('../../public/manifest.json'),
@@ -52,6 +54,12 @@ async function getUserLocals(user: UserWithSettings) {
 	};
 }
 
+async function getUserBootstrapData(userId: string) {
+	return serializeJavascript({
+		phrases: await tracker.list(userId)
+	});
+}
+
 router.get('/', async (req: AppRequest, res, next) => {
 	if (!req.user) {
 		landingServed.inc();
@@ -61,7 +69,8 @@ router.get('/', async (req: AppRequest, res, next) => {
 	    listServed.inc();
 		res.render('index', {
 			...baseLocals,
-			...(await getUserLocals(req.user))
+			...(await getUserLocals(req.user)),
+			initialState: await getUserBootstrapData(req.user.id)
 		});
 	}
 });
@@ -75,7 +84,8 @@ router.get('/export', async (req: AppRequest, res, next) => {
 		res.render('export', {
 			...baseLocals,
 			...(await getUserLocals(req.user)),
-			title: 'Anki Export - Context.Reviews'
+			title: 'Anki Export - Context.Reviews',
+			initialState: await getUserBootstrapData(req.user.id)
 		});
 	}
 });

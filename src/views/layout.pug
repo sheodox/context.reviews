@@ -23,4 +23,7 @@ html(lang="en")
         if userMetadata
             script.
                 window.userMetadata = !{userMetadata};
+        if initialState
+            script.
+                window.__INITIAL_STATE__ = !{initialState};
     block content

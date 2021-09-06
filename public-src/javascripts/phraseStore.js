@@ -4,7 +4,7 @@ import {hasAddedPhrases} from "./metadataStore";
 import {createAutoExpireToast} from "sheodox-ui/components/toast";
 import {createHttpErrorToast, statusMessageMap} from "./http-error-toasts";
 
-const phraseStore = writable(null);
+const phraseStore = writable(window.__INITIAL_STATE__.phrases);
 async function handleActionResponse(res) {
 	if (res.ok) {
 		return;
