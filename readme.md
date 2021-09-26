@@ -7,7 +7,7 @@
 
 ![phrase list screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/master/public-src/images/list-demo.png)
 
-Anki decks can be created by simply selecting the word from the sentence you want to study, then clicking "Add Card" and choosing if you want the card to be presented by itself or in the sentence it came from.
+Anki decks can be created by simply selecting the word from the sentence you want to study, then clicking "Add Card" and choosing if you want the word to be presented by itself or in context on the front of the card.
 
 ![anki export screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/master/public-src/images/anki-export-demo.png)
 
