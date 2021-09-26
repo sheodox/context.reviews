@@ -1,9 +1,13 @@
 # <img src="https://raw.githubusercontent.com/sheodox/context.reviews/master/public-src/logo.svg?sanitize=true" width="160" height="160" alt="logo"> Context.Reviews
 
 
-[Context.Reviews](https://context.reviews/) is a site designed to help you learn Japanese using the native materials you already read. It records your [Jisho.org](https://jisho.org/) searches with a browser extension for you to access again later. 
+[Context.Reviews](https://context.reviews/) is a site designed to help you learn Japanese using the native materials you already read. It records your [Jisho.org](https://jisho.org/) searches with a browser extension for you to access again later to export to an [Anki](https://apps.ankiweb.net/) deck.
 
 ![phrase list screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/master/public-src/images/list-demo.png)
+
+Anki decks can be created by simply selecting the word from the sentence you want to study, then clicking "Add Card" and choosing if you want the card to be presented by itself or in the sentence it came from.
+
+![anki export screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/master/public-src/images/anki-export-demo.png)
 
 The site pairs great with reading ebooks and sites online where looking up entire sentences can be done without typing the entire sentence manually. If you search for sentences or parts of sentences you can export your phrases with your word included in context!
 
