@@ -1,5 +1,8 @@
-# <img src="https://raw.githubusercontent.com/sheodox/context.reviews/master/public-src/logo.svg?sanitize=true" width="160" height="160" alt="logo"> Context.Reviews
+<div align="center">
+	<img src="public-src/logo.svg?sanitize=true" width="160" height="160" alt="logo">
 
+	<h1>Context.Reviews</h1>
+</div>
 
 [Context.Reviews](https://context.reviews/) is a site designed to help you learn Japanese using the native materials you already read. It records your [Jisho.org](https://jisho.org/) searches with a browser extension for you to access again later to export to an [Anki](https://apps.ankiweb.net/) deck.
 
