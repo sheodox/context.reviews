@@ -1,6 +1,5 @@
 <div align="center">
 	<img src="public-src/logo.svg?sanitize=true" width="160" height="160" alt="logo">
-
 	<h1>Context.Reviews</h1>
 </div>
 
