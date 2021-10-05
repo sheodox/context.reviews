@@ -3,7 +3,7 @@
 @import 'input';
 
 :root {
-    --jp-fonts: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+    --jp-fonts: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans JP", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
 }
 
 header {
@@ -27,7 +27,7 @@ incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 
-    &:not(.japanese) {
+    &:not(.jp) {
         font-family: 'Kanit', sans-serif;
     }
 }
