@@ -80,6 +80,7 @@ router.get('/', async (req: AppRequest, res) => {
 				initialState: await getUserBootstrapData(req.user.id),
 				assetManifest,
 			}),
+			assetManifest,
 			cssImports,
 			scriptEntryFile,
 		});
@@ -101,6 +102,7 @@ router.get('/export', async (req: AppRequest, res) => {
 				assetManifest,
 			}),
 			title: 'Anki Export - Context.Reviews',
+			assetManifest,
 			cssImports,
 			scriptEntryFile,
 		});
