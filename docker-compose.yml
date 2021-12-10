@@ -8,10 +8,7 @@ services:
       - redis
     restart: unless-stopped
     volumes:
-      # export location for data and usage stats
-      - type: bind
-        source: ./stats
-        target: /usr/src/app/stats
+      - .env:/usr/src/app/.env
   postgres:
     image: postgres:13-alpine
     environment:
@@ -40,10 +37,6 @@ services:
     restart: unless-stopped
   nginx:
     image: nginx:1.18
-    ports:
-      - 80:80
-      - 443:443
-      - 4001:4001
     depends_on:
       - app
     restart: unless-stopped
@@ -53,24 +46,6 @@ services:
         source: ./public
         target: /var/www/static
         read_only: true
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - 9090:9090
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-    volumes:
-      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus:/prometheus
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - 3000:3000
-    volumes:
-      - ./config/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
-      - grafana:/var/lib/grafana
 volumes:
   postgres:
   redis:
-  prometheus:
-  grafana:

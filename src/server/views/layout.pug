@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset="utf-8")
+		title= title
+		// link(rel='icon', href=manifest['favicon.png'])
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+		meta(property='og:site_name', content=site)
+		// meta(property='og:image', content=manifest['favicon.png'])
+		meta(property='og:description', content=description)
+		meta(name='description', content=description)
+		meta(property='og:url', content='https://context.reviews')
+
+		style.
+			body {
+				background: #0b0f15;
+			}
+		link(href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap", rel="stylesheet")
+		link(rel="stylesheet", href="/fontawesome/css/all.min.css")
+		if appBootstrap
+			script.
+				window.__APP_BOOTSTRAP__ = !{appBootstrap};
+		if !development
+			each fileName in cssImports
+				link(rel="stylesheet", href=`/${fileName}`)
+
+	block content

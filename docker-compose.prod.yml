@@ -3,6 +3,8 @@ services:
   app:
     build:
       target: prod
+    ports:
+      - 5042:4001
     volumes:
       - type: bind
         source: ./public
@@ -10,21 +12,16 @@ services:
     restart: always
   nginx:
     restart: always
+    ports:
+      - 5002:80
     volumes:
       - type: bind
         source: ./config/nginx/nginx.prod.conf
         target: /etc/nginx/nginx.conf
         read_only: true
-      - ../certbot/conf:/etc/letsencrypt
-      - ../certbot/www:/var/www/certbot
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   postgres:
     restart: always
   redis:
-    restart: always
-  prometheus:
-    restart: always
-  grafana:
     restart: always
   certbot:
     restart: always

@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	body(class="f-column align-items-center")
+		#app-root(class="f-column align-items-center")
+
+		if development
+			script(type="module", src="http://localhost:3000/@vite/client")
+			script(type="module", src="http://localhost:3000/src/static/landing-app/landing-main.ts")
+		else
+			script(src=`/${scriptentryfile}`, type="module")
+

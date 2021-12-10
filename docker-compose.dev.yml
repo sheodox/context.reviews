@@ -4,24 +4,33 @@ services:
     build:
       target: dev
     volumes:
-      - type: bind
-        source: .
-        target: /usr/src/app
+      - ./public:/usr/src/app/public
+      - ./dist:/usr/src/app/dist
+      - ./src:/usr/src/app/src
+      - .env:/usr/src/app/.env
+    ports:
+      - 4001:4001
+      - 9222:9222
+      - 9229:9229
     logging:
       options:
-        max-size: "1m"
-        max-file: "1"
+        max-size: '1m'
+        max-file: '1'
   nginx:
+    ports:
+      - 80:80
+      - 443:443
     volumes:
       - type: bind
         source: ./config/nginx/nginx.conf
         target: /etc/nginx/nginx.conf
         read_only: true
+      - ./config/dev-certs:/etc/letsencrypt/live/context.reviews
     logging:
       options:
-        max-size: "1m"
-        max-file: "1"
+        max-size: '1m'
+        max-file: '1'
   postgres:
-    # expose postgres in development so TypeORM migrations can be generated from outside the container
+    # expose postgres in development so migrations can be generated from outside the container
     ports:
       - 50432:5432

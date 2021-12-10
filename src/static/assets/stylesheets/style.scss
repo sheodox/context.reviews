@@ -1,0 +1,49 @@
+@import 'button';
+@import 'progress';
+@import 'input';
+
+:root {
+	--jp-fonts: 'Source Han Sans', '源ノ角ゴシック', 'Hiragino Sans', 'HiraKakuProN-W3', 'Hiragino Kaku Gothic ProN W3',
+		'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'Noto Sans JP', 'Noto Sans CJK JP', 'Noto Sans', 'メイリオ',
+		Meiryo, '游ゴシック', YuGothic, 'ＭＳ Ｐゴシック', 'MS PGothic', 'ＭＳ ゴシック', 'MS Gothic', sans-serif;
+}
+
+header {
+	// make the headers shadows show above the side trays
+	z-index: 1;
+}
+
+aside {
+	background-color: var(--shdx-gray-600);
+	box-shadow: var(--shdx-shadow-5);
+}
+
+/*
+Use a better font stack for places Japanese text is likely to be. Otherwise you'll get either ugly fonts or
+incorrect glyphs present in kanji like 結 or 絶. https://en.wikipedia.org/wiki/Han_unification
+ */
+.jp,
+ruby,
+input,
+textarea {
+	font-family: var(--jp-fonts) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: normal;
+
+	&:not(.jp) {
+		font-family: 'Kanit', sans-serif;
+	}
+}
+
+.spacer-bar {
+	height: 1px;
+	border-bottom: var(--shdx-panel-border);
+	width: 100%;
+}

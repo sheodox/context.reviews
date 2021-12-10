@@ -4,5 +4,6 @@ public/*
 !public/.keep
 extension
 .env
+dist/
 web-ext-artifacts/
-src/**/*.js
+config/dev-certs
