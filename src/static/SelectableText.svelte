@@ -2,7 +2,7 @@
 	span::selection {
 		border-radius: 3px;
 		background: var(--shdx-blue-400);
-		color: var(--shdx-blue-800);
+		color: black;
 	}
 </style>
 

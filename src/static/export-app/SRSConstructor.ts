@@ -43,7 +43,7 @@ function createTemplates() {
 				}
 				mark {
 					background: ${getCSSVar('shdx-blue-400')};
-					color: ${getCSSVar('shdx-blue-800')};
+					color: black;
 					border-radius: 3px;
 					white-space: nowrap;
 				}
