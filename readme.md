@@ -1,15 +1,15 @@
 <div align="center">
-	<img src="public-src/logo.svg?sanitize=true" width="160" height="160" alt="logo">
+	<img src="src/static/assets/logo.svg?sanitize=true" width="160" height="160" alt="logo">
 	<h1>Context.Reviews</h1>
 </div>
 
 [Context.Reviews](https://context.reviews/) is a site designed to help you learn Japanese using the native materials you already read. It records your [Jisho.org](https://jisho.org/) searches with a browser extension for you to access again later to export to an [Anki](https://apps.ankiweb.net/) deck.
 
-![phrase list screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/master/public-src/images/list-demo.png)
+![phrase list screenshot](src/static/assets/images/list-demo.png)
 
 Anki decks can be created by simply selecting the word from the sentence you want to study, then clicking "Add Card" and choosing if you want the word to be presented by itself or in context on the front of the card.
 
-![anki export screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/master/public-src/images/anki-export-demo.png)
+![anki export screenshot](src/static/assets/images/anki-export-demo.png)
 
 The site pairs great with reading ebooks and sites online where looking up entire sentences can be done without typing the entire sentence manually. If you search for sentences or parts of sentences you can export your phrases with your word included in context!
 
@@ -23,4 +23,4 @@ The original version of Context.Reviews had no user logins, no dictionary search
 
 Before the Anki export wizard was added there was a "review mode" where the "Delete" button on a phrase would be changed to "Hide" and you'd just read through the list hiding sentences you could read completely, leaving ones you still needed to review visible, selecting the unknown words to review their definitions if you needed a reminder.
 
-![original UI screenshot](https://raw.githubusercontent.com/sheodox/japanese-context-sentence-review/master/images/screenshot.png)
+![original UI screenshot](images/screenshot.png)
