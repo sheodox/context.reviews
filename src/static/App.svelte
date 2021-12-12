@@ -38,4 +38,6 @@
 	import Footer from './Footer.svelte';
 	import AppHeader from './AppHeader.svelte';
 	import { activeRouteOptions } from './stores/routes';
+
+	$: document.body.style.overflowY = $activeRouteOptions.alwaysScroll ? 'scroll' : '';
 </script>
