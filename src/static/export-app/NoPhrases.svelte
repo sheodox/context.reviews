@@ -10,6 +10,6 @@
 
 <div class="container">
 	<h2 class="jp">お疲れ様でした。</h2>
-	<p>There's nothing to export, go out there and do some reading!</p>
+	<p>There's nothing left to export, go out there and do some reading!</p>
 	<p>If you're unsure what to do check out the "Help" section in the dropdown menu in the top right.</p>
 </div>

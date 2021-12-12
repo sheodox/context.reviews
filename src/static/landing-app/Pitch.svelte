@@ -129,7 +129,9 @@
 		<p>
 			Create Anki cards just by selecting a word. Definitions are pulled automatically from <ExternalLink
 				href="https://jisho.org">Jisho</ExternalLink
-			>, and you can customize it how you want.
+			>, and you can customize it how you want. Created decks can be automatically imported with the <ExternalLink
+				href="https://foosoft.net/projects/anki-connect/">AnkiConnect</ExternalLink
+			> plugin for Anki.
 		</p>
 
 		<video muted autoplay loop controls src={asset('videos/anki-export-demo.mp4')} />

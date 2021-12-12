@@ -14,8 +14,22 @@ export default class SRSConstructor {
 	addCards(cards: Card[] = []) {
 		this.cards = this.cards.concat(cards);
 	}
-	export() {
-		const exported = ankiExport(this.cards),
+	exportTextFile() {
+		function ankiEscape(compiledCardSide: string) {
+			const html = compiledCardSide
+				//double double quotes are 'escaped' single double quotes to anki
+				.replace(/"/g, '""')
+				.replace(/\t/g, '')
+				.replace(/\n/g, '');
+			//quote return (not escaped quotes) so it allows newlines within the template
+			return `"${html}"`;
+		}
+
+		const exported = this.cards
+				.map((card) => {
+					return compileAnkiCard(card).map(ankiEscape).join(';');
+				})
+				.join('\n'),
 			blob = new Blob([exported], { type: 'text/plain' }),
 			d = new Date();
 
@@ -23,6 +37,23 @@ export default class SRSConstructor {
 			fileName: `context-reviews-anki-export-${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}.txt`,
 			href: URL.createObjectURL(blob),
 		};
+	}
+	exportAnkiConnect(deckName: string) {
+		return this.cards.map((card) => {
+			const [front, back] = compileAnkiCard(card);
+			return {
+				deckName,
+				modelName: 'Basic',
+				fields: {
+					Front: front,
+					Back: back,
+				},
+				tags: ['Context.Reviews'],
+				options: {
+					allowDuplicate: true,
+				},
+			};
+		});
 	}
 }
 
@@ -255,7 +286,7 @@ function createTemplates() {
 	return [ankiFrontTemplate, ankiBackTemplate];
 }
 
-export function compileAnkiCard(c: Card) {
+export function compileAnkiCard(c: Card): [string, string] {
 	const [ankiFrontTemplate, ankiBackTemplate] = createTemplates(),
 		//don't leak changes if things weren't cloned elsewhere
 		card: CardPrecompiled = cloneObject(c),
@@ -313,22 +344,4 @@ export function compileAnkiCard(c: Card) {
 	card.otherLinks = createLinks(card.word);
 
 	return [ankiFrontTemplate(card), ankiBackTemplate(card)];
-}
-
-function ankiExport(cards: Card[]) {
-	function ankiEscape(compiledCardSide: string) {
-		const html = compiledCardSide
-			//double double quotes are 'escaped' single double quotes to anki
-			.replace(/"/g, '""')
-			.replace(/\t/g, '')
-			.replace(/\n/g, '');
-		//quote return (not escaped quotes) so it allows newlines within the template
-		return `"${html}"`;
-	}
-
-	return cards
-		.map((card) => {
-			return compileAnkiCard(card).map(ankiEscape).join(';');
-		})
-		.join('\n');
 }

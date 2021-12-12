@@ -1,13 +1,10 @@
 <style>
 	p {
-		margin: 0.5rem;
-		text-align: center;
-	}
-	div {
-		text-align: center;
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
 	}
 	.header {
-		padding: 1rem;
+		padding-bottom: 1rem;
 		display: flex;
 		flex-direction: row;
 	}
@@ -38,77 +35,83 @@
 
 	<div class="panel-body">
 		{#if numCards > 0}
-			<p>
+			<p class="text-align-center">
 				Time to export! You created {numCards}
 				{numCards === 1 ? 'card' : 'cards'} from {numPhrases}
-				{numPhrases === 1 ? 'phrase' : 'phrases'}.
+				{numPhrases === 1 ? 'phrase' : 'phrases'}. You created cards for:
+				<span class="jp">{getWordsFromCards($cards)}</span>
 			</p>
-			<a
-				class="button"
-				class:galaxy={!$downloadedDeck}
-				href={exported.href}
-				on:click={() => enableDelete()}
-				on:contextmenu={() => enableDelete(2000)}
-				download={exported.fileName}
-			>
-				<Icon icon="download" />Download Deck
-			</a>
-			<br />
-			<div class="f-row justify-content-center">
-				{#if !$phrasesDeleted}
-					<button
-						on:click={deleteConsumed}
-						disabled={!$downloadedDeck}
-						class="danger"
-						title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
-					>
-						<Icon icon="trash" />
-						Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
-					</button>
-
-					{#if $unusedPhrases.length > 0}
+			<div>
+				<h2 class="mb-0">Importing to Anki</h2>
+				<TabList bind:selectedTab {tabs} />
+				<div class="mt-4">
+					<Tab {selectedTab} tabId="ac">
+						<AnkiConnect />
+					</Tab>
+					<Tab {selectedTab} tabId="txt">
+						<div class="text-align-center">
+							<a
+								class="button"
+								class:galaxy={!$downloadedDeck}
+								href={exported.href}
+								on:click={() => enableDelete()}
+								on:contextmenu={() => enableDelete(2000)}
+								download={exported.fileName}
+							>
+								<Icon icon="download" />Download Deck
+							</a>
+						</div>
+						<ol>
+							<li>Select a deck in Anki, then hit "File" → "Import..."</li>
+							<li>Ensure "Allow HTML in Fields" is checked, and "Fields separated by" is set to semicolon.</li>
+							<li>
+								Field mapping should be <strong>Field 1: Front, Field 2: Back.</strong> This will probably be the default.
+							</li>
+						</ol>
+					</Tab>
+				</div>
+			</div>
+			<div class="text-align-center mt-5">
+				{#if $deckConsumed && !$phrasesDeleted}
+					<div class="f-row justify-content-center">
 						<button
-							on:click={() => (showDeleteAll = true)}
-							disabled={!$downloadedDeck}
+							on:click={deleteConsumed}
+							disabled={!$deckConsumed}
 							class="danger"
 							title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
 						>
 							<Icon icon="trash" />
-							Delete all {$phraseStore.length} context {$phraseStore.length === 1 ? 'sentence' : 'sentences'}
+							Delete the {numPhrases} used context {numPhrases === 1 ? 'sentence' : 'sentences'}
 						</button>
-					{/if}
-				{:else}
+
+						{#if $unusedPhrases.length > 0}
+							<button
+								on:click={() => (showDeleteAll = true)}
+								disabled={!$deckConsumed}
+								class="danger"
+								title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
+							>
+								<Icon icon="trash" />
+								Delete all {$phraseStore.length} context {$phraseStore.length === 1 ? 'sentence' : 'sentences'}
+							</button>
+						{/if}
+					</div>
+				{/if}
+				{#if deleting}
+					{#await deleting}
+						<Loading />
+					{:catch}
+						<p>An error occurred deleting phrases!</p>
+					{/await}
+				{/if}
+				{#if $deckConsumed}
+					<br />
 					<button class="primary" on:click={() => dispatch('restart')}>
 						<Icon icon="redo" />
 						Start Over
 					</button>
 				{/if}
 			</div>
-
-			{#if deleting}
-				{#await deleting}
-					<Loading />
-				{:catch}
-					<p>An error occurred deleting phrases!</p>
-				{/await}
-			{/if}
-			<div class="panel">
-				<h2>How to import</h2>
-				<ol>
-					<li>Select a deck in Anki, then hit "File" → "Import..."</li>
-					<li>Ensure "Allow HTML in Fields" is checked, and "Fields separated by" is set to semicolon.</li>
-					<li>
-						Field mapping should be <strong>Field 1: Front, Field 2: Back.</strong> This will probably be the default.
-					</li>
-				</ol>
-			</div>
-
-			{#if $cards.length}
-				<p>
-					You created cards for:
-					<span class="jp">{getWordsFromCards($cards)}</span>
-				</p>
-			{/if}
 		{:else}
 			<p>You didn't create any cards!</p>
 			<button on:click={() => dispatch('restart')}>Start Over</button>
@@ -126,15 +129,36 @@
 	import { createEventDispatcher } from 'svelte';
 	import { get } from 'svelte/store';
 	import phraseStore from '../stores/phrases';
-	import { cardCount, usedPhrases, unusedPhrases, cards, downloadedDeck, phrasesDeleted } from '../stores/cards';
+	import {
+		cardCount,
+		usedPhrases,
+		unusedPhrases,
+		cards,
+		downloadedDeck,
+		phrasesDeleted,
+		deckConsumed,
+	} from '../stores/cards';
 	import Loading from '../Loading.svelte';
-	import { Icon, Modal } from 'sheodox-ui';
+	import { Icon, Modal, TabList, Tab } from 'sheodox-ui';
 	import SRSConstructor from './SRSConstructor';
 	import DeleteAllModal from './DeleteAllModal.svelte';
 	import type { Card } from '../types/cards';
+	import AnkiConnect from './AnkiConnect.svelte';
 
 	let showDeleteAll = false,
+		selectedTab: string,
 		deleting: Promise<any>;
+
+	const tabs = [
+		{
+			id: 'ac',
+			title: 'AnkiConnect (recommended)',
+		},
+		{
+			id: 'txt',
+			title: 'Manual Import',
+		},
+	];
 
 	const dispatch = createEventDispatcher<{
 			restart: void;
@@ -146,7 +170,7 @@
 		numPhrases = consumedPhrases.length;
 
 	srs.addCards(get(cards));
-	const exported = srs.export();
+	const exported = srs.exportTextFile();
 
 	function getWordsFromCards(cards: Card[]) {
 		return cards.map(({ word }) => word).join(', ') + '.';

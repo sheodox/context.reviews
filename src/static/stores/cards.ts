@@ -16,6 +16,12 @@ export const cardsByPhrase = writable<CardsByPhrase>(new Map());
 //when cards are added. it's used to prevent them from accidentally
 //navigating away if they've not downloaded the deck yet.
 export const downloadedDeck = writable(false);
+//when a deck has been imported into anki with AnkiConnect
+export const deckImported = writable(false);
+
+export const deckConsumed = derived([downloadedDeck, deckImported], ([downloaded, imported]) => {
+	return downloaded || imported;
+});
 
 // if we're at the end of the phrases, or the user clicked Export, and we're supposed to
 // be showing the page to download/export the generated cards
@@ -106,6 +112,7 @@ export function reset() {
 	showExport.set(false);
 	phrasesDeleted.set(false);
 	downloadedDeck.set(false);
+	deckImported.set(false);
 }
 
 //subscribe to all stores so they can be used internally without `get()`
