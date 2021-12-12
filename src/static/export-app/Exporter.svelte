@@ -214,6 +214,8 @@
 		deleting = phraseStore.remove(get(phraseStore).map((p) => p.id));
 		deleting.then(() => {
 			$phrasesDeleted = true;
+			// if all phrases have been deleted, automatically start over
+			dispatch('restart');
 		});
 	}
 </script>
