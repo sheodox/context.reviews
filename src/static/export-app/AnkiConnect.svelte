@@ -17,7 +17,7 @@
 	</p>
 	<p class="fw-bold">Anki must be kept open to import cards.</p>
 	<button class="primary" on:click={requestPermission}>Request Permission</button>
-{:else if !$deckImported}
+{:else if $ankiConnectStatus === 'available' && !$deckImported}
 	<label for="anki-deck">Select an Anki deck for the new cards</label>
 	<select id="anki-deck" size={$ankiDecks.length} bind:value={$selectedAnkiDeck}>
 		{#each $ankiDecks as deck}
@@ -28,7 +28,7 @@
 		<button on:click={newDeck}>New Deck</button>
 		<button on:click={importCards} class="primary" disabled={adding}>Add to Deck</button>
 	</div>
-{:else}
+{:else if $deckImported}
 	<p class="text-align-center">Congrats, you're done!</p>
 {/if}
 
