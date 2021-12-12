@@ -16,9 +16,6 @@
 		.card-fields {
 			align-items: end;
 		}
-		:global(.input) {
-			padding: 0.2rem;
-		}
 	}
 	.card-errors {
 		justify-content: center;

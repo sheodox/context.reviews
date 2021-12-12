@@ -31,9 +31,7 @@
 <div class="container">
 	<div class="header">
 		<h1>Export</h1>
-		{#if phrasesDeleted}
-			<button on:click={() => dispatch('restart')}><Icon icon="angle-left" />Start Over</button>
-		{:else}
+		{#if !$phrasesDeleted}
 			<button on:click={() => dispatch('back')}><Icon icon="angle-left" />Back</button>
 		{/if}
 	</div>
@@ -46,7 +44,8 @@
 				{numPhrases === 1 ? 'phrase' : 'phrases'}.
 			</p>
 			<a
-				class="button galaxy"
+				class="button"
+				class:galaxy={!$downloadedDeck}
 				href={exported.href}
 				on:click={() => enableDelete()}
 				on:contextmenu={() => enableDelete(2000)}
@@ -54,9 +53,9 @@
 			>
 				<Icon icon="download" />Download Deck
 			</a>
-			{#if !phrasesDeleted}
-				<br />
-				<div class="f-row justify-content-center">
+			<br />
+			<div class="f-row justify-content-center">
+				{#if !$phrasesDeleted}
 					<button
 						on:click={deleteConsumed}
 						disabled={!$downloadedDeck}
@@ -78,8 +77,13 @@
 							Delete all {$phraseStore.length} context {$phraseStore.length === 1 ? 'sentence' : 'sentences'}
 						</button>
 					{/if}
-				</div>
-			{/if}
+				{:else}
+					<button class="primary" on:click={() => dispatch('restart')}>
+						<Icon icon="redo" />
+						Start Over
+					</button>
+				{/if}
+			</div>
 
 			{#if deleting}
 				{#await deleting}
@@ -122,18 +126,20 @@
 	import { createEventDispatcher } from 'svelte';
 	import { get } from 'svelte/store';
 	import phraseStore from '../stores/phrases';
-	import { cardCount, usedPhrases, unusedPhrases, cards, downloadedDeck } from '../stores/cards';
+	import { cardCount, usedPhrases, unusedPhrases, cards, downloadedDeck, phrasesDeleted } from '../stores/cards';
 	import Loading from '../Loading.svelte';
 	import { Icon, Modal } from 'sheodox-ui';
 	import SRSConstructor from './SRSConstructor';
 	import DeleteAllModal from './DeleteAllModal.svelte';
 	import type { Card } from '../types/cards';
 
-	let phrasesDeleted = false,
-		showDeleteAll = false,
+	let showDeleteAll = false,
 		deleting: Promise<any>;
 
-	const dispatch = createEventDispatcher(),
+	const dispatch = createEventDispatcher<{
+			restart: void;
+			back: void;
+		}>(),
 		srs = new SRSConstructor(),
 		numCards = get(cardCount),
 		consumedPhrases = get(usedPhrases),
@@ -158,25 +164,32 @@
 	async function deleteConsumed() {
 		const phrases = get(phraseStore);
 		//find the phrase IDs from each phrase
-		const ids = consumedPhrases.map((contextSentence) => {
-			const phrase = phrases.find(({ phrase }) => {
-				return phrase === contextSentence;
+		const ids = consumedPhrases
+			.map((contextSentence) => {
+				const phrase = phrases.find(({ phrase }) => {
+					return phrase === contextSentence;
+				});
+				if (phrase) {
+					return phrase.id;
+				}
+			})
+			.filter((id) => !!id);
+
+		if (ids.length) {
+			deleting = phraseStore.remove(ids);
+			deleting.then(() => {
+				$phrasesDeleted = true;
 			});
-			if (phrase) {
-				return phrase.id;
-			}
-		});
-		deleting = phraseStore.remove(ids);
-		deleting.then(() => {
-			phrasesDeleted = true;
-		});
+		} else {
+			$phrasesDeleted = true;
+		}
 	}
 
 	async function deleteAll() {
 		showDeleteAll = false;
 		deleting = phraseStore.remove(get(phraseStore).map((p) => p.id));
 		deleting.then(() => {
-			phrasesDeleted = true;
+			$phrasesDeleted = true;
 		});
 	}
 </script>

@@ -11,19 +11,19 @@
 
 	<ul slot="menu">
 		<li>
-			<button class="a" on:click={() => (showSettings = true)}>
+			<Link classes="button" href="/settings">
 				<Icon icon="cog" /> Settings
-			</button>
+			</Link>
 		</li>
 		<li>
-			<button class="a" on:click={() => (showHelp = true)}>
+			<Link classes="button" href="/about">
+				<Icon icon="address-card" /> About
+			</Link>
+		</li>
+		<li>
+			<Link classes="button" href="/help">
 				<Icon icon="info-circle" /> Help
-			</button>
-		</li>
-		<li>
-			<button class="a" on:click={() => (showStats = true)}>
-				<Icon icon="id-card" /> Stats
-			</button>
+			</Link>
 		</li>
 		<li>
 			<a href="/auth/logout" class="button"><Icon icon="sign-in-alt" /> Logout</a>
@@ -34,10 +34,5 @@
 <script lang="ts">
 	import { Icon, NavDropdown } from 'sheodox-ui';
 	import { user } from './stores/metadata';
-
-	//modals are handled by AppHeader so they can be mounted as a descendent of the app root instead of being
-	//nested within the header/nav which would cause modals to inherit styles we don't want them to
-	export let showSettings: boolean;
-	export let showHelp: boolean;
-	export let showStats: boolean;
+	import Link from './Link.svelte';
 </script>

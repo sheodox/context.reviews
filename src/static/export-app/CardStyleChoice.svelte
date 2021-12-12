@@ -94,7 +94,7 @@
 	import CardPreview from './CardPreview.svelte';
 	import type { CardStyle } from '../types/cards';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ done: void; cancel: void }>();
 	$: wordCard = { ...$card, cardStyle: 'word' as CardStyle };
 	$: contextCard = { ...$card, cardStyle: 'context' as CardStyle };
 

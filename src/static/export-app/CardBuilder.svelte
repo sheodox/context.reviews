@@ -112,7 +112,7 @@
 								isPrimary={true}
 								bind:term={$definitionSearchTerm}
 								mode="export"
-								on:editDefinition={() => (showMeaningEditor = true)}
+								on:customize={() => (showMeaningEditor = true)}
 							/>
 							<OtherDictionaryLinks term={$word} />
 						</div>
@@ -162,7 +162,7 @@
 	$: context.set(phrase.phrase);
 
 	const DEBOUNCE_TIMEOUT = 500,
-		dispatch = createEventDispatcher();
+		dispatch = createEventDispatcher<{ done: void; back: void }>();
 
 	let showMeaningEditor = false,
 		showStyleChoice = false,

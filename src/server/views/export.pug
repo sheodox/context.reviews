@@ -1,9 +1,0 @@
-extends layout
-
-block content
-	#app-root
-	if development
-		script(type="module", src="http://localhost:3000/@vite/client")
-		script(type="module", src="http://localhost:3000/src/static/export-app/export-main.ts")
-	else
-		script(src=`/${scriptentryfile}`, type="module")

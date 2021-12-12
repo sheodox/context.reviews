@@ -33,7 +33,7 @@
 
 	export let visible: boolean;
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ 'delete-all': void }>();
 
 	async function deleteAll() {
 		dispatch('delete-all');

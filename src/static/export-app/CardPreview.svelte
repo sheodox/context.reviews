@@ -42,7 +42,7 @@
 
 	export let card: Card;
 	export let demoMode = false;
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ 'demo-learned': void }>();
 	let previewElement: HTMLElement,
 		//if this card is in demo mode (landing page) the 'show answer' button toggles if the back of
 		//the card is revealed

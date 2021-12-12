@@ -1,8 +1,8 @@
-import { Router } from 'express';
+import { Router, Response } from 'express';
 import serialize from 'serialize-javascript';
 import lookupRouter from './lookup.js';
 import phrasesRouter from './phrases.js';
-import { exportServed, landingServed, listServed, privacyServed } from '../metrics.js';
+import { appServed, landingServed, privacyServed } from '../metrics.js';
 import { AppRequest, UserWithSettings } from '../app.js';
 import { prisma } from '../util/prisma.js';
 import { tracker } from '../util/tracker.js';
@@ -55,6 +55,23 @@ async function getUserBootstrapData(userId: string) {
 	};
 }
 
+async function serveApp(req: AppRequest, res: Response) {
+	const { cssImports, scriptEntryFile, assetManifest } = await getManifest('src/static/main.ts');
+	appServed.inc();
+
+	res.render('index', {
+		...baseLocals,
+		appBootstrap: serialize({
+			...(await getUserLocals(req.user)),
+			initialState: await getUserBootstrapData(req.user.id),
+			assetManifest,
+		}),
+		assetManifest,
+		cssImports,
+		scriptEntryFile,
+	});
+}
+
 router.get('/', async (req: AppRequest, res) => {
 	if (!req.user) {
 		landingServed.inc();
@@ -70,43 +87,18 @@ router.get('/', async (req: AppRequest, res) => {
 			assetManifest,
 		});
 	} else {
-		listServed.inc();
-
-		const { cssImports, scriptEntryFile, assetManifest } = await getManifest('src/static/list-app/list-main.ts');
-		res.render('index', {
-			...baseLocals,
-			appBootstrap: serialize({
-				...(await getUserLocals(req.user)),
-				initialState: await getUserBootstrapData(req.user.id),
-				assetManifest,
-			}),
-			assetManifest,
-			cssImports,
-			scriptEntryFile,
-		});
+		serveApp(req, res);
 	}
 });
 
-router.get('/export', async (req: AppRequest, res) => {
-	if (!req.user) {
-		res.redirect('/');
-	} else {
-		exportServed.inc();
-
-		const { cssImports, scriptEntryFile, assetManifest } = await getManifest('src/static/export-app/export-main.ts');
-		res.render('export', {
-			...baseLocals,
-			appBootstrap: serialize({
-				...(await getUserLocals(req.user)),
-				initialState: await getUserBootstrapData(req.user.id),
-				assetManifest,
-			}),
-			title: 'Anki Export - Context.Reviews',
-			assetManifest,
-			cssImports,
-			scriptEntryFile,
-		});
-	}
+['/export', '/settings', '/about'].forEach((frontendRoute) => {
+	router.get(frontendRoute, async (req: AppRequest, res) => {
+		if (!req.user) {
+			res.redirect('/');
+		} else {
+			serveApp(req, res);
+		}
+	});
 });
 
 router.get('/privacy', (req, res) => {

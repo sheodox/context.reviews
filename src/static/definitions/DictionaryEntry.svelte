@@ -80,7 +80,9 @@
 		<p class="selected-definition-message">Selected Definition</p>
 
 		{#if mode === 'list'}
-			<button class="primary" on:click={() => addToReviews(definition.word)}>+ Add to phrases</button>
+			<button class="primary" disabled={wordIsInPhrases} on:click={() => addToReviews(definition.word)}
+				>+ Add to phrases</button
+			>
 		{:else}
 			<button
 				class="primary"
@@ -96,7 +98,7 @@
 		{/if}
 
 		{#if mode === 'export' && isWordSelected($card.id)}
-			<button on:click={() => dispatch('editDefinition')}>Customize Card</button>
+			<button on:click={() => dispatch('customize')}>Customize Card</button>
 		{/if}
 		{#if $settings.speechSynthesis}
 			<button on:click={() => say(definition.word)}>Say word</button>
@@ -179,7 +181,9 @@
 	//to make it easier to find an alternate form that matches the kanji
 	export let searchTerm = '';
 
-	const dispatch = createEventDispatcher();
+	$: wordIsInPhrases = $phraseStore.some(({ phrase }) => phrase === definition.word);
+
+	const dispatch = createEventDispatcher<{ customize: void }>();
 
 	function selectForExport(alternate?: JapaneseForm) {
 		selectDefinition(source, definition, alternate);

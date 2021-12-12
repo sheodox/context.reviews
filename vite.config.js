@@ -16,8 +16,7 @@ export default defineConfig({
 		outDir: './public-dist',
 		rollupOptions: {
 			input: {
-				'export-main': '/src/static/export-app/export-main.ts',
-				'list-main': '/src/static/list-app/list-main.ts',
+				main: '/src/static/main.ts',
 				'landing-main': '/src/static/landing-app/landing-main.ts',
 			},
 		},

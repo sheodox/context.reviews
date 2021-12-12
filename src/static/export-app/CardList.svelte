@@ -3,6 +3,7 @@
 		flex: 1;
 		position: relative;
 		border-left: var(--shdx-panel-border);
+		min-width: 20rem;
 	}
 	h2 {
 		padding: 0.5rem;
@@ -89,7 +90,10 @@
 					<span class="word">
 						<JapaneseWord word={card.word} reading={card.reading} />
 					</span>
-					<button on:click={() => removeCard(card)}>Remove</button>
+					<button on:click={() => removeCard(card)}>
+						<Icon icon="times" variant="icon-only" />
+						<span class="sr-only">Remove</span>
+					</button>
 				</li>
 			{:else}
 				<li class="no-cards">No cards for this phrase yet.</li>
@@ -103,7 +107,7 @@
 				</div>
 			{/key}
 		{/if}
-		<button id="export-button" on:click={() => (showExport = true)} disabled={$cards.length === 0}>
+		<button id="export-button" on:click={() => ($showExport = true)} disabled={$cards.length === 0}>
 			Export ({$cardCount}
 			{$cardCount === 1 ? 'card' : 'cards'})
 		</button>
@@ -121,12 +125,18 @@
 	import JapaneseWord from '../definitions/JapaneseWord.svelte';
 	import CardPreview from './CardPreview.svelte';
 	import phraseStore from '../stores/phrases';
-	import { cards, cardsByPhrase, currentPhrase, currentPhraseIndex, cardCount, removeCard } from '../stores/cards';
-	import { Progress, Modal } from 'sheodox-ui';
+	import {
+		cards,
+		cardsByPhrase,
+		currentPhrase,
+		currentPhraseIndex,
+		cardCount,
+		removeCard,
+		showExport,
+	} from '../stores/cards';
+	import { Progress, Modal, Icon } from 'sheodox-ui';
 	import type { CardsByPhrase } from '../stores/cards';
 	import type { Card } from '../types/cards';
-
-	export let showExport: boolean;
 
 	let previewCard: Card = null,
 		showPreviewModal = false;

@@ -17,6 +17,12 @@ export const cardsByPhrase = writable<CardsByPhrase>(new Map());
 //navigating away if they've not downloaded the deck yet.
 export const downloadedDeck = writable(false);
 
+// if we're at the end of the phrases, or the user clicked Export, and we're supposed to
+// be showing the page to download/export the generated cards
+export const showExport = writable(false);
+// whether an action has been taken to delete phrases after exporting
+export const phrasesDeleted = writable(false);
+
 function primeMap(baseMap: CardsByPhrase, phraseList: Phrase[]) {
 	phraseList.forEach((phrase) => {
 		if (!baseMap.has(phrase.phrase)) {
@@ -96,6 +102,10 @@ export function reset() {
 	//re-prime cardsByPhrase with the current list
 	cardsByPhrase.set(primeMap(new Map(), get(phraseStore)));
 	currentPhraseIndex.set(0);
+
+	showExport.set(false);
+	phrasesDeleted.set(false);
+	downloadedDeck.set(false);
 }
 
 //subscribe to all stores so they can be used internally without `get()`

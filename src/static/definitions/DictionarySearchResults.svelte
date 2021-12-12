@@ -38,7 +38,7 @@
 			<div in:fly={{ y: 50 }}>
 				{#if result.definitions.length > 0}
 					{#each result.definitions as definition}
-						<Word {source} {definition} {mode} bind:searchTerm={term} on:editDefinition />
+						<Word {source} {definition} {mode} bind:searchTerm={term} on:customize />
 					{/each}
 				{:else}
 					<p class="hint-text">No results found for "{term}"</p>
@@ -72,7 +72,7 @@
 
 	let definitions: Definition[] = [];
 
-	const dispatch = createEventDispatcher(),
+	const dispatch = createEventDispatcher<{ 'first-word': string }>(),
 		getDef = async (phrase: string): Promise<SearchResults> => {
 			if (!phrase) {
 				return;

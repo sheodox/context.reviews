@@ -30,7 +30,8 @@
 		<div class="help-modal">
 			<p>
 				Tags are used to describe things about the word other than its meaning or usage, like a JLPT level. You can
-				enter any tag you want, but there are some special tags that automatically get special styling.
+				enter any tag you want (separated by commas), but there are some special tags that automatically get special
+				styling.
 			</p>
 			<table>
 				<thead>
@@ -60,8 +61,6 @@
 					</tr>
 				</tbody>
 			</table>
-
-			<p>You can add any tags you want, separated by commas.</p>
 		</div>
 	</Modal>
 {/if}

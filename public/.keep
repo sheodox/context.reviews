@@ -1,2 +1,0 @@
-This folder needs to exist, it's a shared mount for build assets between the app and nginx.
-Allowing nginx to serve static assets with or without the app itself being available.

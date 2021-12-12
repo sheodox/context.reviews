@@ -92,13 +92,9 @@ export const landingServed = new Counter({
 	name: name('landing_served'),
 	help: `Number of times the landing page was served to clients that aren't logged in`,
 });
-export const listServed = new Counter({
-	name: name('list_served'),
-	help: `Number of times the phrase list page was served`,
-});
-export const exportServed = new Counter({
-	name: name('export_served'),
-	help: `Number of times the export page was served`,
+export const appServed = new Counter({
+	name: name('app_served'),
+	help: `Number of times the app was served`,
 });
 export const privacyServed = new Counter({
 	name: name('privacy_served'),
@@ -146,8 +142,7 @@ export const connectedUsers = new Gauge({
 	usersTotal,
 
 	landingServed,
-	listServed,
-	exportServed,
+	appServed,
 	privacyServed,
 	notFoundServed,
 
