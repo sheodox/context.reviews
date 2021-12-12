@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run style:check && npm run lint",
     "dev": "nodemon ./dist/server/app.js --watch dist/server/",
-    "build": "npm run build-static:prod && npm run build-server:prod",
+    "build:prod": "npm run build-static:prod && npm run build-server:prod",
     "build-server:dev": "tsc --watch",
     "build-server:prod": "tsc",
     "lint": "npm run lint-server:prod && npm run lint-static:prod",
