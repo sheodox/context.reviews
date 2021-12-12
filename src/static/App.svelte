@@ -4,9 +4,6 @@
 		display: flex;
 		flex-direction: column;
 	}
-	.no-scroll {
-		max-height: 100vh;
-	}
 	main {
 		overflow: auto;
 		flex: 1;
@@ -14,6 +11,12 @@
 		flex-direction: row;
 	}
 
+	@media (min-width: 650px) {
+		/* on mobile breakpoints keeping the whole app in the page makes the footer obnoxiously large */
+		.no-scroll {
+			max-height: 100vh;
+		}
+	}
 	@media (max-width: 650px) {
 		main {
 			scroll-snap-type: x mandatory;
