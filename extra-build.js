@@ -7,7 +7,10 @@ import globImport from 'glob';
 import sharp from 'sharp';
 
 const glob = promisify(globImport),
-	isProd = process.argv.includes('production');
+	isProd = process.argv.includes('production'),
+	distBase = isProd ? 'public-dist' : 'public',
+	assetSrcPath = './src/static/assets',
+	assetDestPath = `./${distBase}`;
 
 async function createFolders(paths) {
 	for (const folder of paths) {
@@ -16,6 +19,7 @@ async function createFolders(paths) {
 		} catch (e) {}
 	}
 }
+createFolders([`./${distBase}/fontawesome`, `./${distBase}/fontawesome/css`, `./${distBase}/fontawesome/webfonts`]);
 
 async function generateFileHash(filePath) {
 	const hash = crypto.createHash('md4'),
@@ -24,22 +28,32 @@ async function generateFileHash(filePath) {
 	return hash.digest('hex');
 }
 
+async function copyFile(src, dest) {
+	await fs.mkdir(path.dirname(dest), { recursive: true });
+	await fs.copyFile(src, dest);
+}
+
+const copyFiles = await glob(`${assetSrcPath}/**/*.{ico,png,svg,mp4}`);
+for (const file of copyFiles) {
+	const folderInAssets = file.replace(assetSrcPath, ''),
+		newPath = path.join(assetDestPath, folderInAssets);
+	await copyFile(file, newPath);
+}
+
 //compress all images as webp for extra good compression
-const pngFiles = await glob('./public-src/**/*.png');
+const pngFiles = await glob(`${assetSrcPath}/**/*.png`);
 for (const pngFile of pngFiles) {
-	const destFile = pngFile.replace('public-src', 'public').replace(/\.png$/, '.webp');
+	const destFile = pngFile.replace('src/static/assets', distBase).replace(/\.png$/, '.webp');
 	await sharp(pngFile).webp().toFile(destFile);
 }
 
 //for dev tint the icon red so it's obvious you're on a dev environment
 if (!isProd) {
-	await sharp('./src/static/assets/favicon.png').tint('rgb(255, 0, 0)').toFile('./public/favicon.png');
+	await sharp(`${assetSrcPath}/favicon.png`).tint('rgb(255, 0, 0)').toFile(`./${distBase}/favicon.png`);
 }
 
-const manifestPath = './public/asset-manifest.json',
+const manifestPath = `./${distBase}/asset-manifest.json`,
 	manifest = {},
-	assetSrcPath = './src/static/assets',
-	assetDestPath = './public',
 	images = await glob(`${assetSrcPath}/**/*.png`),
 	videos = await glob(`${assetSrcPath}/**/*.mp4`),
 	cacheableFiles = [...videos, ...images, ...images.map((path) => path.replace(/\.png$/, '.webp'))];
@@ -52,7 +66,7 @@ for (const file of cacheableFiles) {
 		hashedPath = path.join(dir, `${name}.${hash}${ext}`);
 
 	manifest[webPath] = hashedPath;
-	await fs.copyFile(matchingPublicFile, path.join('./public', hashedPath));
+	await fs.copyFile(matchingPublicFile, path.join(`./${distBase}`, hashedPath));
 }
 await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
 
@@ -95,22 +109,22 @@ for (const error of httpErrors) {
 				title: `${error.message} - Context.Reviews`,
 				manifest,
 				cssImports: [],
+				assetManifest: manifest,
 			},
 			error
 		)
 	);
-	await fs.writeFile(`./public/${error.status}.html`, html);
+	await fs.writeFile(`./${distBase}/${error.status}.html`, html);
 }
 
 //copy fontawesome files to a static directory. they're not loaded with a bundler
 //and to avoid having to serve them with express.static() they should be copied to
 //the static files directory so nginx can handle serving them
-createFolders(['./public/fontawesome', './public/fontawesome/css', './public/fontawesome/webfonts']);
 const faPath = './node_modules/@fortawesome/fontawesome-free/',
 	faFiles = await glob(`${faPath}{css,webfonts}/*`);
 for (const file of faFiles) {
-	const newPath = file.replace(faPath, './public/fontawesome/');
-	await fs.copyFile(file, newPath);
+	const newPath = file.replace(faPath, `./${distBase}/fontawesome/`);
+	await copyFile(file, newPath);
 }
 
 console.log('extra-build done');
