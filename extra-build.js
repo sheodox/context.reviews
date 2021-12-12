@@ -23,7 +23,7 @@ createFolders([`./${distBase}/fontawesome`, `./${distBase}/fontawesome/css`, `./
 
 async function generateFileHash(filePath) {
 	const hash = crypto.createHash('md4'),
-		fileContents = await fs.readFile(filePath).toString();
+		fileContents = (await fs.readFile(filePath)).toString();
 	hash.update(fileContents);
 	return hash.digest('hex');
 }

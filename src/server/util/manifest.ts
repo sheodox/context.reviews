@@ -3,6 +3,8 @@ import path from 'path';
 
 let cachedManifest: any;
 
+const isProd = process.env.NODE_ENV === 'production';
+
 async function loadManifests() {
 	if (!cachedManifest) {
 		const manifestPath = path.join(process.cwd(), 'public/manifest.json'),
@@ -10,7 +12,7 @@ async function loadManifests() {
 
 		cachedManifest = {
 			// rollup manifest (scripts)
-			manifest: JSON.parse((await fs.readFile(manifestPath)).toString()),
+			manifest: isProd ? JSON.parse((await fs.readFile(manifestPath)).toString()) : {},
 			// extra-build.js manifest (images etc)
 			assetManifest: JSON.parse((await fs.readFile(assetManifestPath)).toString()),
 		};

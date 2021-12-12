@@ -3,7 +3,6 @@ import { notFoundServed } from './metrics.js';
 import express, { Request } from 'express';
 import path from 'path';
 import http from 'http';
-import morgan from 'morgan';
 import { appLogger } from './util/logger.js';
 import { WebSocketServer } from 'ws';
 import cookieParser from 'cookie-parser';
@@ -43,8 +42,6 @@ app.disable('x-powered-by');
 // view engine setup
 app.set('views', path.resolve('src/server/views'));
 app.set('view engine', 'pug');
-
-app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
