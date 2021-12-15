@@ -26,7 +26,7 @@
 		span {
 			position: relative;
 			align-self: center;
-			background: var(--shdx-blue-400);
+			background: var(--shdx-blue-300);
 			color: black;
 			padding: var(--shdx-spacing-2);
 			font-size: var(--shdx-font-size-6);

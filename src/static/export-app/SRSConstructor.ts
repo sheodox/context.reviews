@@ -73,7 +73,7 @@ function createTemplates() {
 					font-family: ${getCSSVar('jp-fonts')};
 				}
 				mark {
-					background: ${getCSSVar('shdx-blue-400')};
+					background: ${getCSSVar('shdx-blue-300')};
 					color: black;
 					border-radius: 3px;
 					white-space: nowrap;
