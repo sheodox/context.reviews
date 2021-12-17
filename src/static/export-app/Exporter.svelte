@@ -25,13 +25,12 @@
 		color: white;
 		border-radius: 5px;
 		text-align: center;
-		padding: 0.5rem;
 
 		.stat-num {
-			font-size: 2rem;
+			font-size: var(--shdx-font-size-8);
 		}
 		.stat-name {
-			font-size: 0.8rem;
+			font-size: var(--shdx-font-size-3);
 			margin: var(--shdx-spacing-1);
 			text-transform: uppercase;
 			font-weight: bold;
@@ -49,7 +48,7 @@
 
 	<div class="panel-body f-column">
 		{#if numCards > 0}
-			<div class="export-stats f-row gap-3">
+			<div class="export-stats f-row gap-3 px-2">
 				<div class="stat">
 					<div class="stat-num">
 						{numCards}
