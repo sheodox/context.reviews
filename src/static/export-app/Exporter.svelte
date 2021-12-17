@@ -1,12 +1,7 @@
-<style>
+<style lang="scss">
 	p {
 		margin-top: 0.5rem;
 		margin-bottom: 0.5rem;
-	}
-	.header {
-		padding-bottom: 1rem;
-		display: flex;
-		flex-direction: row;
 	}
 	h1 {
 		text-align: left;
@@ -23,24 +18,56 @@
 		max-width: 95vw;
 		margin: 1rem auto;
 	}
+
+	.export-stats {
+		align-self: center;
+		background: var(--shdx-gray-600);
+		color: white;
+		border-radius: 5px;
+		text-align: center;
+		padding: 0.5rem;
+
+		.stat-num {
+			font-size: 2rem;
+		}
+		.stat-name {
+			font-size: 0.8rem;
+			margin: var(--shdx-spacing-1);
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+	}
 </style>
 
 <div class="container">
-	<div class="header">
+	<div class="f-row">
 		<h1>Export</h1>
 		{#if !$phrasesDeleted}
 			<button on:click={() => dispatch('back')}><Icon icon="angle-left" />Back</button>
 		{/if}
 	</div>
 
-	<div class="panel-body">
+	<div class="panel-body f-column">
 		{#if numCards > 0}
-			<p class="text-align-center">
-				Time to export! You created {numCards}
-				{numCards === 1 ? 'card' : 'cards'} from {numPhrases}
-				{numPhrases === 1 ? 'phrase' : 'phrases'}. You created cards for:
-				<span class="jp">{getWordsFromCards($cards)}</span>
-			</p>
+			<div class="export-stats f-row gap-3">
+				<div class="stat">
+					<div class="stat-num">
+						{numCards}
+					</div>
+					<div class="stat-name">
+						{numCards === 1 ? 'card' : 'cards'}
+					</div>
+				</div>
+				<div class="stat">
+					<div class="stat-num">
+						{numPhrases}
+					</div>
+					<div class="stat-name">
+						{numPhrases === 1 ? 'phrase' : 'phrases'}
+					</div>
+				</div>
+			</div>
+			<p class="jp text-align-center">You created cards for: {getWordsFromCards($cards)}</p>
 			<div>
 				<h2 class="mb-0">Importing to Anki</h2>
 				<TabList bind:selectedTab {tabs} />
