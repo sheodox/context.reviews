@@ -212,6 +212,11 @@
 	}
 
 	async function deleteConsumed() {
+		// if we're essentially deleting all phrases, just do that instead
+		if ($unusedPhrases.length === 0) {
+			return await deleteAll();
+		}
+
 		const phrases = get(phraseStore);
 		//find the phrase IDs from each phrase
 		const ids = consumedPhrases
@@ -226,22 +231,17 @@
 			.filter((id) => !!id);
 
 		if (ids.length) {
-			deleting = phraseStore.remove(ids);
-			deleting.then(() => {
-				$phrasesDeleted = true;
-			});
-		} else {
-			$phrasesDeleted = true;
+			await phraseStore.remove(ids);
 		}
+		$phrasesDeleted = true;
 	}
 
 	async function deleteAll() {
 		showDeleteAll = false;
-		deleting = phraseStore.remove(get(phraseStore).map((p) => p.id));
-		deleting.then(() => {
-			$phrasesDeleted = true;
-			// if all phrases have been deleted, automatically start over
-			dispatch('restart');
-		});
+		await phraseStore.remove(get(phraseStore).map((p) => p.id));
+		$phrasesDeleted = true;
+		// if all phrases have been deleted, automatically start over so it resets the card stores
+		// for the next export if they keep the site open
+		dispatch('restart');
 	}
 </script>
