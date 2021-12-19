@@ -19,6 +19,7 @@
 	}
 	@media (max-width: 650px) {
 		main {
+			min-height: 80vh;
 			scroll-snap-type: x mandatory;
 		}
 	}
