@@ -15,7 +15,7 @@
 			scroll-snap-type: x mandatory;
 			overflow: auto;
 		}
-		#card-workspace > :global(div.builder) {
+		#card-workspace > :global(div.card-builder) {
 			flex: 1 0 90%;
 			width: 90%;
 			scroll-snap-align: start;
@@ -27,7 +27,7 @@
 	}
 	@media (min-width: 1200px) {
 		#card-workspace :global(aside) {
-			max-width: 20rem;
+			width: 25%;
 		}
 	}
 	.full-page-contents {

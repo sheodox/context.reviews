@@ -1,6 +1,8 @@
 <style>
-	.builder {
+	.card-builder {
 		flex: 3;
+	}
+	.builder {
 		display: flex;
 		flex-direction: column;
 		max-width: 80rem;
@@ -53,6 +55,9 @@
 		flex-direction: column;
 	}
 	@media (max-width: 850px) {
+		.builder {
+			min-width: 90vw;
+		}
 		.title-bar {
 			flex-direction: column;
 		}
@@ -62,72 +67,74 @@
 	}
 </style>
 
-<div class="builder">
-	<div class="row spaced-out title-bar header">
-		<h2>Anki Export</h2>
-		<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
-		<div class="header-buttons">
-			<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="angle-left" />Back</button>
-			<button on:click={done} class="done" class:primary={!$definitionSearchTerm && $currentPhraseCardCount}>
-				{#if $currentPhraseCardCount}
-					Next Phrase
-				{:else}
-					Skip This Phrase
-				{/if}
-				<Icon icon="angle-right" />
-			</button>
+<div class="card-builder">
+	<div class="builder">
+		<div class="row spaced-out title-bar header">
+			<h2>Anki Export</h2>
+			<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
+			<div class="header-buttons">
+				<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="angle-left" />Back</button>
+				<button on:click={done} class="done" class:primary={!$definitionSearchTerm && $currentPhraseCardCount}>
+					{#if $currentPhraseCardCount}
+						Next Phrase
+					{:else}
+						Skip This Phrase
+					{/if}
+					<Icon icon="angle-right" />
+				</button>
+			</div>
 		</div>
-	</div>
-	<div class="panel-body">
-		<p class="context-sentence">
-			<SelectableText text={phrase.phrase} on:text-select={setSelection} />
-		</p>
-		{#if $definition}
-			<CardBuilderEdit isSelectingStyle={showStyleChoice} on:confirm={() => (showStyleChoice = true)} />
-		{/if}
-
-		{#if showStyleChoice}
-			<CardStyleChoice on:done={addCard} on:cancel={() => (showStyleChoice = false)} />
-		{:else if showMeaningEditor}
+		<div class="panel-body">
+			<p class="context-sentence">
+				<SelectableText text={phrase.phrase} on:text-select={setSelection} />
+			</p>
 			{#if $definition}
-				<button on:click={() => (showMeaningEditor = false)} class="edit-definition danger"
-					><Icon icon="times" />Discard Customizations</button
-				>
-				<MeaningEditor bind:meanings={$definition.meanings} />
+				<CardBuilderEdit isSelectingStyle={showStyleChoice} on:confirm={() => (showStyleChoice = true)} />
 			{/if}
-		{:else}
-			<div class="definition-area mt-4" in:fly={{ y: 25 }}>
-				<div class="f-row justify-content-center">
-					<TextInput id="definition-search" bind:value={searchTerm} on:keyup={onSearchType}>
-						Definition Search
-					</TextInput>
-				</div>
 
-				{#if searchTerm}
-					<!-- using a key so it always rebuilds and shows transitions between different searches -->
-					{#key $definitionSearchTerm}
-						<div class="definitions" in:fly={{ y: 50 }}>
-							<DictionarySearchResults
-								source="jisho"
-								isPrimary={true}
-								bind:term={$definitionSearchTerm}
-								mode="export"
-								on:customize={() => (showMeaningEditor = true)}
-							/>
-							<OtherDictionaryLinks term={$word} />
-						</div>
-					{/key}
+			{#if showStyleChoice}
+				<CardStyleChoice on:done={addCard} on:cancel={() => (showStyleChoice = false)} />
+			{:else if showMeaningEditor}
+				{#if $definition}
+					<button on:click={() => (showMeaningEditor = false)} class="edit-definition danger"
+						><Icon icon="times" />Discard Customizations</button
+					>
+					<MeaningEditor bind:meanings={$definition.meanings} />
 				{/if}
-			</div>
-		{/if}
+			{:else}
+				<div class="definition-area mt-4" in:fly={{ y: 25 }}>
+					<div class="f-row justify-content-center">
+						<TextInput id="definition-search" bind:value={searchTerm} on:keyup={onSearchType}>
+							Definition Search
+						</TextInput>
+					</div>
 
-		{#if !$definitionSearchTerm}
-			<div in:fly={{ y: 25 }}>
-				<p class="sentence-select-hint">
-					Please highlight a word in the context sentence you don't know or search for something.
-				</p>
-			</div>
-		{/if}
+					{#if searchTerm}
+						<!-- using a key so it always rebuilds and shows transitions between different searches -->
+						{#key $definitionSearchTerm}
+							<div class="definitions" in:fly={{ y: 50 }}>
+								<DictionarySearchResults
+									source="jisho"
+									isPrimary={true}
+									bind:term={$definitionSearchTerm}
+									mode="export"
+									on:customize={() => (showMeaningEditor = true)}
+								/>
+								<OtherDictionaryLinks term={$word} />
+							</div>
+						{/key}
+					{/if}
+				</div>
+			{/if}
+
+			{#if !$definitionSearchTerm}
+				<div in:fly={{ y: 25 }}>
+					<p class="sentence-select-hint">
+						Please highlight a word in the context sentence you don't know or search for something.
+					</p>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
 
