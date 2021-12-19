@@ -15,7 +15,7 @@
 		padding: 0;
 		margin: 0;
 	}
-	li {
+	li .word button {
 		font-size: 1.5rem;
 		padding: 0.5rem;
 	}
@@ -34,19 +34,8 @@
 	li .word {
 		flex: 1;
 	}
-	li button {
+	li .remove-card {
 		flex: 0;
-	}
-	.preview-container {
-		position: absolute;
-		z-index: 10000; /* show this over the top of the definitions */
-		left: 0;
-		top: 0;
-		transform: translate(-100%);
-		width: 30rem;
-		border-radius: 5px;
-		border: 1px solid var(--shdx-accent-purple);
-		overflow: hidden;
 	}
 	.phrase-select {
 		margin: 1rem 0;
@@ -56,10 +45,6 @@
 		flex-direction: column;
 	}
 	@media (max-width: 900px) {
-		/* on-hover previews not available on small resolutions, need to use the modal */
-		.preview-container {
-			display: none;
-		}
 		aside {
 			border-left: none;
 			border-top: var(--shdx-panel-border);
@@ -67,7 +52,7 @@
 	}
 </style>
 
-<aside on:mouseleave={() => (previewCard = null)} class="panel">
+<aside class="panel">
 	<div class="panel-body">
 		<label for="phrases-processed">
 			Phrases Processed ({$currentPhraseIndex}/{$phraseStore.length})
@@ -87,10 +72,12 @@
 		<ul>
 			{#each cardSlice($cardsByPhrase, $currentPhrase) as card}
 				<li in:fade={{ duration: 100 }} on:mouseenter={() => (previewCard = card)}>
-					<span class="word">
-						<JapaneseWord word={card.word} reading={card.reading} />
-					</span>
-					<button on:click={() => removeCard(card)}>
+					<div class="word">
+						<button on:click={() => preview(card)}>
+							<JapaneseWord word={card.word} reading={card.reading} />
+						</button>
+					</div>
+					<button on:click={() => removeCard(card)} class="remove-card">
 						<Icon icon="times" variant="icon-only" />
 						<span class="sr-only">Remove</span>
 					</button>
@@ -100,13 +87,6 @@
 			{/each}
 		</ul>
 
-		{#if previewCard}
-			{#key previewCard}
-				<div class="preview-container">
-					<CardPreview card={previewCard} />
-				</div>
-			{/key}
-		{/if}
 		<button id="export-button" on:click={() => ($showExport = true)} disabled={$cards.length === 0}>
 			Export ({$cardCount}
 			{$cardCount === 1 ? 'card' : 'cards'})
@@ -116,7 +96,9 @@
 
 {#if showPreviewModal}
 	<Modal title="Card Preview" bind:visible={showPreviewModal}>
-		<CardPreview card={previewCard} />
+		<div class="modal-body">
+			<CardPreview card={previewCard} />
+		</div>
 	</Modal>
 {/if}
 
@@ -140,6 +122,11 @@
 
 	let previewCard: Card = null,
 		showPreviewModal = false;
+
+	function preview(card: Card) {
+		previewCard = card;
+		showPreviewModal = true;
+	}
 
 	function cardSlice(cardsByPhrase: CardsByPhrase, phrase: string) {
 		return cardsByPhrase.get(phrase);
