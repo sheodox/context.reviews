@@ -7,6 +7,7 @@ import { AppRequest, UserWithSettings } from '../app.js';
 import { prisma } from '../util/prisma.js';
 import { tracker } from '../util/tracker.js';
 import { getManifest } from '../util/manifest.js';
+import { safeAsyncRoute } from '../middleware/error-handler.js';
 
 const router = Router(),
 	baseLocals = {
@@ -72,41 +73,55 @@ async function serveApp(req: AppRequest, res: Response) {
 	});
 }
 
-router.get('/', async (req: AppRequest, res) => {
-	if (!req.user) {
-		landingServed.inc();
-
-		const { cssImports, scriptEntryFile, assetManifest } = await getManifest('src/static/landing-app/landing-main.ts');
-		res.render('landing', {
-			...baseLocals,
-			cssImports,
-			scriptEntryFile,
-			appBootstrap: serialize({
-				assetManifest,
-			}),
-			assetManifest,
-		});
-	} else {
-		serveApp(req, res);
-	}
-});
-
-['/export', '/settings', '/about'].forEach((frontendRoute) => {
-	router.get(frontendRoute, async (req: AppRequest, res) => {
+router.get(
+	'/',
+	safeAsyncRoute(async (req: AppRequest, res) => {
 		if (!req.user) {
-			res.redirect('/');
+			landingServed.inc();
+
+			const { cssImports, scriptEntryFile, assetManifest } = await getManifest(
+				'src/static/landing-app/landing-main.ts'
+			);
+			res.render('landing', {
+				...baseLocals,
+				cssImports,
+				scriptEntryFile,
+				appBootstrap: serialize({
+					assetManifest,
+				}),
+				assetManifest,
+			});
 		} else {
 			serveApp(req, res);
 		}
-	});
+	})
+);
+
+['/export', '/settings', '/about'].forEach((frontendRoute) => {
+	router.get(
+		frontendRoute,
+		safeAsyncRoute(async (req: AppRequest, res) => {
+			if (!req.user) {
+				res.redirect('/');
+			} else {
+				serveApp(req, res);
+			}
+		})
+	);
 });
 
-router.get('/privacy', (req, res) => {
-	privacyServed.inc();
-	res.render('privacy', {
-		...baseLocals,
-	});
-});
+router.get(
+	'/privacy',
+	safeAsyncRoute(async (req, res) => {
+		privacyServed.inc();
+		const { assetManifest } = await getManifest();
+
+		res.render('privacy', {
+			assetManifest,
+			...baseLocals,
+		});
+	})
+);
 
 router.use('/lookup', lookupRouter);
 router.use('/phrases', phrasesRouter);

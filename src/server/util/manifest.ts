@@ -21,11 +21,11 @@ async function loadManifests() {
 }
 
 // gets data from the rollup manifest and asset manifest for very cacheable files
-export async function getManifest(entryPath: string) {
+export async function getManifest(entryPath?: string) {
 	const { manifest, assetManifest } = await loadManifests();
 
 	// only the production build uses the manifest, in development files are served by vite
-	if (process.env.NODE_ENV === 'development') {
+	if (!entryPath || process.env.NODE_ENV === 'development') {
 		return { assetManifest };
 	}
 
