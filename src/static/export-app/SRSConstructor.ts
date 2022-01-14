@@ -71,6 +71,7 @@ function createTemplates() {
 					max-width: 500px;
 					margin: 0 auto;
 					font-family: ${getCSSVar('jp-fonts')};
+					font-size: 16px;
 				}
 				mark {
 					background: ${getCSSVar('shdx-blue-300')};
@@ -82,7 +83,7 @@ function createTemplates() {
 					font-size: 3rem;
 				}
 				.word.front-context {
-					font-size: 1.5rem;
+					font-size: 1.75rem;
 				}
 				.reading {
 					font-size: 2rem;
@@ -100,7 +101,6 @@ function createTemplates() {
 					text-align: left;
 				}
 				.context {
-					font-size: 1.5rem;
 					margin: 0.3rem;
 				}
 				.tag:not(:last-of-type) {
