@@ -28,7 +28,7 @@
 <div class="definition" class:unbound-height={mode === 'export'}>
 	{#if !lookup}
 		<h1>{source}</h1>
-		<p class="hint-text">Search to see <span class="capitalize">{source}</span> definitions here!</p>
+		<p class="hint-text">Search a word to see <span class="capitalize">{source}</span> definitions here!</p>
 	{:else}
 		{#await lookup}
 			<h1>{source}</h1>

@@ -23,7 +23,7 @@
 </style>
 
 <section>
-	<p>
+	<p class="mt-0">
 		You can paste text in bulk here to be imported. It will will be split into individual sentences between punctuation
 		and line breaks.
 	</p>
@@ -31,12 +31,13 @@
 		<label for="bulk-phrase-add-input"> Phrases </label>
 		<br />
 		<textarea id="bulk-phrase-add-input" bind:value={phraseText} />
-		<br />
-		<Checkbox id="split-on-spaces" bind:checked={splitOnSpaces}>
-			Add space separated text as individual phrases <span class="muted"
-				>(use this if you have a bunch of vocab separated only by spaces)</span
-			>
-		</Checkbox>
+		<div class="mt-2">
+			<Checkbox id="split-on-spaces" bind:checked={splitOnSpaces}>
+				Treat space separated text as individual phrases <span class="muted"
+					>(use this if you have a bunch of vocab separated only by spaces)</span
+				>
+			</Checkbox>
+		</div>
 		{#if recommendSplitting && !splitOnSpaces}
 			<p class="recommended">
 				<Icon icon="hat-wizard" />
