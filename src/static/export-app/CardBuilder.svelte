@@ -89,14 +89,19 @@
 				<SelectableText text={phrase.phrase} on:text-select={setSelection} />
 			</p>
 			{#if $definition}
-				<CardBuilderEdit isSelectingStyle={showStyleChoice} on:confirm={() => (showStyleChoice = true)} />
+				<CardBuilderEdit
+					isSelectingStyle={showStyleChoice}
+					on:confirm={() => (showStyleChoice = true)}
+					on:customize={() => (showMeaningEditor = true)}
+					isCustomizing={showMeaningEditor}
+				/>
 			{/if}
 
 			{#if showStyleChoice}
 				<CardStyleChoice on:done={addCard} on:cancel={() => (showStyleChoice = false)} />
 			{:else if showMeaningEditor}
 				{#if $definition}
-					<button on:click={() => (showMeaningEditor = false)} class="edit-definition danger"
+					<button on:click={discardCustomizations} class="edit-definition danger mt-3"
 						><Icon icon="times" />Discard Customizations</button
 					>
 					<MeaningEditor bind:meanings={$definition.meanings} />
@@ -118,7 +123,6 @@
 									isPrimary={true}
 									bind:term={$definitionSearchTerm}
 									mode="export"
-									on:customize={() => (showMeaningEditor = true)}
 								/>
 								<OtherDictionaryLinks term={$word} />
 							</div>
@@ -151,6 +155,8 @@
 		definition,
 		context,
 		wordHighlightRange,
+		afterNotes,
+		beforeNotes,
 	} from '../stores/current-card';
 	import { currentPhraseCardCount, currentPhraseIndex, addCard as addCardToStore } from '../stores/cards';
 	import SelectableText from '../SelectableText.svelte';
@@ -206,6 +212,14 @@
 		showStyleChoice = false;
 		showMeaningEditor = false;
 		$definitionSearchTerm = '';
+	}
+
+	function discardCustomizations() {
+		// these are not populated by Jisho and are strictly user customizable, reset them as they won't
+		// auto-reset like the meanings do when the definition selector is rendered again
+		$afterNotes = '';
+		$beforeNotes = '';
+		showMeaningEditor = false;
 	}
 
 	function done() {

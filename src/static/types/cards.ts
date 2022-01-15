@@ -5,6 +5,8 @@ export interface Card {
 	word: string;
 	reading: string;
 	context: string;
+	beforeNotes: string;
+	afterNotes: string;
 	wordHighlightRange?: [number, number];
 	definition: Definition;
 	source: string;

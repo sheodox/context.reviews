@@ -38,7 +38,7 @@
 			<div in:fly={{ y: 50 }}>
 				{#if result.definitions.length > 0}
 					{#each result.definitions as definition}
-						<Word {source} {definition} {mode} bind:searchTerm={term} on:customize />
+						<Word {source} {definition} {mode} bind:searchTerm={term} />
 					{/each}
 				{:else}
 					<p class="hint-text">No results found for "{term}"</p>

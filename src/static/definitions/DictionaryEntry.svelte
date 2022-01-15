@@ -97,9 +97,6 @@
 			</button>
 		{/if}
 
-		{#if mode === 'export' && isWordSelected($card.id)}
-			<button on:click={() => dispatch('customize')}>Customize Card</button>
-		{/if}
 		{#if $settings.speechSynthesis}
 			<button on:click={() => say(definition.word)}>Say word</button>
 			{#if definition.reading}
@@ -158,7 +155,6 @@
 </div>
 
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { say } from '../speech';
 	import Tag from './Tag.svelte';
 	import ExternalLink from '../ExternalLink.svelte';
@@ -182,8 +178,6 @@
 	export let searchTerm = '';
 
 	$: wordIsInPhrases = $phraseStore.some(({ phrase }) => phrase === definition.word);
-
-	const dispatch = createEventDispatcher<{ customize: void }>();
 
 	function selectForExport(alternate?: JapaneseForm) {
 		selectDefinition(source, definition, alternate);

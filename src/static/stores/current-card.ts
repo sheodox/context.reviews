@@ -8,14 +8,16 @@ const cloneObject = <T>(obj: T): T => JSON.parse(JSON.stringify(obj));
 export const word = writable<string>('');
 export const wordHighlightRange = writable(null);
 export const reading = writable<string>('');
+export const beforeNotes = writable<string>('');
+export const afterNotes = writable<string>('');
 export const source = writable<string>('');
 export const context = writable<string>(null);
 export const definition = writable<Definition>(null);
 export const definitionSearchTerm = writable<string>('');
 
 export const card = derived<any, Card>(
-	[word, wordHighlightRange, reading, context, definition, source, cardStyle],
-	([word, wordHighlightRange, reading, context, definition, source, cardStyle]) => {
+	[word, wordHighlightRange, reading, context, definition, source, cardStyle, beforeNotes, afterNotes],
+	([word, wordHighlightRange, reading, context, definition, source, cardStyle, beforeNotes, afterNotes]) => {
 		return {
 			id: definition ? definition.href : '',
 			word,
@@ -25,6 +27,8 @@ export const card = derived<any, Card>(
 			definition,
 			source,
 			cardStyle,
+			beforeNotes,
+			afterNotes,
 		};
 	}
 );
@@ -47,6 +51,8 @@ export const resetCard = () => {
 	source.set('');
 	definition.set(null);
 	definitionSearchTerm.set('');
+	beforeNotes.set('');
+	afterNotes.set('');
 };
 
 export const suggestUseKana = derived([definition, definitionSearchTerm], ([definition, searchTerm]) => {

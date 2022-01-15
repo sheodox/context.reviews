@@ -170,6 +170,10 @@ function createTemplates() {
 				.other-links-container {
 					position: relative;
 				}
+				.freeform-notes {
+					white-space: pre-line;
+					margin: 1rem;
+				}
 			</style>
 		`,
 		ankiFrontTemplate = Handlebars.compile(`
@@ -190,6 +194,10 @@ function createTemplates() {
 				<p class="reading">{{reading}}</p>
 			{{/if}}
 			
+			{{#if beforeNotes}}
+				<div class="freeform-notes">{{beforeNotes}}</div>
+			{{/if}}
+				
 			<div class="dictionary-details">
 				{{#if showOriginal}}
 					<p class="dictionary-form">
@@ -250,6 +258,9 @@ function createTemplates() {
 					</small>
 				{{/if}}
 			</div>
+			{{#if afterNotes}}
+				<div class="freeform-notes">{{afterNotes}}</div>
+			{{/if}}
 			{{#if context}}
 				<p class="context">
 					<a href="{{contextHref}}">「{{context}}」</a>

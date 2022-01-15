@@ -2,7 +2,6 @@
 	.column {
 		display: flex;
 		flex-direction: column;
-		margin: 1rem;
 	}
 	.edit-card {
 		background: var(--shdx-gray-600);
@@ -36,7 +35,7 @@
 </style>
 
 <div class="centered edit-card mt-4 mr-4 ml-4">
-	<div class="f-row card-fields">
+	<div class="f-row card-fields gap-3 m-3">
 		<div class="column">
 			<TextInput id="edit-word" bind:value={$word}>
 				Word
@@ -59,6 +58,12 @@
 			<TextInput id="edit-reading" bind:value={$reading}>Reading</TextInput>
 		</div>
 
+		<div class="column">
+			<button on:click={() => dispatch('customize')} disabled={isCustomizing}>
+				<Icon icon="cog" />
+				Customize
+			</button>
+		</div>
 		<div class="column">
 			<button
 				on:click={() => dispatch('confirm')}
@@ -85,8 +90,10 @@
 	import { reading, word, wordIsUnique, suggestUseKana, useKanaTooltip } from '../stores/current-card';
 
 	export let isSelectingStyle: boolean;
+	export let isCustomizing: boolean;
 
 	const dispatch = createEventDispatcher<{
 		confirm: void;
+		customize: void;
 	}>();
 </script>

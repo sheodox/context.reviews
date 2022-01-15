@@ -19,6 +19,8 @@
 			word: '人気',
 			reading: 'にんき',
 			context: '僕の出身の徳島もこってり系のラーメンが人気でよくそれに慣れていた。',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '人気',
 				href: 'https://jisho.org/word/%E4%BA%BA%E6%B0%97',
@@ -45,6 +47,8 @@
 			word: '簡単',
 			reading: 'かんたん',
 			context: '近未来、ICチップを身体に埋め込むだけで全ての言語を簡単に話せるようになったりね',
+			beforeNotes: 'You can customize your cards to add notes or change meanings!',
+			afterNotes: 'You can even put notes down here if you want!',
 			definition: {
 				word: '簡単',
 				href: 'https://jisho.org/word/%E7%B0%A1%E5%8D%98',
@@ -72,6 +76,8 @@
 			word: '庭',
 			reading: 'にわ',
 			context: 'どうやって鹿は庭に入ったかな',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '庭',
 				href: 'https://jisho.org/word/%E5%BA%AD',
@@ -92,6 +98,8 @@
 			word: '身体',
 			reading: 'しんたい',
 			context: '近未来、ICチップを身体に埋め込むだけで全ての言語を簡単に話せるようになったりね',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '身体',
 				href: 'https://jisho.org/word/%E8%BA%AB%E4%BD%93',
@@ -112,6 +120,8 @@
 			word: '未知',
 			reading: 'みち',
 			context: '遊泳中に見えない水面下より未知の生物に噛まれ、毒を注入され誰にも気付かれず溺れて死ぬこと。',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '未知',
 				href: 'https://jisho.org/word/%E6%9C%AA%E7%9F%A5',
@@ -135,6 +145,8 @@
 			word: '豚骨',
 			reading: 'とんこつ',
 			context: '好きなラーメンは豚骨スープベースのものだ。',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '豚骨',
 				href: 'https://jisho.org/word/%E8%B1%9A%E9%AA%A8',
@@ -161,6 +173,8 @@
 			word: 'あっさり',
 			reading: 'あっさり',
 			context: '東京は逆にあっさりした醤油ベースのラーメンが多いが口に合わない。',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: 'あっさり',
 				href: 'https://jisho.org/word/%E3%81%82%E3%81%A3%E3%81%95%E3%82%8A',
@@ -191,6 +205,8 @@
 			word: '未来',
 			reading: 'みらい',
 			context: '人に触れることでその人の未来を見ること。',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '未来',
 				href: 'https://jisho.org/word/%E6%9C%AA%E6%9D%A5',
@@ -229,6 +245,8 @@
 			word: '見張る',
 			reading: 'みはる',
 			context: '森を抜けると目を見張るような風景が広がっています。',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '見張る',
 				href: 'https://jisho.org/word/%E8%A6%8B%E5%BC%B5%E3%82%8B',
@@ -256,6 +274,8 @@
 			word: '風景',
 			reading: 'ふうけい',
 			context: '森を抜けると目を見張るような風景が広がっています。',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '風景',
 				href: 'https://jisho.org/word/%E9%A2%A8%E6%99%AF',
@@ -280,6 +300,8 @@
 			word: '言語',
 			reading: 'げんご',
 			context: '近未来、ICチップを身体に埋め込むだけで全ての言語を簡単に話せるようになったりね',
+			beforeNotes: '',
+			afterNotes: '',
 			definition: {
 				word: '言語',
 				href: 'https://jisho.org/word/%E8%A8%80%E8%AA%9E',
