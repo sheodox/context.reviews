@@ -22,10 +22,12 @@
 
 <div class="page-layout">
 	<div class="text-align-right">
-		<Link href="/" classes="inline-link">
-			<Icon icon="chevron-left" />
-			Back to phrase list
-		</Link>
+		{#if showBackLink}
+			<Link href="/" classes="inline-link">
+				<Icon icon="chevron-left" />
+				Back to phrase list
+			</Link>
+		{/if}
 	</div>
 	<h1>{title}</h1>
 	<slot />
@@ -36,4 +38,5 @@
 	import Link from '../Link.svelte';
 
 	export let title: string;
+	export let showBackLink = true;
 </script>

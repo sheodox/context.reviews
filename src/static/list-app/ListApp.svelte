@@ -59,7 +59,7 @@
 			{#if $hasAddedPhrases}
 				<NoMorePhrases />
 			{:else}
-				<Help />
+				<Help showBackLink={false} />
 			{/if}
 		</div>
 	{:else if phrases.length > 0}

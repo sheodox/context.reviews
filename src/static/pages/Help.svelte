@@ -37,16 +37,18 @@
 	}
 </style>
 
-<Layout title="Help">
+<Layout title="Help" {showBackLink}>
 	<div class="container has-inline-links">
 		<TabList {tabs} bind:selectedTab />
 
 		<Tab tabId="help-setup" {selectedTab}>
 			<h2>Setup</h2>
 			<p>
-				Install the browser extension which will automatically keep track of all of the <ExternalLink
+				First install the browser extension which will automatically keep track of all of the <ExternalLink
 					href="https://jisho.org">Jisho.org</ExternalLink
 				> searches you make for Japanese words and phrases.
+			</p>
+			<p>
 				<ExternalLink href="https://addons.mozilla.org/en-US/firefox/addon/context-reviews/"
 					>Install for Firefox</ExternalLink
 				>
@@ -75,7 +77,8 @@
 					<p class="hint">
 						<Icon icon="info" />
 						<strong>Hint!</strong>
-						If you had searched for full sentences you'll see it included as a context sentence on the back of the Anki cards.
+						If you use Jisho to search for full sentences you'll see it included as a context sentence on the back of the
+						Anki cards.
 					</p>
 				</li>
 			</ol>
@@ -180,6 +183,8 @@
 	import ExternalLink from '../ExternalLink.svelte';
 	import { Icon, TabList, Tab } from 'sheodox-ui';
 	import JapaneseWord from '../definitions/JapaneseWord.svelte';
+
+	export let showBackLink = true;
 
 	const tabs = [
 		{
