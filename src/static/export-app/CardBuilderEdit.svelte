@@ -59,12 +59,6 @@
 		</div>
 
 		<div class="column">
-			<button on:click={() => dispatch('customize')} disabled={isCustomizing}>
-				<Icon icon="cog" />
-				Customize
-			</button>
-		</div>
-		<div class="column">
 			<button
 				on:click={() => dispatch('confirm')}
 				class="primary"
@@ -72,6 +66,12 @@
 			>
 				<Icon icon="plus" />
 				Add Card
+			</button>
+		</div>
+		<div class="column">
+			<button on:click={() => dispatch('customize')} title="Customize" disabled={isCustomizing}>
+				<Icon icon="cog" />
+				<span class="sr-only">Customize</span>
 			</button>
 		</div>
 	</div>
