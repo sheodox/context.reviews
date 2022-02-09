@@ -1,3 +1,4 @@
+import { createAutoExpireToast } from 'sheodox-ui';
 import { get, writable, derived } from 'svelte/store';
 import SRSConstructor from '../export-app/SRSConstructor';
 import { cards } from './cards';
@@ -39,7 +40,7 @@ async function acAction<T>(
 		await req;
 	} catch (e) {
 		// Anki-Connect is unreachable, either offline or permission hasn't been granted
-		return { status: 0, result: null, error: null };
+		return { status: 0, result: null, error: 'Anki-Connect could not be reached.' };
 	}
 
 	const res = await req,
@@ -80,7 +81,16 @@ export async function newDeck() {
 }
 
 export async function requestPermission() {
-	const { result } = await acAction<{ permission: 'granted' | 'denied' }>('requestPermission');
+	const { result, error } = await acAction<{ permission: 'granted' | 'denied' }>('requestPermission');
+
+	if (error) {
+		createAutoExpireToast({
+			variant: 'error',
+			title: 'Error',
+			message: 'Error requesting permission from Anki-Connect.',
+			technicalDetails: error,
+		});
+	}
 
 	if (result?.permission === 'granted') {
 		await fetchDecks();
