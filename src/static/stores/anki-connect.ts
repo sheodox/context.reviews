@@ -38,6 +38,7 @@ async function acAction<T>(
 	try {
 		await req;
 	} catch (e) {
+		// Anki-Connect is unreachable, either offline or permission hasn't been granted
 		return { status: 0, result: null, error: null };
 	}
 
@@ -90,7 +91,7 @@ export async function requestPermission() {
 export async function importCards() {
 	const srs = new SRSConstructor();
 	srs.addCards(get(cards));
-	await acAction('addNotes', {
+	return await acAction('addNotes', {
 		notes: srs.exportAnkiConnect(get(selectedAnkiDeckName)),
 	});
 }

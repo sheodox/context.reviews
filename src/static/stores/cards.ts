@@ -16,7 +16,7 @@ export const cardsByPhrase = writable<CardsByPhrase>(new Map());
 //when cards are added. it's used to prevent them from accidentally
 //navigating away if they've not downloaded the deck yet.
 export const downloadedDeck = writable(false);
-//when a deck has been imported into anki with AnkiConnect
+//when a deck has been imported into anki with Anki-Connect
 export const deckImported = writable(false);
 
 export const deckConsumed = derived([downloadedDeck, deckImported], ([downloaded, imported]) => {

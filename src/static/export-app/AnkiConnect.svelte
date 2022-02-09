@@ -10,9 +10,9 @@
 </style>
 
 {#if $ankiConnectStatus === 'unavailable'}
-	<p>Cards can be added easiest with the AnkiConnect plugin for Anki.</p>
+	<p>Cards can be added easiest with the Anki-Connect plugin for Anki.</p>
 	<p class="has-inline-links">
-		First install <ExternalLink href="https://foosoft.net/projects/anki-connect/">AnkiConnect</ExternalLink>. Then with
+		First install <ExternalLink href="https://foosoft.net/projects/anki-connect/">Anki-Connect</ExternalLink>. Then with
 		Anki open click Request Permission below and accept the popup in Anki.
 	</p>
 	<p class="fw-bold">Anki must be kept open to import cards.</p>
@@ -26,13 +26,14 @@
 	</select>
 	<div class="f-row justify-content-between">
 		<button on:click={newDeck}>New Deck</button>
-		<button on:click={importCards} class="primary" disabled={adding}>Add to Deck</button>
+		<button on:click={importCards} class="primary" disabled={adding || $selectedAnkiDeck === null}>Add to Deck</button>
 	</div>
 {:else if $deckImported}
 	<p class="text-align-center">Congrats, you're done!</p>
 {/if}
 
 <script lang="ts">
+	import { createAutoExpireToast } from 'sheodox-ui';
 	import ExternalLink from '../ExternalLink.svelte';
 	import {
 		ankiDecks,
@@ -48,8 +49,18 @@
 
 	async function importCards() {
 		adding = true;
-		await importCardAction();
+		const { error } = await importCardAction();
+
+		if (error) {
+			createAutoExpireToast({
+				variant: 'error',
+				title: 'Error',
+				message: 'An error occurred importing cards into Anki',
+				technicalDetails: error,
+			});
+		} else {
+			$deckImported = true;
+		}
 		adding = false;
-		$deckImported = true;
 	}
 </script>

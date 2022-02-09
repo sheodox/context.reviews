@@ -178,7 +178,7 @@
 	const tabs = [
 		{
 			id: 'ac',
-			title: 'AnkiConnect (recommended)',
+			title: 'Anki-Connect (recommended)',
 		},
 		{
 			id: 'txt',
