@@ -31,7 +31,7 @@
 				</a>
 			</li>
 			<li>
-				<ExternalLink href="https://github.com/sheodox">&copy;2021 sheodox</ExternalLink>
+				<ExternalLink href="https://sheodox.com/">&copy;2021 sheodox</ExternalLink>
 			</li>
 		</ul>
 	</nav>

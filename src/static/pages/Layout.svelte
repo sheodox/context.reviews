@@ -4,6 +4,7 @@
 		margin: 0 auto;
 		width: 40rem;
 		max-width: 100%;
+		font-size: var(--shdx-font-size-4);
 	}
 	h1 {
 		margin-bottom: var(--shdx-spacing-1);
