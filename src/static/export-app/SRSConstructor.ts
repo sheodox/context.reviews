@@ -27,7 +27,8 @@ export default class SRSConstructor {
 
 		const exported = this.cards
 				.map((card) => {
-					return compileAnkiCard(card).map(ankiEscape).join(';');
+					// need to include css when exporting to a text file, as it won't have css provided in the model
+					return compileAnkiCard(card, true).map(ankiEscape).join(';');
 				})
 				.join('\n'),
 			blob = new Blob([exported], { type: 'text/plain' }),
@@ -38,12 +39,33 @@ export default class SRSConstructor {
 			href: URL.createObjectURL(blob),
 		};
 	}
+	getCardModelName() {
+		return 'Context.Reviews v1';
+	}
+	getCardModelDefinition() {
+		return {
+			modelName: this.getCardModelName(),
+			inOrderFields: ['Front', 'Back'],
+			css: getAnkiCardCSS(),
+			isCloze: false,
+			cardTemplates: [
+				{
+					// this template is based off of the default Basic model
+					Front: '{{Front}}',
+					Back: '{{FrontSide}} <hr id="answer" /> {{Back}}',
+				},
+			],
+		};
+	}
 	exportAnkiConnect(deckName: string) {
+		const modelName = this.getCardModelName();
+
 		return this.cards.map((card) => {
-			const [front, back] = compileAnkiCard(card);
+			// css is provided by the model, don't need to include it in the card's front
+			const [front, back] = compileAnkiCard(card, false);
 			return {
 				deckName,
-				modelName: 'Basic',
+				modelName,
 				fields: {
 					Front: front,
 					Back: back,
@@ -57,137 +79,139 @@ export default class SRSConstructor {
 	}
 }
 
+function getAnkiCardCSS() {
+	const docStyles = getComputedStyle(document.documentElement),
+		getCSSVar = (varName: string) => docStyles.getPropertyValue(`--${varName}`);
+	return `
+		.night_mode { }
+		.card {
+			background: ${getCSSVar('shdx-gray-700')} !important;
+			color: white;
+			max-width: 500px;
+			margin: 0 auto;
+			font-family: ${getCSSVar('jp-fonts')};
+			font-size: 16px;
+			text-align: center;
+		}
+		mark {
+			background: ${getCSSVar('shdx-blue-300')};
+			color: black;
+			border-radius: 3px;
+			white-space: nowrap;
+		}
+		.word {
+			font-size: 3rem;
+		}
+		.word.front-context {
+			font-size: 1.75rem;
+		}
+		.reading {
+			font-size: 2rem;
+		}
+		small {
+			color: gray;
+		}
+		a {
+			color: #4bcbff;
+		}
+		a:not(:hover) {
+			text-decoration: none;
+		}
+		li {
+			text-align: left;
+		}
+		.context {
+			margin: 0.3rem;
+		}
+		.tag:not(:last-of-type) {
+			margin-right: 0.3rem;
+		}
+		.alternate-forms ruby:not(:last-of-type) {
+			margin-right: 0.5rem;
+		}
+		.alternate-forms ruby:not(:last-of-type)::after {
+			content: ', ';
+		}
+		.dictionary-details {
+			padding: 0.5rem;
+			border-radius: 3px;
+			background: ${getCSSVar('shdx-gray-600')};
+			box-shadow: ${getCSSVar('shdx-shadow-5')};
+		}
+		.dictionary-form {
+			font-size: 1.3rem;
+			margin: 0;
+		}
+		#definition-links {
+			text-align: center;
+		}
+		.source {
+			text-transform: capitalize;
+			font-size: 0.7rem;
+			margin: 0 0.2rem;
+			display: inline;
+		}
+		#links-trigger:not(:checked) ~ .other-links {
+			display: none;
+		}
+		#links-trigger {
+			display: none;
+		}
+		#links-trigger + label {
+			font-size: 0.7rem;
+			cursor: pointer;
+			margin: 0 0.2rem;
+		}
+		#links-trigger + label:hover {
+			text-decoration: underline;
+		}
+		#links-trigger:checked + label::after {
+			content: '▲';
+			font-size: 0.4rem;
+		}
+		#links-trigger + label::after {
+			content: '▼';
+			font-size: 0.4rem;
+		}
+		.other-links {
+			white-space: nowrap;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%, calc(-100% - 1.5rem));
+			background: ${getCSSVar('shdx-gray-500')};
+			border-radius: 3px;
+			box-shadow: ${getCSSVar('shdx-shadow-5')};
+			padding: 0.3rem;
+			font-size: 1.2rem;
+		}
+		.other-links-container {
+			position: relative;
+		}
+		.freeform-notes {
+			white-space: pre-line;
+			margin: 1rem;
+			}
+	`;
+}
+
 // build the templates when used so they for sure have access to the css variables by then,
 // if this runs as the file first runs the css won't have loaded and the background colors will be blank
-function createTemplates() {
-	const docStyles = getComputedStyle(document.documentElement),
-		getCSSVar = (varName: string) => docStyles.getPropertyValue(`--${varName}`),
-		ankiCommonStyles = `
-			<style>
-				.night_mode { }
-				.card {
-					background: ${getCSSVar('shdx-gray-700')} !important;
-					color: white;
-					max-width: 500px;
-					margin: 0 auto;
-					font-family: ${getCSSVar('jp-fonts')};
-					font-size: 16px;
-				}
-				mark {
-					background: ${getCSSVar('shdx-blue-300')};
-					color: black;
-					border-radius: 3px;
-					white-space: nowrap;
-				}
-				.word {
-					font-size: 3rem;
-				}
-				.word.front-context {
-					font-size: 1.75rem;
-				}
-				.reading {
-					font-size: 2rem;
-				}
-				small {
-					color: gray;
-				}
-				a {
-					color: #4bcbff;
-				}
-				a:not(:hover) {
-					text-decoration: none;
-				}
-				li {
-					text-align: left;
-				}
-				.context {
-					margin: 0.3rem;
-				}
-				.tag:not(:last-of-type) {
-					margin-right: 0.3rem;
-				}
-				.alternate-forms ruby:not(:last-of-type) {
-					margin-right: 0.5rem;
-				}
-				.alternate-forms ruby:not(:last-of-type)::after {
-					content: ', ';
-				}
-				.dictionary-details {
-					padding: 0.5rem;
-					border-radius: 3px;
-					background: ${getCSSVar('shdx-gray-600')};
-					box-shadow: ${getCSSVar('shdx-shadow-5')};
-				}
-				.dictionary-form {
-					font-size: 1.3rem;
-					margin: 0;
-				}
-				#definition-links {
-					text-align: center;
-				}
-				.source {
-					text-transform: capitalize;
-					font-size: 0.7rem;
-					margin: 0 0.2rem;
-					display: inline;
-				}
-				#links-trigger:not(:checked) ~ .other-links {
-					display: none;
-				}
-				#links-trigger {
-					display: none;
-				}
-				#links-trigger + label {
-					font-size: 0.7rem;
-					cursor: pointer;
-					margin: 0 0.2rem;
-				}
-				#links-trigger + label:hover {
-					text-decoration: underline;
-				}
-				#links-trigger:checked + label::after {
-					content: '▲';
-					font-size: 0.4rem;
-				}
-				#links-trigger + label::after {
-					content: '▼';
-					font-size: 0.4rem;
-				}
-				.other-links {
-					white-space: nowrap;
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-					position: absolute;
-					left: 50%;
-					transform: translate(-50%, calc(-100% - 1.5rem));
-					background: ${getCSSVar('shdx-gray-500')};
-					border-radius: 3px;
-					box-shadow: ${getCSSVar('shdx-shadow-5')};
-					padding: 0.3rem;
-					font-size: 1.2rem;
-				}
-				.other-links-container {
-					position: relative;
-				}
-				.freeform-notes {
-					white-space: pre-line;
-					margin: 1rem;
-				}
-			</style>
-		`,
-		ankiFrontTemplate = Handlebars.compile(`
-				{{#if isFrontContext}}
-					<p class="word front-context">
-					{{frontBeforeHighlight}}<mark>{{frontHighlight}}</mark>{{frontAfterHighlight}}
-					</p>
-				{{/if}}
-				{{#unless isFrontContext}}
-					<p class="word">
-						{{word}}
-					</p>
-				{{/unless}}
-			${ankiCommonStyles}
+function createTemplates(includeCss: boolean) {
+	const ankiFrontTemplate = Handlebars.compile(`
+			{{#if isFrontContext}}
+				<p class="word front-context">
+				{{frontBeforeHighlight}}<mark>{{frontHighlight}}</mark>{{frontAfterHighlight}}
+				</p>
+			{{/if}}
+			{{#unless isFrontContext}}
+				<p class="word">
+					{{word}}
+				</p>
+			{{/unless}}
+			${includeCss ? `<style>${getAnkiCardCSS()}</style>` : ''}
 		`),
 		ankiBackTemplate = Handlebars.compile(`
 			{{#if showReading}}
@@ -297,8 +321,8 @@ function createTemplates() {
 	return [ankiFrontTemplate, ankiBackTemplate];
 }
 
-export function compileAnkiCard(c: Card): [string, string] {
-	const [ankiFrontTemplate, ankiBackTemplate] = createTemplates(),
+export function compileAnkiCard(c: Card, includeCss: boolean): [string, string] {
+	const [ankiFrontTemplate, ankiBackTemplate] = createTemplates(includeCss),
 		//don't leak changes if things weren't cloned elsewhere
 		card: CardPrecompiled = cloneObject(c),
 		jishoSearchUrl = (word: string) => `https://jisho.org/search/${encodeURIComponent(word)}`;

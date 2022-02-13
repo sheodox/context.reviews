@@ -90,6 +90,7 @@ export async function requestPermission() {
 			message: 'Error requesting permission from Anki-Connect.',
 			technicalDetails: error,
 		});
+		return;
 	}
 
 	if (result?.permission === 'granted') {
@@ -98,8 +99,28 @@ export async function requestPermission() {
 	}
 }
 
+async function ensureCardModel(cardModelName: string, modelDefinition: any) {
+	const { result, error } = await acAction<string[]>('modelNames');
+	if (error) {
+		return { error };
+	}
+
+	if (result.includes(cardModelName)) {
+		return { error: null };
+	}
+
+	return await acAction('createModel', modelDefinition);
+}
+
 export async function importCards() {
 	const srs = new SRSConstructor();
+
+	// if we can't make the card model don't proceed. the calling component will alert with any errors returned from this function
+	const { error } = await ensureCardModel(srs.getCardModelName(), srs.getCardModelDefinition());
+	if (error) {
+		return { error };
+	}
+
 	srs.addCards(get(cards));
 	return await acAction('addNotes', {
 		notes: srs.exportAnkiConnect(get(selectedAnkiDeckName)),

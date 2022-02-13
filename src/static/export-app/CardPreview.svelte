@@ -61,7 +61,7 @@
 	 * Compile the card's markup, and mount it within a shadow DOM to keep styles separate
 	 */
 	function mountPreview(element = previewElement, crd: Card = card) {
-		const [cardFront, cardBack] = compileAnkiCard(crd),
+		const [cardFront, cardBack] = compileAnkiCard(crd, true),
 			shadow = element.shadowRoot || element.attachShadow({ mode: 'open' }),
 			cardContainer = document.createElement('div');
 
