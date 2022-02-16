@@ -160,6 +160,13 @@
 	</section>
 
 	<section>
+		<h2>Import Subtitles</h2>
+
+		<p>Upload your own .srt or .ass subtitles so you can study before watching a show!</p>
+		<Image src="images/subtitle-import-demo" alt="demo screenshot of the subtitle import" />
+	</section>
+
+	<section>
 		<h2>Look Back At Your Searches</h2>
 
 		<p>

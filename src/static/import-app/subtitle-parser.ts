@@ -13,7 +13,7 @@ export function parseSubrip(subrip: string) {
 			.split('\n\n')
 			// each block is made up of several lines
 			.map((block) => {
-				const lines = block.split('\n');
+				const lines = block.trim().split('\n');
 
 				//subrip files will number each subtitle, we don't care about those lines, make it look more like webvtt
 				if (/^\d+$/.test(lines[0])) {
@@ -28,7 +28,7 @@ export function parseSubrip(subrip: string) {
 				// subrip ex: 00:03:18,608 --> 00:03:20,371
 				// webvtt ex: 00:00:17.168 --> 00:00:19.170
 				// note we're not checking if the line ends after the timings as webvtt can have styling cues there
-				return /^[\d:.,]*\s*-->\s*[\d:.,]*/.test(lines[0].trim());
+				return /^[\d:.,]+\s*-->\s*[\d:.,]+/.test(lines[0].trim());
 			})
 			.map((lines) => {
 				// now that we should only have subtitles, we can discard the timing data
@@ -52,8 +52,9 @@ export function parseASS(ass: string) {
 	//much easier to parse without carriage returns, keep in mind though that \\r is a 'reset' override tag
 	ass = ass.replace(/\r\n/g, '\n');
 
-	// ASS subtitles have several blocks of stuff for metadata and styling, we only care about the subtitles block
-	const blocks = ass.split('\n\n'),
+	// ASS subtitles have several blocks of stuff for metadata and styling, we only care about the subtitles block.
+	// split the ass file by newlines followed by a [, we know those are the start of the headings
+	const blocks = ass.split(/\n(?=\[)/),
 		// each block starts with a name in brackets, find the [Events] one which is where subtitles are
 		eventsBlock = blocks.find((block) => block.startsWith('[Events]\n')),
 		// split into lines of subtitles, ignoring any lines that aren't "Dialogue" lines (comments, format)

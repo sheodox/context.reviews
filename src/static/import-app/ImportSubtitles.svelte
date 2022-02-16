@@ -49,6 +49,7 @@
 			try {
 				phrases = parserByExtension[extension as keyof typeof parserByExtension](fileContents);
 			} catch (e) {
+				console.error(e);
 				createAutoExpireToast({
 					title: 'Subtitle Parse Error',
 					message:

@@ -26,7 +26,7 @@
 </style>
 
 <section class="f-column align-items-center justify-content-center f-1 p-3">
-	<p class="question shdx-font-size-9">What do you want to import your phrases from?</p>
+	<p class="question shdx-font-size-9">Where do you want to import your phrases from?</p>
 	<div class="f-row flex-wrap gap-4">
 		{#each importTypes as type}
 			<a
@@ -57,7 +57,7 @@
 		},
 		{
 			name: 'Subtitles',
-			description: 'Upload a subtitle file (.srt or .ass) and mine words from the subtitles',
+			description: 'Upload a subtitle file (.srt or .ass) and select phrases from the subtitles',
 			icon: 'closed-captioning',
 			href: '/import/subtitles',
 		},
