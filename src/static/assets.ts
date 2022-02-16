@@ -6,5 +6,5 @@ export const asset = (assetPath: string) => {
 	if (!(assetPath in assetManifest)) {
 		console.error(`missing "${assetPath}" in asset manifest!`);
 	}
-	return assetManifest[assetPath];
+	return '/' + assetManifest[assetPath];
 };

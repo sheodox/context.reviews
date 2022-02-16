@@ -48,3 +48,18 @@ export const trim = (phrase: string) => {
 
 	return phrase;
 };
+
+export const splitIntoPhrases = (phrase: string) => {
+	phrase = phrase.replace(/\r/g, '');
+	//insert newlines after sentences, and split on those. this can be also used
+	//to intentionally split text when bulk adding phrases
+	const delimiter = '\n';
+	['。', '！', '？'].forEach((punctuation) => {
+		phrase = phrase.replace(new RegExp(punctuation, 'g'), `${punctuation}${delimiter}`);
+	});
+	//split between quotes that are right next to each other, like "something」「something else"
+	quoteCharacters.map(([open, close]) => {
+		phrase = phrase.replace(new RegExp(`${close}\\s*${open}`, 'g'), `${close}\n${open}`);
+	});
+	return phrase.split(delimiter).filter((phrase) => !!phrase);
+};

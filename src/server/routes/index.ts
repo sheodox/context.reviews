@@ -97,7 +97,7 @@ router.get(
 	})
 );
 
-['/export', '/settings', '/about'].forEach((frontendRoute) => {
+['/export', '/settings', '/about', '/import', '/import/*'].forEach((frontendRoute) => {
 	router.get(
 		frontendRoute,
 		safeAsyncRoute(async (req: AppRequest, res) => {

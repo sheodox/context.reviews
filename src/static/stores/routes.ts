@@ -25,5 +25,8 @@ page(`/about`, setRoute('about'));
 // a few pixels every time, keeping the scrollbar there makes it less jittery
 page(`/export`, setRoute('export', { alwaysScroll: true }));
 page(`/help`, setRoute('help'));
+page(`/import`, setRoute('import'));
+page(`/import/subtitles`, setRoute('import/subtitles'));
+page(`/import/plain`, setRoute('import/plain'));
 page(`/`, setRoute('list', { noScroll: true }));
 page();

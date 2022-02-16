@@ -1,4 +1,3 @@
-import { trim, quoteCharacters } from './trim.js';
 import { prisma } from './prisma.js';
 import {
 	phrasesListTime,
@@ -11,24 +10,14 @@ import {
 	phrasesTotal,
 	phrasesActive,
 } from '../metrics.js';
+import { splitIntoPhrases, trim } from '../../shared/phrase-utils.js';
 
 class Tracker {
 	/**
 	 * Split a long search phrase into sentences.
 	 */
 	static split(phrase: string) {
-		phrase = phrase.replace(/\r/g, '');
-		//insert newlines after sentences, and split on those. this can be also used
-		//to intentionally split text when bulk adding phrases
-		const delimiter = '\n';
-		['。', '！', '？'].forEach((punctuation) => {
-			phrase = phrase.replace(new RegExp(punctuation, 'g'), `${punctuation}${delimiter}`);
-		});
-		//split between quotes that are right next to each other, like "something」「something else"
-		quoteCharacters.map(([open, close]) => {
-			phrase = phrase.replace(new RegExp(`${close}\\s*${open}`, 'g'), `${close}\n${open}`);
-		});
-		return phrase.split(delimiter);
+		return splitIntoPhrases(phrase);
 	}
 
 	/**
@@ -36,7 +25,7 @@ class Tracker {
 	 * @param userId - user's UUID
 	 * @param phrases - a string of phrases, will be broken apart and stored individually
 	 */
-	async add(userId: string, phrases: string) {
+	async add(userId: string, phrases: string | string[]) {
 		if (!phrases) {
 			return;
 		}
@@ -44,8 +33,10 @@ class Tracker {
 		const addedPhrases = [],
 			existingPhrases = [];
 
+		const splitPhrases = typeof phrases === 'string' ? Tracker.split(phrases) : phrases;
+
 		//add each sentence individually
-		for (let phrase of Tracker.split(phrases)) {
+		for (let phrase of splitPhrases) {
 			phrase = trim(phrase);
 			if (phrase) {
 				phrasesAdded.inc();
@@ -160,7 +151,6 @@ class Tracker {
 
 	/**
 	 * get all phrases
-	 * @returns {Phrase[]}
 	 */
 	async list(userId: string) {
 		const listTimeEnd = phrasesListTime.startTimer(),

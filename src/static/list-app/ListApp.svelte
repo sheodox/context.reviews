@@ -3,14 +3,9 @@
 		font-size: 1.1rem;
 		white-space: nowrap;
 		background: none;
+		text-align: left;
 	}
 
-	#toolbar {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
-	}
 	table {
 		width: fit-content;
 		margin: 0.5rem 0;
@@ -44,18 +39,12 @@
 </style>
 
 <div id="list-container">
-	<div id="toolbar">
-		<button on:click={undo}><Icon icon="undo" /> Undo Delete</button>
-		{#if $settings.autoSpeechSynthesis || $settings.speechSynthesis}
-			<button on:click={stop} disabled={!speaking}><Icon icon="stop" /> Stop Voice</button>
-		{/if}
-		<button on:click={() => (showAdd = true)}><Icon icon="plus" /> Add Phrases</button>
-	</div>
+	<Toolbar />
 	{#if initiallyLoading}
 		<!-- show nothing when doing the initial list load, because if
 			a loading indicator is shown for a super short time it'll be kind of jarring -->
 	{:else if phrases.length === 0}
-		<div class="centered-">
+		<div>
 			{#if $hasAddedPhrases}
 				<NoMorePhrases />
 			{:else}
@@ -78,36 +67,25 @@
 			</tbody>
 		</table>
 	{/if}
-
-	{#if showAdd}
-		<Modal title="Add Phrases" bind:visible={showAdd}>
-			<AddPhrases bind:showAddDialog={showAdd} />
-		</Modal>
-	{/if}
 </div>
 <aside id="definitions" class="panel">
 	<Definitions term={selection} />
 </aside>
 
-<svelte:window on:keydown={keydown} />
-
 <script lang="ts">
 	import Definitions from './DictionarySearchPanel.svelte';
 	import Help from '../pages/Help.svelte';
 	import Phrase from './Phrase.svelte';
-	import { Icon, Modal } from 'sheodox-ui';
 	import { say } from '../speech';
 	import phraseStore from '../stores/phrases';
 	import NoMorePhrases from './NoMorePhrases.svelte';
-	import AddPhrases from './AddPhrases.svelte';
 	import { hasAddedPhrases, settings } from '../stores/metadata';
 	import type { Phrase as PhraseType } from '../../shared/types/phrases';
+	import Toolbar from './Toolbar.svelte';
 
 	let selection = '',
 		initiallyLoading = true,
-		showAdd = false,
-		phrases: PhraseType[] = [],
-		speaking = false;
+		phrases: PhraseType[] = [];
 
 	phraseStore.subscribe((list) => {
 		//phrases inits null for toasts (it's null until the list is known) so need a fallback
@@ -128,25 +106,4 @@
 		}
 		selection = text;
 	}
-
-	function undo() {
-		phraseStore.action('undo');
-	}
-
-	function stop() {
-		speechSynthesis.cancel();
-	}
-
-	function keydown(e: KeyboardEvent) {
-		if (e.key === 'z' && e.ctrlKey && (e.target as HTMLElement).tagName !== 'INPUT') {
-			undo();
-		}
-	}
-
-	function eachFrame() {
-		speaking = window.speechSynthesis.speaking;
-		requestAnimationFrame(eachFrame);
-	}
-
-	eachFrame();
 </script>
