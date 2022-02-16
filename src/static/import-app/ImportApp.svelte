@@ -1,11 +1,12 @@
 <style lang="scss">
 	.import-type {
-		border: 2px solid var(--shdx-blue-600);
-		border-radius: 3px;
+		border: 2px solid var(--shdx-gray-500);
+		border-radius: 10px;
 		text-align: center;
 		font-weight: bold;
 		color: var(--shdx-blue-300);
 		&:hover {
+			border-color: var(--shdx-blue-600);
 			background-color: var(--shdx-gray-600);
 		}
 
@@ -30,14 +31,14 @@
 	<div class="f-row flex-wrap gap-4">
 		{#each importTypes as type}
 			<a
-				class="import-type f-column justify-content-start px-1 py-1"
+				class="import-type f-column justify-content-start px-4 py-1"
 				href={type.href}
 				on:click|preventDefault={() => page(type.href)}
 			>
 				<p class="shdx-font-size-9 m-1">
 					<Icon icon={type.icon} />
 				</p>
-				<p class="type-name shdx-font-size-5">{type.name}</p>
+				<p class="type-name shdx-font-size-5 mt-0">{type.name}</p>
 				<p class="type-description shdx-font-size-3">{type.description}</p>
 			</a>
 		{/each}
@@ -57,7 +58,7 @@
 		},
 		{
 			name: 'Subtitles',
-			description: 'Upload a subtitle file (.srt or .ass) and select phrases from the subtitles',
+			description: 'Upload a subtitle file (.srt or .ass)',
 			icon: 'closed-captioning',
 			href: '/import/subtitles',
 		},
