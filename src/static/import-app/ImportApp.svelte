@@ -8,6 +8,9 @@
 		&:hover {
 			border-color: var(--shdx-blue-600);
 			background-color: var(--shdx-gray-600);
+			.type-description {
+				color: white;
+			}
 		}
 
 		.type-description {
