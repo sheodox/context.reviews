@@ -7,7 +7,7 @@
 <Layout title="Import Subtitles">
 	<div class="f-column f-1 align-items-center">
 		{#if !phrases}
-			<label for="srt-upload" class="button">
+			<label for="srt-upload" class="button primary">
 				<div class="f-row align-items-center">Select a Subtitle File</div>
 			</label>
 			<input type="file" id="srt-upload" on:change={loadSubtitleFile} accept=".srt,.ass,.ssa,.vtt" />

@@ -45,6 +45,7 @@ export function parseSubrip(subrip: string) {
 						.replace(/<.*?>/g, '')
 				);
 			})
+			.filter((subtitle) => !!subtitle)
 	);
 }
 

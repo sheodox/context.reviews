@@ -6,6 +6,7 @@
 	}
 	.toolbar {
 		width: 100%;
+		border-bottom: 1px solid var(--shdx-gray-500);
 	}
 	section {
 		width: 100%;
