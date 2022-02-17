@@ -7,9 +7,13 @@
 		font-size: var(--shdx-font-size-9);
 		margin: 0;
 	}
+	.pitch {
+		width: 100%;
+	}
 	video,
 	.pitch :global(img) {
-		max-width: 100%;
+		max-width: calc(100% - 2 * var(--shdx-spacing-4));
+		margin: 0 var(--shdx-spacing-4);
 	}
 	.outlined,
 	video,
@@ -45,7 +49,7 @@
 	section {
 		padding-top: var(--shdx-spacing-10);
 		padding-bottom: var(--shdx-spacing-10);
-		width: 100vw;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -98,7 +102,7 @@
 	}
 </style>
 
-<div class="pitch has-inline-links">
+<div class="pitch has-inline-links f-column">
 	<section class="row align-items-center">
 		<div>
 			<h1>Study Japanese Using Anything</h1>
