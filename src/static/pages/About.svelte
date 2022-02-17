@@ -22,8 +22,8 @@
 
 		<h2>Support Development</h2>
 		<p>
-			If you'd like to donate to support development of Konshuu you can tip me on <ExternalLink
-				href="https://www.buymeacoffee.com/sheodox">Buy me a coffee</ExternalLink
+			If you'd like to donate to support development of Context.Reviews you can tip me on <ExternalLink
+				href="https://www.buymeacoffee.com/sheodox">Buy Me a Coffee</ExternalLink
 			>. Any support is appreciated, either financially or by sharing the site with your friends!
 		</p>
 	</div>
