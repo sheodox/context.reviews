@@ -10,12 +10,12 @@
 		padding: 0;
 		position: relative;
 		background: var(--shds-gray-600);
-		border: 1px solid var(--shdx-blue-600);
+		border: 2px solid var(--shdx-gray-500);
 		border-radius: 7px;
 
 		$hover-glow: 0 0 1.5rem var(--shdx-blue-700);
 		&:hover {
-			border-color: var(--shdx-blue-200);
+			border-color: var(--shdx-blue-600);
 			box-shadow: #{$hover-glow};
 
 			span {

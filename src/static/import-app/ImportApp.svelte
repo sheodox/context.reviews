@@ -5,9 +5,13 @@
 		text-align: center;
 		font-weight: bold;
 		color: var(--shdx-blue-300);
+		transition: border-color 0.1s, background-color 0.1s;
+
 		&:hover {
 			border-color: var(--shdx-blue-600);
 			background-color: var(--shdx-gray-600);
+			box-shadow: 0 0 1.5rem var(--shdx-blue-700);
+
 			.type-description {
 				color: white;
 			}
