@@ -68,6 +68,10 @@ export const removeCard = (card: Card) => {
 //the index of the phrase for which cards are currently being made
 export const currentPhraseIndex = writable(0);
 
+export const hasMorePhrases = derived([currentPhraseIndex, phraseStore], ([index, phrases]) => {
+	return index < phrases?.length - 1;
+});
+
 //the phrase text for the current phrase that's being used to create cards
 export const currentPhrase = derived([phraseStore, currentPhraseIndex], ([phrases, currentPhraseIndex]) => {
 	return phrases && phrases.length > currentPhraseIndex ? phrases[currentPhraseIndex].phrase : '';
@@ -88,6 +92,10 @@ export const cards = derived<any, Card[]>(cardsByPhrase, (cardsByPhrase: CardsBy
 
 //a count of the number of cards that have been created
 export const cardCount = derived(cards, (cards) => cards.length);
+
+export const exportText = derived(cardCount, (count) => {
+	return `Export ${count} ${count === 1 ? 'Card' : 'Cards'}`;
+});
 
 //a count of the number of phrases that have cards created for them
 export const usedPhrases = derived(cards, (cards) => {

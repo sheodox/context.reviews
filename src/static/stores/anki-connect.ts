@@ -81,7 +81,15 @@ export async function newDeck() {
 }
 
 export async function requestPermission() {
-	const { result, error } = await acAction<{ permission: 'granted' | 'denied' }>('requestPermission');
+	const checkAnkiTimeout = setTimeout(() => {
+			createAutoExpireToast({
+				title: 'Anki-Connect Permissions',
+				message: 'Check Anki to allow Context.Reviews to use Anki-Connect',
+			});
+		}, 100),
+		{ result, error } = await acAction<{ permission: 'granted' | 'denied' }>('requestPermission');
+
+	clearTimeout(checkAnkiTimeout);
 
 	if (error) {
 		createAutoExpireToast({
@@ -90,13 +98,15 @@ export async function requestPermission() {
 			message: 'Error requesting permission from Anki-Connect.',
 			technicalDetails: error,
 		});
-		return;
+		return { error };
 	}
 
 	if (result?.permission === 'granted') {
 		await fetchDecks();
 		ankiConnectStatus.set('available');
 	}
+
+	return { error, result };
 }
 
 async function ensureCardModel(cardModelName: string, modelDefinition: any) {

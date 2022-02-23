@@ -75,7 +75,9 @@
 			<div class="header-buttons">
 				<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="angle-left" />Back</button>
 				<button on:click={done} class="done" class:primary={!$definitionSearchTerm && $currentPhraseCardCount}>
-					{#if $currentPhraseCardCount}
+					{#if !$hasMorePhrases}
+						{$exportText}
+					{:else if $currentPhraseCardCount}
 						Next Phrase
 					{:else}
 						Skip This Phrase
@@ -158,7 +160,13 @@
 		afterNotes,
 		beforeNotes,
 	} from '../stores/current-card';
-	import { currentPhraseCardCount, currentPhraseIndex, addCard as addCardToStore } from '../stores/cards';
+	import {
+		currentPhraseCardCount,
+		currentPhraseIndex,
+		addCard as addCardToStore,
+		hasMorePhrases,
+		exportText,
+	} from '../stores/cards';
 	import SelectableText from '../SelectableText.svelte';
 	import { Icon, TextInput } from 'sheodox-ui';
 	import MeaningEditor from './MeaningEditor.svelte';

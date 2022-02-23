@@ -11,10 +11,12 @@
 
 {#if $ankiConnectStatus === 'unavailable'}
 	<p>Cards can be added easiest with the Anki-Connect plugin for Anki.</p>
-	<p class="has-inline-links">
-		First install <ExternalLink href="https://foosoft.net/projects/anki-connect/">Anki-Connect</ExternalLink>. Then with
-		Anki open click Request Permission below and accept the popup in Anki.
-	</p>
+	<ol class="has-inline-links">
+		<li>
+			First install <ExternalLink href="https://foosoft.net/projects/anki-connect/">Anki-Connect</ExternalLink>.
+		</li>
+		<li>With Anki open click Request Permission below and accept the popup in Anki.</li>
+	</ol>
 	<p class="fw-bold">Anki must be kept open to import cards.</p>
 	<button class="primary" on:click={requestPermission}>Request Permission</button>
 {:else if $ankiConnectStatus === 'available' && !$deckImported}
