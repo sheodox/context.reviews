@@ -1,10 +1,10 @@
 <style>
-	a {
-		margin: 0.5rem;
+	a:hover {
+		text-decoration: none;
 	}
 </style>
 
-<a href="/auth/google" class="galaxy button">
+<a href="/auth/google" class="galaxy button shdx-font-size-5 p-4">
 	<Icon icon="sign-in-alt" />
 	Log in with Google
 </a>

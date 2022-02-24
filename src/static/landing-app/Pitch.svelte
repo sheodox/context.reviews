@@ -103,11 +103,14 @@
 </style>
 
 <div class="pitch has-inline-links f-column">
-	<section class="row align-items-center">
+	<section class="row align-items-center gap-4">
 		<div>
 			<h1>Study Japanese Using Anything</h1>
 			<div>
 				<p class="sub-title">Study the words you want from the native material you like to read.</p>
+			</div>
+			<div class="text-align-center">
+				<LoginButton />
 			</div>
 		</div>
 
@@ -194,4 +197,5 @@
 	import { Icon } from 'sheodox-ui';
 	import { asset } from '../assets';
 	import StyleCard from '../export-app/StyleCard.svelte';
+	import LoginButton from './LoginButton.svelte';
 </script>

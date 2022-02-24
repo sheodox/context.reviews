@@ -3,9 +3,13 @@ the user is actually logged in and the user actually can meaningfully interact w
 
 <Header appName="Context.Reviews" {pageName} slim={true}>
 	<div slot="logo"><Image src="favicon" pictureClasses="f-row align-items-center" alt="logo" /></div>
-	<nav slot="nav">
+	<nav slot="headerCenter">
 		<ul>
 			<Nav />
+		</ul>
+	</nav>
+	<nav slot="headerEnd">
+		<ul>
 			<li>
 				<UserMenu />
 			</li>
