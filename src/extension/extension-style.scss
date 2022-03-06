@@ -1,0 +1,74 @@
+$bg: #14171e;
+$purple: #9400ff;
+
+#context-reviews-root {
+	--contextreviews-purple: #{$purple};
+	--contextreviews-background: #{$bg};
+	--contextreviews-background-light: #{lighten($bg, 2%)};
+
+	position: fixed;
+	z-index: 10000000;
+	top: 0;
+
+	&.docked-right {
+		right: 0;
+	}
+	&.docked-left {
+		left: 0;
+	}
+
+	a {
+		color: white;
+
+		&:hover {
+			color: #eee;
+		}
+	}
+
+	.hidden {
+		display: none;
+	}
+
+	button {
+		display: inline-block;
+		border-radius: 0.2rem;
+		background: none;
+		border: none;
+		color: #3db4f2;
+		cursor: pointer;
+		padding: 0.7rem;
+		margin: 0.2rem;
+		line-height: 1;
+		font-weight: bold;
+		font-size: 0.9rem;
+		transition: background 0s, color 0s;
+
+		&:hover:enabled {
+			background: #232427;
+		}
+	}
+
+	.toast {
+		margin: 0.3rem;
+		border-radius: 0.2rem;
+		box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.6);
+		overflow: hidden;
+		max-width: 20rem;
+		background: var(--contextreviews-background);
+		color: white;
+
+		.title-bar {
+			padding: 0.3rem;
+			display: flex;
+			align-items: center;
+		}
+	}
+}
+.sr-only {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
