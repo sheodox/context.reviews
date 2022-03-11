@@ -102,7 +102,7 @@
 					<div class="f-row justify-content-center">
 						<button
 							on:click={deleteConsumed}
-							disabled={!$deckConsumed}
+							disabled={!$deckConsumed || deleting}
 							class="danger"
 							title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
 						>
@@ -113,7 +113,7 @@
 						{#if $unusedPhrases.length > 0}
 							<button
 								on:click={() => (showDeleteAll = true)}
-								disabled={!$deckConsumed}
+								disabled={!$deckConsumed || deleting}
 								class="danger"
 								title={!$downloadedDeck ? 'not available until the anki export is downloaded' : ''}
 							>
@@ -124,11 +124,7 @@
 					</div>
 				{/if}
 				{#if deleting}
-					{#await deleting}
-						<Loading />
-					{:catch}
-						<p>An error occurred deleting phrases!</p>
-					{/await}
+					<Loading />
 				{/if}
 				{#if $deckConsumed}
 					<br />
@@ -164,8 +160,7 @@
 		phrasesDeleted,
 		deckConsumed,
 	} from '../stores/cards';
-	import Loading from '../Loading.svelte';
-	import { Icon, Modal, TabList, Tab } from 'sheodox-ui';
+	import { Icon, Modal, TabList, Tab, Loading } from 'sheodox-ui';
 	import SRSConstructor from './SRSConstructor';
 	import DeleteAllModal from './DeleteAllModal.svelte';
 	import type { Card } from '../types/cards';
@@ -173,7 +168,7 @@
 
 	let showDeleteAll = false,
 		selectedTab: string,
-		deleting: Promise<any>;
+		deleting = false;
 
 	const tabs = [
 		{
@@ -212,6 +207,7 @@
 	}
 
 	async function deleteConsumed() {
+		deleting = true;
 		// if we're essentially deleting all phrases, just do that instead
 		if ($unusedPhrases.length === 0) {
 			return await deleteAll();
@@ -234,12 +230,16 @@
 			await phraseStore.remove(ids);
 		}
 		$phrasesDeleted = true;
+		deleting = false;
 	}
 
 	async function deleteAll() {
+		deleting = true;
 		showDeleteAll = false;
 		await phraseStore.remove(get(phraseStore).map((p) => p.id));
+		deleting = false;
 		$phrasesDeleted = true;
+
 		// if all phrases have been deleted, automatically start over so it resets the card stores
 		// for the next export if they keep the site open
 		dispatch('restart');
