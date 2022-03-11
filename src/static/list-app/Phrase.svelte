@@ -27,7 +27,7 @@
 
 <tr>
 	<td class="buttons">
-		<button on:click={deletePhrase} class="phrase-action"> Delete </button>
+		<button on:click={deletePhrase} class="phrase-action" disabled={deleting}> Delete </button>
 		<MenuButton triggerClasses="phrase-action">
 			<span slot="trigger" class="menu-button">
 				<Icon icon="chevron-down" variant="icon-only" />
@@ -78,9 +78,12 @@
 	import type { Phrase } from '../../shared/types/phrases';
 
 	export let phrase: Phrase;
+	let deleting = false;
 
 	async function deletePhrase() {
+		deleting = true;
 		await phraseStore.action(`remove/${phrase.id}`);
+		deleting = false;
 	}
 
 	function define() {
