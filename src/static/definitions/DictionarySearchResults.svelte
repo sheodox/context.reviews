@@ -56,9 +56,9 @@
 <svelte:window on:keydown={shortcuts} />
 
 <script lang="ts">
+	import { Loading } from 'sheodox-ui';
 	import { fly } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import Loading from '../Loading.svelte';
 	import ExternalLink from '../ExternalLink.svelte';
 	import Word from './DictionaryEntry.svelte';
 	import phraseStore from '../stores/phrases';
