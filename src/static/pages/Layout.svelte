@@ -24,7 +24,7 @@
 <div class="page-layout">
 	<div class="text-align-right">
 		{#if showBackLink}
-			<Link href="/" classes="inline-link">
+			<Link href="/" classes="inline-link fw-bold">
 				<Icon icon="chevron-left" />
 				Back to phrase list
 			</Link>
