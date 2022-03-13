@@ -1,10 +1,23 @@
 import { writable, derived } from 'svelte/store';
 import { getSetting, settingNames } from '../extension-utils';
 
-export const toasts = writable([]);
+interface Toast {
+	ttl?: number;
+	duration?: number;
+	hidden?: boolean;
+	id?: number;
+	type?: string;
+	text: string;
+	phrases?: {
+		phrase: string;
+		phrase_id: string;
+	}[];
+}
+
+export const toasts = writable<Toast[]>([]);
 let expirationPaused = false;
 
-function batchUpdateToasts(perToastCallback) {
+function batchUpdateToasts(perToastCallback: (toast: Toast) => void) {
 	toasts.update((toasts) => {
 		toasts.forEach(perToastCallback);
 		return toasts;
@@ -59,27 +72,15 @@ export const hasHiddenToasts = derived(toasts, (toasts) => {
 });
 
 //called when a toast is dismissed with the 'x' button
-export function hideToast(id) {
+export function hideToast(id: number) {
 	batchUpdateToasts((toast) => {
 		if (toast.id === id) {
 			toast.hidden = true;
 		}
 	});
 }
-
-/*
-interface Toast {
-    type: 'error' | 'success'
-    duration: number
-    text: string
-    phrases?: {
-        phrase: string
-        phrase_id: string
-    }[]
-}
- */
 let toastId = 0;
-export async function addToast(toast) {
+export async function addToast(toast: Toast) {
 	const initiallyHidden = await getSetting(settingNames.initiallyHideToasts);
 
 	toast.id = toastId++;

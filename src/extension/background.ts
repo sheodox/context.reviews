@@ -1,33 +1,39 @@
 import { getSetting, settingNames } from './extension-utils';
-const extensionNamespace = typeof browser !== 'undefined' ? browser : chrome,
-	handlers = {
+import browser from 'webextension-polyfill';
+
+const handlers: Record<string, any> = {
 		addPhrase,
 		removePhrase,
 		changeActivePhrasesBadge,
 	},
 	ACTIVE_PHRASE_POLL_MS = 1000 * 60 * 60 * 2; //two hours
 
-extensionNamespace.runtime.onMessage.addListener((message, sender, cb) => {
+interface BackgroundMessage {
+	handler: string;
+	data: any;
+}
+
+browser.runtime.onMessage.addListener((message: BackgroundMessage) => {
 	const { handler, data } = message;
 
 	if (handlers[handler]) {
-		handlers[handler](data).then(cb);
-
-		return true;
+		return handlers[handler](data);
 	}
+
+	return false;
 });
 
-function addPhrase(phrase) {
+function addPhrase(phrase: string) {
 	console.log(`adding phrase`, phrase);
 	return request(`--server--/phrases/add/${encodeURIComponent(phrase)}?extension=1`);
 }
 
-function removePhrase(phrase) {
-	console.log(`removing phrase`, phrase);
-	return request(`--server--/phrases/remove/${encodeURIComponent(phrase)}?extension=1`);
+function removePhrase(phraseId: string) {
+	console.log(`removing phrase`, phraseId);
+	return request(`--server--/phrases/remove/${encodeURIComponent(phraseId)}?extension=1`);
 }
 
-async function request(url) {
+async function request(url: string) {
 	try {
 		const res = await fetch(url);
 
@@ -43,16 +49,15 @@ async function request(url) {
 	}
 }
 
-function setBadge(text, color = '#05070b') {
-	extensionNamespace.browserAction.setBadgeText({
+function setBadge(text: string, color = '#05070b') {
+	browser.browserAction.setBadgeText({
 		text: '' + text,
 	});
-	extensionNamespace.browserAction.setBadgeBackgroundColor({
+	browser.browserAction.setBadgeBackgroundColor({
 		color,
 	});
 }
 
-let activePhrasesPollInterval;
 async function updateActivePhrases() {
 	const { status, response } = await request(`--server--/user/stats?extension=1`);
 	if (status === 200) {
@@ -62,6 +67,7 @@ async function updateActivePhrases() {
 	}
 }
 
+let activePhrasesPollInterval: ReturnType<typeof setInterval>;
 function startActivePhrasePolling() {
 	clearInterval(activePhrasesPollInterval); //insurance, don't know if we could double up
 
@@ -78,7 +84,7 @@ async function changeActivePhrasesBadge() {
 		startActivePhrasePolling();
 	} else {
 		clearTimeout(activePhrasesPollInterval);
-		extensionNamespace.browserAction.setBadgeText({
+		browser.browserAction.setBadgeText({
 			text: '',
 		});
 	}
@@ -89,7 +95,7 @@ async function changeActivePhrasesBadge() {
 // or through the extension) and we need to update the badge. Note that
 // the count is retrieved from /user/stats so it doesn't get caught here
 // and start an infinite loop!
-extensionNamespace.webRequest.onCompleted.addListener(
+browser.webRequest.onCompleted.addListener(
 	async () => {
 		const isActive = await getSetting(settingNames.showActivePhrasesBadge);
 		if (isActive) {

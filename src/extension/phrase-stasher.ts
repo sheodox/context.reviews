@@ -1,6 +1,5 @@
 import './extension-style.scss';
 import Stasher from './stasher/Stasher.svelte';
-import { addToast } from './stasher/toast-stores';
 import { COULDNT_CONNECT_ERROR, messageBackground, record } from './extension-utils';
 
 const mount = document.createElement('div');
@@ -12,7 +11,7 @@ const app = new Stasher({
 
 function setup() {
 	//if the first result ever changes (like when clicking through parts of a sentence), run a callback
-	let lastKnownFirstResult = '';
+	let lastKnownFirstResult: Element = null;
 	setInterval(() => {
 		const firstResult = document.querySelector('.concept_light .concept_light-representation .text');
 

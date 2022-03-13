@@ -1,10 +1,10 @@
-const fs = require('fs'),
-	sharp = require('sharp'),
-	path = require('path');
+import fs from 'fs';
+import sharp from 'sharp';
+import path from 'path';
 
-module.exports = (isProd) => {
+export const build = (isProd) => {
 	//ensure all the directories we need exist
-	['./extension', './extension/icons', './extension/settings'].forEach((p) => {
+	['./dist/extension', './dist/extension/icons', './dist/extension/settings'].forEach((p) => {
 		try {
 			fs.mkdirSync(p);
 			//ignore errors where th path already exists
@@ -13,17 +13,17 @@ module.exports = (isProd) => {
 
 	//create some resized logos
 	[16, 32, 48, 96, 128].forEach((px) => {
-		sharp('./public-src/favicon.png').resize(px).toFile(`./extension/icons/context-reviews-${px}.png`);
+		sharp('./src/static/assets/favicon.png').resize(px).toFile(`./dist/extension/icons/context-reviews-${px}.png`);
 	});
 
 	//copy files that have no webpack build
 	['manifest.json', 'settings/settings.html'].forEach((file) => {
-		fs.copyFileSync(path.join('./extension-src', file), path.join('./extension', file));
+		fs.copyFileSync(path.join('./src/extension', file), path.join('./dist/extension', file));
 	});
 
 	//change the server hostname based on dev vs prod
 	['background.js', 'phrase-stasher.js'].forEach((file) => {
-		const filePath = path.join('./extension', file),
+		const filePath = path.join('./dist/extension/', file),
 			script = fs
 				.readFileSync(filePath)
 				.toString()

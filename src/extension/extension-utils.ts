@@ -1,22 +1,19 @@
 import { addToast } from './stasher/toast-stores';
+import browser from 'webextension-polyfill';
 
-const extensionNamespace = typeof browser !== 'undefined' ? browser : chrome;
 export const COULDNT_CONNECT_ERROR = `Couldn't connect to Context.Reviews. Is the site down?`;
 
-export function getResourceUrl(url) {
-	return extensionNamespace.extension.getURL(url);
+export function getResourceUrl(url: string) {
+	return browser.runtime.getURL(url);
 }
 
-export function messageBackground(handler, data) {
-	return new Promise((resolve) => {
-		const message = {
-			handler,
-			data,
-		};
-		extensionNamespace.runtime.sendMessage(message, (response) => {
-			resolve(response);
-		});
-	});
+export function messageBackground(handler: string, data?: any) {
+	const message = {
+		handler,
+		data,
+	};
+
+	return browser.runtime.sendMessage(message);
 }
 
 export function addCouldntConnectToast() {
@@ -48,28 +45,32 @@ const settingDefaults = {
 	[settingNames.showActivePhrasesBadge]: true,
 };
 
-export async function getSetting(key) {
+export async function getSetting<T>(key: string) {
 	const setting = await new Promise(async (resolve) => {
 		//chrome expects a callback, firefox returns a promise, resolve if we get
 		//a promise (otherwise fallback to a promise that'll never resolve),
 		//or pass a callback if necessary
-		(
-			extensionNamespace.storage.sync.get(key, (val) => {
-				resolve(val);
-			}) || new Promise(() => {})
-		).then(resolve);
+		browser.storage.sync.get(key).then(resolve);
 	});
-	return typeof setting[key] === 'undefined' ? settingDefaults[key] : setting[key];
+
+	return typeof setting[key as keyof typeof setting] === 'undefined'
+		? (settingDefaults[key] as unknown as T)
+		: (setting[key as keyof typeof setting] as T);
 }
 
-export function setSetting(key, value) {
-	return extensionNamespace.storage.sync.set({
+export function setSetting(key: string, value: any) {
+	return browser.storage.sync.set({
 		[key]: value,
 	});
 }
 
-export async function record(word) {
-	const phrase = word || document.querySelector('#keyword').value,
+const errorsByStatus: Record<string, string> = {
+	0: COULDNT_CONNECT_ERROR,
+	401: `You aren't signed in!`,
+};
+
+export async function record(word: string) {
+	const phrase = word || (document.querySelector('#keyword') as HTMLInputElement).value,
 		{ status, response } = await messageBackground('addPhrase', phrase);
 
 	if (status === 200) {
@@ -98,10 +99,7 @@ export async function record(word) {
 		return;
 	}
 
-	const error = {
-		0: COULDNT_CONNECT_ERROR,
-		401: `You aren't signed in!`,
-	}[status];
+	const error = errorsByStatus[status];
 
 	addToast({
 		type: 'error',
