@@ -1,7 +1,7 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "Context.Reviews",
-	"version": "2.1",
+	"version": "3.0",
 
 	"description": "Automatically stores Jisho searches on Context.Reviews for Anki export.",
 	"homepage_url": "https://context.reviews",
@@ -13,7 +13,8 @@
 		"96": "icons/context-reviews-96.png"
 	},
 
-	"permissions": ["*://*.context.reviews/*", "storage", "webRequest"],
+	"permissions": ["storage", "webRequest"],
+	"host_permissions": ["*://*.context.reviews/*"],
 	"content_scripts": [
 		{
 			"matches": ["*://*.jisho.org/search*"],
@@ -21,21 +22,20 @@
 		}
 	],
 	"background": {
-		"scripts": ["background.js"]
+		"service_worker": "background.js"
 	},
-	"web_accessible_resources": ["icons/context-reviews-96.png"],
-	"browser_action": {
+	"web_accessible_resources": [
+		{
+			"resources": ["icons/context-reviews-96.png"],
+			"matches": ["*://*.jisho.org/*"]
+		}
+	],
+	"action": {
 		"browser_style": true,
 		"default_popup": "settings/settings.html",
 		"default_icon": {
 			"16": "icons/context-reviews-16.png",
 			"32": "icons/context-reviews-32.png"
-		}
-	},
-
-	"browser_specific_settings": {
-		"gecko": {
-			"id": "{bb0a8224-2069-4e37-afc7-6b2b2b003c3a}"
 		}
 	}
 }

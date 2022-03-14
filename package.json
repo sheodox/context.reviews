@@ -12,14 +12,16 @@
     "lint": "npm run lint-server:prod && npm run lint-static:prod",
     "lint-server:prod": "eslint 'src/server/**/*.ts' && tsc --noEmit",
     "lint-static:dev": "svelte-check --watch",
-    "lint-static:prod": "eslint 'src/static/**/*.{js,ts,svelte}' && svelte-check --ignore src/extension",
+    "lint-static:prod": "eslint 'src/{static,extension}/**/*.{js,ts,svelte}' && svelte-check",
     "build-static:prod": "./static-prebuild.sh && vite build",
     "build-static:dev": "./static-prebuild.sh && vite",
     "build-extension:dev": "webpack --mode development --config-name extension --watch --env SITE_TARGET=dev",
     "build-extension:prod": "webpack --mode development --config-name extension --env SITE_TARGET=prod",
     "style:write": "prettier --write .",
     "style:check": "prettier --check . --loglevel warn",
-    "extension:package": "npm run build-extension:prod && web-ext build --source-dir ./extension -o",
+    "extension:package": "npm run build-extension:prod && npm run extension:package:firefox && npm run extension:package:chrome",
+    "extension:package:firefox": "web-ext build --source-dir ./dist/extension-base -o -a dist/web-ext-artifacts/firefox",
+    "extension:package:chrome": "web-ext build --source-dir ./dist/extension-chrome -o -a dist/web-ext-artifacts/chrome",
     "prepare": "husky install"
   },
   "dependencies": {

@@ -3,6 +3,7 @@ import browser from 'webextension-polyfill';
 
 const handlers: Record<string, any> = {
 		addPhrase,
+		listPhrases,
 		removePhrase,
 		changeActivePhrasesBadge,
 	},
@@ -28,6 +29,11 @@ function addPhrase(phrase: string) {
 	return request(`--server--/phrases/add/${encodeURIComponent(phrase)}?extension=1`);
 }
 
+function listPhrases() {
+	console.log(`listing phrases`);
+	return request(`--server--/phrases/list?extension=1`);
+}
+
 function removePhrase(phraseId: string) {
 	console.log(`removing phrase`, phraseId);
 	return request(`--server--/phrases/remove/${encodeURIComponent(phraseId)}?extension=1`);
@@ -50,10 +56,11 @@ async function request(url: string) {
 }
 
 function setBadge(text: string, color = '#05070b') {
-	browser.browserAction.setBadgeText({
+	const action = browser.browserAction || browser.action;
+	action.setBadgeText({
 		text: '' + text,
 	});
-	browser.browserAction.setBadgeBackgroundColor({
+	action.setBadgeBackgroundColor({
 		color,
 	});
 }
@@ -84,7 +91,9 @@ async function changeActivePhrasesBadge() {
 		startActivePhrasePolling();
 	} else {
 		clearTimeout(activePhrasesPollInterval);
-		browser.browserAction.setBadgeText({
+
+		const action = browser.browserAction || browser.action;
+		action.setBadgeText({
 			text: '',
 		});
 	}

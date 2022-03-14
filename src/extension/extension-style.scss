@@ -4,17 +4,23 @@ $purple: #9400ff;
 #context-reviews-root {
 	--contextreviews-purple: #{$purple};
 	--contextreviews-background: #{$bg};
-	--contextreviews-background-light: #{lighten($bg, 2%)};
+	--contextreviews-background-light: #{lighten($bg, 5%)};
 
 	position: fixed;
 	z-index: 10000000;
-	top: 0;
 
 	&.docked-right {
+		top: 0;
 		right: 0;
 	}
 	&.docked-left {
+		top: 0;
 		left: 0;
+	}
+	&.docked-bottom-center {
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 
 	a {
@@ -42,10 +48,6 @@ $purple: #9400ff;
 		font-weight: bold;
 		font-size: 0.9rem;
 		transition: background 0s, color 0s;
-
-		&:hover:enabled {
-			background: #232427;
-		}
 	}
 
 	.toast {

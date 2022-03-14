@@ -1,11 +1,20 @@
 import './extension-style.scss';
 import Stasher from './stasher/Stasher.svelte';
-import { COULDNT_CONNECT_ERROR, messageBackground, record } from './extension-utils';
+import { record } from './extension-utils';
+
+const rootId = 'context-reviews-root',
+	addLinkClass = 'context-reviews-add-link';
+
+// cleanup old markup when reloading the extension in dev
+if (process.env.NODE_ENV === 'development') {
+	document.getElementById(rootId)?.remove();
+	[].forEach.call(document.querySelectorAll('.' + addLinkClass), (link: Element) => link.remove());
+}
 
 const mount = document.createElement('div');
-mount.id = 'context-reviews-root';
+mount.id = rootId;
 document.body.appendChild(mount);
-const app = new Stasher({
+new Stasher({
 	target: mount,
 });
 
@@ -27,12 +36,17 @@ function setup() {
 function onResultsChange() {
 	//.concept_light-wrapper is the column that contains the reading for the word, as well as the links
 	for (const wrapper of document.querySelectorAll('.concept_light')) {
-		const word = wrapper.querySelector('.concept_light-representation .text').textContent.trim(),
+		const word = wrapper.querySelector('.concept_light-representation .text')?.textContent.trim(),
 			addReview = document.createElement('a');
+
+		if (!word) {
+			return;
+		}
 
 		addReview.textContent = `Add ${word} to Context.Reviews`;
 		addReview.setAttribute('href', '#');
 		addReview.classList.add('concept_light-status_link');
+		addReview.classList.add(addLinkClass);
 		addReview.addEventListener('click', (e) => {
 			record(word);
 			//prevent scrolling to the top

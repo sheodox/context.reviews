@@ -11,6 +11,6 @@
 		"isolatedModules": true,
 		"outDir": "dist"
 	},
-	"include": ["src/static/**/*", "src/shared/**/*", "src/server/**/*"],
+	"include": ["src/static/**/*", "src/**/*"],
 	"exclude": ["node_modules", "**/*.spec.ts"]
 }

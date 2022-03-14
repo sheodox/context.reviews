@@ -18,7 +18,7 @@ export default (env) => {
 			},
 			output: {
 				filename: '[name].js',
-				path: path.resolve(process.cwd(), './dist/extension'),
+				path: path.resolve(process.cwd(), './dist/extension-base'),
 				publicPath: '',
 			},
 			resolve: {

@@ -20,15 +20,19 @@
 		padding: 0.5rem;
 	}
 	fieldset {
-		border: none;
+		border-color: hsl(227, 21%, 43%);
+		border-radius: 5px;
 		margin: 0.5rem 0 0 0;
-		padding: 0;
+		padding: 0.5rem;
 	}
 	main {
 		display: flex;
 		flex-direction: column;
 		max-width: 300px;
 		padding: 1rem;
+	}
+	.single-option {
+		padding-bottom: 0.5rem;
 	}
 </style>
 
@@ -41,27 +45,24 @@
 
 <main>
 	<h2>Extension Settings</h2>
-	<label>
+
+	<label class="single-option">
+		<input type="checkbox" bind:checked={autoHide} on:change={() => setSetting(settingNames.autoHide, autoHide)} />
+		Auto-hide the Context.Reviews popup after a few seconds
+	</label>
+
+	<label class="single-option">
 		<input
 			type="checkbox"
 			bind:checked={initiallyHideToasts}
 			on:change={() => setSetting(settingNames.initiallyHideToasts, initiallyHideToasts)}
 		/>
-		Hide notifications initially
+		Start with the Context.Reviews popup hidden
 	</label>
 
-	<label>
-		<input
-			type="checkbox"
-			bind:checked={toastAnimations}
-			on:change={() => setSetting(settingNames.toastAnimations, toastAnimations)}
-		/>
-		Use animations on notifications
-	</label>
-
-	<label>
+	<label class="single-option">
 		<input type="checkbox" bind:checked={showActivePhrasesBadge} on:change={badgeSettingsChange} />
-		Show your current number of saved phrases on the icon
+		Show your current number of saved phrases on the icon in the browser toolbar
 	</label>
 
 	<fieldset on:change={() => setSetting(settingNames.recordingMode, recordingMode)}>
@@ -91,6 +92,11 @@
 		</label>
 		<br />
 		<label>
+			<input type="radio" bind:group={toastPosition} value="bottom-center" />
+			Bottom center
+		</label>
+		<br />
+		<label>
 			<input type="radio" bind:group={toastPosition} value="right" />
 			Right side
 		</label>
@@ -103,9 +109,9 @@
 	import { onMount } from 'svelte';
 
 	let recordingMode: 'always' | 'prompt' | 'never',
-		toastPosition: 'left' | 'right',
+		toastPosition: 'left' | 'bottom-center' | 'right',
 		initiallyHideToasts: boolean,
-		toastAnimations: boolean,
+		autoHide: boolean,
 		showActivePhrasesBadge: boolean;
 
 	function badgeSettingsChange() {
@@ -118,7 +124,7 @@
 		recordingMode = await getSetting(settingNames.recordingMode);
 		toastPosition = await getSetting(settingNames.toastPosition);
 		initiallyHideToasts = await getSetting(settingNames.initiallyHideToasts);
-		toastAnimations = await getSetting(settingNames.toastAnimations);
 		showActivePhrasesBadge = await getSetting(settingNames.showActivePhrasesBadge);
+		autoHide = await getSetting(settingNames.autoHide);
 	});
 </script>

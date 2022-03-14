@@ -1,26 +1,42 @@
-import { addToast } from './stasher/toast-stores';
+import { addPhrase, showErrorMessage } from './stasher/stasher-stores';
+import { splitIntoPhrases } from '../shared/phrase-utils';
 import browser from 'webextension-polyfill';
 
 export const COULDNT_CONNECT_ERROR = `Couldn't connect to Context.Reviews. Is the site down?`;
+
+export interface Phrase {
+	phrase: string;
+	phrase_id: null | string;
+	status: 'added' | 'deleted' | 'prompt';
+}
+
+const errorsByStatus: Record<string, string> = {
+	0: COULDNT_CONNECT_ERROR,
+	401: `You aren't signed into Context.Reviews!`,
+};
 
 export function getResourceUrl(url: string) {
 	return browser.runtime.getURL(url);
 }
 
-export function messageBackground(handler: string, data?: any) {
+export async function messageBackground<T>(handler: string, data?: any) {
 	const message = {
 		handler,
 		data,
 	};
 
-	return browser.runtime.sendMessage(message);
+	const { status, response } = (await browser.runtime.sendMessage(message)) || { status: 200, response: null };
+
+	if (status !== 200) {
+		const error = errorsByStatus[status];
+		showErrorMessage(error || `Error: status code ${status}`);
+	}
+
+	return { status, ok: status === 200, response: response as T };
 }
 
 export function addCouldntConnectToast() {
-	addToast({
-		type: 'error',
-		text: COULDNT_CONNECT_ERROR,
-	});
+	showErrorMessage(COULDNT_CONNECT_ERROR);
 }
 
 // for IDE auto-complete and less magic strings when accessing settings!
@@ -28,8 +44,8 @@ export const settingNames = {
 	recordingMode: 'recordingMode',
 	toastPosition: 'toastPosition',
 	initiallyHideToasts: 'initiallyHideToasts',
-	toastAnimations: 'toastAnimations',
 	showActivePhrasesBadge: 'showActivePhraseBadge',
+	autoHide: 'autoHide',
 };
 
 const settingDefaults = {
@@ -39,14 +55,13 @@ const settingDefaults = {
 	[settingNames.toastPosition]: 'right',
 	// if toasts should be hidden as if expired when they're added
 	[settingNames.initiallyHideToasts]: false,
-	// if toasts show the animated purple bar for how much time until they're hidden
-	[settingNames.toastAnimations]: true,
 	// show the number of active phrases on the extension badge
 	[settingNames.showActivePhrasesBadge]: true,
+	[settingNames.autoHide]: true,
 };
 
 export async function getSetting<T>(key: string) {
-	const setting = await new Promise(async (resolve) => {
+	const setting = await new Promise((resolve) => {
 		//chrome expects a callback, firefox returns a promise, resolve if we get
 		//a promise (otherwise fallback to a promise that'll never resolve),
 		//or pass a callback if necessary
@@ -64,45 +79,52 @@ export function setSetting(key: string, value: any) {
 	});
 }
 
-const errorsByStatus: Record<string, string> = {
-	0: COULDNT_CONNECT_ERROR,
-	401: `You aren't signed in!`,
-};
+function getSearchTerms() {
+	return (document.querySelector('#keyword') as HTMLInputElement).value;
+}
 
-export async function record(word: string) {
-	const phrase = word || (document.querySelector('#keyword') as HTMLInputElement).value,
-		{ status, response } = await messageBackground('addPhrase', phrase);
+export async function promptRecord() {
+	const searchPhrases = splitIntoPhrases(getSearchTerms()),
+		{ response, ok } = await messageBackground<Phrase[]>('listPhrases');
 
-	if (status === 200) {
-		const numNew = response.addedPhrases.length,
-			numExisting = response.existingPhrases.length,
-			totalText = `(${response.stats.totalPhrases} total)`;
-
-		//if nothing was actually added, don't show any toasts
-		if (numNew > 0) {
-			addToast({
-				type: 'success',
-				text: `${numNew} phrase${numNew === 1 ? '' : 's'} added ${totalText}`,
-				phrases: response.addedPhrases,
-			});
-		}
-
-		//if they're looking at a search for a phrase that already has been saved
-		//show a toast so they don't have to go searching for it in the list
-		if (numExisting > 0) {
-			addToast({
-				type: 'success',
-				text: `${numExisting} phrase${numExisting === 1 ? ' was' : 's were'} already saved ${totalText}`,
-				phrases: response.existingPhrases,
-			});
-		}
+	if (!ok) {
 		return;
 	}
 
-	const error = errorsByStatus[status];
+	searchPhrases.forEach((phrase) => {
+		const existing = response.find((p) => p.phrase === phrase);
 
-	addToast({
-		type: 'error',
-		text: error || `Error: status code ${status}`,
+		addPhrase({
+			phrase_id: existing?.phrase_id || null,
+			phrase,
+			status: existing ? 'added' : 'prompt',
+		});
 	});
+}
+
+interface RecordResponse {
+	addedPhrases: Phrase[];
+	existingPhrases: Phrase[];
+	stats: {
+		totalPhrases: number;
+	};
+}
+
+export async function record(word?: string | string[]) {
+	const phrase = word || getSearchTerms(),
+		{ response, ok } = await messageBackground<RecordResponse>('addPhrase', phrase);
+
+	if (ok) {
+		//if nothing was actually added, don't show any toasts
+		[...response.addedPhrases, ...response.existingPhrases].forEach((addedPhrase) => {
+			addPhrase({ ...addedPhrase, status: 'added' });
+		});
+	}
+}
+
+export async function remove(phrase: Phrase) {
+	await messageBackground('removePhrase', phrase.phrase_id);
+
+	// update the status in place
+	addPhrase({ ...phrase, status: 'deleted' });
 }
