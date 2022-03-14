@@ -1,3 +1,4 @@
+/// <reference types="svelte" />
 import './extension-style.scss';
 import Stasher from './stasher/Stasher.svelte';
 import { record } from './extension-utils';
