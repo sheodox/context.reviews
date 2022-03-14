@@ -61,5 +61,8 @@ export const splitIntoPhrases = (phrase: string) => {
 	quoteCharacters.map(([open, close]) => {
 		phrase = phrase.replace(new RegExp(`${close}\\s*${open}`, 'g'), `${close}\n${open}`);
 	});
-	return phrase.split(delimiter).filter((phrase) => !!phrase);
+	return phrase
+		.split(delimiter)
+		.map(trim)
+		.filter((phrase) => !!phrase);
 };
