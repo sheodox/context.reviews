@@ -21,20 +21,20 @@ const sendListToUser = async (req: AppRequest) => {
 		sendListToUser(req);
 	};
 
+function cleanPhrases(phrases: (Phrase | { id: string; phrase: string })[]) {
+	return phrases.map(({ phrase, id }) => {
+		//the extension expects 'phrase_id' (old db table implementation), and it's easier
+		//to give it that than publish a new version of the extension
+		return {
+			phrase,
+			phrase_id: id,
+		};
+	});
+}
+
 const addHandler = safeAsyncRoute(async function (req: AppRequest, res: Response) {
 	const phraseText = req.params.phrases || (typeof req.body === 'object' ? req.body.phraseText : ''),
 		{ addedPhrases, existingPhrases } = await tracker.add(getUserId(req), phraseText);
-
-	function cleanPhrases(phrases: Phrase[]) {
-		return phrases.map(({ phrase, id }) => {
-			//the extension expects 'phrase_id' (old db table implementation), and it's easier
-			//to give it that than publish a new version of the extension
-			return {
-				phrase,
-				phrase_id: id,
-			};
-		});
-	}
 
 	sendListToUser(req);
 
@@ -59,7 +59,13 @@ router.post('/add/', addHandler);
 router.get(
 	'/list',
 	safeAsyncRoute(async (req: AppRequest, res: Response) => {
-		res.json(await tracker.list(getUserId(req)));
+		const phrases = await tracker.list(getUserId(req));
+
+		if (req.query.extension === '1') {
+			return res.json(cleanPhrases(phrases));
+		}
+
+		res.json(phrases);
 	})
 );
 
