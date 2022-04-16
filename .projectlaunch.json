@@ -1,0 +1,8 @@
+{
+	"commands": [
+		{ "name": "Server", "cmd": "./run.sh dev", "groups": ["dev"] },
+		{ "name": "Build Server", "cmd": "npm run build-server:dev", "groups": ["dev"] },
+		{ "name": "Build Static", "cmd": "npm run build-static:dev", "groups": ["dev"] },
+		{ "name": "Lint", "cmd": "npm run lint", "groups": ["test"] }
+	]
+}

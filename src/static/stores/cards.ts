@@ -58,9 +58,11 @@ export const addCard = (card: Card) => {
 };
 export const removeCard = (card: Card) => {
 	cardsByPhrase.update((cardsByPhrase) => {
-		const phrase = cached.get(currentPhrase),
-			currentCards = cardsByPhrase.get(phrase);
-		currentCards.splice(currentCards.indexOf(card), 1);
+		for (const cards of cardsByPhrase.values()) {
+			if (cards.includes(card)) {
+				cards.splice(cards.indexOf(card), 1);
+			}
+		}
 		return new Map(cardsByPhrase);
 	});
 };
