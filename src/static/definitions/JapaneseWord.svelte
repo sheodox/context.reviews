@@ -53,7 +53,7 @@
 			highlightCharacters = text.length;
 		}
 
-		return [text.substr(0, highlightCharacters), text.substr(highlightCharacters)];
+		return [text.substring(0, highlightCharacters), text.substring(highlightCharacters)];
 	}
 	$: [wordHighlighted, wordNormal] = highlightSplit(word, wordComparison);
 	$: [readingHighlighted, readingNormal] = highlightSplit(reading, wordComparison);
