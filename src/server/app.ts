@@ -48,6 +48,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.use('/health', (req, res) => {
+	res.send();
+});
+
 const sessionStore = new RedisStore({ client: redisClient });
 app.use(
 	session({
