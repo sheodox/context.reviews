@@ -40,7 +40,7 @@ passport.use(
 			if (!user) {
 				usersNew.inc();
 				usersTotal.inc();
-				authLogger.info(`New user "${oauthId}"`);
+				authLogger.info(`New user"`);
 				user = await prisma.user.create({
 					data: Object.assign(userData, {
 						settings: {
@@ -52,6 +52,7 @@ passport.use(
 					},
 				});
 			} else {
+				authLogger.info(`User logged in`);
 				await prisma.user.update({
 					data: userData,
 					where: {
@@ -60,7 +61,6 @@ passport.use(
 				});
 			}
 
-			authLogger.info(`User logged in "${user.oauthId}"`);
 			done(null, user);
 		}
 	)
