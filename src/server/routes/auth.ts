@@ -40,7 +40,7 @@ passport.use(
 			if (!user) {
 				usersNew.inc();
 				usersTotal.inc();
-				authLogger.info(`New user"`);
+				authLogger.info(`New user`);
 				user = await prisma.user.create({
 					data: Object.assign(userData, {
 						settings: {
