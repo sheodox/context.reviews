@@ -2,7 +2,7 @@
 	aside {
 		flex: 1;
 		position: relative;
-		border-left: var(--shdx-panel-border);
+		border-left: var(--sx-panel-border);
 		min-width: 20rem;
 	}
 
@@ -37,24 +37,10 @@
 	.phrase-select {
 		margin: 1rem 0;
 	}
-	fieldset {
-		border-radius: 5px;
-		border-color: var(--shdx-gray-200);
-	}
-	#export-button {
-		background-color: var(--shdx-gray-400);
-
-		&:hover {
-			background-color: var(--shdx-gray-300);
-		}
-		&:disabled {
-			background-color: transparent;
-		}
-	}
 	@media (max-width: 900px) {
 		aside {
 			border-left: none;
-			border-top: var(--shdx-panel-border);
+			border-top: var(--sx-panel-border);
 		}
 	}
 </style>
@@ -104,7 +90,7 @@
 
 		<fieldset class="f-column">
 			<legend>All Cards</legend>
-			<button id="export-button" on:click={() => ($showExport = true)} disabled={$cards.length === 0}>
+			<button id="export-button" on:click={() => ($showExport = true)} disabled={$cards.length === 0} class="primary">
 				{$exportText}
 			</button>
 			<ul>

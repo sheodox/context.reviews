@@ -1,7 +1,7 @@
 <style>
 	span::selection {
 		border-radius: 3px;
-		background: var(--shdx-blue-300);
+		background: var(--sx-blue-300);
 		color: black;
 	}
 </style>

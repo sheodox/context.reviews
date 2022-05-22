@@ -14,7 +14,7 @@
 	}
 	.recommended {
 		text-align: center;
-		color: var(--shdx-primary);
+		color: var(--sx-primary);
 	}
 </style>
 

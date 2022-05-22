@@ -6,7 +6,7 @@
 	}
 	.toolbar {
 		width: 100%;
-		border-bottom: 1px solid var(--shdx-gray-500);
+		border-bottom: 1px solid var(--sx-gray-500);
 	}
 	section {
 		width: 100%;
@@ -33,7 +33,7 @@
 	<ul class="f-column gap-3">
 		{#each phrases as phrase}
 			<li>
-				<label class="shdx-font-size-4 jp">
+				<label class="sx-font-size-4 jp">
 					<input type="checkbox" value={phrase} bind:group={phrasesToAdd} />
 					{phrase}
 				</label>

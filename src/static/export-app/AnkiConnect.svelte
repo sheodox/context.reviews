@@ -1,8 +1,8 @@
 <style>
 	label {
 		display: block;
-		margin-bottom: var(--shdx-spacing-2);
-		font-size: var(--shdx-font-size-4);
+		margin-bottom: var(--sx-spacing-2);
+		font-size: var(--sx-font-size-4);
 	}
 	select {
 		width: 100%;

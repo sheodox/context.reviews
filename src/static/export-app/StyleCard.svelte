@@ -1,6 +1,6 @@
 <style>
 	.card {
-		border: 2px solid var(--shdx-gray-300);
+		border: 2px solid var(--sx-gray-300);
 		border-radius: 3px;
 	}
 	.short {
@@ -13,19 +13,19 @@
 		width: 6em;
 	}
 	.front .text-shape {
-		height: var(--shdx-font-size-7);
+		height: var(--sx-font-size-7);
 	}
 	.text-shape {
-		height: var(--shdx-font-size-4);
+		height: var(--sx-font-size-4);
 	}
 	.text-shape.text {
-		background: var(--shdx-gray-75);
+		background: var(--sx-gray-75);
 	}
 	.text-shape.text-muted {
-		background: var(--shdx-gray-100);
+		background: var(--sx-gray-100);
 	}
 	.text-shape.highlight-text {
-		background: var(--shdx-blue-300);
+		background: var(--sx-blue-300);
 	}
 	.short,
 	.medium,

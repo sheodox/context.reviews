@@ -16,7 +16,7 @@
 		font-size: 0.9rem;
 	}
 	.meaning-header {
-		padding-top: var(--shdx-spacing-2);
+		padding-top: var(--sx-spacing-2);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -26,7 +26,7 @@
 		padding: 0.3rem;
 	}
 	.header {
-		padding-top: var(--shdx-spacing-2);
+		padding-top: var(--sx-spacing-2);
 	}
 	h3 {
 		margin: 0;
@@ -34,14 +34,14 @@
 	}
 	.side-by-side-fields {
 		display: flex;
-		gap: var(--shdx-spacing-3);
+		gap: var(--sx-spacing-3);
 	}
 	.card-preview {
 		overflow: hidden;
 		border-radius: 0.3rem;
 	}
 	.sub-panel {
-		background: var(--shdx-gray-600);
+		background: var(--sx-gray-600);
 		margin: 0;
 	}
 	textarea {

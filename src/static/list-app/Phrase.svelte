@@ -1,7 +1,7 @@
 <style>
 	td :global(.phrase-action) {
-		font-size: var(--shdx-font-size-2);
-		background: var(--shdx-gray-600);
+		font-size: var(--sx-font-size-2);
+		background: var(--sx-gray-600);
 	}
 	.buttons {
 		display: flex;

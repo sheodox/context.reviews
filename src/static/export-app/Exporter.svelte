@@ -21,17 +21,17 @@
 
 	.export-stats {
 		align-self: center;
-		background: var(--shdx-gray-600);
+		background: var(--sx-gray-600);
 		color: white;
 		border-radius: 5px;
 		text-align: center;
 
 		.stat-num {
-			font-size: var(--shdx-font-size-8);
+			font-size: var(--sx-font-size-8);
 		}
 		.stat-name {
-			font-size: var(--shdx-font-size-3);
-			margin: var(--shdx-spacing-1);
+			font-size: var(--sx-font-size-3);
+			margin: var(--sx-spacing-1);
 			text-transform: uppercase;
 			font-weight: bold;
 		}

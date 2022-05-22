@@ -22,18 +22,18 @@
 		margin: 0;
 	}
 	kbd {
-		border: 1px solid var(--shdx-gray-200);
+		border: 1px solid var(--sx-gray-200);
 		border-bottom-width: 3px;
 		border-radius: 3px 3px 0 0;
 		padding: 0 0.3rem;
-		background: var(--shdx-gray-300);
+		background: var(--sx-gray-300);
 	}
 	strong.nav-link-example {
-		border-bottom: 0.2rem solid var(--shdx-accent-mint);
+		border-bottom: 0.2rem solid var(--sx-accent-mint);
 	}
 	.result {
 		/* imitate the button text color */
-		color: var(--shdx-accent-blue);
+		color: var(--sx-accent-blue);
 	}
 </style>
 

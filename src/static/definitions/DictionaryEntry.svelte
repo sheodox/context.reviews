@@ -10,15 +10,15 @@
 		padding: 0.2rem;
 	}
 	button:not(.small) {
-		padding: var(--shdx-spacing-2);
+		padding: var(--sx-spacing-2);
 	}
 
 	.see-also {
-		color: var(--shdx-blue-500);
+		color: var(--sx-blue-500);
 	}
 
 	.word {
-		color: var(--shdx-blue-500);
+		color: var(--sx-blue-500);
 	}
 
 	ol {
@@ -32,14 +32,14 @@
 		margin-left: 0.5rem;
 	}
 	.selected {
-		background: var(--shdx-accent-gradient);
+		background: var(--sx-accent-gradient);
 		border-radius: 0.2rem;
 	}
 	.word-container.selectable {
 		padding: 0.2rem;
 	}
 	.selected .search-result {
-		background: var(--shdx-gray-700);
+		background: var(--sx-gray-700);
 	}
 	.search-result {
 		padding: 0.3rem;
@@ -61,7 +61,7 @@
 		display: block;
 	}
 	.recommended:enabled {
-		color: var(--shdx-primary);
+		color: var(--sx-primary);
 	}
 </style>
 

@@ -10,12 +10,12 @@
 		padding: 0;
 		position: relative;
 		background: var(--shds-gray-600);
-		border: 2px solid var(--shdx-gray-500);
+		border: 2px solid var(--sx-gray-500);
 		border-radius: 7px;
 
-		$hover-glow: 0 0 1.5rem var(--shdx-blue-700);
+		$hover-glow: 0 0 1.5rem var(--sx-blue-700);
 		&:hover {
-			border-color: var(--shdx-blue-600);
+			border-color: var(--sx-blue-600);
 			box-shadow: #{$hover-glow};
 
 			span {
@@ -26,10 +26,10 @@
 		span {
 			position: relative;
 			align-self: center;
-			background: var(--shdx-blue-300);
+			background: var(--sx-blue-300);
 			color: black;
-			padding: var(--shdx-spacing-2);
-			font-size: var(--shdx-font-size-6);
+			padding: var(--sx-spacing-2);
+			font-size: var(--sx-font-size-6);
 			border-radius: 0 0 5px 5px;
 		}
 	}
@@ -51,7 +51,7 @@
 </style>
 
 <div>
-	<p class="text-align-center shdx-font-size-5">Which card front style do you prefer?</p>
+	<p class="text-align-center sx-font-size-5">Which card front style do you prefer?</p>
 
 	<div class="f-row justify-content-center">
 		<button on:click={() => dispatch('cancel')}><Icon icon="times" />Cancel</button>

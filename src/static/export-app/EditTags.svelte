@@ -12,7 +12,7 @@
 	}
 	table {
 		text-align: center;
-		background: var(--shdx-bg);
+		background: var(--sx-bg);
 		border-radius: 0.2rem;
 	}
 </style>

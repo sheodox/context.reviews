@@ -4,10 +4,10 @@
 		flex-direction: column;
 	}
 	.edit-card {
-		background: var(--shdx-gray-600);
+		background: var(--sx-gray-600);
 		border-radius: 5px;
 		align-self: center;
-		box-shadow: var(--shdx-shadow-5);
+		box-shadow: var(--sx-shadow-5);
 
 		button {
 			white-space: nowrap;
@@ -24,7 +24,7 @@
 		border-radius: 3px;
 	}
 	.suggested:enabled {
-		color: var(--shdx-primary);
+		color: var(--sx-primary);
 	}
 	@media (max-width: 850px) {
 		.edit-card .card-fields {
@@ -70,14 +70,14 @@
 		</div>
 		<div class="column">
 			<button on:click={() => dispatch('customize')} title="Customize" disabled={isCustomizing}>
-				<Icon icon="cog" />
+				<Icon icon="cog" variant="icon-only" />
 				<span class="sr-only">Customize</span>
 			</button>
 		</div>
 	</div>
 	<div class="f-row card-errors">
 		{#if !$wordIsUnique}
-			<p class="shdx-badge-red m-3 p-1">
+			<p class="sx-badge-red m-3 p-1">
 				<Icon icon="exclamation-circle" />A card has already been created for this word.
 			</p>
 		{/if}

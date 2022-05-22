@@ -1,10 +1,10 @@
 <style>
 	h1 {
-		font-size: var(--shdx-font-size-11);
+		font-size: var(--sx-font-size-11);
 		margin: 0;
 	}
 	h2 {
-		font-size: var(--shdx-font-size-9);
+		font-size: var(--sx-font-size-9);
 		margin: 0;
 	}
 	.pitch {
@@ -12,13 +12,13 @@
 	}
 	video,
 	.pitch :global(img) {
-		max-width: calc(100% - 2 * var(--shdx-spacing-4));
-		margin: 0 var(--shdx-spacing-4);
+		max-width: calc(100% - 2 * var(--sx-spacing-4));
+		margin: 0 var(--sx-spacing-4);
 	}
 	.outlined,
 	video,
 	.pitch :global(img) {
-		box-shadow: var(--shdx-shadow-5), var(--shdx-shadow-1);
+		box-shadow: var(--sx-shadow-5), var(--sx-shadow-1);
 		border-radius: 15px;
 		overflow: hidden;
 	}
@@ -35,7 +35,7 @@
 		margin: 1rem 2.5rem;
 	}
 	.sub-title {
-		font-size: var(--shdx-font-size-7);
+		font-size: var(--sx-font-size-7);
 	}
 	p {
 		max-width: 50rem;
@@ -44,36 +44,36 @@
 	}
 	p + :global(picture),
 	p + video {
-		margin-top: var(--shdx-spacing-8);
+		margin-top: var(--sx-spacing-8);
 	}
 	section {
-		padding-top: var(--shdx-spacing-10);
-		padding-bottom: var(--shdx-spacing-10);
+		padding-top: var(--sx-spacing-10);
+		padding-bottom: var(--sx-spacing-10);
 		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
 	section:nth-child(even) {
-		background: var(--shdx-gray-800);
+		background: var(--sx-gray-800);
 	}
 
 	@media (max-width: 800px) {
 		h1 {
-			font-size: var(--shdx-font-size-8);
+			font-size: var(--sx-font-size-8);
 			text-align: center;
 		}
 		h2 {
-			font-size: var(--shdx-font-size-7);
+			font-size: var(--sx-font-size-7);
 		}
 		.sub-title {
-			font-size: var(--shdx-font-size-6);
+			font-size: var(--sx-font-size-6);
 		}
 		.row {
 			flex-direction: column;
 			align-items: center;
 			margin: 0;
-			padding-top: var(--shdx-spacing-3);
+			padding-top: var(--sx-spacing-3);
 		}
 		.row > * {
 			margin: 0;
@@ -98,7 +98,7 @@
 		width: 25rem;
 	}
 	#try-me {
-		background: var(--shdx-accent-gradient);
+		background: var(--sx-accent-gradient);
 	}
 </style>
 

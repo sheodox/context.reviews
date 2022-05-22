@@ -85,7 +85,7 @@ function getAnkiCardCSS() {
 	return `
 		.night_mode { }
 		.card {
-			background: ${getCSSVar('shdx-gray-700')} !important;
+			background: ${getCSSVar('sx-gray-700')} !important;
 			color: white;
 			max-width: 500px;
 			margin: 0 auto;
@@ -94,7 +94,7 @@ function getAnkiCardCSS() {
 			text-align: center;
 		}
 		mark {
-			background: ${getCSSVar('shdx-blue-300')};
+			background: ${getCSSVar('sx-blue-300')};
 			color: black;
 			border-radius: 3px;
 			white-space: nowrap;
@@ -135,8 +135,8 @@ function getAnkiCardCSS() {
 		.dictionary-details {
 			padding: 0.5rem;
 			border-radius: 3px;
-			background: ${getCSSVar('shdx-gray-600')};
-			box-shadow: ${getCSSVar('shdx-shadow-5')};
+			background: ${getCSSVar('sx-gray-600')};
+			box-shadow: ${getCSSVar('sx-shadow-5')};
 		}
 		.dictionary-form {
 			font-size: 1.3rem;
@@ -181,9 +181,9 @@ function getAnkiCardCSS() {
 			position: absolute;
 			left: 50%;
 			transform: translate(-50%, calc(-100% - 1.5rem));
-			background: ${getCSSVar('shdx-gray-500')};
+			background: ${getCSSVar('sx-gray-500')};
 			border-radius: 3px;
-			box-shadow: ${getCSSVar('shdx-shadow-5')};
+			box-shadow: ${getCSSVar('sx-shadow-5')};
 			padding: 0.3rem;
 			font-size: 1.2rem;
 		}
