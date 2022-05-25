@@ -9,6 +9,7 @@
 	table {
 		width: fit-content;
 		margin: 0.5rem 0;
+		border: none;
 	}
 
 	#list-container {
