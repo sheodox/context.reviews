@@ -51,7 +51,7 @@
     "pug": "^3.0.2",
     "redis": "^3.1.2",
     "serialize-javascript": "^3.1.0",
-    "sharp": "^0.25.4",
+    "sharp": "^0.30.5",
     "sheodox-ui": "^0.17.1",
     "svelte": "^3.46.4",
     "svelte-check": "^2.2.10",
