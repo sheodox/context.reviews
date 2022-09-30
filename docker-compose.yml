@@ -36,7 +36,7 @@ services:
           nocopy: true
     restart: unless-stopped
   nginx:
-    image: nginx:1.18
+    image: nginx:1.23-alpine
     depends_on:
       - app
     restart: unless-stopped
