@@ -43,7 +43,7 @@
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.5.1",
     "page": "^1.11.6",
-    "passport": "^0.4.1",
+    "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
     "pg": "^8.2.1",
     "prettier-plugin-svelte": "^2.5.0",
