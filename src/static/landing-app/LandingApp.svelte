@@ -7,9 +7,10 @@
 </main>
 
 <Footer />
+<SheodoxUIStyles />
 
 <script lang="ts">
-	import { Header } from 'sheodox-ui';
+	import { Header, SheodoxUIStyles } from 'sheodox-ui';
 	import Image from '../Image.svelte';
 	import Pitch from './Pitch.svelte';
 	import Footer from '../Footer.svelte';

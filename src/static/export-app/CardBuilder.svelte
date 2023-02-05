@@ -74,7 +74,11 @@
 			<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 			<div class="header-buttons">
 				<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="angle-left" />Back</button>
-				<button on:click={done} class="done" class:primary={!$definitionSearchTerm && $currentPhraseCardCount}>
+				<button
+					on:click={done}
+					class="done secondary"
+					class:primary={!$definitionSearchTerm && $currentPhraseCardCount}
+				>
 					{#if !$hasMorePhrases}
 						{$exportText}
 					{:else if $currentPhraseCardCount}

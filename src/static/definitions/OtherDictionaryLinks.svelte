@@ -20,7 +20,7 @@
 	<h1>Other Dictionaries</h1>
 
 	{#if term}
-		{#each [term] as term (term)}
+		{#key term}
 			<div in:fly={{ y: 50 }}>
 				<p>View results for <span class="jp">"{term}"</span> in other dictionaries</p>
 
@@ -32,7 +32,7 @@
 					{/each}
 				</ul>
 			</div>
-		{/each}
+		{/key}
 	{:else}
 		<p class="hint-text">Search to see links to definitions in other dictionaries.</p>
 	{/if}

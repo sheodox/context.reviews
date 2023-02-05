@@ -1,7 +1,9 @@
 const MAX_WK_LEVEL = 60;
 
 function genStyles(overrides: Record<string, string>) {
-	const genericGray = '#8293a1',
+	const docStyles = getComputedStyle(document.documentElement),
+		getCSSVar = (varName: string) => docStyles.getPropertyValue(`--${varName}`),
+		genericGray = getCSSVar('sx-gray-100'),
 		styles = Object.assign(
 			{
 				'font-size': '0.7rem',

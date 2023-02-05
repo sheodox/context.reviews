@@ -12,5 +12,7 @@ export const createLinks = (searchTerm: string) => {
 		{ siteName: 'Forvo', href: `https://forvo.com/word/${encoded}/#ja` },
 		{ siteName: 'Google', href: `https://www.google.com/search?q=${encoded}` },
 		{ siteName: 'Google Images', href: `https://www.google.com/search?q=${encoded}&tbm=isch` },
+		{ siteName: 'DuckDuckGo', href: `https://duckduckgo.com/?q=${encoded}` },
+		{ siteName: 'DuckDuckGo Images', href: `https://duckduckgo.com/?q=${encoded}&iax=images&ia=images` },
 	];
 };

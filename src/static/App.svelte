@@ -10,6 +10,9 @@
 		display: flex;
 		flex-direction: row;
 	}
+	:global(:root) {
+		--sx-hue-gray: 120;
+	}
 
 	@media (min-width: 650px) {
 		/* on mobile breakpoints keeping the whole app in the page makes the footer obnoxiously large */
@@ -36,8 +39,10 @@
 
 <Toasts dockedAt="bottom-center" />
 
+<SheodoxUIStyles />
+
 <script lang="ts">
-	import { Toasts } from 'sheodox-ui';
+	import { Toasts, SheodoxUIStyles } from 'sheodox-ui';
 	import Router from './Router.svelte';
 	import Footer from './Footer.svelte';
 	import AppHeader from './AppHeader.svelte';

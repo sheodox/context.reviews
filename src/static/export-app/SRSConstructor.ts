@@ -40,7 +40,7 @@ export default class SRSConstructor {
 		};
 	}
 	getCardModelName() {
-		return 'Context.Reviews v1';
+		return 'Context.Reviews v2';
 	}
 	getCardModelDefinition() {
 		return {
@@ -109,10 +109,13 @@ function getAnkiCardCSS() {
 			font-size: 2rem;
 		}
 		small {
-			color: gray;
+			color: ${getCSSVar('sx-gray-100')};
 		}
 		a {
 			color: #4bcbff;
+		}
+		hr {
+			border-color: ${getCSSVar('sx-gray-200')};
 		}
 		a:not(:hover) {
 			text-decoration: none;
@@ -134,7 +137,7 @@ function getAnkiCardCSS() {
 		}
 		.dictionary-details {
 			padding: 0.5rem;
-			border-radius: 3px;
+			border-radius: 8px;
 			background: ${getCSSVar('sx-gray-600')};
 			box-shadow: ${getCSSVar('sx-shadow-5')};
 		}

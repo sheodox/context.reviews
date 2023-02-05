@@ -98,7 +98,7 @@
 		width: 25rem;
 	}
 	#try-me {
-		background: var(--sx-accent-gradient);
+		background: var(--sx-peach-500);
 	}
 </style>
 

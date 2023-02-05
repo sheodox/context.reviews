@@ -105,8 +105,9 @@ router.get('/google/callback', (req, res, next) => {
 	})(req, res, next);
 });
 router.get('/logout', (req, res) => {
-	req.logout();
-	res.redirect('/');
+	req.logout(() => {
+		res.redirect('/');
+	});
 });
 
 export default router;

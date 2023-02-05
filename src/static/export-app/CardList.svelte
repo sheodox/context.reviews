@@ -47,9 +47,7 @@
 
 <aside class="panel">
 	<div class="m-3 gap-3 f-column">
-		<fieldset class="f-column gap-3">
-			<legend>Phrases</legend>
-
+		<Fieldset fieldsetClasses="f-column gap-3" legend="Phrases">
 			<label for="phrases-processed" class="fw-bold">
 				Phrase {$currentPhraseIndex + 1} of {$phraseStore.length}
 			</label>
@@ -65,10 +63,9 @@
 					</select>
 				</label>
 			</div>
-		</fieldset>
+		</Fieldset>
 
-		<fieldset>
-			<legend>Cards From This Phrase </legend>
+		<Fieldset legend="Cards From This Phrase">
 			<ul>
 				{#each cardSlice($cardsByPhrase, $currentPhrase) as card}
 					<li in:fade={{ duration: 100 }} on:mouseenter={() => (previewCard = card)}>
@@ -86,10 +83,9 @@
 					<li class="no-cards py-3">No cards yet.</li>
 				{/each}
 			</ul>
-		</fieldset>
+		</Fieldset>
 
-		<fieldset class="f-column">
-			<legend>All Cards</legend>
+		<Fieldset fieldsetClasses="f-column" legend="All Cards">
 			<button id="export-button" on:click={() => ($showExport = true)} disabled={$cards.length === 0} class="primary">
 				{$exportText}
 			</button>
@@ -110,7 +106,7 @@
 					<li class="no-cards py-3">No cards yet.</li>
 				{/each}
 			</ul>
-		</fieldset>
+		</Fieldset>
 	</div>
 </aside>
 
@@ -136,7 +132,7 @@
 		showExport,
 		exportText,
 	} from '../stores/cards';
-	import { Progress, Modal, Icon } from 'sheodox-ui';
+	import { Fieldset, Progress, Modal, Icon } from 'sheodox-ui';
 	import type { CardsByPhrase } from '../stores/cards';
 	import type { Card } from '../types/cards';
 

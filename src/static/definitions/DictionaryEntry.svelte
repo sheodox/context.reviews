@@ -3,7 +3,7 @@
 		display: inline;
 	}
 	.info {
-		color: gray;
+		color: var(--sx-gray-100);
 	}
 	button.small {
 		font-size: 0.7rem;
@@ -25,7 +25,7 @@
 		margin-top: 0.2rem;
 	}
 	.alternate-forms {
-		color: #8293a1;
+		color: var(--sx-gray-100);
 		margin-left: 1rem;
 	}
 	.alternate-forms :global(ruby:not(:first-of-type)) {
