@@ -73,11 +73,12 @@
 			<h2>Anki Export</h2>
 			<!-- even if cards have been made for this phrase, don't 'primary' the button if there are unsaved changes -->
 			<div class="header-buttons">
-				<button on:click={back} disabled={$currentPhraseIndex === 0}><Icon icon="angle-left" />Back</button>
+				<button on:click={back} disabled={$currentPhraseIndex === 0} use:ripple><Icon icon="angle-left" />Back</button>
 				<button
 					on:click={done}
 					class="done secondary"
 					class:primary={!$definitionSearchTerm && $currentPhraseCardCount}
+					use:ripple
 				>
 					{#if !$hasMorePhrases}
 						{$exportText}
@@ -172,7 +173,7 @@
 		exportText,
 	} from '../stores/cards';
 	import SelectableText from '../SelectableText.svelte';
-	import { Icon, TextInput } from 'sheodox-ui';
+	import { Icon, TextInput, ripple } from 'sheodox-ui';
 	import MeaningEditor from './MeaningEditor.svelte';
 	import OtherDictionaryLinks from '../definitions/OtherDictionaryLinks.svelte';
 	import CardStyleChoice from './CardStyleChoice.svelte';

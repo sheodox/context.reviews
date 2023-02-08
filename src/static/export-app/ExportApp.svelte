@@ -44,10 +44,7 @@
 		<Exporter on:back={() => ($showExport = false)} on:restart={startOver} />
 	{:else if $phraseStore}
 		<div class="row" id="card-workspace">
-			<!-- using a keyed each for one element so it always rebuilds -->
-			{#each [$phraseStore[$currentPhraseIndex]] as phrase ($phraseStore[$currentPhraseIndex].phrase)}
-				<CardBuilder {phrase} on:done={nextPhrase} on:back={prevPhrase} />
-			{/each}
+			<CardBuilder phrase={$phraseStore[$currentPhraseIndex]} on:done={nextPhrase} on:back={prevPhrase} />
 			<CardList on:goToPhrase={goToPhrase} />
 		</div>
 	{/if}

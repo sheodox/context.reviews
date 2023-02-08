@@ -86,7 +86,13 @@
 		</Fieldset>
 
 		<Fieldset fieldsetClasses="f-column" legend="All Cards">
-			<button id="export-button" on:click={() => ($showExport = true)} disabled={$cards.length === 0} class="primary">
+			<button
+				id="export-button"
+				on:click={() => ($showExport = true)}
+				disabled={$cards.length === 0}
+				class="primary"
+				use:ripple
+			>
 				{$exportText}
 			</button>
 			<ul>
@@ -132,7 +138,7 @@
 		showExport,
 		exportText,
 	} from '../stores/cards';
-	import { Fieldset, Progress, Modal, Icon } from 'sheodox-ui';
+	import { Fieldset, Progress, Modal, Icon, ripple } from 'sheodox-ui';
 	import type { CardsByPhrase } from '../stores/cards';
 	import type { Card } from '../types/cards';
 
